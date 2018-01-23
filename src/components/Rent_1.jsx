@@ -71,7 +71,8 @@ class Rent_1 extends React.Component {
             check_0: '',
             return_cost: '',
             reservation_number: '',
-            test_number: 0
+            test_number: 0,
+            page_numbers: ''
         }
 
         this.handleClick = this.handleClick.bind(this);
@@ -380,6 +381,24 @@ class Rent_1 extends React.Component {
                 this.setState({test_number:0});
             }
         }.bind(this))
+        .then(function(){
+            //page
+            const pageNumbers = [];
+            for (let i = 1; i <= (Math.floor(this.state.count / 5))+1; i++){
+                pageNumbers.push(i);
+                console.log("pagenumber push = ", i, " | count = ", this.state.count);
+            }
+
+            const renderPageNUmbers = pageNumbers.map(number => {
+                return(
+                    <li key={number} id={number} onClick={this.handleClick} onClick={this.submitGit.bind(this)}>
+                        {number}
+                    </li>
+                );
+            });
+
+            this.setState({page_numbers:renderPageNUmbers});
+        }.bind(this))
     }
 
     submitGit(){
@@ -531,20 +550,6 @@ class Rent_1 extends React.Component {
         const blockStyle = {
             
         }
-
-        //page
-        const pageNumbers = [];
-        for (let i = 1; i <= (Math.ceil(this.state.count / 5))+1; i++){
-            pageNumbers.push(i);
-        }
-
-        const renderPageNUmbers = pageNumbers.map(number => {
-            return(
-                <li key={number} id={number} onClick={this.handleClick} onClick={this.submitGit.bind(this)}>
-                    {number}
-                </li>
-            );
-        });
 
         let first_Form = (
             <div>
@@ -699,7 +704,7 @@ class Rent_1 extends React.Component {
                     </tbody>
                 </table>
                 <ul id="page-numbers">
-                    {renderPageNUmbers}
+                    {this.state.page_numbers}
                 </ul>
             </div>
         )

@@ -7,6 +7,9 @@ import SignUpForm from './SignUpForm.jsx'
 import SignInForm from './SignInForm.jsx'
 import Rent_1 from './Rent_1.jsx'
 import ImageTest from './ImageTest.jsx'
+import Reservation_history from './Reservation_history.jsx'
+
+import './Header.css'
 
 class App extends React.Component {
     constructor(props){
@@ -38,6 +41,9 @@ class App extends React.Component {
     click_ImageTest(){
         this.setState({state_1:'t'});
     }
+    click_reservation(){
+        this.setState({state_1:'e'});
+    }
 
     log_out(){
         cookie.remove('name', {path:'/'});
@@ -63,16 +69,28 @@ class App extends React.Component {
         )
         let list_Form = (
             <div>
-                <button onClick={this.click_sign_up.bind(this)}> 회원가입 </button>
-                <button onClick={this.click_sign_in.bind(this)}> 로그인 </button>
-                <button onClick={this.click_rent.bind(this)}> 렌터카 예약 </button>
+                <div className="logo">
+                    렌터카
+                </div>
+                <div className="menu">
+                    <div className="menu-item"> 홈 </div>                                    
+                    <div className="menu-item" onClick={this.click_sign_in.bind(this)}> 로그인 </div>
+                    <div className="menu-item" onClick={this.click_sign_up.bind(this)}> 회원가입 </div>
+                    <div className="menu-item" onClick={this.click_ImageTest.bind(this)}> 사진테스트 </div>
+                </div>
             </div>
         )
         let user_Form = (
             <div>
-                <button onClick={this.log_out.bind(this)}> 로그아웃 </button>
-                <button onClick={this.click_rent.bind(this)}> 렌터카 예약 </button>
-                <button onClick={this.click_ImageTest.bind(this)}> 사진 테스트 </button>
+                <div className="logo">
+                    렌터카
+                </div>
+                <div className="menu">
+                    <div className="menu-item"> 홈 </div>                                    
+                    <div className="menu-item" onClick={this.click_rent.bind(this)}> 렌터카 예약 </div>
+                    <div className="menu-item" onClick={this.log_out.bind(this)}> 로그아웃 </div>
+                    <div className="menu-item" onClick={this.click_reservation.bind(this)}> 예약 및 이용내역 </div>
+                </div>
             </div>
         )
         let rent_Form = (
@@ -83,6 +101,11 @@ class App extends React.Component {
         let imagetest_Form = (
             <div>
                 <ImageTest />
+            </div>
+        )
+        let reservation_number_Form = (
+            <div>
+                <Reservation_history />
             </div>
         )
     
@@ -98,6 +121,9 @@ class App extends React.Component {
         }
         else if(this.state.state_1=='t'){
             return imagetest_Form;
+        }
+        else if(this.state.state_1=='e'){
+            return reservation_number_Form;
         }
         else if(cookie.load('name')){
             return user_Form;

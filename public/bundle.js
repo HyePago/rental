@@ -60,11 +60,26 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 18);
+/******/ 	return __webpack_require__(__webpack_require__.s = 24);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(process) {
+
+if (process.env.NODE_ENV === 'production') {
+  module.exports = __webpack_require__(25);
+} else {
+  module.exports = __webpack_require__(26);
+}
+
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
+
+/***/ }),
+/* 1 */
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -254,21 +269,6 @@ process.umask = function() { return 0; };
 
 
 /***/ }),
-/* 1 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(process) {
-
-if (process.env.NODE_ENV === 'production') {
-  module.exports = __webpack_require__(19);
-} else {
-  module.exports = __webpack_require__(20);
-}
-
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
-
-/***/ }),
 /* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -307,12 +307,12 @@ if (process.env.NODE_ENV === 'production') {
   // DCE check should happen before ReactDOM bundle executes so that
   // DevTools can report bad minification during injection.
   checkDCE();
-  module.exports = __webpack_require__(22);
+  module.exports = __webpack_require__(28);
 } else {
-  module.exports = __webpack_require__(25);
+  module.exports = __webpack_require__(31);
 }
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
 /* 3 */
@@ -475,139 +475,10 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 module.exports = emptyObject;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
 /* 6 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(process) {/**
- * Copyright (c) 2013-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- */
-
-
-
-/**
- * Use invariant() to assert state which your program assumes to be true.
- *
- * Provide sprintf-style format (only %s is supported) and arguments
- * to provide information about what broke and what you were
- * expecting.
- *
- * The invariant message will be stripped in production, but the invariant
- * will remain to ensure logic does not differ in production.
- */
-
-var validateFormat = function validateFormat(format) {};
-
-if (process.env.NODE_ENV !== 'production') {
-  validateFormat = function validateFormat(format) {
-    if (format === undefined) {
-      throw new Error('invariant requires an error message argument');
-    }
-  };
-}
-
-function invariant(condition, format, a, b, c, d, e, f) {
-  validateFormat(format);
-
-  if (!condition) {
-    var error;
-    if (format === undefined) {
-      error = new Error('Minified exception occurred; use the non-minified dev environment ' + 'for the full error message and additional helpful warnings.');
-    } else {
-      var args = [a, b, c, d, e, f];
-      var argIndex = 0;
-      error = new Error(format.replace(/%s/g, function () {
-        return args[argIndex++];
-      }));
-      error.name = 'Invariant Violation';
-    }
-
-    error.framesToPop = 1; // we don't care about invariant's own frame
-    throw error;
-  }
-}
-
-module.exports = invariant;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
-
-/***/ }),
-/* 7 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(process) {/**
- * Copyright (c) 2014-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- */
-
-
-
-var emptyFunction = __webpack_require__(3);
-
-/**
- * Similar to invariant but only logs a warning if the condition is not met.
- * This can be used to log issues in development environments in critical
- * paths. Removing the logging code for production environments will keep the
- * same logic and follow the same code paths.
- */
-
-var warning = emptyFunction;
-
-if (process.env.NODE_ENV !== 'production') {
-  var printWarning = function printWarning(format) {
-    for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-      args[_key - 1] = arguments[_key];
-    }
-
-    var argIndex = 0;
-    var message = 'Warning: ' + format.replace(/%s/g, function () {
-      return args[argIndex++];
-    });
-    if (typeof console !== 'undefined') {
-      console.error(message);
-    }
-    try {
-      // --- Welcome to debugging React ---
-      // This error was thrown as a convenience so that you can use this stack
-      // to find the callsite that caused this warning to fire.
-      throw new Error(message);
-    } catch (x) {}
-  };
-
-  warning = function warning(condition, format) {
-    if (format === undefined) {
-      throw new Error('`warning(condition, format, ...args)` requires a warning ' + 'message argument');
-    }
-
-    if (format.indexOf('Failed Composite propType: ') === 0) {
-      return; // Ignore CompositeComponent proptype check.
-    }
-
-    if (!condition) {
-      for (var _len2 = arguments.length, args = Array(_len2 > 2 ? _len2 - 2 : 0), _key2 = 2; _key2 < _len2; _key2++) {
-        args[_key2 - 2] = arguments[_key2];
-      }
-
-      printWarning.apply(undefined, [format].concat(args));
-    }
-  };
-}
-
-module.exports = warning;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
-
-/***/ }),
-/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -619,7 +490,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = __webpack_require__(1);
+var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -627,29 +498,35 @@ var _reactDom = __webpack_require__(2);
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
-var _reactCookies = __webpack_require__(9);
+var _reactCookies = __webpack_require__(7);
 
 var _reactCookies2 = _interopRequireDefault(_reactCookies);
 
-var _SendEmail = __webpack_require__(31);
+var _SendEmail = __webpack_require__(37);
 
 var _SendEmail2 = _interopRequireDefault(_SendEmail);
 
-var _SignUpForm = __webpack_require__(32);
+var _SignUpForm = __webpack_require__(19);
 
 var _SignUpForm2 = _interopRequireDefault(_SignUpForm);
 
-var _SignInForm = __webpack_require__(17);
+var _SignInForm = __webpack_require__(20);
 
 var _SignInForm2 = _interopRequireDefault(_SignInForm);
 
-var _Rent_ = __webpack_require__(33);
+var _Rent_ = __webpack_require__(23);
 
 var _Rent_2 = _interopRequireDefault(_Rent_);
 
-var _ImageTest = __webpack_require__(39);
+var _ImageTest = __webpack_require__(11);
 
 var _ImageTest2 = _interopRequireDefault(_ImageTest);
+
+var _Reservation_history = __webpack_require__(42);
+
+var _Reservation_history2 = _interopRequireDefault(_Reservation_history);
+
+__webpack_require__(8);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -706,6 +583,11 @@ var App = function (_React$Component) {
             this.setState({ state_1: 't' });
         }
     }, {
+        key: 'click_reservation',
+        value: function click_reservation() {
+            this.setState({ state_1: 'e' });
+        }
+    }, {
         key: 'log_out',
         value: function log_out() {
             _reactCookies2.default.remove('name', { path: '/' });
@@ -734,38 +616,66 @@ var App = function (_React$Component) {
                 'div',
                 null,
                 _react2.default.createElement(
-                    'button',
-                    { onClick: this.click_sign_up.bind(this) },
-                    ' \uD68C\uC6D0\uAC00\uC785 '
+                    'div',
+                    { className: 'logo' },
+                    '\uB80C\uD130\uCE74'
                 ),
                 _react2.default.createElement(
-                    'button',
-                    { onClick: this.click_sign_in.bind(this) },
-                    ' \uB85C\uADF8\uC778 '
-                ),
-                _react2.default.createElement(
-                    'button',
-                    { onClick: this.click_rent.bind(this) },
-                    ' \uB80C\uD130\uCE74 \uC608\uC57D '
+                    'div',
+                    { className: 'menu' },
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu-item' },
+                        ' \uD648 '
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu-item', onClick: this.click_sign_in.bind(this) },
+                        ' \uB85C\uADF8\uC778 '
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu-item', onClick: this.click_sign_up.bind(this) },
+                        ' \uD68C\uC6D0\uAC00\uC785 '
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu-item', onClick: this.click_ImageTest.bind(this) },
+                        ' \uC0AC\uC9C4\uD14C\uC2A4\uD2B8 '
+                    )
                 )
             );
             var user_Form = _react2.default.createElement(
                 'div',
                 null,
                 _react2.default.createElement(
-                    'button',
-                    { onClick: this.log_out.bind(this) },
-                    ' \uB85C\uADF8\uC544\uC6C3 '
+                    'div',
+                    { className: 'logo' },
+                    '\uB80C\uD130\uCE74'
                 ),
                 _react2.default.createElement(
-                    'button',
-                    { onClick: this.click_rent.bind(this) },
-                    ' \uB80C\uD130\uCE74 \uC608\uC57D '
-                ),
-                _react2.default.createElement(
-                    'button',
-                    { onClick: this.click_ImageTest.bind(this) },
-                    ' \uC0AC\uC9C4 \uD14C\uC2A4\uD2B8 '
+                    'div',
+                    { className: 'menu' },
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu-item' },
+                        ' \uD648 '
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu-item', onClick: this.click_rent.bind(this) },
+                        ' \uB80C\uD130\uCE74 \uC608\uC57D '
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu-item', onClick: this.log_out.bind(this) },
+                        ' \uB85C\uADF8\uC544\uC6C3 '
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu-item', onClick: this.click_reservation.bind(this) },
+                        ' \uC608\uC57D \uBC0F \uC774\uC6A9\uB0B4\uC5ED '
+                    )
                 )
             );
             var rent_Form = _react2.default.createElement(
@@ -778,6 +688,11 @@ var App = function (_React$Component) {
                 null,
                 _react2.default.createElement(_ImageTest2.default, null)
             );
+            var reservation_number_Form = _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(_Reservation_history2.default, null)
+            );
 
             if (this.state.state_1 == 's') {
                 //this.setState({state_1:''});
@@ -788,6 +703,8 @@ var App = function (_React$Component) {
                 return rent_Form;
             } else if (this.state.state_1 == 't') {
                 return imagetest_Form;
+            } else if (this.state.state_1 == 'e') {
+                return reservation_number_Form;
             } else if (_reactCookies2.default.load('name')) {
                 return user_Form;
             } else {
@@ -810,7 +727,7 @@ _reactDom2.default.render(_react2.default.createElement(
 exports.default = App;
 
 /***/ }),
-/* 9 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -830,7 +747,7 @@ exports.remove = remove;
 exports.setRawCookie = setRawCookie;
 exports.plugToRequest = plugToRequest;
 
-var _cookie = __webpack_require__(30);
+var _cookie = __webpack_require__(36);
 
 var _cookie2 = _interopRequireDefault(_cookie);
 
@@ -986,10 +903,278 @@ exports.default = {
   remove: remove,
   plugToRequest: plugToRequest
 };
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(38);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// Prepare cssTransformation
+var transform;
+
+var options = {"hmr":true}
+options.transform = transform
+// add the styles to the DOM
+var update = __webpack_require__(22)(content, options);
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../node_modules/css-loader/index.js!./Header.css", function() {
+			var newContent = require("!!../../node_modules/css-loader/index.js!./Header.css");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(process) {/**
+ * Copyright (c) 2013-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ */
+
+
+
+/**
+ * Use invariant() to assert state which your program assumes to be true.
+ *
+ * Provide sprintf-style format (only %s is supported) and arguments
+ * to provide information about what broke and what you were
+ * expecting.
+ *
+ * The invariant message will be stripped in production, but the invariant
+ * will remain to ensure logic does not differ in production.
+ */
+
+var validateFormat = function validateFormat(format) {};
+
+if (process.env.NODE_ENV !== 'production') {
+  validateFormat = function validateFormat(format) {
+    if (format === undefined) {
+      throw new Error('invariant requires an error message argument');
+    }
+  };
+}
+
+function invariant(condition, format, a, b, c, d, e, f) {
+  validateFormat(format);
+
+  if (!condition) {
+    var error;
+    if (format === undefined) {
+      error = new Error('Minified exception occurred; use the non-minified dev environment ' + 'for the full error message and additional helpful warnings.');
+    } else {
+      var args = [a, b, c, d, e, f];
+      var argIndex = 0;
+      error = new Error(format.replace(/%s/g, function () {
+        return args[argIndex++];
+      }));
+      error.name = 'Invariant Violation';
+    }
+
+    error.framesToPop = 1; // we don't care about invariant's own frame
+    throw error;
+  }
+}
+
+module.exports = invariant;
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
 /* 10 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(process) {/**
+ * Copyright (c) 2014-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ */
+
+
+
+var emptyFunction = __webpack_require__(3);
+
+/**
+ * Similar to invariant but only logs a warning if the condition is not met.
+ * This can be used to log issues in development environments in critical
+ * paths. Removing the logging code for production environments will keep the
+ * same logic and follow the same code paths.
+ */
+
+var warning = emptyFunction;
+
+if (process.env.NODE_ENV !== 'production') {
+  var printWarning = function printWarning(format) {
+    for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+      args[_key - 1] = arguments[_key];
+    }
+
+    var argIndex = 0;
+    var message = 'Warning: ' + format.replace(/%s/g, function () {
+      return args[argIndex++];
+    });
+    if (typeof console !== 'undefined') {
+      console.error(message);
+    }
+    try {
+      // --- Welcome to debugging React ---
+      // This error was thrown as a convenience so that you can use this stack
+      // to find the callsite that caused this warning to fire.
+      throw new Error(message);
+    } catch (x) {}
+  };
+
+  warning = function warning(condition, format) {
+    if (format === undefined) {
+      throw new Error('`warning(condition, format, ...args)` requires a warning ' + 'message argument');
+    }
+
+    if (format.indexOf('Failed Composite propType: ') === 0) {
+      return; // Ignore CompositeComponent proptype check.
+    }
+
+    if (!condition) {
+      for (var _len2 = arguments.length, args = Array(_len2 > 2 ? _len2 - 2 : 0), _key2 = 2; _key2 < _len2; _key2++) {
+        args[_key2 - 2] = arguments[_key2];
+      }
+
+      printWarning.apply(undefined, [format].concat(args));
+    }
+  };
+}
+
+module.exports = warning;
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactDom = __webpack_require__(2);
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var ImageTest = function (_React$Component) {
+    _inherits(ImageTest, _React$Component);
+
+    function ImageTest(props) {
+        _classCallCheck(this, ImageTest);
+
+        var _this = _possibleConstructorReturn(this, (ImageTest.__proto__ || Object.getPrototypeOf(ImageTest)).call(this, props));
+
+        _this.state = {
+            url: '',
+            formdata: ''
+        };
+        return _this;
+    }
+
+    _createClass(ImageTest, [{
+        key: 'fileChange',
+        value: function fileChange(e) {
+            var formData = new FormData();
+            var data = e.currentTarget.files;
+
+            for (var name in data) {
+                formData.append(name, data[name]);
+                console.log(name + ", " + e.currentTarget.files[name]);
+            }
+
+            this.setState({ formdata: formData });
+        }
+    }, {
+        key: 'setUpload',
+        value: function setUpload() {
+            var _this2 = this;
+
+            var PATH = "http://localhost:5000/public/upload_image/";
+
+            fetch('/upload_image', {
+                method: 'POST',
+                body: this.state.formdata
+            }).then(function (response) {
+                return response.json();
+            }).then(function (json) {
+                _this2.setState({ url: PATH + json.url });
+            });
+        }
+    }, {
+        key: 'UploadCheck',
+        value: function UploadCheck(e) {
+            /*if(this.state.file==""){
+                alert("파일을 선택해주세요.");
+                return;
+            }*/
+
+            if (this.state.formdata == "") {
+                alert("파일을 선택해주세요.");
+                return;
+            }
+
+            this.setUpload();
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            return _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement('input', { type: 'file', onChange: this.fileChange.bind(this), name: 'uploadfile' }),
+                _react2.default.createElement('input', { type: 'hidden', name: 'token', value: '{{.}}' }),
+                _react2.default.createElement(
+                    'button',
+                    { onClick: this.UploadCheck.bind(this) },
+                    'Upload'
+                ),
+                _react2.default.createElement('img', { src: this.state.url }),
+                _react2.default.createElement('br', null)
+            );
+        }
+    }]);
+
+    return ImageTest;
+}(_react2.default.Component);
+
+module.exports = ImageTest;
+
+/***/ }),
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1003,9 +1188,9 @@ exports.default = {
 
 
 if (process.env.NODE_ENV !== 'production') {
-  var invariant = __webpack_require__(6);
-  var warning = __webpack_require__(7);
-  var ReactPropTypesSecret = __webpack_require__(21);
+  var invariant = __webpack_require__(9);
+  var warning = __webpack_require__(10);
+  var ReactPropTypesSecret = __webpack_require__(27);
   var loggedTypeFailures = {};
 }
 
@@ -1053,10 +1238,10 @@ function checkPropTypes(typeSpecs, values, location, componentName, getStack) {
 
 module.exports = checkPropTypes;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 11 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1095,7 +1280,7 @@ var ExecutionEnvironment = {
 module.exports = ExecutionEnvironment;
 
 /***/ }),
-/* 12 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1173,10 +1358,10 @@ var EventListener = {
 };
 
 module.exports = EventListener;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 13 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1218,7 +1403,7 @@ function getActiveElement(doc) /*?DOMElement*/{
 module.exports = getActiveElement;
 
 /***/ }),
-/* 14 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1289,7 +1474,7 @@ function shallowEqual(objA, objB) {
 module.exports = shallowEqual;
 
 /***/ }),
-/* 15 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1304,7 +1489,7 @@ module.exports = shallowEqual;
  * 
  */
 
-var isTextNode = __webpack_require__(23);
+var isTextNode = __webpack_require__(29);
 
 /*eslint-disable no-bitwise */
 
@@ -1332,7 +1517,7 @@ function containsNode(outerNode, innerNode) {
 module.exports = containsNode;
 
 /***/ }),
-/* 16 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1362,7 +1547,7 @@ function focusNode(node) {
 module.exports = focusNode;
 
 /***/ }),
-/* 17 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1370,7 +1555,7 @@ module.exports = focusNode;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = __webpack_require__(1);
+var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -1378,13 +1563,580 @@ var _reactDom = __webpack_require__(2);
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
-var _App = __webpack_require__(8);
+var _SignInForm = __webpack_require__(20);
+
+var _SignInForm2 = _interopRequireDefault(_SignInForm);
+
+var _ImageTest = __webpack_require__(11);
+
+var _ImageTest2 = _interopRequireDefault(_ImageTest);
+
+var _App = __webpack_require__(6);
 
 var _App2 = _interopRequireDefault(_App);
 
-var _reactCookies = __webpack_require__(9);
+__webpack_require__(8);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var SignUpForm = function (_React$Component) {
+    _inherits(SignUpForm, _React$Component);
+
+    function SignUpForm(props) {
+        _classCallCheck(this, SignUpForm);
+
+        var _this = _possibleConstructorReturn(this, (SignUpForm.__proto__ || Object.getPrototypeOf(SignUpForm)).call(this, props));
+
+        _this.state = {
+            name: '',
+            username: '',
+            username_ch: '',
+            password: '',
+            password_feedback: '',
+            password_confirm: '',
+            password_confirm_feedback: '',
+            email: '',
+            phone_0: '010',
+            phone_1: '',
+            phone_2: '',
+            license_category: '1',
+            license_type: '1',
+            license_number_0: '1',
+            license_number_1: '',
+            license_number_2: '',
+            license_number_3: '',
+            date_if_issue: '',
+            aptitude_test: '',
+            result: '',
+            signed: 'up'
+        };
+        return _this;
+    }
+
+    _createClass(SignUpForm, [{
+        key: 'setSignUp',
+        value: function setSignUp(opts) {
+            var _this2 = this;
+
+            fetch('/sign_up', {
+                method: 'POST',
+                headers: {
+                    "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+                },
+                body: "form=" + JSON.stringify(opts)
+            }).then(function (response) {
+                return response.json();
+            }).then(function (json) {
+                _this2.setState({ result: json.result });
+            }).then(function () {
+                if (this.state.result == true) {
+                    alert("회원가입에 성공하였습니다.");
+                    this.setState({ signed: 'in' });
+                } else {
+                    alert("만들어놓은 아이디가 있는지 확인해주시길 바랍니다.");
+                }
+            }.bind(this));
+            // .then((json) => { this.setState({ email: json.user });});
+        }
+    }, {
+        key: 'submitGit',
+        value: function submitGit() {
+            this.setSignUp({
+                name: this.state.name,
+                username: this.state.username,
+                password: this.state.password,
+                email: this.state.email,
+                phone: this.state.phone_0 + "" + this.state.phone_1 + "" + this.state.phone_2,
+                license_category: this.state.license_category,
+                license_type: this.state.license_type,
+                license_number: this.state.license_number_0 + "" + this.state.license_number_1 + "" + this.state.license_number_2 + "" + this.state.license_number_3,
+                date_if_issue: this.state.date_if_issue,
+                aptitude_test: this.state.aptitude_test
+            });
+        }
+    }, {
+        key: 'chkPwd',
+        value: function chkPwd() {
+            var pw = this.state.password;
+            var num = pw.search(/[0-9]/g);
+            var eng = pw.search(/[a-z]/ig);
+            var spe = pw.search(/[`~!@@#$%^&*|₩₩₩'₩";:₩/?]/gi);
+            var blank_pattern = /[\s]/g;
+
+            if (pw.length < 8 || pw.length > 16) {
+                this.setState({ password_feedback: "9자리 ~ 16자리 이내로 입력해주세요." });
+                //alert("9자리 ~ 16자리 이내로 입력해주세요.")
+            } else if (blank_pattern.test(pw) == true) {
+                //else if(pw.search(/₩s/) != -1){
+                this.setState({ password_feedback: "비밀번호는 공백없이 입력해주세요." });
+                //alert("비밀번호는 공백없이 입력해주세요.")
+            } else if (num < 0 || eng < 0 || spe < 0) {
+                this.setState({ password_feedback: "영문, 숫자, 특수문자를 혼합하여 입력해주세요." });
+                //alert("영문, 숫자, 특수문자를 혼합하여 입력해주세요.")
+            } else {
+                this.setState({ password_feedback: '' });
+            }
+        }
+    }, {
+        key: 'chkConfirmPwd',
+        value: function chkConfirmPwd() {
+            if (this.state.password != this.state.password_confirm) {
+                this.setState({ password_confirm_feedback: "비밀번호와 일치하지않습니다." });
+            } else {
+                this.setState({ password_confirm_feedback: '' });
+            }
+        }
+    }, {
+        key: 'nameChange',
+        value: function nameChange(e) {
+            this.setState({ name: e.target.value });
+        }
+    }, {
+        key: 'usernameChange',
+        value: function usernameChange(e) {
+            this.setState({ username: e.target.value });
+        }
+    }, {
+        key: 'passwordChange',
+        value: function passwordChange(e) {
+            this.setState({ password: e.target.value });
+            this.chkPwd();
+        }
+    }, {
+        key: 'password_confirmChange',
+        value: function password_confirmChange(e) {
+            this.setState({ password_confirm: e.target.value });
+            this.chkConfirmPwd();
+        }
+    }, {
+        key: 'emailChange',
+        value: function emailChange(e) {
+            this.setState({ email: e.target.value });
+        }
+    }, {
+        key: 'phone_0Change',
+        value: function phone_0Change(e) {
+            this.setState({ phone_0: e.target.value });
+        }
+    }, {
+        key: 'phone_1Change',
+        value: function phone_1Change(e) {
+            this.setState({ phone_1: e.target.value });
+        }
+    }, {
+        key: 'phone_2Change',
+        value: function phone_2Change(e) {
+            this.setState({ phone_2: e.target.value });
+        }
+    }, {
+        key: 'license_categoryChange',
+        value: function license_categoryChange(e) {
+            this.setState({ license_category: e.target.value });
+        }
+    }, {
+        key: 'license_typeChange',
+        value: function license_typeChange(e) {
+            this.setState({ license_type: e.target.value });
+        }
+    }, {
+        key: 'license_number_0Change',
+        value: function license_number_0Change(e) {
+            this.setState({ license_number_0: e.target.value });
+        }
+    }, {
+        key: 'license_number_1Change',
+        value: function license_number_1Change(e) {
+            this.setState({ license_number_1: e.target.value });
+        }
+    }, {
+        key: 'license_number_2Change',
+        value: function license_number_2Change(e) {
+            this.setState({ license_number_2: e.target.value });
+        }
+    }, {
+        key: 'license_number_3Change',
+        value: function license_number_3Change(e) {
+            this.setState({ license_number_3: e.target.value });
+        }
+    }, {
+        key: 'date_if_issueChange',
+        value: function date_if_issueChange(e) {
+            var date_if = e.target.value;
+            date_if = date_if.replace(/\-/g, '');
+            this.setState({ date_if_issue: date_if });
+        }
+    }, {
+        key: 'aptitude_testChange',
+        value: function aptitude_testChange(e) {
+            var date_if = e.target.value;
+            date_if = date_if.replace(/\-/g, '');
+            this.setState({ aptitude_test: date_if });
+        }
+
+        /* maxLengthCheck(object){
+             if(object.value.length>object.maxLength){
+                 object.value=object.value.slice(0, object.max.length);
+             }
+         }*/
+
+    }, {
+        key: 'click_sign_in',
+        value: function click_sign_in() {
+            this.setState({ signed: 'in' });
+        }
+    }, {
+        key: 'click_ImageTest',
+        value: function click_ImageTest() {
+            this.setState({ signed: 'image' });
+        }
+    }, {
+        key: 'click_home',
+        value: function click_home() {
+            this.setState({ signed: 'home' });
+        }
+    }, {
+        key: 'idOverlap',
+        value: function idOverlap(username) {
+            var _this3 = this;
+
+            if (this.state.username.length < 4 || this.state.username.length > 15) {
+                alert("아이디를 5자리 ~ 15자리 이내로 입력해주세요.");
+            } else {
+                fetch('/id_overlap', {
+                    method: 'POST',
+                    headers: {
+                        "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+                    },
+                    body: 'username=' + this.state.username
+                }).then(function (response) {
+                    return response.json();
+                }).then(function (json) {
+                    _this3.setState({ username_ch: json.users });
+                }).then(function () {
+                    if (this.state.username_ch == 116) {
+                        alert("사용 가능한 아이디입니다.");
+                    } else {
+                        alert("이미 사용중인 아이디입니다, 다른 아이디를 입력해주십시오.");
+                    }
+                }.bind(this));
+            }
+        }
+    }, {
+        key: 'SignUpCheck',
+        value: function SignUpCheck() {
+            var _this4 = this;
+
+            if (this.state.username.length < 4 || this.state.username.length > 15) {
+                alert("아이디를 5자리 ~ 15자리 이내로 입력해주세요.");
+                return;
+            } else {
+                fetch('/id_overlap', {
+                    method: 'POST',
+                    headers: {
+                        "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+                    },
+                    body: 'username=' + this.state.username
+                }).then(function (response) {
+                    return response.json();
+                }).then(function (json) {
+                    _this4.setState({ username_ch: json.users });
+                }).then(function () {
+                    if (this.state.username_ch == 116) {} else {
+                        alert("이미 사용중인 아이디입니다, 다른 아이디를 입력해주십시오.");
+                        return;
+                    }
+                }.bind(this));
+            }
+            this.chkPwd();
+            if (this.state.password_feedback != '') {
+                //if(this.state.password_feedback!='' || this.state.password_confirm_feedback!=''){
+                alert("비밀번호를 다시 한 번 확인해주십시오.");
+                return;
+            }
+
+            if (this.state.name == "" || this.state.username == "" || this.state.password == "" || this.state.password_confirm == "" || this.state.email == "" || this.state.phone_1 == "" || this.state.phone_2 == "" || this.state.license_number_1 == "" || this.state.license_number_2 == "" || this.state.license_number_3 == "") {
+                alert("빠짐없이 다 입력해주십시오.");
+                return;
+            }
+
+            this.submitGit();
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var sign_up_Form = _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(
+                    'div',
+                    { className: 'logo' },
+                    '\uB80C\uD130\uCE74'
+                ),
+                _react2.default.createElement(
+                    'div',
+                    { className: 'menu' },
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu-item', onClick: this.click_home.bind(this) },
+                        ' \uD648 '
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu-item', onClick: this.click_sign_in.bind(this) },
+                        ' \uB85C\uADF8\uC778 '
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu-item' },
+                        ' \uD68C\uC6D0\uAC00\uC785 '
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu-item', onClick: this.click_ImageTest.bind(this) },
+                        ' \uC0AC\uC9C4\uD14C\uC2A4\uD2B8 '
+                    )
+                ),
+                _react2.default.createElement(
+                    'p',
+                    null,
+                    _react2.default.createElement(
+                        'label',
+                        null,
+                        '\uC774\uB984 '
+                    ),
+                    _react2.default.createElement('input', { type: 'text', name: 'name', placeholder: '\uC774\uB984\uC744 \uC785\uB825\uD574\uC8FC\uC2ED\uC2DC\uC624', onChange: this.nameChange.bind(this) }),
+                    _react2.default.createElement('br', null),
+                    _react2.default.createElement(
+                        'label',
+                        null,
+                        '\uC544\uC774\uB514 '
+                    ),
+                    _react2.default.createElement('input', { type: 'text', name: 'id', onChange: this.usernameChange.bind(this), size: '15', placeholder: this.props.placeholder, maxLength: 15 }),
+                    _react2.default.createElement(
+                        'button',
+                        { onClick: this.idOverlap.bind(this) },
+                        '\uC544\uC774\uB514 \uC911\uBCF5 \uD655\uC778'
+                    ),
+                    _react2.default.createElement('br', null),
+                    _react2.default.createElement(
+                        'label',
+                        null,
+                        '\uBE44\uBC00\uBC88\uD638 '
+                    ),
+                    _react2.default.createElement('input', { type: 'password', name: 'password', maxLength: 16, size: '16', onChange: this.passwordChange.bind(this), placeholder: '\uBE44\uBC00\uBC88\uD638\uB97C \uC785\uB825\uD574\uC8FC\uC138\uC694' }),
+                    '\xA0\xA0',
+                    _react2.default.createElement(
+                        'span',
+                        null,
+                        this.state.password_feedback
+                    ),
+                    _react2.default.createElement('br', null),
+                    _react2.default.createElement(
+                        'label',
+                        null,
+                        '\uBE44\uBC00\uBC88\uD638 \uD655\uC778 '
+                    ),
+                    _react2.default.createElement('input', { type: 'password', name: 'password_confirm', maxLength: 16, size: '16', onChange: this.password_confirmChange.bind(this), placeholder: '\uBE44\uBC00\uBC88\uD638\uB97C \uC785\uB825\uD574\uC8FC\uC138\uC694' }),
+                    '\xA0\xA0',
+                    _react2.default.createElement(
+                        'span',
+                        null,
+                        this.state.password_confirm_feedback
+                    ),
+                    _react2.default.createElement('br', null),
+                    _react2.default.createElement(
+                        'label',
+                        null,
+                        '\uC774\uBA54\uC77C '
+                    ),
+                    _react2.default.createElement('input', { type: 'text', name: 'email', onChange: this.emailChange.bind(this), placeholder: '\uC608) hyejin@gmail.com' }),
+                    _react2.default.createElement('br', null),
+                    _react2.default.createElement(
+                        'label',
+                        null,
+                        '\uC804\uD654\uBC88\uD638 '
+                    ),
+                    _react2.default.createElement(
+                        'select',
+                        { onChange: this.phone_0Change.bind(this) },
+                        _react2.default.createElement(
+                            'option',
+                            { id: '010', value: '010' },
+                            '010'
+                        ),
+                        _react2.default.createElement(
+                            'option',
+                            { id: '011', value: '011' },
+                            '011'
+                        ),
+                        _react2.default.createElement(
+                            'option',
+                            { id: '017', value: '017' },
+                            '017'
+                        )
+                    ),
+                    '\xA0-\xA0',
+                    _react2.default.createElement('input', { type: 'number', onChange: this.phone_1Change.bind(this), name: 'phone_1', max: '9999', maxLength: 4, size: '4' }),
+                    '\xA0-\xA0',
+                    _react2.default.createElement('input', { type: 'number', onChange: this.phone_2Change.bind(this), name: 'phone_2', max: '9999', maxLength: 4, size: '4' }),
+                    _react2.default.createElement('br', null),
+                    _react2.default.createElement(
+                        'label',
+                        null,
+                        '\uBA74\uD5C8\uAD6C\uBD84'
+                    ),
+                    _react2.default.createElement(
+                        'select',
+                        { onChange: this.license_categoryChange.bind(this) },
+                        _react2.default.createElement(
+                            'option',
+                            { id: '1', value: '1' },
+                            '\uAD6D\uB0B4'
+                        ),
+                        _react2.default.createElement(
+                            'option',
+                            { id: '2', value: '2' },
+                            '\uAD6D\uC678'
+                        )
+                    ),
+                    _react2.default.createElement('br', null),
+                    _react2.default.createElement(
+                        'label',
+                        null,
+                        '\uBA74\uD5C8 \uC885\uB958'
+                    ),
+                    _react2.default.createElement(
+                        'select',
+                        { onChange: this.license_typeChange.bind(this) },
+                        _react2.default.createElement(
+                            'option',
+                            { id: '1', value: '1' },
+                            '1\uC885\uB300\uD615'
+                        ),
+                        _react2.default.createElement(
+                            'option',
+                            { id: '2', value: '2' },
+                            '1\uC885\uBCF4\uD1B5'
+                        ),
+                        _react2.default.createElement(
+                            'option',
+                            { id: '3', value: '3' },
+                            '2\uC885\uBCF4\uD1B5'
+                        )
+                    ),
+                    _react2.default.createElement('br', null),
+                    _react2.default.createElement(
+                        'label',
+                        null,
+                        '\uBA74\uD5C8\uC99D \uBC88\uD638'
+                    ),
+                    _react2.default.createElement(
+                        'select',
+                        { onChange: this.license_number_0Change.bind(this) },
+                        _react2.default.createElement(
+                            'option',
+                            { id: '1', value: '1' },
+                            '\uC11C\uC6B8'
+                        ),
+                        _react2.default.createElement(
+                            'option',
+                            { id: '2', value: '2' },
+                            '11'
+                        )
+                    ),
+                    '\xA0',
+                    _react2.default.createElement('input', { type: 'text', size: '2', maxLength: 2, onChange: this.license_number_1Change.bind(this) }),
+                    '-',
+                    _react2.default.createElement('input', { type: 'text', size: '6', maxLength: 6, onChange: this.license_number_2Change.bind(this) }),
+                    '-',
+                    _react2.default.createElement('input', { type: 'text', size: '2', maxLength: 2, onChange: this.license_number_3Change.bind(this) }),
+                    _react2.default.createElement('br', null),
+                    _react2.default.createElement(
+                        'label',
+                        null,
+                        '\uBA74\uD5C8\uBC1C\uAE09\uC77C\uC790'
+                    ),
+                    _react2.default.createElement('input', { type: 'date', onChange: this.date_if_issueChange.bind(this) }),
+                    _react2.default.createElement('br', null),
+                    _react2.default.createElement(
+                        'label',
+                        null,
+                        '\uC801\uC131\uAC80\uC0AC'
+                    ),
+                    _react2.default.createElement('input', { type: 'date', onChange: this.aptitude_testChange.bind(this) }),
+                    _react2.default.createElement('br', null),
+                    _react2.default.createElement('br', null),
+                    _react2.default.createElement(
+                        'button',
+                        { onClick: this.SignUpCheck.bind(this) },
+                        '\uD68C\uC6D0\uAC00\uC785'
+                    )
+                )
+            );
+
+            var sign_up_finish_Form = _react2.default.createElement(_SignInForm2.default, null);
+
+            var imageTest_Form = _react2.default.createElement(_ImageTest2.default, null);
+
+            var homeForm = _react2.default.createElement(_App2.default, null);
+
+            if (this.state.signed == 'up') {
+                return sign_up_Form;
+            } else if (this.state.signed == 'in') {
+                return sign_up_finish_Form;
+            } else if (this.state.signed == 'home') {
+                return homeForm;
+            } else {
+                return imageTest_Form;
+            }
+        }
+    }]);
+
+    return SignUpForm;
+}(_react2.default.Component);
+
+module.exports = SignUpForm;
+
+/***/ }),
+/* 20 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactDom = __webpack_require__(2);
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
+
+var _App = __webpack_require__(6);
+
+var _App2 = _interopRequireDefault(_App);
+
+var _SignUpForm = __webpack_require__(19);
+
+var _SignUpForm2 = _interopRequireDefault(_SignUpForm);
+
+var _ImageTest = __webpack_require__(11);
+
+var _ImageTest2 = _interopRequireDefault(_ImageTest);
+
+var _reactCookies = __webpack_require__(7);
 
 var _reactCookies2 = _interopRequireDefault(_reactCookies);
+
+__webpack_require__(8);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1410,7 +2162,7 @@ var SignInForm = function (_React$Component) {
             email: '',
             id: '',
             password: '',
-            logined: 'f',
+            logined: 'in',
             license_category: '',
             license_type: '',
             license_number: '',
@@ -1419,30 +2171,6 @@ var SignInForm = function (_React$Component) {
         };
         return _this;
     }
-
-    //Cookie
-    /*createCookie(name, value, days){
-        if(days){
-            var date = new Date();
-            date.setTime(date.getTime()+(days*24*60*60*1000));
-            var expires = "; expires="+date.toGMTString();
-        }
-        else var expires = "";
-         document.cookie = name+"="+value+expires+"; path=/";
-    }
-     readCookie(name){
-        var nameEQ = name+"=";
-        var ca = document.cookie.split(';');
-         for(var i=0; i<ca.length; i++){
-            var c = ca[i];
-             for(var i=0; i<ca.length; i++){
-                var c = ca[i];
-                while(c.charAt(0)==' ') c = c.substring(1, c.length);
-                if(c.indexOf(nameEQ)==0) return c.substring(nameEQ.length, c.length);
-            }
-             return "";
-        }
-    }*/
 
     _createClass(SignInForm, [{
         key: 'idChange',
@@ -1498,7 +2226,7 @@ var SignInForm = function (_React$Component) {
                     _reactCookies2.default.save('date_if_issue', this.state.date_if_issue, { path: '/' });
                     _reactCookies2.default.save('aptitude_test', this.state.aptitude_test, { path: '/' });
 
-                    this.setState({ logined: 's' });
+                    this.setState({ logined: "home" });
                 }
             }.bind(this));
         }
@@ -1511,11 +2239,55 @@ var SignInForm = function (_React$Component) {
             });
         }
     }, {
+        key: 'click_sign_up',
+        value: function click_sign_up() {
+            this.setState({ logined: "up" });
+        }
+    }, {
+        key: 'click_ImageTest',
+        value: function click_ImageTest() {
+            this.setState({ logined: "image" });
+        }
+    }, {
+        key: 'click_home',
+        value: function click_home() {
+            this.setState({ logined: "home" });
+        }
+    }, {
         key: 'render',
         value: function render() {
             var login_Form = _react2.default.createElement(
                 'div',
                 null,
+                _react2.default.createElement(
+                    'div',
+                    { className: 'logo' },
+                    '\uB80C\uD130\uCE74'
+                ),
+                _react2.default.createElement(
+                    'div',
+                    { className: 'menu' },
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu-item', onClick: this.click_home.bind(this) },
+                        ' \uD648 '
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu-item' },
+                        ' \uB85C\uADF8\uC778 '
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu-item', onClick: this.click_sign_up.bind(this) },
+                        ' \uD68C\uC6D0\uAC00\uC785 '
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu-item', onClick: this.click_ImageTest.bind(this) },
+                        ' \uC0AC\uC9C4\uD14C\uC2A4\uD2B8 '
+                    )
+                ),
                 _react2.default.createElement(
                     'p',
                     null,
@@ -1542,11 +2314,19 @@ var SignInForm = function (_React$Component) {
             );
 
             var logined_Form = _react2.default.createElement(_App2.default, null);
+            var ImageTest_Form = _react2.default.createElement(_ImageTest2.default, null);
+            var sign_up_Form = _react2.default.createElement(_SignUpForm2.default, null);
 
-            if (this.state.logined == 'f') {
+            if (this.state.logined == "in") {
                 return login_Form;
-            } else {
+            } else if (this.state.logined == "home") {
                 return logined_Form;
+            } else if (this.state.logined == "image") {
+                return ImageTest_Form;
+            } else {
+                alert("회원가입은 대체 왜 안되는 걸까요?! ..ㅠㅜㅠㅠㅠ ");
+                //return sign_up_Form;
+                return sign_up_Form;
             }
         }
     }]);
@@ -1557,13 +2337,469 @@ var SignInForm = function (_React$Component) {
 module.exports = SignInForm;
 
 /***/ }),
-/* 18 */
+/* 21 */
+/***/ (function(module, exports) {
+
+/*
+	MIT License http://www.opensource.org/licenses/mit-license.php
+	Author Tobias Koppers @sokra
+*/
+// css base code, injected by the css-loader
+module.exports = function(useSourceMap) {
+	var list = [];
+
+	// return the list of modules as css string
+	list.toString = function toString() {
+		return this.map(function (item) {
+			var content = cssWithMappingToString(item, useSourceMap);
+			if(item[2]) {
+				return "@media " + item[2] + "{" + content + "}";
+			} else {
+				return content;
+			}
+		}).join("");
+	};
+
+	// import a list of modules into the list
+	list.i = function(modules, mediaQuery) {
+		if(typeof modules === "string")
+			modules = [[null, modules, ""]];
+		var alreadyImportedModules = {};
+		for(var i = 0; i < this.length; i++) {
+			var id = this[i][0];
+			if(typeof id === "number")
+				alreadyImportedModules[id] = true;
+		}
+		for(i = 0; i < modules.length; i++) {
+			var item = modules[i];
+			// skip already imported module
+			// this implementation is not 100% perfect for weird media query combinations
+			//  when a module is imported multiple times with different media queries.
+			//  I hope this will never occur (Hey this way we have smaller bundles)
+			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
+				if(mediaQuery && !item[2]) {
+					item[2] = mediaQuery;
+				} else if(mediaQuery) {
+					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
+				}
+				list.push(item);
+			}
+		}
+	};
+	return list;
+};
+
+function cssWithMappingToString(item, useSourceMap) {
+	var content = item[1] || '';
+	var cssMapping = item[3];
+	if (!cssMapping) {
+		return content;
+	}
+
+	if (useSourceMap && typeof btoa === 'function') {
+		var sourceMapping = toComment(cssMapping);
+		var sourceURLs = cssMapping.sources.map(function (source) {
+			return '/*# sourceURL=' + cssMapping.sourceRoot + source + ' */'
+		});
+
+		return [content].concat(sourceURLs).concat([sourceMapping]).join('\n');
+	}
+
+	return [content].join('\n');
+}
+
+// Adapted from convert-source-map (MIT)
+function toComment(sourceMap) {
+	// eslint-disable-next-line no-undef
+	var base64 = btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap))));
+	var data = 'sourceMappingURL=data:application/json;charset=utf-8;base64,' + base64;
+
+	return '/*# ' + data + ' */';
+}
+
+
+/***/ }),
+/* 22 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/*
+	MIT License http://www.opensource.org/licenses/mit-license.php
+	Author Tobias Koppers @sokra
+*/
+
+var stylesInDom = {};
+
+var	memoize = function (fn) {
+	var memo;
+
+	return function () {
+		if (typeof memo === "undefined") memo = fn.apply(this, arguments);
+		return memo;
+	};
+};
+
+var isOldIE = memoize(function () {
+	// Test for IE <= 9 as proposed by Browserhacks
+	// @see http://browserhacks.com/#hack-e71d8692f65334173fee715c222cb805
+	// Tests for existence of standard globals is to allow style-loader
+	// to operate correctly into non-standard environments
+	// @see https://github.com/webpack-contrib/style-loader/issues/177
+	return window && document && document.all && !window.atob;
+});
+
+var getElement = (function (fn) {
+	var memo = {};
+
+	return function(selector) {
+		if (typeof memo[selector] === "undefined") {
+			var styleTarget = fn.call(this, selector);
+			// Special case to return head of iframe instead of iframe itself
+			if (styleTarget instanceof window.HTMLIFrameElement) {
+				try {
+					// This will throw an exception if access to iframe is blocked
+					// due to cross-origin restrictions
+					styleTarget = styleTarget.contentDocument.head;
+				} catch(e) {
+					styleTarget = null;
+				}
+			}
+			memo[selector] = styleTarget;
+		}
+		return memo[selector]
+	};
+})(function (target) {
+	return document.querySelector(target)
+});
+
+var singleton = null;
+var	singletonCounter = 0;
+var	stylesInsertedAtTop = [];
+
+var	fixUrls = __webpack_require__(39);
+
+module.exports = function(list, options) {
+	if (typeof DEBUG !== "undefined" && DEBUG) {
+		if (typeof document !== "object") throw new Error("The style-loader cannot be used in a non-browser environment");
+	}
+
+	options = options || {};
+
+	options.attrs = typeof options.attrs === "object" ? options.attrs : {};
+
+	// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
+	// tags it will allow on a page
+	if (!options.singleton && typeof options.singleton !== "boolean") options.singleton = isOldIE();
+
+	// By default, add <style> tags to the <head> element
+	if (!options.insertInto) options.insertInto = "head";
+
+	// By default, add <style> tags to the bottom of the target
+	if (!options.insertAt) options.insertAt = "bottom";
+
+	var styles = listToStyles(list, options);
+
+	addStylesToDom(styles, options);
+
+	return function update (newList) {
+		var mayRemove = [];
+
+		for (var i = 0; i < styles.length; i++) {
+			var item = styles[i];
+			var domStyle = stylesInDom[item.id];
+
+			domStyle.refs--;
+			mayRemove.push(domStyle);
+		}
+
+		if(newList) {
+			var newStyles = listToStyles(newList, options);
+			addStylesToDom(newStyles, options);
+		}
+
+		for (var i = 0; i < mayRemove.length; i++) {
+			var domStyle = mayRemove[i];
+
+			if(domStyle.refs === 0) {
+				for (var j = 0; j < domStyle.parts.length; j++) domStyle.parts[j]();
+
+				delete stylesInDom[domStyle.id];
+			}
+		}
+	};
+};
+
+function addStylesToDom (styles, options) {
+	for (var i = 0; i < styles.length; i++) {
+		var item = styles[i];
+		var domStyle = stylesInDom[item.id];
+
+		if(domStyle) {
+			domStyle.refs++;
+
+			for(var j = 0; j < domStyle.parts.length; j++) {
+				domStyle.parts[j](item.parts[j]);
+			}
+
+			for(; j < item.parts.length; j++) {
+				domStyle.parts.push(addStyle(item.parts[j], options));
+			}
+		} else {
+			var parts = [];
+
+			for(var j = 0; j < item.parts.length; j++) {
+				parts.push(addStyle(item.parts[j], options));
+			}
+
+			stylesInDom[item.id] = {id: item.id, refs: 1, parts: parts};
+		}
+	}
+}
+
+function listToStyles (list, options) {
+	var styles = [];
+	var newStyles = {};
+
+	for (var i = 0; i < list.length; i++) {
+		var item = list[i];
+		var id = options.base ? item[0] + options.base : item[0];
+		var css = item[1];
+		var media = item[2];
+		var sourceMap = item[3];
+		var part = {css: css, media: media, sourceMap: sourceMap};
+
+		if(!newStyles[id]) styles.push(newStyles[id] = {id: id, parts: [part]});
+		else newStyles[id].parts.push(part);
+	}
+
+	return styles;
+}
+
+function insertStyleElement (options, style) {
+	var target = getElement(options.insertInto)
+
+	if (!target) {
+		throw new Error("Couldn't find a style target. This probably means that the value for the 'insertInto' parameter is invalid.");
+	}
+
+	var lastStyleElementInsertedAtTop = stylesInsertedAtTop[stylesInsertedAtTop.length - 1];
+
+	if (options.insertAt === "top") {
+		if (!lastStyleElementInsertedAtTop) {
+			target.insertBefore(style, target.firstChild);
+		} else if (lastStyleElementInsertedAtTop.nextSibling) {
+			target.insertBefore(style, lastStyleElementInsertedAtTop.nextSibling);
+		} else {
+			target.appendChild(style);
+		}
+		stylesInsertedAtTop.push(style);
+	} else if (options.insertAt === "bottom") {
+		target.appendChild(style);
+	} else if (typeof options.insertAt === "object" && options.insertAt.before) {
+		var nextSibling = getElement(options.insertInto + " " + options.insertAt.before);
+		target.insertBefore(style, nextSibling);
+	} else {
+		throw new Error("[Style Loader]\n\n Invalid value for parameter 'insertAt' ('options.insertAt') found.\n Must be 'top', 'bottom', or Object.\n (https://github.com/webpack-contrib/style-loader#insertat)\n");
+	}
+}
+
+function removeStyleElement (style) {
+	if (style.parentNode === null) return false;
+	style.parentNode.removeChild(style);
+
+	var idx = stylesInsertedAtTop.indexOf(style);
+	if(idx >= 0) {
+		stylesInsertedAtTop.splice(idx, 1);
+	}
+}
+
+function createStyleElement (options) {
+	var style = document.createElement("style");
+
+	options.attrs.type = "text/css";
+
+	addAttrs(style, options.attrs);
+	insertStyleElement(options, style);
+
+	return style;
+}
+
+function createLinkElement (options) {
+	var link = document.createElement("link");
+
+	options.attrs.type = "text/css";
+	options.attrs.rel = "stylesheet";
+
+	addAttrs(link, options.attrs);
+	insertStyleElement(options, link);
+
+	return link;
+}
+
+function addAttrs (el, attrs) {
+	Object.keys(attrs).forEach(function (key) {
+		el.setAttribute(key, attrs[key]);
+	});
+}
+
+function addStyle (obj, options) {
+	var style, update, remove, result;
+
+	// If a transform function was defined, run it on the css
+	if (options.transform && obj.css) {
+	    result = options.transform(obj.css);
+
+	    if (result) {
+	    	// If transform returns a value, use that instead of the original css.
+	    	// This allows running runtime transformations on the css.
+	    	obj.css = result;
+	    } else {
+	    	// If the transform function returns a falsy value, don't add this css.
+	    	// This allows conditional loading of css
+	    	return function() {
+	    		// noop
+	    	};
+	    }
+	}
+
+	if (options.singleton) {
+		var styleIndex = singletonCounter++;
+
+		style = singleton || (singleton = createStyleElement(options));
+
+		update = applyToSingletonTag.bind(null, style, styleIndex, false);
+		remove = applyToSingletonTag.bind(null, style, styleIndex, true);
+
+	} else if (
+		obj.sourceMap &&
+		typeof URL === "function" &&
+		typeof URL.createObjectURL === "function" &&
+		typeof URL.revokeObjectURL === "function" &&
+		typeof Blob === "function" &&
+		typeof btoa === "function"
+	) {
+		style = createLinkElement(options);
+		update = updateLink.bind(null, style, options);
+		remove = function () {
+			removeStyleElement(style);
+
+			if(style.href) URL.revokeObjectURL(style.href);
+		};
+	} else {
+		style = createStyleElement(options);
+		update = applyToTag.bind(null, style);
+		remove = function () {
+			removeStyleElement(style);
+		};
+	}
+
+	update(obj);
+
+	return function updateStyle (newObj) {
+		if (newObj) {
+			if (
+				newObj.css === obj.css &&
+				newObj.media === obj.media &&
+				newObj.sourceMap === obj.sourceMap
+			) {
+				return;
+			}
+
+			update(obj = newObj);
+		} else {
+			remove();
+		}
+	};
+}
+
+var replaceText = (function () {
+	var textStore = [];
+
+	return function (index, replacement) {
+		textStore[index] = replacement;
+
+		return textStore.filter(Boolean).join('\n');
+	};
+})();
+
+function applyToSingletonTag (style, index, remove, obj) {
+	var css = remove ? "" : obj.css;
+
+	if (style.styleSheet) {
+		style.styleSheet.cssText = replaceText(index, css);
+	} else {
+		var cssNode = document.createTextNode(css);
+		var childNodes = style.childNodes;
+
+		if (childNodes[index]) style.removeChild(childNodes[index]);
+
+		if (childNodes.length) {
+			style.insertBefore(cssNode, childNodes[index]);
+		} else {
+			style.appendChild(cssNode);
+		}
+	}
+}
+
+function applyToTag (style, obj) {
+	var css = obj.css;
+	var media = obj.media;
+
+	if(media) {
+		style.setAttribute("media", media)
+	}
+
+	if(style.styleSheet) {
+		style.styleSheet.cssText = css;
+	} else {
+		while(style.firstChild) {
+			style.removeChild(style.firstChild);
+		}
+
+		style.appendChild(document.createTextNode(css));
+	}
+}
+
+function updateLink (link, options, obj) {
+	var css = obj.css;
+	var sourceMap = obj.sourceMap;
+
+	/*
+		If convertToAbsoluteUrls isn't defined, but sourcemaps are enabled
+		and there is no publicPath defined then lets turn convertToAbsoluteUrls
+		on by default.  Otherwise default to the convertToAbsoluteUrls option
+		directly
+	*/
+	var autoFixUrls = options.convertToAbsoluteUrls === undefined && sourceMap;
+
+	if (options.convertToAbsoluteUrls || autoFixUrls) {
+		css = fixUrls(css);
+	}
+
+	if (sourceMap) {
+		// http://stackoverflow.com/a/26603875
+		css += "\n/*# sourceMappingURL=data:application/json;base64," + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + " */";
+	}
+
+	var blob = new Blob([css], { type: "text/css" });
+
+	var oldSrc = link.href;
+
+	link.href = URL.createObjectURL(blob);
+
+	if(oldSrc) URL.revokeObjectURL(oldSrc);
+}
+
+
+/***/ }),
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _react = __webpack_require__(1);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -1571,7 +2807,1379 @@ var _reactDom = __webpack_require__(2);
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
-var _App = __webpack_require__(8);
+var _reactCookies = __webpack_require__(7);
+
+var _reactCookies2 = _interopRequireDefault(_reactCookies);
+
+__webpack_require__(40);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Rent_1 = function (_React$Component) {
+    _inherits(Rent_1, _React$Component);
+
+    function Rent_1(props) {
+        _classCallCheck(this, Rent_1);
+
+        var _this = _possibleConstructorReturn(this, (Rent_1.__proto__ || Object.getPrototypeOf(Rent_1)).call(this, props));
+
+        var today = new Date();
+
+        if (today.getMonth() + 1 < 10) {
+            var date = today.getFullYear() + "0" + (today.getMonth() + 1) + "" + today.getDate();
+        } else {
+            var date = today.getFullYear() + "" + (today.getMonth() + 1) + "" + today.getDate();
+        }
+
+        if (today.getMinutes() < 10) {
+            var time = today.getHours() + "0" + today.getMinutes();
+        } else {
+            var time = today.getHours() + "" + today.getMinutes();
+        }
+
+        _this.state = {
+            date: date,
+            time: time,
+            area: 'inland',
+            rental_point: 'Gangnam',
+            return_point: 'Gangnam',
+            rental_date: '',
+            r_rental_date: '',
+            rental_time: '',
+            r_rental_time: '',
+            return_date: '',
+            r_return_date: '',
+            return_time: '',
+            r_return_time: '',
+            result: '',
+            returned: '1',
+            cost: '',
+            car_type: '',
+            image: [],
+            car_name: [],
+            car_number: [],
+            fuel: [],
+            few: [],
+            color: [],
+            count: '',
+            distance: [],
+            registration_date: [],
+            division_number: 0,
+            currentPage: 1,
+            usepoint: '',
+            cdw: 0,
+            show_cost: '',
+            kor_navigation: true,
+            eng_navigation: false,
+            babyseat: false,
+            license_category: '',
+            license_number_0: '',
+            license_number_1: '',
+            license_number_2: '',
+            license_number_3: '',
+            license_type: '',
+            date_if_issue: '',
+            aptitude_test: '',
+            name: '',
+            email: '',
+            check_0: '',
+            return_cost: '',
+            reservation_number: '',
+            test_number: 0,
+            page_numbers: ''
+        };
+
+        _this.handleClick = _this.handleClick.bind(_this);
+        return _this;
+    }
+
+    //Change
+
+
+    _createClass(Rent_1, [{
+        key: 'areaChange',
+        value: function areaChange(e) {
+            this.setState({ area: e.target.value });
+        }
+    }, {
+        key: 'rental_pointChange',
+        value: function rental_pointChange(e) {
+            this.setState({ rental_point: e.target.value });
+        }
+    }, {
+        key: 'return_pointChange',
+        value: function return_pointChange(e) {
+            this.setState({ return_point: e.target.value });
+        }
+    }, {
+        key: 'rental_dateChange',
+        value: function rental_dateChange(e) {
+            this.setState({ r_rental_date: e.target.value });
+
+            var date = e.target.value;
+            date = date.replace(/\-/g, '');
+
+            this.setState({ rental_date: date });
+        }
+    }, {
+        key: 'rental_timeChange',
+        value: function rental_timeChange(e) {
+            this.setState({ r_rental_time: e.target.value });
+            var rental_time = e.target.value;
+            rental_time = rental_time.replace(/\:/g, '');
+
+            this.setState({ rental_time: rental_time });
+        }
+    }, {
+        key: 'return_dateChange',
+        value: function return_dateChange(e) {
+            this.setState({ r_return_date: e.target.value });
+            var return_date = e.target.value;
+            return_date = return_date.replace(/\-/g, '');
+
+            this.setState({ return_date: return_date });
+        }
+    }, {
+        key: 'return_timeChange',
+        value: function return_timeChange(e) {
+            this.setState({ r_return_time: e.target.value });
+            var return_time = e.target.value;
+            return_time = return_time.replace(/\:/g, '');
+
+            this.setState({ return_time: return_time });
+        }
+    }, {
+        key: 'car_typeChange',
+        value: function car_typeChange(e) {
+            this.setState({ car_type: e.target.value });
+            this.submitGit();
+        }
+    }, {
+        key: 'usepointChange',
+        value: function usepointChange(e) {
+            this.setState({ usepoint: e.target.value });
+        }
+    }, {
+        key: 'cdwChange',
+        value: function cdwChange(e) {
+            this.setState({ cdw: e.target.value });
+
+            var cost = parseInt(this.state.cost[this.state.division_number]);
+
+            if (this.state.babyseat == true) {
+                switch (e.target.value) {
+                    case '0':
+                        this.setState({ show_cost: cost + 2000 });
+                        break;
+                    case '1':
+                        this.setState({ show_cost: cost + 32000 });
+                        break;
+                    case '2':
+                        this.setState({ show_cost: cost + 20000 });
+                        break;
+                    case '3':
+                        this.setState({ show_cost: cost + 16000 });
+                        break;
+                }
+            } else {
+                switch (e.target.value) {
+                    case '0':
+                        this.setState({ show_cost: cost });
+                        break;
+                    case '1':
+                        this.setState({ show_cost: cost + 30000 });
+                        break;
+                    case '2':
+                        this.setState({ show_cost: cost + 18000 });
+                        break;
+                    case '3':
+                        this.setState({ show_cost: cost + 14000 });
+                        break;
+                }
+            }
+        }
+    }, {
+        key: 'kor_navigationChange',
+        value: function kor_navigationChange(e) {
+            this.setState({ kor_navigation: e.target.checked });
+        }
+    }, {
+        key: 'eng_navigationChange',
+        value: function eng_navigationChange(e) {
+            this.setState({ eng_navigation: e.target.checked });
+        }
+    }, {
+        key: 'babyseatChange',
+        value: function babyseatChange(e) {
+            this.setState({ babyseat: e.target.checked });
+            var cost = parseInt(this.state.cost[this.state.division_number]);
+
+            if (e.target.checked == true) {
+                switch (this.state.cdw) {
+                    case '0':
+                        this.setState({ show_cost: cost + 2000 });
+                        break;
+                    case '1':
+                        this.setState({ show_cost: cost + 32000 });
+                        break;
+                    case '2':
+                        this.setState({ show_cost: cost + 20000 });
+                        break;
+                    case '3':
+                        this.setState({ show_cost: cost + 16000 });
+                        break;
+                }
+            } else {
+                switch (this.state.cdw) {
+                    case '0':
+                        this.setState({ show_cost: cost });
+                        break;
+                    case '1':
+                        this.setState({ show_cost: cost + 30000 });
+                        break;
+                    case '2':
+                        this.setState({ show_cost: cost + 18000 });
+                        break;
+                    case '3':
+                        this.setState({ show_cost: cost + 14000 });
+                        break;
+                }
+            }
+        }
+    }, {
+        key: 'nameChange',
+        value: function nameChange(e) {
+            this.setState({ name: e.target.value });
+        }
+    }, {
+        key: 'emailChange',
+        value: function emailChange(e) {
+            this.setState({ email: e.target.value });
+        }
+    }, {
+        key: 'license_categoryChange',
+        value: function license_categoryChange(e) {
+            this.setState({ license_category: e.target.value });
+        }
+    }, {
+        key: 'license_typeChange',
+        value: function license_typeChange(e) {
+            this.setState({ license_type: e.target.value });
+        }
+    }, {
+        key: 'license_number_0Change',
+        value: function license_number_0Change(e) {
+            this.setState({ license_number_0: e.target.value });
+        }
+    }, {
+        key: 'license_number_1Change',
+        value: function license_number_1Change(e) {
+            this.setState({ license_number_1: e.target.value });
+        }
+    }, {
+        key: 'licesne_number_2Change',
+        value: function licesne_number_2Change(e) {
+            this.setState({ license_number_2: e.target.value });
+        }
+    }, {
+        key: 'license_number_3Change',
+        value: function license_number_3Change(e) {
+            this.setState({ license_number_3: e.target.value });
+        }
+    }, {
+        key: 'date_if_issueChange',
+        value: function date_if_issueChange(e) {
+            this.setState({ date_if_issue: e.target.value });
+        }
+    }, {
+        key: 'aptitude_testChange',
+        value: function aptitude_testChange(e) {
+            this.setState({ aptitude_test: e.target.value });
+        }
+    }, {
+        key: 'check_0Change',
+        value: function check_0Change(e) {
+            this.setState({ check_0: e.target.checked });
+        }
+
+        //Clicked
+
+    }, {
+        key: 'tr_click_0',
+        value: function tr_click_0(e) {
+            this.setState({ division_number: 0 });
+            this.setState({ returned: '3' });
+            this.setState({ show_cost: this.state.cost[0] });
+        }
+    }, {
+        key: 'tr_click_1',
+        value: function tr_click_1(e) {
+            this.setState({ division_number: 1 });
+            this.setState({ returned: '3' });
+            this.setState({ show_cost: this.state.cost[1] });
+        }
+    }, {
+        key: 'tr_click_2',
+        value: function tr_click_2(e) {
+            this.setState({ division_number: 2 });
+            this.setState({ returned: '3' });
+            this.setState({ show_cost: this.state.cost[2] });
+        }
+    }, {
+        key: 'tr_click_3',
+        value: function tr_click_3(e) {
+            this.setState({ division_number: 3 });
+            this.setState({ returned: '3' });
+            this.setState({ show_cost: this.state.cost[3] });
+        }
+    }, {
+        key: 'tr_click_4',
+        value: function tr_click_4(e) {
+            this.setState({ division_number: 4 });
+            this.setState({ returned: '3' });
+            this.setState({ show_cost: this.state.cost[4] });
+        }
+    }, {
+        key: 'renting_button_click',
+        value: function renting_button_click(e) {
+            if (this.state.usepoint > _reactCookies2.default.load('reserves') && this.state.usepoint != null) {
+                alert("현재 보유하고있는 포인트 내에서 사용하실 수 있습니다.");
+                return;
+            }
+            if (this.state.usepoint != '' && _reactCookies2.default.load('reserves') < 5000) {
+                alert("보유하고 있는 포인트가 5000원 미만이라 사용하실 수 없습니다.");
+                return;
+            }
+
+            this.setState({ name: _reactCookies2.default.load('name') });
+            this.setState({ email: _reactCookies2.default.load('email') });
+            this.setState({ license_category: _reactCookies2.default.load('license_category') });
+            this.setState({ license_type: _reactCookies2.default.load('license_type') });
+            this.setState({ license_number_0: _reactCookies2.default.load('license_number').slice(0, 1) });
+            this.setState({ license_number_1: _reactCookies2.default.load('license_number').slice(1, 3) });
+            this.setState({ license_number_2: _reactCookies2.default.load('license_number').slice(3, 9) });
+            this.setState({ license_number_3: _reactCookies2.default.load('license_number').slice(9, 11) });
+            this.setState({ date_if_issue: _reactCookies2.default.load('date_if_issue').slice(0, 10) });
+            this.setState({ aptitude_test: _reactCookies2.default.load('aptitude_test').slice(0, 10) });
+            this.setState({ cost: this.state.show_cost });
+
+            this.setState({ returned: '4' });
+        }
+    }, {
+        key: 'last_button_click',
+        value: function last_button_click(e) {
+            if (this.state.name == "" || this.state.email == "" || this.state.license_category == "" || this.state.license_type == "" || this.state.license_number_0 == "" || this.state.license_number_1 == "" || this.state.license_number_2 == "" || this.state.license_number_3 == "" || this.state.date_if_issue == "" || this.state.aptitude_test == "") {
+                alert("빠짐없이 다 입력해주세요.");
+                return;
+            }
+            if (this.state.check_0 == false) {
+                alert("필수 체크사항을 모두 체크해주시길 바랍니다.");
+                return;
+            }
+
+            this.submitGit_2();
+        }
+    }, {
+        key: 'setRent_1',
+        value: function setRent_1(opts) {
+            var _this2 = this;
+
+            var count = 0;
+
+            fetch('/rent_1', {
+                method: 'POST',
+                headers: {
+                    "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+                },
+                body: "form=" + JSON.stringify(opts)
+            }).then(function (response) {
+                return response.json();
+            }).then(function (json) {
+                _this2.setState({ result: json.result });
+            }).then(function () {
+                var json_m = JSON.parse(JSON.stringify(this.state.result));
+
+                this.setState({ cost: [] });
+                this.setState({ image: [] });
+                this.setState({ car_name: [] });
+                this.setState({ color: [] });
+                this.setState({ few: [] });
+                this.setState({ fuel: [] });
+                this.setState({ distance: [] });
+                this.setState({ registration_date: [] });
+                this.setState({ car_number: [] });
+
+                for (var count = 0; this.state.result[count] != null; count++) {
+                    if (this.state.rental_date == this.state.retrun_date) {
+                        var total_rental_time = this.state.return_time - this.state.rental_time;
+
+                        //this.setState({cost:this.state.result[count]["twelve_hour"]});                    
+                        if (total_rental_time <= 600) {
+                            //6시간 이하
+                            this.setState({ cost: this.state.cost.concat(this.state.result[count]["six_hour"]) });
+                        } else if (total_rental_time <= 1000) {
+                            //10시간 이하
+                            this.setState({ cost: this.state.cost.concat(this.state.result[count]["ten_hour"]) });
+                        } else if (total_rental_time <= 1200) {
+                            //12시간 이하
+                            this.setState({ cost: this.state.cost.concat(this.state.result[count]["twelve_hour"]) });
+                        } else {
+                            // 하루
+                            this.setState({ cost: this.state.cost.concat(this.state.result[count]["two_days"]) });
+                        }
+                    } else {
+                        var total_rental_date = this.state.return_date - this.state.rental_date;
+
+                        if (total_rental_date <= 2) {
+                            this.setState({ cost: this.state.cost.concat(this.state.result[count]["two_days"] * total_rental_date) });
+                        } else if (total_rental_date <= 4) {
+                            this.setState({ cost: this.state.cost.concat(this.state.result[count]["four_days"] * total_rental_date) });
+                        } else if (total_rental_date <= 6) {
+                            this.setState({ cost: this.state.cost.concat(this.state.result[count]["six_days"] * total_rental_date) });
+                        } else {
+                            this.setState({ cost: this.state.cost.concat(this.state.result[count]["more"] * total_rental_date) });
+                        }
+                    }
+
+                    this.setState({ image: this.state.image.concat(this.state.result[count]["image"]) });
+                    this.setState({ car_name: this.state.car_name.concat(this.state.result[count]["car_name"]) });
+                    this.setState({ color: this.state.color.concat(this.state.result[count]["color"]) });
+                    this.setState({ few: this.state.few.concat(this.state.result[count]["few"]) });
+                    this.setState({ fuel: this.state.fuel.concat(this.state.result[count]["fuel"]) });
+                    this.setState({ distance: this.state.distance.concat(this.state.result[count]["distance"]) });
+                    this.setState({ registration_date: this.state.registration_date.concat(this.state.result[count]["registration_date"]) });
+                    this.setState({ car_number: this.state.car_number.concat(this.state.result[count]["car_number"]) });
+
+                    console.log("console log :: count = ", count);
+                    console.log("console log :: this.state.result[count][car_name] = ", this.state.result[count]["car_name"]);
+                }
+
+                this.setState({ count: this.state.count });
+
+                console.log("console log :: count = ", count);
+                console.log("console log :: lmage = ", this.state.image);
+                console.log("console log :: car_name = ", this.state.car_name);
+            }.bind(this)).then(function () {
+                if (this.state.test_number == 0) {
+                    this.setState({ test_number: 1 });
+                    this.submitGit();
+                } else {
+                    this.setState({ test_number: 0 });
+                }
+            }.bind(this)).then(function () {
+                var _this3 = this;
+
+                //page
+                var pageNumbers = [];
+                for (var i = 1; i <= Math.floor(this.state.count / 5) + 1; i++) {
+                    pageNumbers.push(i);
+                    console.log("pagenumber push = ", i, " | count = ", this.state.count);
+                }
+
+                var renderPageNUmbers = pageNumbers.map(function (number) {
+                    return _react2.default.createElement(
+                        'li',
+                        _defineProperty({ key: number, id: number, onClick: _this3.handleClick }, 'onClick', _this3.submitGit.bind(_this3)),
+                        number
+                    );
+                });
+
+                this.setState({ page_numbers: renderPageNUmbers });
+            }.bind(this));
+        }
+    }, {
+        key: 'submitGit',
+        value: function submitGit() {
+            console.log("submit car_type value : ", this.state.car_type);
+            console.log("submit rental_date", this.state.rental_date);
+
+            this.setRent_1({
+                area: this.state.area,
+                rental_point: this.state.rental_point,
+                return_point: this.state.return_point,
+                rental_date: this.state.r_rental_date,
+                rental_time: this.state.r_rental_time,
+                return_date: this.state.r_return_date,
+                return_time: this.state.r_return_time,
+                start_number: this.state.currentPage,
+                car_type: this.state.car_type
+            });
+        }
+    }, {
+        key: 'lastSetRent',
+        value: function lastSetRent(opts) {
+            var _this4 = this;
+
+            fetch('/reservation', {
+                method: 'POST',
+                headers: {
+                    "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+                },
+                body: "form=" + JSON.stringify(opts)
+            }).then(function (response) {
+                return response.json();
+            }).then(function (json) {
+                _this4.setState({ result: json.result });
+            }).then(function () {
+                this.setState({ returned: '5' });
+                this.submitReservationNumber();
+            }.bind(this));
+        }
+    }, {
+        key: 'submitGit_2',
+        value: function submitGit_2() {
+            var min = 100000;
+            var max = 999999;
+            var reservation_number = parseInt(min + Math.random() * (max - min));
+
+            this.setState({ reservation_number: reservation_number });
+
+            this.lastSetRent({
+                reservation_number: reservation_number,
+                email: this.state.email,
+                car_number: this.state.car_number[this.state.division_number],
+                cost: this.state.cost,
+                rental_date: this.state.rental_date + this.state.rental_time + "00",
+                return_date: this.state.return_date + this.state.return_time + "00",
+                rental_point: this.state.rental_point,
+                return_point: this.state.return_point,
+                babyseat: this.state.babyseat,
+                kor_navigation: this.state.kor_navigation,
+                eng_navigation: this.state.eng_navigation,
+                cdw: this.state.cdw
+            });
+        }
+    }, {
+        key: 'SendToReservationNumber',
+        value: function SendToReservationNumber(opts) {
+            var _this5 = this;
+
+            fetch('/send_reservation', {
+                method: 'POST',
+                headers: {
+                    "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+                },
+                body: "form=" + JSON.stringify(opts)
+            }).then(function (response) {
+                return response.json();
+            }).then(function (json) {
+                _this5.setState({ result: json.result });
+            });
+        }
+    }, {
+        key: 'submitReservationNumber',
+        value: function submitReservationNumber() {
+            console.log("email test | email : ", this.state.email, " || reservaiton_number : ", this.state.reservation_number);
+
+            this.SendToReservationNumber({
+                email: this.state.email,
+                reservation_number: this.state.reservation_number
+            });
+        }
+    }, {
+        key: 'rent_1_Check',
+        value: function rent_1_Check() {
+            var today = new Date();
+
+            if (today.getMonth() + 1 < 10) {
+                this.setState({ date: today.getFullYear() + "0" + (today.getMonth() + 1) + "" + today.getDate() });
+            } else {
+                this.setState({ date: today.getFullYear() + "" + (today.getMonth() + 1) + "" + today.getDate() });
+            }
+
+            if (today.getMinutes() < 10) {
+                this.setState({ time: today.getHours() + "0" + today.getMinutes() });
+            } else {
+                this.setState({ time: today.getHours() + "" + today.getMinutes() });
+            }
+
+            console.log("date : ", this.state.date);
+            console.log("time : ", this.state.time);
+            console.log("rental : ", this.state.rental_date, " : ", this.state.rental_time);
+            console.log("return : ", this.state.return_date, " : ", this.state.return_time);
+
+            if (this.state.area == "" || this.state.rental_point == "" || this.state.return_point == "" || this.state.rental_date == "" || this.state.return_date == "") {
+                alert("빠짐없이 다 입력해주십시오.");
+                return;
+            }
+
+            if (parseInt(this.state.rental_date) > parseInt(this.state.date) + 60) {
+                alert("대여일자는 현재일로부터 60일 이내에만 가능합니다.");
+                return;
+            }
+
+            if (parseInt(this.state.rental_date) < parseInt(this.state.date) || parseInt(this.state.rental_date) == parseInt(this.state.date) && parseInt(this.state.rental_time) - parseInt(this.state.time) < 0) {
+                alert("지나간 날에는 대여할 수 없습니다.");
+                return;
+            }
+
+            if (parseInt(this.state.return_date) < parseInt(this.state.rental_date) || parseInt(this.state.rental_date) == parseInt(this.state.return_date) && parseInt(this.state.return_time) - parseInt(this.state.rental_time) < 0) {
+                alert("반납일자는 대여일자보다 먼저일 수 없습니다.");
+                return;
+            }
+
+            if (parseInt(this.state.rental_date) == parseInt(this.state.return_date) && parseInt(this.state.return_time) - parseInt(this.state.rental_time) < 100) {
+                alert("대역 정책에 따라 대여는 1시간 이상 선택하셔야 대여가 가능합니다.");
+                return;
+            }
+
+            this.setState({ returned: '2' });
+
+            this.submitGit();
+        }
+
+        //page
+
+    }, {
+        key: 'handleClick',
+        value: function handleClick(event) {
+            this.setState({
+                currentPage: Number(event.target.id)
+            });
+        }
+
+        //test
+
+    }, {
+        key: 'testdivison_number',
+        value: function testdivison_number() {
+            alert(this.state.division_number);
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var noneStyle = {
+                display: 'none'
+            };
+            var blockStyle = {};
+
+            var first_Form = _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(
+                    'label',
+                    null,
+                    ' \uC9C0\uC5ED '
+                ),
+                _react2.default.createElement(
+                    'select',
+                    { onChange: this.areaChange.bind(this) },
+                    _react2.default.createElement(
+                        'option',
+                        { id: '1', value: 'inland' },
+                        ' \uB0B4\uB959 '
+                    ),
+                    _react2.default.createElement(
+                        'option',
+                        { id: '2', value: 'jeju' },
+                        ' \uC81C\uC8FC '
+                    ),
+                    _react2.default.createElement(
+                        'option',
+                        { id: '3', value: 'overseas' },
+                        ' \uD574\uC678 '
+                    )
+                ),
+                _react2.default.createElement('br', null),
+                _react2.default.createElement(
+                    'label',
+                    null,
+                    ' \uB300\uC5EC\uC9C0\uC810 '
+                ),
+                _react2.default.createElement(
+                    'select',
+                    { onChange: this.rental_pointChange.bind(this) },
+                    _react2.default.createElement(
+                        'option',
+                        { id: '1', value: 'Gangnam' },
+                        '\uAC15\uB0A8'
+                    ),
+                    _react2.default.createElement(
+                        'option',
+                        { id: '2', value: 'DongDaeMoon' },
+                        '\uB3D9\uB300\uBB38'
+                    ),
+                    _react2.default.createElement(
+                        'option',
+                        { id: '3', value: 'Yeouido' },
+                        '\uC5EC\uC758\uB3C4'
+                    ),
+                    _react2.default.createElement(
+                        'option',
+                        { id: '4', value: 'Guro' },
+                        '\uAD6C\uB85C'
+                    )
+                ),
+                _react2.default.createElement('br', null),
+                _react2.default.createElement(
+                    'label',
+                    null,
+                    ' \uBC18\uB0A9\uC9C0\uC810 '
+                ),
+                _react2.default.createElement(
+                    'select',
+                    { onChange: this.return_pointChange.bind(this) },
+                    _react2.default.createElement(
+                        'option',
+                        { id: '1', value: 'Gangnam' },
+                        '\uAC15\uB0A8'
+                    ),
+                    _react2.default.createElement(
+                        'option',
+                        { id: '2', value: 'DongDaeMoon' },
+                        '\uB3D9\uB300\uBB38'
+                    ),
+                    _react2.default.createElement(
+                        'option',
+                        { id: '3', value: 'Yeouido' },
+                        '\uC5EC\uC758\uB3C4'
+                    ),
+                    _react2.default.createElement(
+                        'option',
+                        { id: '4', value: 'Guro' },
+                        '\uAD6C\uB85C'
+                    )
+                ),
+                _react2.default.createElement('br', null),
+                _react2.default.createElement(
+                    'label',
+                    null,
+                    ' \uB300\uC5EC\uC77C\uC2DC '
+                ),
+                _react2.default.createElement('input', { type: 'date', name: 'rental_date', onChange: this.rental_dateChange.bind(this) }),
+                _react2.default.createElement('input', { type: 'time', name: 'rental_time', onChange: this.rental_timeChange.bind(this) }),
+                _react2.default.createElement('br', null),
+                _react2.default.createElement(
+                    'label',
+                    null,
+                    ' \uBC18\uB0A9\uC77C\uC2DC '
+                ),
+                _react2.default.createElement('input', { type: 'date', name: 'return_date', onChange: this.return_dateChange.bind(this) }),
+                _react2.default.createElement('input', { type: 'time', name: 'return_time', onChange: this.return_timeChange.bind(this) }),
+                _react2.default.createElement('br', null),
+                _react2.default.createElement(
+                    'button',
+                    { onClick: this.rent_1_Check.bind(this) },
+                    '\uAC80\uC0C9'
+                )
+            );
+            var second_Form = _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(
+                    'h1',
+                    null,
+                    '\uCC28\uB7C9 \uC120\uD0DD \uD654\uBA74'
+                ),
+                _react2.default.createElement('br', null),
+                _react2.default.createElement('input', { type: 'radio', name: 'radio', value: '0', onChange: this.car_typeChange.bind(this), checked: this.state.car_type == '' || this.state.car_type == '0' ? true : false }),
+                '\uC804\uCCB4',
+                _react2.default.createElement('input', { type: 'radio', name: 'radio', value: '1', onChange: this.car_typeChange.bind(this) }),
+                '\uC18C\uD615',
+                _react2.default.createElement('input', { type: 'radio', name: 'radio', value: '2', onChange: this.car_typeChange.bind(this) }),
+                '\uC911\uD615',
+                _react2.default.createElement('input', { type: 'radio', name: 'radio', value: '3', onChange: this.car_typeChange.bind(this) }),
+                '\uB300\uD615',
+                _react2.default.createElement('input', { type: 'radio', name: 'radio', value: '4', onChange: this.car_typeChange.bind(this) }),
+                '\uC2B9\uD569',
+                _react2.default.createElement('br', null),
+                _react2.default.createElement('input', { type: 'radio', name: 'radio', value: '5', onChange: this.car_typeChange.bind(this) }),
+                'SUV/RV',
+                _react2.default.createElement('input', { type: 'radio', name: 'radio', value: '6', onChange: this.car_typeChange.bind(this) }),
+                '\uC218\uC785\uCC28',
+                _react2.default.createElement('input', { type: 'radio', name: 'radio', value: '7', onChange: this.car_typeChange.bind(this) }),
+                '\uC624\uD508\uCE74',
+                _react2.default.createElement('input', { type: 'radio', name: 'radio', value: '8', onChange: this.car_typeChange.bind(this) }),
+                '\uC804\uAE30\uCC28',
+                _react2.default.createElement('input', { type: 'radio', name: 'radio', value: '9', onChange: this.car_typeChange.bind(this) }),
+                '\uCE90\uB9AD\uD130\uCE74',
+                _react2.default.createElement('br', null),
+                _react2.default.createElement('br', null),
+                _react2.default.createElement(
+                    'table',
+                    null,
+                    _react2.default.createElement(
+                        'tbody',
+                        null,
+                        _react2.default.createElement(
+                            'tr',
+                            { style: this.state.car_name[0] == null ? noneStyle : blockStyle, onClick: this.tr_click_0.bind(this) },
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement('img', { src: this.state.image[0], width: '230', height: '130' })
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                { width: '230' },
+                                _react2.default.createElement(
+                                    'span',
+                                    null,
+                                    ' ',
+                                    this.state.car_name[0],
+                                    ' '
+                                )
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                { width: '230' },
+                                _react2.default.createElement(
+                                    'span',
+                                    null,
+                                    ' ',
+                                    this.state.fuel[0],
+                                    ' '
+                                )
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                { width: '230' },
+                                _react2.default.createElement(
+                                    'span',
+                                    null,
+                                    ' ',
+                                    this.state.few[0],
+                                    ' '
+                                )
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                { width: '230' },
+                                _react2.default.createElement(
+                                    'span',
+                                    null,
+                                    ' ',
+                                    this.state.color[0],
+                                    ' '
+                                )
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            { style: this.state.car_name[1] == null ? noneStyle : blockStyle, onClick: this.tr_click_1.bind(this) },
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement('img', { src: this.state.image[1], width: '230', height: '130' })
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                { width: '230' },
+                                _react2.default.createElement(
+                                    'span',
+                                    null,
+                                    ' ',
+                                    this.state.car_name[1],
+                                    ' '
+                                )
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                { width: '230' },
+                                _react2.default.createElement(
+                                    'span',
+                                    null,
+                                    ' ',
+                                    this.state.fuel[1],
+                                    ' '
+                                )
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                { width: '230' },
+                                _react2.default.createElement(
+                                    'span',
+                                    null,
+                                    ' ',
+                                    this.state.few[1],
+                                    ' '
+                                )
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                { width: '230' },
+                                _react2.default.createElement(
+                                    'span',
+                                    null,
+                                    ' ',
+                                    this.state.color[1],
+                                    ' '
+                                )
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            { style: this.state.car_name[2] == null ? noneStyle : blockStyle, onClick: this.tr_click_2.bind(this) },
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement('img', { src: this.state.image[2], width: '230', height: '130' })
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                { width: '230' },
+                                _react2.default.createElement(
+                                    'span',
+                                    null,
+                                    ' ',
+                                    this.state.car_name[2],
+                                    ' '
+                                )
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                { width: '230' },
+                                _react2.default.createElement(
+                                    'span',
+                                    null,
+                                    ' ',
+                                    this.state.fuel[2],
+                                    ' '
+                                )
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                { width: '230' },
+                                _react2.default.createElement(
+                                    'span',
+                                    null,
+                                    ' ',
+                                    this.state.few[2],
+                                    ' '
+                                )
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                { width: '230' },
+                                _react2.default.createElement(
+                                    'span',
+                                    null,
+                                    ' ',
+                                    this.state.color[2],
+                                    ' '
+                                )
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            { style: this.state.car_name[3] == null ? noneStyle : blockStyle, onClick: this.tr_click_3.bind(this) },
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement('img', { src: this.state.image[3], width: '230', height: '130' })
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                { width: '230' },
+                                _react2.default.createElement(
+                                    'span',
+                                    null,
+                                    ' ',
+                                    this.state.car_name[3],
+                                    ' '
+                                )
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                { width: '230' },
+                                _react2.default.createElement(
+                                    'span',
+                                    null,
+                                    ' ',
+                                    this.state.fuel[3],
+                                    ' '
+                                )
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                { width: '230' },
+                                _react2.default.createElement(
+                                    'span',
+                                    null,
+                                    ' ',
+                                    this.state.few[3],
+                                    ' '
+                                )
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                { width: '230' },
+                                _react2.default.createElement(
+                                    'span',
+                                    null,
+                                    ' ',
+                                    this.state.color[3],
+                                    ' '
+                                )
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            { style: this.state.car_name[4] == null ? noneStyle : blockStyle, onClick: this.tr_click_4.bind(this) },
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement('img', { src: this.state.image[4], width: '230', height: '130' })
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                { width: '230' },
+                                _react2.default.createElement(
+                                    'span',
+                                    null,
+                                    ' ',
+                                    this.state.car_name[4],
+                                    ' '
+                                )
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                { width: '230' },
+                                _react2.default.createElement(
+                                    'span',
+                                    null,
+                                    ' ',
+                                    this.state.fuel[4],
+                                    ' '
+                                )
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                { width: '230' },
+                                _react2.default.createElement(
+                                    'span',
+                                    null,
+                                    ' ',
+                                    this.state.few[4],
+                                    ' '
+                                )
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                { width: '230' },
+                                _react2.default.createElement(
+                                    'span',
+                                    null,
+                                    ' ',
+                                    this.state.color[4],
+                                    ' '
+                                )
+                            )
+                        )
+                    )
+                ),
+                _react2.default.createElement(
+                    'ul',
+                    { id: 'page-numbers' },
+                    this.state.page_numbers
+                )
+            );
+
+            var third_Form = _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement('img', { src: this.state.image[this.state.division_number], width: '350', height: '250', onClick: this.testdivison_number.bind(this) }),
+                _react2.default.createElement('br', null),
+                _react2.default.createElement(
+                    'span',
+                    null,
+                    ' \uC790\uB3D9\uCC28 \uBA85 :  ',
+                    this.state.car_name[this.state.division_number],
+                    ' '
+                ),
+                _react2.default.createElement('br', null),
+                _react2.default.createElement(
+                    'span',
+                    null,
+                    ' \uC5F0\uB8CC : ',
+                    this.state.fuel[this.state.division_number],
+                    ' '
+                ),
+                _react2.default.createElement('br', null),
+                _react2.default.createElement(
+                    'span',
+                    null,
+                    ' ',
+                    this.state.few[this.state.division_number],
+                    ' \uC778\uC2B9'
+                ),
+                _react2.default.createElement('br', null),
+                _react2.default.createElement(
+                    'span',
+                    null,
+                    ' \uC0C9\uC0C1 : ',
+                    this.state.color[this.state.division_number],
+                    ' '
+                ),
+                _react2.default.createElement('br', null),
+                _react2.default.createElement(
+                    'span',
+                    null,
+                    ' \uCC28\uB7C9 \uB4F1\uB85D\uC77C : ',
+                    this.state.registration_date[this.state.division_number],
+                    ' '
+                ),
+                _react2.default.createElement('br', null),
+                _react2.default.createElement(
+                    'span',
+                    null,
+                    ' \uC8FC\uD589\uAC70\uB9AC : ',
+                    this.state.distance[this.state.division_number],
+                    ' '
+                ),
+                _react2.default.createElement('br', null),
+                _react2.default.createElement(
+                    'span',
+                    null,
+                    ' \uB300\uC5EC\uB8CC : ',
+                    this.state.show_cost,
+                    ' '
+                ),
+                _react2.default.createElement('br', null),
+                _react2.default.createElement(
+                    'span',
+                    null,
+                    ' \uD3EC\uC778\uD2B8 '
+                ),
+                _react2.default.createElement('br', null),
+                _react2.default.createElement(
+                    'span',
+                    null,
+                    ' \uD604\uC7AC \uD3EC\uC778\uD2B8 : ',
+                    _reactCookies2.default.load('reserves'),
+                    ' '
+                ),
+                _react2.default.createElement('br', null),
+                _react2.default.createElement(
+                    'span',
+                    null,
+                    ' \uC0AC\uC6A9\uD560 \uD3EC\uC778\uD2B8 : '
+                ),
+                ' ',
+                _react2.default.createElement('input', { type: 'number', placeholder: '\uC0AC\uC6A9\uD558\uACE0 \uC2F6\uC740 \uD3EC\uC778\uD2B8', onChange: this.usepointChange.bind(this) }),
+                _react2.default.createElement('br', null),
+                '\uD3EC\uC778\uD2B8\uB294 5000\uC6D0 \uC774\uC0C1\uC77C \uB54C\uB9CC \uC0AC\uC6A9 \uAC00\uB2A5\uD569\uB2C8\uB2E4.',
+                _react2.default.createElement('br', null),
+                _react2.default.createElement(
+                    'span',
+                    null,
+                    ' \uC790\uCC28 \uC190\uD575 \uBA74\uCC45 \uC81C\uB3C4(CDW) '
+                ),
+                _react2.default.createElement('input', { type: 'radio', name: 'radio', value: '0', checked: this.state.cdw == '0' ? true : false, onChange: this.cdwChange.bind(this) }),
+                '\uBCF4\uD5D8 \uBBF8\uC801\uC6A9 (0\uC6D0)',
+                _react2.default.createElement('input', { type: 'radio', name: 'radio', value: '1', onChange: this.cdwChange.bind(this) }),
+                '\uACE0\uAC1D\uBD80\uB2F4\uAE08 \uBA74\uC81C (30,000\uC6D0)',
+                _react2.default.createElement('input', { type: 'radio', name: 'radio', value: '2', onChange: this.cdwChange.bind(this) }),
+                '5\uB9CC\uC6D0 (18,000\uC6D0)',
+                _react2.default.createElement('input', { type: 'radio', name: 'radio', value: '3', onChange: this.cdwChange.bind(this) }),
+                '30\uB9CC\uC6D0 (14,000\uC6D0)',
+                _react2.default.createElement('br', null),
+                _react2.default.createElement(
+                    'span',
+                    null,
+                    ' \uAE30\uD0C0 \uC635\uC158 '
+                ),
+                _react2.default.createElement('br', null),
+                _react2.default.createElement(
+                    'span',
+                    null,
+                    ' \uB0B4\uBE44\uAC8C\uC774\uC158(\uBB34\uB8CC) '
+                ),
+                _react2.default.createElement('input', { type: 'checkbox', onChange: this.kor_navigationChange.bind(this), defaultChecked: 'checked' }),
+                ' \uD55C\uAE00 \uB0B4\uBE44\uAC8C\uC774\uC158',
+                _react2.default.createElement('input', { type: 'checkbox', onChange: this.eng_navigationChange.bind(this) }),
+                ' \uC601\uBB38 \uB0B4\uBE44\uAC8C\uC774\uC158',
+                _react2.default.createElement('br', null),
+                '\uBCA0\uC774\uBE44 \uC2DC\uD2B8(1\uD68C 2,000\uC6D0 \uCD94\uAC00)',
+                _react2.default.createElement('input', { type: 'checkbox', onChange: this.babyseatChange.bind(this) }),
+                ' \uBCA0\uC774\uBE44\uC2DC\uD2B8',
+                _react2.default.createElement('br', null),
+                _react2.default.createElement(
+                    'button',
+                    { onClick: this.renting_button_click.bind(this) },
+                    ' \uB300\uC5EC\uD558\uAE30 '
+                )
+            );
+            var fourth_Form = _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(
+                    'span',
+                    null,
+                    ' \uAC1C\uC778\uC815\uBCF4 '
+                ),
+                _react2.default.createElement('br', null),
+                _react2.default.createElement(
+                    'span',
+                    null,
+                    ' \uC774\uB984 '
+                ),
+                _react2.default.createElement('input', { type: 'text', value: _reactCookies2.default.load('name'), onChange: this.nameChange.bind(this) }),
+                _react2.default.createElement('br', null),
+                _react2.default.createElement(
+                    'span',
+                    null,
+                    ' \uC774\uBA54\uC77C '
+                ),
+                _react2.default.createElement('input', { type: 'text', value: _reactCookies2.default.load('email'), onChange: this.emailChange.bind(this) }),
+                _react2.default.createElement('br', null),
+                _react2.default.createElement(
+                    'span',
+                    null,
+                    ' \uBA74\uD5C8 \uAD6C\uBD84 '
+                ),
+                _react2.default.createElement(
+                    'select',
+                    { defaultValue: _reactCookies2.default.load('license_category'), onChange: this.license_categoryChange.bind(this) },
+                    _react2.default.createElement(
+                        'option',
+                        { id: '1', value: '1' },
+                        '\uAD6D\uB0B4'
+                    ),
+                    _react2.default.createElement(
+                        'option',
+                        { id: '2', value: '2' },
+                        '\uAD6D\uC678'
+                    )
+                ),
+                _react2.default.createElement('br', null),
+                _react2.default.createElement(
+                    'label',
+                    null,
+                    '\uBA74\uD5C8 \uC885\uB958'
+                ),
+                _react2.default.createElement(
+                    'select',
+                    { defaultValue: _reactCookies2.default.load('license_type'), onChange: this.license_typeChange.bind(this) },
+                    _react2.default.createElement(
+                        'option',
+                        { id: '1', value: '1' },
+                        '1\uC885\uB300\uD615'
+                    ),
+                    _react2.default.createElement(
+                        'option',
+                        { id: '2', value: '2' },
+                        '1\uC885\uBCF4\uD1B5'
+                    ),
+                    _react2.default.createElement(
+                        'option',
+                        { id: '3', value: '3' },
+                        '2\uC885\uBCF4\uD1B5'
+                    )
+                ),
+                _react2.default.createElement('br', null),
+                _react2.default.createElement(
+                    'label',
+                    null,
+                    '\uBA74\uD5C8\uC99D \uBC88\uD638'
+                ),
+                _react2.default.createElement(
+                    'select',
+                    { defaultValue: _reactCookies2.default.load('license_number').slice(0, 1), onChange: this.license_number_0Change.bind(this) },
+                    _react2.default.createElement(
+                        'option',
+                        { id: '1', value: '1' },
+                        '\uC11C\uC6B8'
+                    ),
+                    _react2.default.createElement(
+                        'option',
+                        { id: '2', value: '2' },
+                        '11'
+                    )
+                ),
+                '\xA0',
+                _react2.default.createElement('input', { type: 'text', size: '2', maxLength: 2, defaultValue: _reactCookies2.default.load('license_number').slice(1, 3), onChange: this.license_number_1Change.bind(this) }),
+                '-',
+                _react2.default.createElement('input', { type: 'text', size: '6', maxLength: 6, defaultValue: _reactCookies2.default.load('license_number').slice(3, 9), onChange: this.licesne_number_2Change.bind(this) }),
+                '-',
+                _react2.default.createElement('input', { type: 'text', size: '2', maxLength: 2, defaultValue: _reactCookies2.default.load('license_number').slice(9, 11), onChange: this.license_number_3Change.bind(this) }),
+                _react2.default.createElement('br', null),
+                _react2.default.createElement(
+                    'label',
+                    null,
+                    '\uBA74\uD5C8\uBC1C\uAE09\uC77C\uC790'
+                ),
+                _react2.default.createElement('input', { type: 'date', defaultValue: _reactCookies2.default.load('date_if_issue').slice(0, 10), onChange: this.date_if_issueChange.bind(this) }),
+                _react2.default.createElement('br', null),
+                _react2.default.createElement(
+                    'label',
+                    null,
+                    '\uC801\uC131\uAC80\uC0AC'
+                ),
+                _react2.default.createElement('input', { type: 'date', defaultValue: _reactCookies2.default.load("aptitude_test").slice(0, 10), onChange: this.aptitude_testChange.bind(this) }),
+                _react2.default.createElement('br', null),
+                _react2.default.createElement('br', null),
+                _react2.default.createElement(
+                    'span',
+                    null,
+                    ' \uC608\uC57D\uC644\uB8CC\uB97C \uC704\uD55C \uC774\uC6A9\uC790 \uB3D9\uC758 \uC0AC\uD56D '
+                ),
+                _react2.default.createElement('br', null),
+                _react2.default.createElement('input', { type: 'checkbox', onChange: this.check_0Change.bind(this) }),
+                ' \uC608\uC57D\uC644\uB8CC\uB97C \uC704\uD55C \uC774\uC6A9 \uB3D9\uC758(\uD544\uC218), \uCC28\uB7C9 \uB300\uC5EC\uB97C \uC704\uD55C \uAC1C\uC778\uC815\uBCF4 \uC218\uC9D1/\uC774\uC6A9 \uB3D9\uC758(\uD544\uC218), \uAC1C\uC778\uC815\uBCF4 \uCDE8\uAE09 \uC704\uD0C1 \uB3D9\uC758(\uD544\uC218), \uAC1C\uC778\uC815\uBCF4 \uC81C 3\uC790 \uC81C\uACF5 \uB3D9\uC758(\uD544\uC218)\uC5D0 \uBAA8\uB450 \uB3D9\uC758\uD569\uB2C8\uB2E4.',
+                _react2.default.createElement('br', null),
+                _react2.default.createElement('br', null),
+                _react2.default.createElement(
+                    'button',
+                    { onClick: this.last_button_click.bind(this) },
+                    ' \uB300\uC5EC\uD558\uAE30 '
+                )
+            );
+            var last_Form = _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(
+                    'span',
+                    null,
+                    ' \uC608\uC57D\uBC88\uD638 : ',
+                    this.state.reservation_number,
+                    ' '
+                )
+            );
+
+            if (this.state.returned == '1') {
+                return first_Form;
+            } else if (this.state.returned == '2') {
+                return second_Form;
+            } else if (this.state.returned == '3') {
+                return third_Form;
+            } else if (this.state.returned == '4') {
+                return fourth_Form;
+            } else if (this.state.returned == '5') {
+                return last_Form;
+            }
+        }
+    }]);
+
+    return Rent_1;
+}(_react2.default.Component);
+
+module.exports = Rent_1;
+
+/***/ }),
+/* 24 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactDom = __webpack_require__(2);
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
+
+var _App = __webpack_require__(6);
 
 var _App2 = _interopRequireDefault(_App);
 
@@ -1582,7 +4190,7 @@ var rootElement = document.getElementById('root');
 _reactDom2.default.render(_react2.default.createElement(_App2.default, null), rootElement);
 
 /***/ }),
-/* 19 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1610,7 +4218,7 @@ isValidElement:K,version:"16.2.0",__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_F
 
 
 /***/ }),
-/* 20 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1633,10 +4241,10 @@ if (process.env.NODE_ENV !== "production") {
 
 var _assign = __webpack_require__(4);
 var emptyObject = __webpack_require__(5);
-var invariant = __webpack_require__(6);
-var warning = __webpack_require__(7);
+var invariant = __webpack_require__(9);
+var warning = __webpack_require__(10);
 var emptyFunction = __webpack_require__(3);
-var checkPropTypes = __webpack_require__(10);
+var checkPropTypes = __webpack_require__(12);
 
 // TODO: this is special because it gets imported during build.
 
@@ -2972,10 +5580,10 @@ module.exports = react;
   })();
 }
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 21 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2994,7 +5602,7 @@ module.exports = ReactPropTypesSecret;
 
 
 /***/ }),
-/* 22 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3010,7 +5618,7 @@ module.exports = ReactPropTypesSecret;
 /*
  Modernizr 3.0.0pre (Custom Build) | MIT
 */
-var aa=__webpack_require__(1),l=__webpack_require__(11),B=__webpack_require__(4),C=__webpack_require__(3),ba=__webpack_require__(12),da=__webpack_require__(13),ea=__webpack_require__(14),fa=__webpack_require__(15),ia=__webpack_require__(16),D=__webpack_require__(5);
+var aa=__webpack_require__(0),l=__webpack_require__(13),B=__webpack_require__(4),C=__webpack_require__(3),ba=__webpack_require__(14),da=__webpack_require__(15),ea=__webpack_require__(16),fa=__webpack_require__(17),ia=__webpack_require__(18),D=__webpack_require__(5);
 function E(a){for(var b=arguments.length-1,c="Minified React error #"+a+"; visit http://facebook.github.io/react/docs/error-decoder.html?invariant\x3d"+a,d=0;d<b;d++)c+="\x26args[]\x3d"+encodeURIComponent(arguments[d+1]);b=Error(c+" for the full message or use the non-minified dev environment for full errors and additional helpful warnings.");b.name="Invariant Violation";b.framesToPop=1;throw b;}aa?void 0:E("227");
 var oa={children:!0,dangerouslySetInnerHTML:!0,defaultValue:!0,defaultChecked:!0,innerHTML:!0,suppressContentEditableWarning:!0,suppressHydrationWarning:!0,style:!0};function pa(a,b){return(a&b)===b}
 var ta={MUST_USE_PROPERTY:1,HAS_BOOLEAN_VALUE:4,HAS_NUMERIC_VALUE:8,HAS_POSITIVE_NUMERIC_VALUE:24,HAS_OVERLOADED_BOOLEAN_VALUE:32,HAS_STRING_BOOLEAN_VALUE:64,injectDOMPropertyConfig:function(a){var b=ta,c=a.Properties||{},d=a.DOMAttributeNamespaces||{},e=a.DOMAttributeNames||{};a=a.DOMMutationMethods||{};for(var f in c){ua.hasOwnProperty(f)?E("48",f):void 0;var g=f.toLowerCase(),h=c[f];g={attributeName:g,attributeNamespace:null,propertyName:f,mutationMethod:null,mustUseProperty:pa(h,b.MUST_USE_PROPERTY),
@@ -3230,7 +5838,7 @@ Z.injectIntoDevTools({findFiberByHostInstance:pb,bundleType:0,version:"16.2.0",r
 
 
 /***/ }),
-/* 23 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3245,7 +5853,7 @@ Z.injectIntoDevTools({findFiberByHostInstance:pb,bundleType:0,version:"16.2.0",r
  * @typechecks
  */
 
-var isNode = __webpack_require__(24);
+var isNode = __webpack_require__(30);
 
 /**
  * @param {*} object The object to check.
@@ -3258,7 +5866,7 @@ function isTextNode(object) {
 module.exports = isTextNode;
 
 /***/ }),
-/* 24 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3286,7 +5894,7 @@ function isNode(object) {
 module.exports = isNode;
 
 /***/ }),
-/* 25 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3307,21 +5915,21 @@ if (process.env.NODE_ENV !== "production") {
   (function() {
 'use strict';
 
-var React = __webpack_require__(1);
-var invariant = __webpack_require__(6);
-var warning = __webpack_require__(7);
-var ExecutionEnvironment = __webpack_require__(11);
+var React = __webpack_require__(0);
+var invariant = __webpack_require__(9);
+var warning = __webpack_require__(10);
+var ExecutionEnvironment = __webpack_require__(13);
 var _assign = __webpack_require__(4);
 var emptyFunction = __webpack_require__(3);
-var EventListener = __webpack_require__(12);
-var getActiveElement = __webpack_require__(13);
-var shallowEqual = __webpack_require__(14);
-var containsNode = __webpack_require__(15);
-var focusNode = __webpack_require__(16);
+var EventListener = __webpack_require__(14);
+var getActiveElement = __webpack_require__(15);
+var shallowEqual = __webpack_require__(16);
+var containsNode = __webpack_require__(17);
+var focusNode = __webpack_require__(18);
 var emptyObject = __webpack_require__(5);
-var checkPropTypes = __webpack_require__(10);
-var hyphenateStyleName = __webpack_require__(26);
-var camelizeStyleName = __webpack_require__(28);
+var checkPropTypes = __webpack_require__(12);
+var hyphenateStyleName = __webpack_require__(32);
+var camelizeStyleName = __webpack_require__(34);
 
 /**
  * WARNING: DO NOT manually require this module.
@@ -18685,10 +21293,10 @@ module.exports = reactDom;
   })();
 }
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 26 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18703,7 +21311,7 @@ module.exports = reactDom;
 
 
 
-var hyphenate = __webpack_require__(27);
+var hyphenate = __webpack_require__(33);
 
 var msPattern = /^ms-/;
 
@@ -18730,7 +21338,7 @@ function hyphenateStyleName(string) {
 module.exports = hyphenateStyleName;
 
 /***/ }),
-/* 27 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18766,7 +21374,7 @@ function hyphenate(string) {
 module.exports = hyphenate;
 
 /***/ }),
-/* 28 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18781,7 +21389,7 @@ module.exports = hyphenate;
 
 
 
-var camelize = __webpack_require__(29);
+var camelize = __webpack_require__(35);
 
 var msPattern = /^-ms-/;
 
@@ -18809,7 +21417,7 @@ function camelizeStyleName(string) {
 module.exports = camelizeStyleName;
 
 /***/ }),
-/* 29 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18844,7 +21452,7 @@ function camelize(string) {
 module.exports = camelize;
 
 /***/ }),
-/* 30 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19046,7 +21654,7 @@ function tryDecode(str, decode) {
 
 
 /***/ }),
-/* 31 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19054,7 +21662,7 @@ function tryDecode(str, decode) {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = __webpack_require__(1);
+var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -19126,2375 +21734,21 @@ var SendEmail = function (_React$Component) {
 module.exports = SendEmail;
 
 /***/ }),
-/* 32 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(1);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _reactDom = __webpack_require__(2);
-
-var _reactDom2 = _interopRequireDefault(_reactDom);
-
-var _SignInForm = __webpack_require__(17);
-
-var _SignInForm2 = _interopRequireDefault(_SignInForm);
-
-var _App = __webpack_require__(8);
-
-var _App2 = _interopRequireDefault(_App);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var SignUpForm = function (_React$Component) {
-    _inherits(SignUpForm, _React$Component);
-
-    function SignUpForm(props) {
-        _classCallCheck(this, SignUpForm);
-
-        var _this = _possibleConstructorReturn(this, (SignUpForm.__proto__ || Object.getPrototypeOf(SignUpForm)).call(this, props));
-
-        _this.state = {
-            name: '',
-            username: '',
-            username_ch: '',
-            password: '',
-            password_feedback: '',
-            password_confirm: '',
-            password_confirm_feedback: '',
-            email: '',
-            phone_0: '010',
-            phone_1: '',
-            phone_2: '',
-            license_category: '1',
-            license_type: '1',
-            license_number_0: '1',
-            license_number_1: '',
-            license_number_2: '',
-            license_number_3: '',
-            date_if_issue: '',
-            aptitude_test: '',
-            result: '',
-            signed: 'f'
-        };
-        return _this;
-    }
-
-    _createClass(SignUpForm, [{
-        key: 'setSignUp',
-        value: function setSignUp(opts) {
-            var _this2 = this;
-
-            fetch('/sign_up', {
-                method: 'POST',
-                headers: {
-                    "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
-                },
-                body: "form=" + JSON.stringify(opts)
-            }).then(function (response) {
-                return response.json();
-            }).then(function (json) {
-                _this2.setState({ result: json.result });
-            }).then(function () {
-                if (this.state.result == true) {
-                    alert("회원가입에 성공하였습니다.");
-                    this.setState({ signed: 's' });
-                } else {
-                    alert("만들어놓은 아이디가 있는지 확인해주시길 바랍니다.");
-                }
-            }.bind(this));
-            // .then((json) => { this.setState({ email: json.user });});
-        }
-    }, {
-        key: 'submitGit',
-        value: function submitGit() {
-            this.setSignUp({
-                name: this.state.name,
-                username: this.state.username,
-                password: this.state.password,
-                email: this.state.email,
-                phone: this.state.phone_0 + "" + this.state.phone_1 + "" + this.state.phone_2,
-                license_category: this.state.license_category,
-                license_type: this.state.license_type,
-                license_number: this.state.license_number_0 + "" + this.state.license_number_1 + "" + this.state.license_number_2 + "" + this.state.license_number_3,
-                date_if_issue: this.state.date_if_issue,
-                aptitude_test: this.state.aptitude_test
-            });
-        }
-    }, {
-        key: 'chkPwd',
-        value: function chkPwd() {
-            var pw = this.state.password;
-            var num = pw.search(/[0-9]/g);
-            var eng = pw.search(/[a-z]/ig);
-            var spe = pw.search(/[`~!@@#$%^&*|₩₩₩'₩";:₩/?]/gi);
-            var blank_pattern = /[\s]/g;
-
-            if (pw.length < 8 || pw.length > 16) {
-                this.setState({ password_feedback: "9자리 ~ 16자리 이내로 입력해주세요." });
-                //alert("9자리 ~ 16자리 이내로 입력해주세요.")
-            } else if (blank_pattern.test(pw) == true) {
-                //else if(pw.search(/₩s/) != -1){
-                this.setState({ password_feedback: "비밀번호는 공백없이 입력해주세요." });
-                //alert("비밀번호는 공백없이 입력해주세요.")
-            } else if (num < 0 || eng < 0 || spe < 0) {
-                this.setState({ password_feedback: "영문, 숫자, 특수문자를 혼합하여 입력해주세요." });
-                //alert("영문, 숫자, 특수문자를 혼합하여 입력해주세요.")
-            } else {
-                this.setState({ password_feedback: '' });
-            }
-        }
-    }, {
-        key: 'chkConfirmPwd',
-        value: function chkConfirmPwd() {
-            if (this.state.password != this.state.password_confirm) {
-                this.setState({ password_confirm_feedback: "비밀번호와 일치하지않습니다." });
-            } else {
-                this.setState({ password_confirm_feedback: '' });
-            }
-        }
-    }, {
-        key: 'nameChange',
-        value: function nameChange(e) {
-            this.setState({ name: e.target.value });
-        }
-    }, {
-        key: 'usernameChange',
-        value: function usernameChange(e) {
-            this.setState({ username: e.target.value });
-        }
-    }, {
-        key: 'passwordChange',
-        value: function passwordChange(e) {
-            this.setState({ password: e.target.value });
-            this.chkPwd();
-        }
-    }, {
-        key: 'password_confirmChange',
-        value: function password_confirmChange(e) {
-            this.setState({ password_confirm: e.target.value });
-            this.chkConfirmPwd();
-        }
-    }, {
-        key: 'emailChange',
-        value: function emailChange(e) {
-            this.setState({ email: e.target.value });
-        }
-    }, {
-        key: 'phone_0Change',
-        value: function phone_0Change(e) {
-            this.setState({ phone_0: e.target.value });
-        }
-    }, {
-        key: 'phone_1Change',
-        value: function phone_1Change(e) {
-            this.setState({ phone_1: e.target.value });
-        }
-    }, {
-        key: 'phone_2Change',
-        value: function phone_2Change(e) {
-            this.setState({ phone_2: e.target.value });
-        }
-    }, {
-        key: 'license_categoryChange',
-        value: function license_categoryChange(e) {
-            this.setState({ license_category: e.target.value });
-        }
-    }, {
-        key: 'license_typeChange',
-        value: function license_typeChange(e) {
-            this.setState({ license_type: e.target.value });
-        }
-    }, {
-        key: 'license_number_0Change',
-        value: function license_number_0Change(e) {
-            this.setState({ license_number_0: e.target.value });
-        }
-    }, {
-        key: 'license_number_1Change',
-        value: function license_number_1Change(e) {
-            this.setState({ license_number_1: e.target.value });
-        }
-    }, {
-        key: 'license_number_2Change',
-        value: function license_number_2Change(e) {
-            this.setState({ license_number_2: e.target.value });
-        }
-    }, {
-        key: 'license_number_3Change',
-        value: function license_number_3Change(e) {
-            this.setState({ license_number_3: e.target.value });
-        }
-    }, {
-        key: 'date_if_issueChange',
-        value: function date_if_issueChange(e) {
-            var date_if = e.target.value;
-            date_if = date_if.replace(/\-/g, '');
-            this.setState({ date_if_issue: date_if });
-        }
-    }, {
-        key: 'aptitude_testChange',
-        value: function aptitude_testChange(e) {
-            var date_if = e.target.value;
-            date_if = date_if.replace(/\-/g, '');
-            this.setState({ aptitude_test: date_if });
-        }
-
-        /* maxLengthCheck(object){
-             if(object.value.length>object.maxLength){
-                 object.value=object.value.slice(0, object.max.length);
-             }
-         }*/
-
-    }, {
-        key: 'idOverlap',
-        value: function idOverlap(username) {
-            var _this3 = this;
-
-            if (this.state.username.length < 4 || this.state.username.length > 15) {
-                alert("아이디를 5자리 ~ 15자리 이내로 입력해주세요.");
-            } else {
-                fetch('/id_overlap', {
-                    method: 'POST',
-                    headers: {
-                        "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
-                    },
-                    body: 'username=' + this.state.username
-                }).then(function (response) {
-                    return response.json();
-                }).then(function (json) {
-                    _this3.setState({ username_ch: json.users });
-                }).then(function () {
-                    if (this.state.username_ch == 116) {
-                        alert("사용 가능한 아이디입니다.");
-                    } else {
-                        alert("이미 사용중인 아이디입니다, 다른 아이디를 입력해주십시오.");
-                    }
-                }.bind(this));
-            }
-        }
-    }, {
-        key: 'SignUpCheck',
-        value: function SignUpCheck() {
-            var _this4 = this;
-
-            if (this.state.username.length < 4 || this.state.username.length > 15) {
-                alert("아이디를 5자리 ~ 15자리 이내로 입력해주세요.");
-                return;
-            } else {
-                fetch('/id_overlap', {
-                    method: 'POST',
-                    headers: {
-                        "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
-                    },
-                    body: 'username=' + this.state.username
-                }).then(function (response) {
-                    return response.json();
-                }).then(function (json) {
-                    _this4.setState({ username_ch: json.users });
-                }).then(function () {
-                    if (this.state.username_ch == 116) {} else {
-                        alert("이미 사용중인 아이디입니다, 다른 아이디를 입력해주십시오.");
-                        return;
-                    }
-                }.bind(this));
-            }
-            this.chkPwd();
-            if (this.state.password_feedback != '') {
-                //if(this.state.password_feedback!='' || this.state.password_confirm_feedback!=''){
-                alert("비밀번호를 다시 한 번 확인해주십시오.");
-                return;
-            }
-
-            if (this.state.name == "" || this.state.username == "" || this.state.password == "" || this.state.password_confirm == "" || this.state.email == "" || this.state.phone_1 == "" || this.state.phone_2 == "" || this.state.license_number_1 == "" || this.state.license_number_2 == "" || this.state.license_number_3 == "") {
-                alert("빠짐없이 다 입력해주십시오.");
-                return;
-            }
-
-            this.submitGit();
-        }
-    }, {
-        key: 'render',
-        value: function render() {
-            var sign_up_Form = _react2.default.createElement(
-                'div',
-                null,
-                _react2.default.createElement(
-                    'p',
-                    null,
-                    _react2.default.createElement(
-                        'label',
-                        null,
-                        '\uC774\uB984 '
-                    ),
-                    _react2.default.createElement('input', { type: 'text', name: 'name', placeholder: '\uC774\uB984\uC744 \uC785\uB825\uD574\uC8FC\uC2ED\uC2DC\uC624', onChange: this.nameChange.bind(this) }),
-                    _react2.default.createElement('br', null),
-                    _react2.default.createElement(
-                        'label',
-                        null,
-                        '\uC544\uC774\uB514 '
-                    ),
-                    _react2.default.createElement('input', { type: 'text', name: 'id', onChange: this.usernameChange.bind(this), size: '15', placeholder: this.props.placeholder, maxLength: 15 }),
-                    _react2.default.createElement(
-                        'button',
-                        { onClick: this.idOverlap.bind(this) },
-                        '\uC544\uC774\uB514 \uC911\uBCF5 \uD655\uC778'
-                    ),
-                    _react2.default.createElement('br', null),
-                    _react2.default.createElement(
-                        'label',
-                        null,
-                        '\uBE44\uBC00\uBC88\uD638 '
-                    ),
-                    _react2.default.createElement('input', { type: 'password', name: 'password', maxLength: 16, size: '16', onChange: this.passwordChange.bind(this), placeholder: '\uBE44\uBC00\uBC88\uD638\uB97C \uC785\uB825\uD574\uC8FC\uC138\uC694' }),
-                    '\xA0\xA0',
-                    _react2.default.createElement(
-                        'span',
-                        null,
-                        this.state.password_feedback
-                    ),
-                    _react2.default.createElement('br', null),
-                    _react2.default.createElement(
-                        'label',
-                        null,
-                        '\uBE44\uBC00\uBC88\uD638 \uD655\uC778 '
-                    ),
-                    _react2.default.createElement('input', { type: 'password', name: 'password_confirm', maxLength: 16, size: '16', onChange: this.password_confirmChange.bind(this), placeholder: '\uBE44\uBC00\uBC88\uD638\uB97C \uC785\uB825\uD574\uC8FC\uC138\uC694' }),
-                    '\xA0\xA0',
-                    _react2.default.createElement(
-                        'span',
-                        null,
-                        this.state.password_confirm_feedback
-                    ),
-                    _react2.default.createElement('br', null),
-                    _react2.default.createElement(
-                        'label',
-                        null,
-                        '\uC774\uBA54\uC77C '
-                    ),
-                    _react2.default.createElement('input', { type: 'text', name: 'email', onChange: this.emailChange.bind(this), placeholder: '\uC608) hyejin@gmail.com' }),
-                    _react2.default.createElement('br', null),
-                    _react2.default.createElement(
-                        'label',
-                        null,
-                        '\uC804\uD654\uBC88\uD638 '
-                    ),
-                    _react2.default.createElement(
-                        'select',
-                        { onChange: this.phone_0Change.bind(this) },
-                        _react2.default.createElement(
-                            'option',
-                            { id: '010', value: '010' },
-                            '010'
-                        ),
-                        _react2.default.createElement(
-                            'option',
-                            { id: '011', value: '011' },
-                            '011'
-                        ),
-                        _react2.default.createElement(
-                            'option',
-                            { id: '017', value: '017' },
-                            '017'
-                        )
-                    ),
-                    '\xA0-\xA0',
-                    _react2.default.createElement('input', { type: 'number', onChange: this.phone_1Change.bind(this), name: 'phone_1', max: '9999', maxLength: 4, size: '4' }),
-                    '\xA0-\xA0',
-                    _react2.default.createElement('input', { type: 'number', onChange: this.phone_2Change.bind(this), name: 'phone_2', max: '9999', maxLength: 4, size: '4' }),
-                    _react2.default.createElement('br', null),
-                    _react2.default.createElement(
-                        'label',
-                        null,
-                        '\uBA74\uD5C8\uAD6C\uBD84'
-                    ),
-                    _react2.default.createElement(
-                        'select',
-                        { onChange: this.license_categoryChange.bind(this) },
-                        _react2.default.createElement(
-                            'option',
-                            { id: '1', value: '1' },
-                            '\uAD6D\uB0B4'
-                        ),
-                        _react2.default.createElement(
-                            'option',
-                            { id: '2', value: '2' },
-                            '\uAD6D\uC678'
-                        )
-                    ),
-                    _react2.default.createElement('br', null),
-                    _react2.default.createElement(
-                        'label',
-                        null,
-                        '\uBA74\uD5C8 \uC885\uB958'
-                    ),
-                    _react2.default.createElement(
-                        'select',
-                        { onChange: this.license_typeChange.bind(this) },
-                        _react2.default.createElement(
-                            'option',
-                            { id: '1', value: '1' },
-                            '1\uC885\uB300\uD615'
-                        ),
-                        _react2.default.createElement(
-                            'option',
-                            { id: '2', value: '2' },
-                            '1\uC885\uBCF4\uD1B5'
-                        ),
-                        _react2.default.createElement(
-                            'option',
-                            { id: '3', value: '3' },
-                            '2\uC885\uBCF4\uD1B5'
-                        )
-                    ),
-                    _react2.default.createElement('br', null),
-                    _react2.default.createElement(
-                        'label',
-                        null,
-                        '\uBA74\uD5C8\uC99D \uBC88\uD638'
-                    ),
-                    _react2.default.createElement(
-                        'select',
-                        { onChange: this.license_number_0Change.bind(this) },
-                        _react2.default.createElement(
-                            'option',
-                            { id: '1', value: '1' },
-                            '\uC11C\uC6B8'
-                        ),
-                        _react2.default.createElement(
-                            'option',
-                            { id: '2', value: '2' },
-                            '11'
-                        )
-                    ),
-                    '\xA0',
-                    _react2.default.createElement('input', { type: 'text', size: '2', maxLength: 2, onChange: this.license_number_1Change.bind(this) }),
-                    '-',
-                    _react2.default.createElement('input', { type: 'text', size: '6', maxLength: 6, onChange: this.license_number_2Change.bind(this) }),
-                    '-',
-                    _react2.default.createElement('input', { type: 'text', size: '2', maxLength: 2, onChange: this.license_number_3Change.bind(this) }),
-                    _react2.default.createElement('br', null),
-                    _react2.default.createElement(
-                        'label',
-                        null,
-                        '\uBA74\uD5C8\uBC1C\uAE09\uC77C\uC790'
-                    ),
-                    _react2.default.createElement('input', { type: 'date', onChange: this.date_if_issueChange.bind(this) }),
-                    _react2.default.createElement('br', null),
-                    _react2.default.createElement(
-                        'label',
-                        null,
-                        '\uC801\uC131\uAC80\uC0AC'
-                    ),
-                    _react2.default.createElement('input', { type: 'date', onChange: this.aptitude_testChange.bind(this) }),
-                    _react2.default.createElement('br', null),
-                    _react2.default.createElement('br', null),
-                    _react2.default.createElement(
-                        'button',
-                        { onClick: this.SignUpCheck.bind(this) },
-                        '\uD68C\uC6D0\uAC00\uC785'
-                    )
-                )
-            );
-
-            var sign_up_finish_Form = _react2.default.createElement(_SignInForm2.default, null);
-
-            if (this.state.signed == 'f') {
-                return sign_up_Form;
-            } else {
-                return sign_up_finish_Form;
-            }
-        }
-    }]);
-
-    return SignUpForm;
-}(_react2.default.Component);
-
-module.exports = SignUpForm;
-
-/***/ }),
-/* 33 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(1);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _reactDom = __webpack_require__(2);
-
-var _reactDom2 = _interopRequireDefault(_reactDom);
-
-var _reactCookies = __webpack_require__(9);
-
-var _reactCookies2 = _interopRequireDefault(_reactCookies);
-
-__webpack_require__(34);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var Rent_1 = function (_React$Component) {
-    _inherits(Rent_1, _React$Component);
-
-    function Rent_1(props) {
-        _classCallCheck(this, Rent_1);
-
-        var _this = _possibleConstructorReturn(this, (Rent_1.__proto__ || Object.getPrototypeOf(Rent_1)).call(this, props));
-
-        var today = new Date();
-
-        if (today.getMonth() + 1 < 10) {
-            var date = today.getFullYear() + "0" + (today.getMonth() + 1) + "" + today.getDate();
-        } else {
-            var date = today.getFullYear() + "" + (today.getMonth() + 1) + "" + today.getDate();
-        }
-
-        if (today.getMinutes() < 10) {
-            var time = today.getHours() + "0" + today.getMinutes();
-        } else {
-            var time = today.getHours() + "" + today.getMinutes();
-        }
-
-        _this.state = {
-            date: date,
-            time: time,
-            area: 'inland',
-            rental_point: 'Gangnam',
-            return_point: 'Gangnam',
-            rental_date: '',
-            r_rental_date: '',
-            rental_time: '',
-            r_rental_time: '',
-            return_date: '',
-            r_return_date: '',
-            return_time: '',
-            r_return_time: '',
-            result: '',
-            returned: '1',
-            cost: '',
-            car_type: '',
-            image: [],
-            car_name: [],
-            car_number: [],
-            fuel: [],
-            few: [],
-            color: [],
-            count: '',
-            distance: [],
-            registration_date: [],
-            division_number: 0,
-            currentPage: 1,
-            usepoint: '',
-            cdw: 0,
-            show_cost: '',
-            kor_navigation: true,
-            eng_navigation: false,
-            babyseat: false,
-            license_category: '',
-            license_number_0: '',
-            license_number_1: '',
-            license_number_2: '',
-            license_number_3: '',
-            license_type: '',
-            date_if_issue: '',
-            aptitude_test: '',
-            name: '',
-            email: '',
-            check_0: '',
-            return_cost: '',
-            reservation_number: '',
-            test_number: 0
-        };
-
-        _this.handleClick = _this.handleClick.bind(_this);
-        return _this;
-    }
-
-    //Change
-
-
-    _createClass(Rent_1, [{
-        key: 'areaChange',
-        value: function areaChange(e) {
-            this.setState({ area: e.target.value });
-        }
-    }, {
-        key: 'rental_pointChange',
-        value: function rental_pointChange(e) {
-            this.setState({ rental_point: e.target.value });
-        }
-    }, {
-        key: 'return_pointChange',
-        value: function return_pointChange(e) {
-            this.setState({ return_point: e.target.value });
-        }
-    }, {
-        key: 'rental_dateChange',
-        value: function rental_dateChange(e) {
-            this.setState({ r_rental_date: e.target.value });
-
-            var date = e.target.value;
-            date = date.replace(/\-/g, '');
-
-            this.setState({ rental_date: date });
-        }
-    }, {
-        key: 'rental_timeChange',
-        value: function rental_timeChange(e) {
-            this.setState({ r_rental_time: e.target.value });
-            var rental_time = e.target.value;
-            rental_time = rental_time.replace(/\:/g, '');
-
-            this.setState({ rental_time: rental_time });
-        }
-    }, {
-        key: 'return_dateChange',
-        value: function return_dateChange(e) {
-            this.setState({ r_return_date: e.target.value });
-            var return_date = e.target.value;
-            return_date = return_date.replace(/\-/g, '');
-
-            this.setState({ return_date: return_date });
-        }
-    }, {
-        key: 'return_timeChange',
-        value: function return_timeChange(e) {
-            this.setState({ r_return_time: e.target.value });
-            var return_time = e.target.value;
-            return_time = return_time.replace(/\:/g, '');
-
-            this.setState({ return_time: return_time });
-        }
-    }, {
-        key: 'car_typeChange',
-        value: function car_typeChange(e) {
-            this.setState({ car_type: e.target.value });
-            this.submitGit();
-        }
-    }, {
-        key: 'usepointChange',
-        value: function usepointChange(e) {
-            this.setState({ usepoint: e.target.value });
-        }
-    }, {
-        key: 'cdwChange',
-        value: function cdwChange(e) {
-            this.setState({ cdw: e.target.value });
-
-            var cost = parseInt(this.state.cost[this.state.division_number]);
-
-            if (this.state.babyseat == true) {
-                switch (e.target.value) {
-                    case '0':
-                        this.setState({ show_cost: cost + 2000 });
-                        break;
-                    case '1':
-                        this.setState({ show_cost: cost + 32000 });
-                        break;
-                    case '2':
-                        this.setState({ show_cost: cost + 20000 });
-                        break;
-                    case '3':
-                        this.setState({ show_cost: cost + 16000 });
-                        break;
-                }
-            } else {
-                switch (e.target.value) {
-                    case '0':
-                        this.setState({ show_cost: cost });
-                        break;
-                    case '1':
-                        this.setState({ show_cost: cost + 30000 });
-                        break;
-                    case '2':
-                        this.setState({ show_cost: cost + 18000 });
-                        break;
-                    case '3':
-                        this.setState({ show_cost: cost + 14000 });
-                        break;
-                }
-            }
-        }
-    }, {
-        key: 'kor_navigationChange',
-        value: function kor_navigationChange(e) {
-            this.setState({ kor_navigation: e.target.checked });
-        }
-    }, {
-        key: 'eng_navigationChange',
-        value: function eng_navigationChange(e) {
-            this.setState({ eng_navigation: e.target.checked });
-        }
-    }, {
-        key: 'babyseatChange',
-        value: function babyseatChange(e) {
-            this.setState({ babyseat: e.target.checked });
-            var cost = parseInt(this.state.cost[this.state.division_number]);
-
-            if (e.target.checked == true) {
-                switch (this.state.cdw) {
-                    case '0':
-                        this.setState({ show_cost: cost + 2000 });
-                        break;
-                    case '1':
-                        this.setState({ show_cost: cost + 32000 });
-                        break;
-                    case '2':
-                        this.setState({ show_cost: cost + 20000 });
-                        break;
-                    case '3':
-                        this.setState({ show_cost: cost + 16000 });
-                        break;
-                }
-            } else {
-                switch (this.state.cdw) {
-                    case '0':
-                        this.setState({ show_cost: cost });
-                        break;
-                    case '1':
-                        this.setState({ show_cost: cost + 30000 });
-                        break;
-                    case '2':
-                        this.setState({ show_cost: cost + 18000 });
-                        break;
-                    case '3':
-                        this.setState({ show_cost: cost + 14000 });
-                        break;
-                }
-            }
-        }
-    }, {
-        key: 'nameChange',
-        value: function nameChange(e) {
-            this.setState({ name: e.target.value });
-        }
-    }, {
-        key: 'emailChange',
-        value: function emailChange(e) {
-            this.setState({ email: e.target.value });
-        }
-    }, {
-        key: 'license_categoryChange',
-        value: function license_categoryChange(e) {
-            this.setState({ license_category: e.target.value });
-        }
-    }, {
-        key: 'license_typeChange',
-        value: function license_typeChange(e) {
-            this.setState({ license_type: e.target.value });
-        }
-    }, {
-        key: 'license_number_0Change',
-        value: function license_number_0Change(e) {
-            this.setState({ license_number_0: e.target.value });
-        }
-    }, {
-        key: 'license_number_1Change',
-        value: function license_number_1Change(e) {
-            this.setState({ license_number_1: e.target.value });
-        }
-    }, {
-        key: 'licesne_number_2Change',
-        value: function licesne_number_2Change(e) {
-            this.setState({ license_number_2: e.target.value });
-        }
-    }, {
-        key: 'license_number_3Change',
-        value: function license_number_3Change(e) {
-            this.setState({ license_number_3: e.target.value });
-        }
-    }, {
-        key: 'date_if_issueChange',
-        value: function date_if_issueChange(e) {
-            this.setState({ date_if_issue: e.target.value });
-        }
-    }, {
-        key: 'aptitude_testChange',
-        value: function aptitude_testChange(e) {
-            this.setState({ aptitude_test: e.target.value });
-        }
-    }, {
-        key: 'check_0Change',
-        value: function check_0Change(e) {
-            this.setState({ check_0: e.target.checked });
-        }
-
-        //Clicked
-
-    }, {
-        key: 'tr_click_0',
-        value: function tr_click_0(e) {
-            this.setState({ division_number: 0 });
-            this.setState({ returned: '3' });
-            this.setState({ show_cost: this.state.cost[0] });
-        }
-    }, {
-        key: 'tr_click_1',
-        value: function tr_click_1(e) {
-            this.setState({ division_number: 1 });
-            this.setState({ returned: '3' });
-            this.setState({ show_cost: this.state.cost[1] });
-        }
-    }, {
-        key: 'tr_click_2',
-        value: function tr_click_2(e) {
-            this.setState({ division_number: 2 });
-            this.setState({ returned: '3' });
-            this.setState({ show_cost: this.state.cost[2] });
-        }
-    }, {
-        key: 'tr_click_3',
-        value: function tr_click_3(e) {
-            this.setState({ division_number: 3 });
-            this.setState({ returned: '3' });
-            this.setState({ show_cost: this.state.cost[3] });
-        }
-    }, {
-        key: 'tr_click_4',
-        value: function tr_click_4(e) {
-            this.setState({ division_number: 4 });
-            this.setState({ returned: '3' });
-            this.setState({ show_cost: this.state.cost[4] });
-        }
-    }, {
-        key: 'renting_button_click',
-        value: function renting_button_click(e) {
-            if (this.state.usepoint > _reactCookies2.default.load('reserves') && this.state.usepoint != null) {
-                alert("현재 보유하고있는 포인트 내에서 사용하실 수 있습니다.");
-                return;
-            }
-            if (this.state.usepoint != '' && _reactCookies2.default.load('reserves') < 5000) {
-                alert("보유하고 있는 포인트가 5000원 미만이라 사용하실 수 없습니다.");
-                return;
-            }
-
-            this.setState({ name: _reactCookies2.default.load('name') });
-            this.setState({ email: _reactCookies2.default.load('email') });
-            this.setState({ license_category: _reactCookies2.default.load('license_category') });
-            this.setState({ license_type: _reactCookies2.default.load('license_type') });
-            this.setState({ license_number_0: _reactCookies2.default.load('license_number').slice(0, 1) });
-            this.setState({ license_number_1: _reactCookies2.default.load('license_number').slice(1, 3) });
-            this.setState({ license_number_2: _reactCookies2.default.load('license_number').slice(3, 9) });
-            this.setState({ license_number_3: _reactCookies2.default.load('license_number').slice(9, 11) });
-            this.setState({ date_if_issue: _reactCookies2.default.load('date_if_issue').slice(0, 10) });
-            this.setState({ aptitude_test: _reactCookies2.default.load('aptitude_test').slice(0, 10) });
-            this.setState({ cost: this.state.show_cost });
-
-            this.setState({ returned: '4' });
-        }
-    }, {
-        key: 'last_button_click',
-        value: function last_button_click(e) {
-            if (this.state.name == "" || this.state.email == "" || this.state.license_category == "" || this.state.license_type == "" || this.state.license_number_0 == "" || this.state.license_number_1 == "" || this.state.license_number_2 == "" || this.state.license_number_3 == "" || this.state.date_if_issue == "" || this.state.aptitude_test == "") {
-                alert("빠짐없이 다 입력해주세요.");
-                return;
-            }
-            if (this.state.check_0 == false) {
-                alert("필수 체크사항을 모두 체크해주시길 바랍니다.");
-                return;
-            }
-
-            this.submitGit_2();
-        }
-    }, {
-        key: 'setRent_1',
-        value: function setRent_1(opts) {
-            var _this2 = this;
-
-            var count = 0;
-
-            fetch('/rent_1', {
-                method: 'POST',
-                headers: {
-                    "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
-                },
-                body: "form=" + JSON.stringify(opts)
-            }).then(function (response) {
-                return response.json();
-            }).then(function (json) {
-                _this2.setState({ result: json.result });
-            }).then(function () {
-                var json_m = JSON.parse(JSON.stringify(this.state.result));
-
-                this.setState({ cost: [] });
-                this.setState({ image: [] });
-                this.setState({ car_name: [] });
-                this.setState({ color: [] });
-                this.setState({ few: [] });
-                this.setState({ fuel: [] });
-                this.setState({ distance: [] });
-                this.setState({ registration_date: [] });
-                this.setState({ car_number: [] });
-
-                for (var count = 0; this.state.result[count] != null; count++) {
-                    if (this.state.rental_date == this.state.retrun_date) {
-                        var total_rental_time = this.state.return_time - this.state.rental_time;
-
-                        //this.setState({cost:this.state.result[count]["twelve_hour"]});                    
-                        if (total_rental_time <= 600) {
-                            //6시간 이하
-                            this.setState({ cost: this.state.cost.concat(this.state.result[count]["six_hour"]) });
-                        } else if (total_rental_time <= 1000) {
-                            //10시간 이하
-                            this.setState({ cost: this.state.cost.concat(this.state.result[count]["ten_hour"]) });
-                        } else if (total_rental_time <= 1200) {
-                            //12시간 이하
-                            this.setState({ cost: this.state.cost.concat(this.state.result[count]["twelve_hour"]) });
-                        } else {
-                            // 하루
-                            this.setState({ cost: this.state.cost.concat(this.state.result[count]["two_days"]) });
-                        }
-                    } else {
-                        var total_rental_date = this.state.return_date - this.state.rental_date;
-
-                        if (total_rental_date <= 2) {
-                            this.setState({ cost: this.state.cost.concat(this.state.result[count]["two_days"] * total_rental_date) });
-                        } else if (total_rental_date <= 4) {
-                            this.setState({ cost: this.state.cost.concat(this.state.result[count]["four_days"] * total_rental_date) });
-                        } else if (total_rental_date <= 6) {
-                            this.setState({ cost: this.state.cost.concat(this.state.result[count]["six_days"] * total_rental_date) });
-                        } else {
-                            this.setState({ cost: this.state.cost.concat(this.state.result[count]["more"] * total_rental_date) });
-                        }
-                    }
-
-                    this.setState({ image: this.state.image.concat(this.state.result[count]["image"]) });
-                    this.setState({ car_name: this.state.car_name.concat(this.state.result[count]["car_name"]) });
-                    this.setState({ color: this.state.color.concat(this.state.result[count]["color"]) });
-                    this.setState({ few: this.state.few.concat(this.state.result[count]["few"]) });
-                    this.setState({ fuel: this.state.fuel.concat(this.state.result[count]["fuel"]) });
-                    this.setState({ distance: this.state.distance.concat(this.state.result[count]["distance"]) });
-                    this.setState({ registration_date: this.state.registration_date.concat(this.state.result[count]["registration_date"]) });
-                    this.setState({ car_number: this.state.car_number.concat(this.state.result[count]["car_number"]) });
-
-                    console.log("console log :: count = ", count);
-                    console.log("console log :: this.state.result[count][car_name] = ", this.state.result[count]["car_name"]);
-                }
-
-                this.setState({ count: this.state.count });
-
-                console.log("console log :: count = ", count);
-                console.log("console log :: lmage = ", this.state.image);
-                console.log("console log :: car_name = ", this.state.car_name);
-            }.bind(this)).then(function () {
-                if (this.state.test_number == 0) {
-                    this.setState({ test_number: 1 });
-                    this.submitGit();
-                } else {
-                    this.setState({ test_number: 0 });
-                }
-            }.bind(this));
-        }
-    }, {
-        key: 'submitGit',
-        value: function submitGit() {
-            console.log("submit car_type value : ", this.state.car_type);
-            console.log("submit rental_date", this.state.rental_date);
-
-            this.setRent_1({
-                area: this.state.area,
-                rental_point: this.state.rental_point,
-                return_point: this.state.return_point,
-                rental_date: this.state.r_rental_date,
-                rental_time: this.state.r_rental_time,
-                return_date: this.state.r_return_date,
-                return_time: this.state.r_return_time,
-                start_number: this.state.currentPage,
-                car_type: this.state.car_type
-            });
-        }
-    }, {
-        key: 'lastSetRent',
-        value: function lastSetRent(opts) {
-            var _this3 = this;
-
-            fetch('/reservation', {
-                method: 'POST',
-                headers: {
-                    "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
-                },
-                body: "form=" + JSON.stringify(opts)
-            }).then(function (response) {
-                return response.json();
-            }).then(function (json) {
-                _this3.setState({ result: json.result });
-            }).then(function () {
-                this.setState({ returned: '5' });
-                this.submitReservationNumber();
-            }.bind(this));
-        }
-    }, {
-        key: 'submitGit_2',
-        value: function submitGit_2() {
-            var min = 100000;
-            var max = 999999;
-            var reservation_number = parseInt(min + Math.random() * (max - min));
-
-            this.setState({ reservation_number: reservation_number });
-
-            this.lastSetRent({
-                reservation_number: reservation_number,
-                email: this.state.email,
-                car_number: this.state.car_number[this.state.division_number],
-                cost: this.state.cost,
-                rental_date: this.state.rental_date + this.state.rental_time + "00",
-                return_date: this.state.return_date + this.state.return_time + "00",
-                rental_point: this.state.rental_point,
-                return_point: this.state.return_point,
-                babyseat: this.state.babyseat,
-                kor_navigation: this.state.kor_navigation,
-                eng_navigation: this.state.eng_navigation,
-                cdw: this.state.cdw
-            });
-        }
-    }, {
-        key: 'SendToReservationNumber',
-        value: function SendToReservationNumber(opts) {
-            var _this4 = this;
-
-            fetch('/send_reservation', {
-                method: 'POST',
-                headers: {
-                    "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
-                },
-                body: "form=" + JSON.stringify(opts)
-            }).then(function (response) {
-                return response.json();
-            }).then(function (json) {
-                _this4.setState({ result: json.result });
-            });
-        }
-    }, {
-        key: 'submitReservationNumber',
-        value: function submitReservationNumber() {
-            console.log("email test | email : ", this.state.email, " || reservaiton_number : ", this.state.reservation_number);
-
-            this.SendToReservationNumber({
-                email: this.state.email,
-                reservation_number: this.state.reservation_number
-            });
-        }
-    }, {
-        key: 'rent_1_Check',
-        value: function rent_1_Check() {
-            var today = new Date();
-
-            if (today.getMonth() + 1 < 10) {
-                this.setState({ date: today.getFullYear() + "0" + (today.getMonth() + 1) + "" + today.getDate() });
-            } else {
-                this.setState({ date: today.getFullYear() + "" + (today.getMonth() + 1) + "" + today.getDate() });
-            }
-
-            if (today.getMinutes() < 10) {
-                this.setState({ time: today.getHours() + "0" + today.getMinutes() });
-            } else {
-                this.setState({ time: today.getHours() + "" + today.getMinutes() });
-            }
-
-            console.log("date : ", this.state.date);
-            console.log("time : ", this.state.time);
-            console.log("rental : ", this.state.rental_date, " : ", this.state.rental_time);
-            console.log("return : ", this.state.return_date, " : ", this.state.return_time);
-
-            if (this.state.area == "" || this.state.rental_point == "" || this.state.return_point == "" || this.state.rental_date == "" || this.state.return_date == "") {
-                alert("빠짐없이 다 입력해주십시오.");
-                return;
-            }
-
-            if (parseInt(this.state.rental_date) > parseInt(this.state.date) + 60) {
-                alert("대여일자는 현재일로부터 60일 이내에만 가능합니다.");
-                return;
-            }
-
-            if (parseInt(this.state.rental_date) < parseInt(this.state.date) || parseInt(this.state.rental_date) == parseInt(this.state.date) && parseInt(this.state.rental_time) - parseInt(this.state.time) < 0) {
-                alert("지나간 날에는 대여할 수 없습니다.");
-                return;
-            }
-
-            if (parseInt(this.state.return_date) < parseInt(this.state.rental_date) || parseInt(this.state.rental_date) == parseInt(this.state.return_date) && parseInt(this.state.return_time) - parseInt(this.state.rental_time) < 0) {
-                alert("반납일자는 대여일자보다 먼저일 수 없습니다.");
-                return;
-            }
-
-            if (parseInt(this.state.rental_date) == parseInt(this.state.return_date) && parseInt(this.state.return_time) - parseInt(this.state.rental_time) < 100) {
-                alert("대역 정책에 따라 대여는 1시간 이상 선택하셔야 대여가 가능합니다.");
-                return;
-            }
-
-            this.setState({ returned: '2' });
-
-            this.submitGit();
-        }
-
-        //page
-
-    }, {
-        key: 'handleClick',
-        value: function handleClick(event) {
-            this.setState({
-                currentPage: Number(event.target.id)
-            });
-        }
-
-        //test
-
-    }, {
-        key: 'testdivison_number',
-        value: function testdivison_number() {
-            alert(this.state.division_number);
-        }
-    }, {
-        key: 'render',
-        value: function render() {
-            var _this5 = this;
-
-            var noneStyle = {
-                display: 'none'
-            };
-            var blockStyle = {};
-
-            //page
-            var pageNumbers = [];
-            for (var i = 1; i <= Math.ceil(this.state.count / 5) + 1; i++) {
-                pageNumbers.push(i);
-            }
-
-            var renderPageNUmbers = pageNumbers.map(function (number) {
-                return _react2.default.createElement(
-                    'li',
-                    _defineProperty({ key: number, id: number, onClick: _this5.handleClick }, 'onClick', _this5.submitGit.bind(_this5)),
-                    number
-                );
-            });
-
-            var first_Form = _react2.default.createElement(
-                'div',
-                null,
-                _react2.default.createElement(
-                    'label',
-                    null,
-                    ' \uC9C0\uC5ED '
-                ),
-                _react2.default.createElement(
-                    'select',
-                    { onChange: this.areaChange.bind(this) },
-                    _react2.default.createElement(
-                        'option',
-                        { id: '1', value: 'inland' },
-                        ' \uB0B4\uB959 '
-                    ),
-                    _react2.default.createElement(
-                        'option',
-                        { id: '2', value: 'jeju' },
-                        ' \uC81C\uC8FC '
-                    ),
-                    _react2.default.createElement(
-                        'option',
-                        { id: '3', value: 'overseas' },
-                        ' \uD574\uC678 '
-                    )
-                ),
-                _react2.default.createElement('br', null),
-                _react2.default.createElement(
-                    'label',
-                    null,
-                    ' \uB300\uC5EC\uC9C0\uC810 '
-                ),
-                _react2.default.createElement(
-                    'select',
-                    { onChange: this.rental_pointChange.bind(this) },
-                    _react2.default.createElement(
-                        'option',
-                        { id: '1', value: 'Gangnam' },
-                        '\uAC15\uB0A8'
-                    ),
-                    _react2.default.createElement(
-                        'option',
-                        { id: '2', value: 'DongDaeMoon' },
-                        '\uB3D9\uB300\uBB38'
-                    ),
-                    _react2.default.createElement(
-                        'option',
-                        { id: '3', value: 'Yeouido' },
-                        '\uC5EC\uC758\uB3C4'
-                    ),
-                    _react2.default.createElement(
-                        'option',
-                        { id: '4', value: 'Guro' },
-                        '\uAD6C\uB85C'
-                    )
-                ),
-                _react2.default.createElement('br', null),
-                _react2.default.createElement(
-                    'label',
-                    null,
-                    ' \uBC18\uB0A9\uC9C0\uC810 '
-                ),
-                _react2.default.createElement(
-                    'select',
-                    { onChange: this.return_pointChange.bind(this) },
-                    _react2.default.createElement(
-                        'option',
-                        { id: '1', value: 'Gangnam' },
-                        '\uAC15\uB0A8'
-                    ),
-                    _react2.default.createElement(
-                        'option',
-                        { id: '2', value: 'DongDaeMoon' },
-                        '\uB3D9\uB300\uBB38'
-                    ),
-                    _react2.default.createElement(
-                        'option',
-                        { id: '3', value: 'Yeouido' },
-                        '\uC5EC\uC758\uB3C4'
-                    ),
-                    _react2.default.createElement(
-                        'option',
-                        { id: '4', value: 'Guro' },
-                        '\uAD6C\uB85C'
-                    )
-                ),
-                _react2.default.createElement('br', null),
-                _react2.default.createElement(
-                    'label',
-                    null,
-                    ' \uB300\uC5EC\uC77C\uC2DC '
-                ),
-                _react2.default.createElement('input', { type: 'date', name: 'rental_date', onChange: this.rental_dateChange.bind(this) }),
-                _react2.default.createElement('input', { type: 'time', name: 'rental_time', onChange: this.rental_timeChange.bind(this) }),
-                _react2.default.createElement('br', null),
-                _react2.default.createElement(
-                    'label',
-                    null,
-                    ' \uBC18\uB0A9\uC77C\uC2DC '
-                ),
-                _react2.default.createElement('input', { type: 'date', name: 'return_date', onChange: this.return_dateChange.bind(this) }),
-                _react2.default.createElement('input', { type: 'time', name: 'return_time', onChange: this.return_timeChange.bind(this) }),
-                _react2.default.createElement('br', null),
-                _react2.default.createElement(
-                    'button',
-                    { onClick: this.rent_1_Check.bind(this) },
-                    '\uAC80\uC0C9'
-                )
-            );
-            var second_Form = _react2.default.createElement(
-                'div',
-                null,
-                _react2.default.createElement(
-                    'h1',
-                    null,
-                    '\uCC28\uB7C9 \uC120\uD0DD \uD654\uBA74'
-                ),
-                _react2.default.createElement('br', null),
-                _react2.default.createElement('input', { type: 'radio', name: 'radio', value: '0', onChange: this.car_typeChange.bind(this), checked: this.state.car_type == '' || this.state.car_type == '0' ? true : false }),
-                '\uC804\uCCB4',
-                _react2.default.createElement('input', { type: 'radio', name: 'radio', value: '1', onChange: this.car_typeChange.bind(this) }),
-                '\uC18C\uD615',
-                _react2.default.createElement('input', { type: 'radio', name: 'radio', value: '2', onChange: this.car_typeChange.bind(this) }),
-                '\uC911\uD615',
-                _react2.default.createElement('input', { type: 'radio', name: 'radio', value: '3', onChange: this.car_typeChange.bind(this) }),
-                '\uB300\uD615',
-                _react2.default.createElement('input', { type: 'radio', name: 'radio', value: '4', onChange: this.car_typeChange.bind(this) }),
-                '\uC2B9\uD569',
-                _react2.default.createElement('br', null),
-                _react2.default.createElement('input', { type: 'radio', name: 'radio', value: '5', onChange: this.car_typeChange.bind(this) }),
-                'SUV/RV',
-                _react2.default.createElement('input', { type: 'radio', name: 'radio', value: '6', onChange: this.car_typeChange.bind(this) }),
-                '\uC218\uC785\uCC28',
-                _react2.default.createElement('input', { type: 'radio', name: 'radio', value: '7', onChange: this.car_typeChange.bind(this) }),
-                '\uC624\uD508\uCE74',
-                _react2.default.createElement('input', { type: 'radio', name: 'radio', value: '8', onChange: this.car_typeChange.bind(this) }),
-                '\uC804\uAE30\uCC28',
-                _react2.default.createElement('input', { type: 'radio', name: 'radio', value: '9', onChange: this.car_typeChange.bind(this) }),
-                '\uCE90\uB9AD\uD130\uCE74',
-                _react2.default.createElement('br', null),
-                _react2.default.createElement('br', null),
-                _react2.default.createElement(
-                    'table',
-                    null,
-                    _react2.default.createElement(
-                        'tbody',
-                        null,
-                        _react2.default.createElement(
-                            'tr',
-                            { style: this.state.car_name[0] == null ? noneStyle : blockStyle, onClick: this.tr_click_0.bind(this) },
-                            _react2.default.createElement(
-                                'td',
-                                null,
-                                _react2.default.createElement('img', { src: this.state.image[0], width: '230', height: '130' })
-                            ),
-                            _react2.default.createElement(
-                                'td',
-                                { width: '230' },
-                                _react2.default.createElement(
-                                    'span',
-                                    null,
-                                    ' ',
-                                    this.state.car_name[0],
-                                    ' '
-                                )
-                            ),
-                            _react2.default.createElement(
-                                'td',
-                                { width: '230' },
-                                _react2.default.createElement(
-                                    'span',
-                                    null,
-                                    ' ',
-                                    this.state.fuel[0],
-                                    ' '
-                                )
-                            ),
-                            _react2.default.createElement(
-                                'td',
-                                { width: '230' },
-                                _react2.default.createElement(
-                                    'span',
-                                    null,
-                                    ' ',
-                                    this.state.few[0],
-                                    ' '
-                                )
-                            ),
-                            _react2.default.createElement(
-                                'td',
-                                { width: '230' },
-                                _react2.default.createElement(
-                                    'span',
-                                    null,
-                                    ' ',
-                                    this.state.color[0],
-                                    ' '
-                                )
-                            )
-                        ),
-                        _react2.default.createElement(
-                            'tr',
-                            { style: this.state.car_name[1] == null ? noneStyle : blockStyle, onClick: this.tr_click_1.bind(this) },
-                            _react2.default.createElement(
-                                'td',
-                                null,
-                                _react2.default.createElement('img', { src: this.state.image[1], width: '230', height: '130' })
-                            ),
-                            _react2.default.createElement(
-                                'td',
-                                { width: '230' },
-                                _react2.default.createElement(
-                                    'span',
-                                    null,
-                                    ' ',
-                                    this.state.car_name[1],
-                                    ' '
-                                )
-                            ),
-                            _react2.default.createElement(
-                                'td',
-                                { width: '230' },
-                                _react2.default.createElement(
-                                    'span',
-                                    null,
-                                    ' ',
-                                    this.state.fuel[1],
-                                    ' '
-                                )
-                            ),
-                            _react2.default.createElement(
-                                'td',
-                                { width: '230' },
-                                _react2.default.createElement(
-                                    'span',
-                                    null,
-                                    ' ',
-                                    this.state.few[1],
-                                    ' '
-                                )
-                            ),
-                            _react2.default.createElement(
-                                'td',
-                                { width: '230' },
-                                _react2.default.createElement(
-                                    'span',
-                                    null,
-                                    ' ',
-                                    this.state.color[1],
-                                    ' '
-                                )
-                            )
-                        ),
-                        _react2.default.createElement(
-                            'tr',
-                            { style: this.state.car_name[2] == null ? noneStyle : blockStyle, onClick: this.tr_click_2.bind(this) },
-                            _react2.default.createElement(
-                                'td',
-                                null,
-                                _react2.default.createElement('img', { src: this.state.image[2], width: '230', height: '130' })
-                            ),
-                            _react2.default.createElement(
-                                'td',
-                                { width: '230' },
-                                _react2.default.createElement(
-                                    'span',
-                                    null,
-                                    ' ',
-                                    this.state.car_name[2],
-                                    ' '
-                                )
-                            ),
-                            _react2.default.createElement(
-                                'td',
-                                { width: '230' },
-                                _react2.default.createElement(
-                                    'span',
-                                    null,
-                                    ' ',
-                                    this.state.fuel[2],
-                                    ' '
-                                )
-                            ),
-                            _react2.default.createElement(
-                                'td',
-                                { width: '230' },
-                                _react2.default.createElement(
-                                    'span',
-                                    null,
-                                    ' ',
-                                    this.state.few[2],
-                                    ' '
-                                )
-                            ),
-                            _react2.default.createElement(
-                                'td',
-                                { width: '230' },
-                                _react2.default.createElement(
-                                    'span',
-                                    null,
-                                    ' ',
-                                    this.state.color[2],
-                                    ' '
-                                )
-                            )
-                        ),
-                        _react2.default.createElement(
-                            'tr',
-                            { style: this.state.car_name[3] == null ? noneStyle : blockStyle, onClick: this.tr_click_3.bind(this) },
-                            _react2.default.createElement(
-                                'td',
-                                null,
-                                _react2.default.createElement('img', { src: this.state.image[3], width: '230', height: '130' })
-                            ),
-                            _react2.default.createElement(
-                                'td',
-                                { width: '230' },
-                                _react2.default.createElement(
-                                    'span',
-                                    null,
-                                    ' ',
-                                    this.state.car_name[3],
-                                    ' '
-                                )
-                            ),
-                            _react2.default.createElement(
-                                'td',
-                                { width: '230' },
-                                _react2.default.createElement(
-                                    'span',
-                                    null,
-                                    ' ',
-                                    this.state.fuel[3],
-                                    ' '
-                                )
-                            ),
-                            _react2.default.createElement(
-                                'td',
-                                { width: '230' },
-                                _react2.default.createElement(
-                                    'span',
-                                    null,
-                                    ' ',
-                                    this.state.few[3],
-                                    ' '
-                                )
-                            ),
-                            _react2.default.createElement(
-                                'td',
-                                { width: '230' },
-                                _react2.default.createElement(
-                                    'span',
-                                    null,
-                                    ' ',
-                                    this.state.color[3],
-                                    ' '
-                                )
-                            )
-                        ),
-                        _react2.default.createElement(
-                            'tr',
-                            { style: this.state.car_name[4] == null ? noneStyle : blockStyle, onClick: this.tr_click_4.bind(this) },
-                            _react2.default.createElement(
-                                'td',
-                                null,
-                                _react2.default.createElement('img', { src: this.state.image[4], width: '230', height: '130' })
-                            ),
-                            _react2.default.createElement(
-                                'td',
-                                { width: '230' },
-                                _react2.default.createElement(
-                                    'span',
-                                    null,
-                                    ' ',
-                                    this.state.car_name[4],
-                                    ' '
-                                )
-                            ),
-                            _react2.default.createElement(
-                                'td',
-                                { width: '230' },
-                                _react2.default.createElement(
-                                    'span',
-                                    null,
-                                    ' ',
-                                    this.state.fuel[4],
-                                    ' '
-                                )
-                            ),
-                            _react2.default.createElement(
-                                'td',
-                                { width: '230' },
-                                _react2.default.createElement(
-                                    'span',
-                                    null,
-                                    ' ',
-                                    this.state.few[4],
-                                    ' '
-                                )
-                            ),
-                            _react2.default.createElement(
-                                'td',
-                                { width: '230' },
-                                _react2.default.createElement(
-                                    'span',
-                                    null,
-                                    ' ',
-                                    this.state.color[4],
-                                    ' '
-                                )
-                            )
-                        )
-                    )
-                ),
-                _react2.default.createElement(
-                    'ul',
-                    { id: 'page-numbers' },
-                    renderPageNUmbers
-                )
-            );
-
-            var third_Form = _react2.default.createElement(
-                'div',
-                null,
-                _react2.default.createElement('img', { src: this.state.image[this.state.division_number], width: '350', height: '250', onClick: this.testdivison_number.bind(this) }),
-                _react2.default.createElement('br', null),
-                _react2.default.createElement(
-                    'span',
-                    null,
-                    ' \uC790\uB3D9\uCC28 \uBA85 :  ',
-                    this.state.car_name[this.state.division_number],
-                    ' '
-                ),
-                _react2.default.createElement('br', null),
-                _react2.default.createElement(
-                    'span',
-                    null,
-                    ' \uC5F0\uB8CC : ',
-                    this.state.fuel[this.state.division_number],
-                    ' '
-                ),
-                _react2.default.createElement('br', null),
-                _react2.default.createElement(
-                    'span',
-                    null,
-                    ' ',
-                    this.state.few[this.state.division_number],
-                    ' \uC778\uC2B9'
-                ),
-                _react2.default.createElement('br', null),
-                _react2.default.createElement(
-                    'span',
-                    null,
-                    ' \uC0C9\uC0C1 : ',
-                    this.state.color[this.state.division_number],
-                    ' '
-                ),
-                _react2.default.createElement('br', null),
-                _react2.default.createElement(
-                    'span',
-                    null,
-                    ' \uCC28\uB7C9 \uB4F1\uB85D\uC77C : ',
-                    this.state.registration_date[this.state.division_number],
-                    ' '
-                ),
-                _react2.default.createElement('br', null),
-                _react2.default.createElement(
-                    'span',
-                    null,
-                    ' \uC8FC\uD589\uAC70\uB9AC : ',
-                    this.state.distance[this.state.division_number],
-                    ' '
-                ),
-                _react2.default.createElement('br', null),
-                _react2.default.createElement(
-                    'span',
-                    null,
-                    ' \uB300\uC5EC\uB8CC : ',
-                    this.state.show_cost,
-                    ' '
-                ),
-                _react2.default.createElement('br', null),
-                _react2.default.createElement(
-                    'span',
-                    null,
-                    ' \uD3EC\uC778\uD2B8 '
-                ),
-                _react2.default.createElement('br', null),
-                _react2.default.createElement(
-                    'span',
-                    null,
-                    ' \uD604\uC7AC \uD3EC\uC778\uD2B8 : ',
-                    _reactCookies2.default.load('reserves'),
-                    ' '
-                ),
-                _react2.default.createElement('br', null),
-                _react2.default.createElement(
-                    'span',
-                    null,
-                    ' \uC0AC\uC6A9\uD560 \uD3EC\uC778\uD2B8 : '
-                ),
-                ' ',
-                _react2.default.createElement('input', { type: 'number', placeholder: '\uC0AC\uC6A9\uD558\uACE0 \uC2F6\uC740 \uD3EC\uC778\uD2B8', onChange: this.usepointChange.bind(this) }),
-                _react2.default.createElement('br', null),
-                '\uD3EC\uC778\uD2B8\uB294 5000\uC6D0 \uC774\uC0C1\uC77C \uB54C\uB9CC \uC0AC\uC6A9 \uAC00\uB2A5\uD569\uB2C8\uB2E4.',
-                _react2.default.createElement('br', null),
-                _react2.default.createElement(
-                    'span',
-                    null,
-                    ' \uC790\uCC28 \uC190\uD575 \uBA74\uCC45 \uC81C\uB3C4(CDW) '
-                ),
-                _react2.default.createElement('input', { type: 'radio', name: 'radio', value: '0', checked: this.state.cdw == '0' ? true : false, onChange: this.cdwChange.bind(this) }),
-                '\uBCF4\uD5D8 \uBBF8\uC801\uC6A9 (0\uC6D0)',
-                _react2.default.createElement('input', { type: 'radio', name: 'radio', value: '1', onChange: this.cdwChange.bind(this) }),
-                '\uACE0\uAC1D\uBD80\uB2F4\uAE08 \uBA74\uC81C (30,000\uC6D0)',
-                _react2.default.createElement('input', { type: 'radio', name: 'radio', value: '2', onChange: this.cdwChange.bind(this) }),
-                '5\uB9CC\uC6D0 (18,000\uC6D0)',
-                _react2.default.createElement('input', { type: 'radio', name: 'radio', value: '3', onChange: this.cdwChange.bind(this) }),
-                '30\uB9CC\uC6D0 (14,000\uC6D0)',
-                _react2.default.createElement('br', null),
-                _react2.default.createElement(
-                    'span',
-                    null,
-                    ' \uAE30\uD0C0 \uC635\uC158 '
-                ),
-                _react2.default.createElement('br', null),
-                _react2.default.createElement(
-                    'span',
-                    null,
-                    ' \uB0B4\uBE44\uAC8C\uC774\uC158(\uBB34\uB8CC) '
-                ),
-                _react2.default.createElement('input', { type: 'checkbox', onChange: this.kor_navigationChange.bind(this), defaultChecked: 'checked' }),
-                ' \uD55C\uAE00 \uB0B4\uBE44\uAC8C\uC774\uC158',
-                _react2.default.createElement('input', { type: 'checkbox', onChange: this.eng_navigationChange.bind(this) }),
-                ' \uC601\uBB38 \uB0B4\uBE44\uAC8C\uC774\uC158',
-                _react2.default.createElement('br', null),
-                '\uBCA0\uC774\uBE44 \uC2DC\uD2B8(1\uD68C 2,000\uC6D0 \uCD94\uAC00)',
-                _react2.default.createElement('input', { type: 'checkbox', onChange: this.babyseatChange.bind(this) }),
-                ' \uBCA0\uC774\uBE44\uC2DC\uD2B8',
-                _react2.default.createElement('br', null),
-                _react2.default.createElement(
-                    'button',
-                    { onClick: this.renting_button_click.bind(this) },
-                    ' \uB300\uC5EC\uD558\uAE30 '
-                )
-            );
-            var fourth_Form = _react2.default.createElement(
-                'div',
-                null,
-                _react2.default.createElement(
-                    'span',
-                    null,
-                    ' \uAC1C\uC778\uC815\uBCF4 '
-                ),
-                _react2.default.createElement('br', null),
-                _react2.default.createElement(
-                    'span',
-                    null,
-                    ' \uC774\uB984 '
-                ),
-                _react2.default.createElement('input', { type: 'text', value: _reactCookies2.default.load('name'), onChange: this.nameChange.bind(this) }),
-                _react2.default.createElement('br', null),
-                _react2.default.createElement(
-                    'span',
-                    null,
-                    ' \uC774\uBA54\uC77C '
-                ),
-                _react2.default.createElement('input', { type: 'text', value: _reactCookies2.default.load('email'), onChange: this.emailChange.bind(this) }),
-                _react2.default.createElement('br', null),
-                _react2.default.createElement(
-                    'span',
-                    null,
-                    ' \uBA74\uD5C8 \uAD6C\uBD84 '
-                ),
-                _react2.default.createElement(
-                    'select',
-                    { defaultValue: _reactCookies2.default.load('license_category'), onChange: this.license_categoryChange.bind(this) },
-                    _react2.default.createElement(
-                        'option',
-                        { id: '1', value: '1' },
-                        '\uAD6D\uB0B4'
-                    ),
-                    _react2.default.createElement(
-                        'option',
-                        { id: '2', value: '2' },
-                        '\uAD6D\uC678'
-                    )
-                ),
-                _react2.default.createElement('br', null),
-                _react2.default.createElement(
-                    'label',
-                    null,
-                    '\uBA74\uD5C8 \uC885\uB958'
-                ),
-                _react2.default.createElement(
-                    'select',
-                    { defaultValue: _reactCookies2.default.load('license_type'), onChange: this.license_typeChange.bind(this) },
-                    _react2.default.createElement(
-                        'option',
-                        { id: '1', value: '1' },
-                        '1\uC885\uB300\uD615'
-                    ),
-                    _react2.default.createElement(
-                        'option',
-                        { id: '2', value: '2' },
-                        '1\uC885\uBCF4\uD1B5'
-                    ),
-                    _react2.default.createElement(
-                        'option',
-                        { id: '3', value: '3' },
-                        '2\uC885\uBCF4\uD1B5'
-                    )
-                ),
-                _react2.default.createElement('br', null),
-                _react2.default.createElement(
-                    'label',
-                    null,
-                    '\uBA74\uD5C8\uC99D \uBC88\uD638'
-                ),
-                _react2.default.createElement(
-                    'select',
-                    { defaultValue: _reactCookies2.default.load('license_number').slice(0, 1), onChange: this.license_number_0Change.bind(this) },
-                    _react2.default.createElement(
-                        'option',
-                        { id: '1', value: '1' },
-                        '\uC11C\uC6B8'
-                    ),
-                    _react2.default.createElement(
-                        'option',
-                        { id: '2', value: '2' },
-                        '11'
-                    )
-                ),
-                '\xA0',
-                _react2.default.createElement('input', { type: 'text', size: '2', maxLength: 2, defaultValue: _reactCookies2.default.load('license_number').slice(1, 3), onChange: this.license_number_1Change.bind(this) }),
-                '-',
-                _react2.default.createElement('input', { type: 'text', size: '6', maxLength: 6, defaultValue: _reactCookies2.default.load('license_number').slice(3, 9), onChange: this.licesne_number_2Change.bind(this) }),
-                '-',
-                _react2.default.createElement('input', { type: 'text', size: '2', maxLength: 2, defaultValue: _reactCookies2.default.load('license_number').slice(9, 11), onChange: this.license_number_3Change.bind(this) }),
-                _react2.default.createElement('br', null),
-                _react2.default.createElement(
-                    'label',
-                    null,
-                    '\uBA74\uD5C8\uBC1C\uAE09\uC77C\uC790'
-                ),
-                _react2.default.createElement('input', { type: 'date', defaultValue: _reactCookies2.default.load('date_if_issue').slice(0, 10), onChange: this.date_if_issueChange.bind(this) }),
-                _react2.default.createElement('br', null),
-                _react2.default.createElement(
-                    'label',
-                    null,
-                    '\uC801\uC131\uAC80\uC0AC'
-                ),
-                _react2.default.createElement('input', { type: 'date', defaultValue: _reactCookies2.default.load("aptitude_test").slice(0, 10), onChange: this.aptitude_testChange.bind(this) }),
-                _react2.default.createElement('br', null),
-                _react2.default.createElement('br', null),
-                _react2.default.createElement(
-                    'span',
-                    null,
-                    ' \uC608\uC57D\uC644\uB8CC\uB97C \uC704\uD55C \uC774\uC6A9\uC790 \uB3D9\uC758 \uC0AC\uD56D '
-                ),
-                _react2.default.createElement('br', null),
-                _react2.default.createElement('input', { type: 'checkbox', onChange: this.check_0Change.bind(this) }),
-                ' \uC608\uC57D\uC644\uB8CC\uB97C \uC704\uD55C \uC774\uC6A9 \uB3D9\uC758(\uD544\uC218), \uCC28\uB7C9 \uB300\uC5EC\uB97C \uC704\uD55C \uAC1C\uC778\uC815\uBCF4 \uC218\uC9D1/\uC774\uC6A9 \uB3D9\uC758(\uD544\uC218), \uAC1C\uC778\uC815\uBCF4 \uCDE8\uAE09 \uC704\uD0C1 \uB3D9\uC758(\uD544\uC218), \uAC1C\uC778\uC815\uBCF4 \uC81C 3\uC790 \uC81C\uACF5 \uB3D9\uC758(\uD544\uC218)\uC5D0 \uBAA8\uB450 \uB3D9\uC758\uD569\uB2C8\uB2E4.',
-                _react2.default.createElement('br', null),
-                _react2.default.createElement('br', null),
-                _react2.default.createElement(
-                    'button',
-                    { onClick: this.last_button_click.bind(this) },
-                    ' \uB300\uC5EC\uD558\uAE30 '
-                )
-            );
-            var last_Form = _react2.default.createElement(
-                'div',
-                null,
-                _react2.default.createElement(
-                    'span',
-                    null,
-                    ' \uC608\uC57D\uBC88\uD638 : ',
-                    this.state.reservation_number,
-                    ' '
-                )
-            );
-
-            if (this.state.returned == '1') {
-                return first_Form;
-            } else if (this.state.returned == '2') {
-                return second_Form;
-            } else if (this.state.returned == '3') {
-                return third_Form;
-            } else if (this.state.returned == '4') {
-                return fourth_Form;
-            } else if (this.state.returned == '5') {
-                return last_Form;
-            }
-        }
-    }]);
-
-    return Rent_1;
-}(_react2.default.Component);
-
-module.exports = Rent_1;
-
-/***/ }),
-/* 34 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(35);
-if(typeof content === 'string') content = [[module.i, content, '']];
-// Prepare cssTransformation
-var transform;
-
-var options = {"hmr":true}
-options.transform = transform
-// add the styles to the DOM
-var update = __webpack_require__(37)(content, options);
-if(content.locals) module.exports = content.locals;
-// Hot Module Replacement
-if(false) {
-	// When the styles change, update the <style> tags
-	if(!content.locals) {
-		module.hot.accept("!!../../node_modules/css-loader/index.js!./style.css", function() {
-			var newContent = require("!!../../node_modules/css-loader/index.js!./style.css");
-			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-			update(newContent);
-		});
-	}
-	// When the module is disposed, remove the <style> tags
-	module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 35 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(36)(false);
+exports = module.exports = __webpack_require__(21)(false);
 // imports
 
 
 // module
-exports.push([module.i, "html, body {\n    margin: 0;\n    font-family: 'Roboto', Arial, sans-serif;\n    font-size: 1.2em;\n}\n  \n#page-numbers {    \n    list-style: none;\n    display: flex;\n}\n  \n#page-numbers > li {\n    margin-right: 0.3em;\n    color: blue;\n    user-select: none;\n    cursor: pointer;\n}", ""]);
+exports.push([module.i, ".logo {\n    height: 3.5rem;\n    background-color: #212529;\n    width: 100vw;\n    line-height: 3.5rem;\n    color: white;\n    font-size: 1.5rem;\n    font-weight: bold;\n    text-align: center;\n}\n\n.menu {\n    background-color: #343a40;\n    height: 3.5rem;\n}\n\n.menu-item {\n    display: inline-block;\n    color: white;\n    font-size: 1rem;\n    line-height: 3.5rem;\n    width: 25%;\n    text-align: center;\n    cursor: pointer;\n    transition: background-color 0.3s;\n    text-decoration: none;\n}\n\n.menu-item:hover {\n    background-color: #495057;\n}\n\n.menu-item:active, .menu-item.active {\n    background-color: #1862ab;\n}", ""]);
 
 // exports
 
 
 /***/ }),
-/* 36 */
-/***/ (function(module, exports) {
-
-/*
-	MIT License http://www.opensource.org/licenses/mit-license.php
-	Author Tobias Koppers @sokra
-*/
-// css base code, injected by the css-loader
-module.exports = function(useSourceMap) {
-	var list = [];
-
-	// return the list of modules as css string
-	list.toString = function toString() {
-		return this.map(function (item) {
-			var content = cssWithMappingToString(item, useSourceMap);
-			if(item[2]) {
-				return "@media " + item[2] + "{" + content + "}";
-			} else {
-				return content;
-			}
-		}).join("");
-	};
-
-	// import a list of modules into the list
-	list.i = function(modules, mediaQuery) {
-		if(typeof modules === "string")
-			modules = [[null, modules, ""]];
-		var alreadyImportedModules = {};
-		for(var i = 0; i < this.length; i++) {
-			var id = this[i][0];
-			if(typeof id === "number")
-				alreadyImportedModules[id] = true;
-		}
-		for(i = 0; i < modules.length; i++) {
-			var item = modules[i];
-			// skip already imported module
-			// this implementation is not 100% perfect for weird media query combinations
-			//  when a module is imported multiple times with different media queries.
-			//  I hope this will never occur (Hey this way we have smaller bundles)
-			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
-				if(mediaQuery && !item[2]) {
-					item[2] = mediaQuery;
-				} else if(mediaQuery) {
-					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
-				}
-				list.push(item);
-			}
-		}
-	};
-	return list;
-};
-
-function cssWithMappingToString(item, useSourceMap) {
-	var content = item[1] || '';
-	var cssMapping = item[3];
-	if (!cssMapping) {
-		return content;
-	}
-
-	if (useSourceMap && typeof btoa === 'function') {
-		var sourceMapping = toComment(cssMapping);
-		var sourceURLs = cssMapping.sources.map(function (source) {
-			return '/*# sourceURL=' + cssMapping.sourceRoot + source + ' */'
-		});
-
-		return [content].concat(sourceURLs).concat([sourceMapping]).join('\n');
-	}
-
-	return [content].join('\n');
-}
-
-// Adapted from convert-source-map (MIT)
-function toComment(sourceMap) {
-	// eslint-disable-next-line no-undef
-	var base64 = btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap))));
-	var data = 'sourceMappingURL=data:application/json;charset=utf-8;base64,' + base64;
-
-	return '/*# ' + data + ' */';
-}
-
-
-/***/ }),
-/* 37 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/*
-	MIT License http://www.opensource.org/licenses/mit-license.php
-	Author Tobias Koppers @sokra
-*/
-
-var stylesInDom = {};
-
-var	memoize = function (fn) {
-	var memo;
-
-	return function () {
-		if (typeof memo === "undefined") memo = fn.apply(this, arguments);
-		return memo;
-	};
-};
-
-var isOldIE = memoize(function () {
-	// Test for IE <= 9 as proposed by Browserhacks
-	// @see http://browserhacks.com/#hack-e71d8692f65334173fee715c222cb805
-	// Tests for existence of standard globals is to allow style-loader
-	// to operate correctly into non-standard environments
-	// @see https://github.com/webpack-contrib/style-loader/issues/177
-	return window && document && document.all && !window.atob;
-});
-
-var getElement = (function (fn) {
-	var memo = {};
-
-	return function(selector) {
-		if (typeof memo[selector] === "undefined") {
-			var styleTarget = fn.call(this, selector);
-			// Special case to return head of iframe instead of iframe itself
-			if (styleTarget instanceof window.HTMLIFrameElement) {
-				try {
-					// This will throw an exception if access to iframe is blocked
-					// due to cross-origin restrictions
-					styleTarget = styleTarget.contentDocument.head;
-				} catch(e) {
-					styleTarget = null;
-				}
-			}
-			memo[selector] = styleTarget;
-		}
-		return memo[selector]
-	};
-})(function (target) {
-	return document.querySelector(target)
-});
-
-var singleton = null;
-var	singletonCounter = 0;
-var	stylesInsertedAtTop = [];
-
-var	fixUrls = __webpack_require__(38);
-
-module.exports = function(list, options) {
-	if (typeof DEBUG !== "undefined" && DEBUG) {
-		if (typeof document !== "object") throw new Error("The style-loader cannot be used in a non-browser environment");
-	}
-
-	options = options || {};
-
-	options.attrs = typeof options.attrs === "object" ? options.attrs : {};
-
-	// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
-	// tags it will allow on a page
-	if (!options.singleton && typeof options.singleton !== "boolean") options.singleton = isOldIE();
-
-	// By default, add <style> tags to the <head> element
-	if (!options.insertInto) options.insertInto = "head";
-
-	// By default, add <style> tags to the bottom of the target
-	if (!options.insertAt) options.insertAt = "bottom";
-
-	var styles = listToStyles(list, options);
-
-	addStylesToDom(styles, options);
-
-	return function update (newList) {
-		var mayRemove = [];
-
-		for (var i = 0; i < styles.length; i++) {
-			var item = styles[i];
-			var domStyle = stylesInDom[item.id];
-
-			domStyle.refs--;
-			mayRemove.push(domStyle);
-		}
-
-		if(newList) {
-			var newStyles = listToStyles(newList, options);
-			addStylesToDom(newStyles, options);
-		}
-
-		for (var i = 0; i < mayRemove.length; i++) {
-			var domStyle = mayRemove[i];
-
-			if(domStyle.refs === 0) {
-				for (var j = 0; j < domStyle.parts.length; j++) domStyle.parts[j]();
-
-				delete stylesInDom[domStyle.id];
-			}
-		}
-	};
-};
-
-function addStylesToDom (styles, options) {
-	for (var i = 0; i < styles.length; i++) {
-		var item = styles[i];
-		var domStyle = stylesInDom[item.id];
-
-		if(domStyle) {
-			domStyle.refs++;
-
-			for(var j = 0; j < domStyle.parts.length; j++) {
-				domStyle.parts[j](item.parts[j]);
-			}
-
-			for(; j < item.parts.length; j++) {
-				domStyle.parts.push(addStyle(item.parts[j], options));
-			}
-		} else {
-			var parts = [];
-
-			for(var j = 0; j < item.parts.length; j++) {
-				parts.push(addStyle(item.parts[j], options));
-			}
-
-			stylesInDom[item.id] = {id: item.id, refs: 1, parts: parts};
-		}
-	}
-}
-
-function listToStyles (list, options) {
-	var styles = [];
-	var newStyles = {};
-
-	for (var i = 0; i < list.length; i++) {
-		var item = list[i];
-		var id = options.base ? item[0] + options.base : item[0];
-		var css = item[1];
-		var media = item[2];
-		var sourceMap = item[3];
-		var part = {css: css, media: media, sourceMap: sourceMap};
-
-		if(!newStyles[id]) styles.push(newStyles[id] = {id: id, parts: [part]});
-		else newStyles[id].parts.push(part);
-	}
-
-	return styles;
-}
-
-function insertStyleElement (options, style) {
-	var target = getElement(options.insertInto)
-
-	if (!target) {
-		throw new Error("Couldn't find a style target. This probably means that the value for the 'insertInto' parameter is invalid.");
-	}
-
-	var lastStyleElementInsertedAtTop = stylesInsertedAtTop[stylesInsertedAtTop.length - 1];
-
-	if (options.insertAt === "top") {
-		if (!lastStyleElementInsertedAtTop) {
-			target.insertBefore(style, target.firstChild);
-		} else if (lastStyleElementInsertedAtTop.nextSibling) {
-			target.insertBefore(style, lastStyleElementInsertedAtTop.nextSibling);
-		} else {
-			target.appendChild(style);
-		}
-		stylesInsertedAtTop.push(style);
-	} else if (options.insertAt === "bottom") {
-		target.appendChild(style);
-	} else if (typeof options.insertAt === "object" && options.insertAt.before) {
-		var nextSibling = getElement(options.insertInto + " " + options.insertAt.before);
-		target.insertBefore(style, nextSibling);
-	} else {
-		throw new Error("[Style Loader]\n\n Invalid value for parameter 'insertAt' ('options.insertAt') found.\n Must be 'top', 'bottom', or Object.\n (https://github.com/webpack-contrib/style-loader#insertat)\n");
-	}
-}
-
-function removeStyleElement (style) {
-	if (style.parentNode === null) return false;
-	style.parentNode.removeChild(style);
-
-	var idx = stylesInsertedAtTop.indexOf(style);
-	if(idx >= 0) {
-		stylesInsertedAtTop.splice(idx, 1);
-	}
-}
-
-function createStyleElement (options) {
-	var style = document.createElement("style");
-
-	options.attrs.type = "text/css";
-
-	addAttrs(style, options.attrs);
-	insertStyleElement(options, style);
-
-	return style;
-}
-
-function createLinkElement (options) {
-	var link = document.createElement("link");
-
-	options.attrs.type = "text/css";
-	options.attrs.rel = "stylesheet";
-
-	addAttrs(link, options.attrs);
-	insertStyleElement(options, link);
-
-	return link;
-}
-
-function addAttrs (el, attrs) {
-	Object.keys(attrs).forEach(function (key) {
-		el.setAttribute(key, attrs[key]);
-	});
-}
-
-function addStyle (obj, options) {
-	var style, update, remove, result;
-
-	// If a transform function was defined, run it on the css
-	if (options.transform && obj.css) {
-	    result = options.transform(obj.css);
-
-	    if (result) {
-	    	// If transform returns a value, use that instead of the original css.
-	    	// This allows running runtime transformations on the css.
-	    	obj.css = result;
-	    } else {
-	    	// If the transform function returns a falsy value, don't add this css.
-	    	// This allows conditional loading of css
-	    	return function() {
-	    		// noop
-	    	};
-	    }
-	}
-
-	if (options.singleton) {
-		var styleIndex = singletonCounter++;
-
-		style = singleton || (singleton = createStyleElement(options));
-
-		update = applyToSingletonTag.bind(null, style, styleIndex, false);
-		remove = applyToSingletonTag.bind(null, style, styleIndex, true);
-
-	} else if (
-		obj.sourceMap &&
-		typeof URL === "function" &&
-		typeof URL.createObjectURL === "function" &&
-		typeof URL.revokeObjectURL === "function" &&
-		typeof Blob === "function" &&
-		typeof btoa === "function"
-	) {
-		style = createLinkElement(options);
-		update = updateLink.bind(null, style, options);
-		remove = function () {
-			removeStyleElement(style);
-
-			if(style.href) URL.revokeObjectURL(style.href);
-		};
-	} else {
-		style = createStyleElement(options);
-		update = applyToTag.bind(null, style);
-		remove = function () {
-			removeStyleElement(style);
-		};
-	}
-
-	update(obj);
-
-	return function updateStyle (newObj) {
-		if (newObj) {
-			if (
-				newObj.css === obj.css &&
-				newObj.media === obj.media &&
-				newObj.sourceMap === obj.sourceMap
-			) {
-				return;
-			}
-
-			update(obj = newObj);
-		} else {
-			remove();
-		}
-	};
-}
-
-var replaceText = (function () {
-	var textStore = [];
-
-	return function (index, replacement) {
-		textStore[index] = replacement;
-
-		return textStore.filter(Boolean).join('\n');
-	};
-})();
-
-function applyToSingletonTag (style, index, remove, obj) {
-	var css = remove ? "" : obj.css;
-
-	if (style.styleSheet) {
-		style.styleSheet.cssText = replaceText(index, css);
-	} else {
-		var cssNode = document.createTextNode(css);
-		var childNodes = style.childNodes;
-
-		if (childNodes[index]) style.removeChild(childNodes[index]);
-
-		if (childNodes.length) {
-			style.insertBefore(cssNode, childNodes[index]);
-		} else {
-			style.appendChild(cssNode);
-		}
-	}
-}
-
-function applyToTag (style, obj) {
-	var css = obj.css;
-	var media = obj.media;
-
-	if(media) {
-		style.setAttribute("media", media)
-	}
-
-	if(style.styleSheet) {
-		style.styleSheet.cssText = css;
-	} else {
-		while(style.firstChild) {
-			style.removeChild(style.firstChild);
-		}
-
-		style.appendChild(document.createTextNode(css));
-	}
-}
-
-function updateLink (link, options, obj) {
-	var css = obj.css;
-	var sourceMap = obj.sourceMap;
-
-	/*
-		If convertToAbsoluteUrls isn't defined, but sourcemaps are enabled
-		and there is no publicPath defined then lets turn convertToAbsoluteUrls
-		on by default.  Otherwise default to the convertToAbsoluteUrls option
-		directly
-	*/
-	var autoFixUrls = options.convertToAbsoluteUrls === undefined && sourceMap;
-
-	if (options.convertToAbsoluteUrls || autoFixUrls) {
-		css = fixUrls(css);
-	}
-
-	if (sourceMap) {
-		// http://stackoverflow.com/a/26603875
-		css += "\n/*# sourceMappingURL=data:application/json;base64," + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + " */";
-	}
-
-	var blob = new Blob([css], { type: "text/css" });
-
-	var oldSrc = link.href;
-
-	link.href = URL.createObjectURL(blob);
-
-	if(oldSrc) URL.revokeObjectURL(oldSrc);
-}
-
-
-/***/ }),
-/* 38 */
+/* 39 */
 /***/ (function(module, exports) {
 
 
@@ -21589,7 +21843,52 @@ module.exports = function (css) {
 
 
 /***/ }),
-/* 39 */
+/* 40 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(41);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// Prepare cssTransformation
+var transform;
+
+var options = {"hmr":true}
+options.transform = transform
+// add the styles to the DOM
+var update = __webpack_require__(22)(content, options);
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../node_modules/css-loader/index.js!./style.css", function() {
+			var newContent = require("!!../../node_modules/css-loader/index.js!./style.css");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 41 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(21)(false);
+// imports
+
+
+// module
+exports.push([module.i, "html, body {\n    margin: 0;\n    font-family: 'Roboto', Arial, sans-serif;\n    font-size: 1.2em;\n}\n  \n#page-numbers {    \n    list-style: none;\n    display: flex;\n}\n  \n#page-numbers > li {\n    margin-right: 0.3em;\n    color: blue;\n    user-select: none;\n    cursor: pointer;\n}", ""]);
+
+// exports
+
+
+/***/ }),
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21597,7 +21896,7 @@ module.exports = function (css) {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = __webpack_require__(1);
+var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -21605,7 +21904,23 @@ var _reactDom = __webpack_require__(2);
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
+var _reactCookies = __webpack_require__(7);
+
+var _reactCookies2 = _interopRequireDefault(_reactCookies);
+
+var _App = __webpack_require__(6);
+
+var _App2 = _interopRequireDefault(_App);
+
+var _Rent_ = __webpack_require__(23);
+
+var _Rent_2 = _interopRequireDefault(_Rent_);
+
+__webpack_require__(8);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -21613,88 +21928,464 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var ImageTest = function (_React$Component) {
-    _inherits(ImageTest, _React$Component);
+var Reservation_history = function (_React$Component) {
+    _inherits(Reservation_history, _React$Component);
 
-    function ImageTest(props) {
-        _classCallCheck(this, ImageTest);
+    function Reservation_history(props) {
+        _classCallCheck(this, Reservation_history);
 
-        var _this = _possibleConstructorReturn(this, (ImageTest.__proto__ || Object.getPrototypeOf(ImageTest)).call(this, props));
+        var _this = _possibleConstructorReturn(this, (Reservation_history.__proto__ || Object.getPrototypeOf(Reservation_history)).call(this, props));
+
+        _this.handleLoad = _this.handleLoad.bind(_this);
 
         _this.state = {
-            url: '',
-            formdata: ''
+            image: [],
+            car_number: [],
+            car_type: [],
+            car_name: [],
+            fuel: [],
+            color: [],
+            distance: [],
+            few: [],
+            currentPage: '',
+            count: '',
+            returned: 'ready'
         };
+
+        _this.handleClick = _this.handleClick.bind(_this);
         return _this;
     }
 
-    _createClass(ImageTest, [{
-        key: 'fileChange',
-        value: function fileChange(e) {
-            var formData = new FormData();
-            var data = e.currentTarget.files;
-
-            for (var name in data) {
-                formData.append(name, data[name]);
-                console.log(name + ", " + e.currentTarget.files[name]);
-            }
-
-            this.setState({ formdata: formData });
+    _createClass(Reservation_history, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            this.submitGit();
         }
     }, {
-        key: 'setUpload',
-        value: function setUpload() {
-            var _this2 = this;
-
-            var PATH = "http://localhost:5000/public/upload_image/";
-
-            fetch('/upload_image', {
-                method: 'POST',
-                body: this.state.formdata
-            }).then(function (response) {
-                return response.json();
-            }).then(function (json) {
-                _this2.setState({ url: PATH + json.url });
+        key: 'handleLoad',
+        value: function handleLoad() {
+            this.submitGit();
+        }
+    }, {
+        key: 'handleClick',
+        value: function handleClick(event) {
+            this.setState({
+                currentPage: Number(event.target.id)
             });
         }
     }, {
-        key: 'UploadCheck',
-        value: function UploadCheck(e) {
-            /*if(this.state.file==""){
-                alert("파일을 선택해주세요.");
-                return;
-            }*/
+        key: 'list_reservation',
+        value: function list_reservation(opts) {
+            var _this2 = this;
 
-            if (this.state.formdata == "") {
-                alert("파일을 선택해주세요.");
-                return;
-            }
+            fetch('/reservation_history', {
+                method: 'POST',
+                headers: {
+                    "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+                },
+                body: "form=" + JSON.stringify(opts)
+            }).then(function (response) {
+                return response.json();
+            }).then(function (json) {
+                _this2.setState({ result: json.result });
+            }).then(function () {
+                this.setState({ iamge: [] });
+                this.setState({ car_number: [] });
+                this.setState({ car_name: [] });
+                this.setState({ fuel: [] });
+                this.setState({ color: [] });
+                this.setState({ distance: [] });
+                this.setState({ few: [] });
 
-            this.setUpload();
+                for (var count = 0; this.state.result[count] != null; count++) {
+                    this.setState({ image: this.state.image.concat(this.state.result[count]["image"]) });
+                    this.setState({ car_number: this.state.car_number.concat(this.state.result[count]["car_number"]) });
+                    this.setState({ car_name: this.state.car_name.concat(this.state.result[count]["car_name"]) });
+                    this.setState({ fuel: this.state.fuel.concat(this.state.result[count]["fuel"]) });
+                    this.setState({ color: this.state.color.concat(this.state.result[count]["color"]) });
+                    this.setState({ distance: this.state.distance.concat(this.state.result[count]["distance"]) });
+                    this.setState({ few: this.state.few.concat(this.state.result[count]["few"]) });
+                }
+                this.setState({ count: count });
+
+                console.log("reservation history count : ", count);
+            }.bind(this));
+        }
+    }, {
+        key: 'submitGit',
+        value: function submitGit() {
+            this.list_reservation({
+                email: _reactCookies2.default.load('email'),
+                currentPage: this.state.currentPage
+            });
+        }
+    }, {
+        key: 'click_home',
+        value: function click_home() {
+            this.setState({ returned: 'home' });
+        }
+    }, {
+        key: 'click_rent',
+        value: function click_rent() {
+            this.setState({ returned: 'rent' });
+        }
+    }, {
+        key: 'log_out',
+        value: function log_out() {
+            _reactCookies2.default.remove('name', { path: '/' });
+            _reactCookies2.default.remove('username', { path: '/' });
+            _reactCookies2.default.remove('reserves', { path: '/' });
+            _reactCookies2.default.remove('email', { path: '/' });
+            window.location.reload();
         }
     }, {
         key: 'render',
         value: function render() {
-            return _react2.default.createElement(
+            var _this3 = this;
+
+            var pageNumbers = [];
+            for (var i = 1; i <= Math.floor(this.state.count / 5) + 1; i++) {
+                pageNumbers.push(i);
+                console.log("pagenumber push : ", i, " | count : ", this.state.count);
+            }
+
+            var renderPageNUmbers = pageNumbers.map(function (number) {
+                return _react2.default.createElement(
+                    'li',
+                    _defineProperty({ key: number, id: number, onClick: _this3.handleClick }, 'onClick', _this3.submitGit.bind(_this3)),
+                    number
+                );
+            });
+
+            var noneStyle = {
+                display: 'none'
+            };
+            var blockStyle = {};
+
+            var reservation_history_form = _react2.default.createElement(
                 'div',
                 null,
-                _react2.default.createElement('input', { type: 'file', onChange: this.fileChange.bind(this), name: 'uploadfile' }),
-                _react2.default.createElement('input', { type: 'hidden', name: 'token', value: '{{.}}' }),
                 _react2.default.createElement(
-                    'button',
-                    { onClick: this.UploadCheck.bind(this) },
-                    'Upload'
+                    'div',
+                    { className: 'logo', onClick: this.click_home.bind(this) },
+                    '\uB80C\uD130\uCE74'
                 ),
-                _react2.default.createElement('img', { src: this.state.url }),
-                _react2.default.createElement('br', null)
+                _react2.default.createElement(
+                    'div',
+                    { className: 'menu' },
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu-item', onClick: this.click_home.bind(this) },
+                        ' \uD648 '
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu-item', onClick: this.click_rent.bind(this) },
+                        ' \uB80C\uD130\uCE74 \uC608\uC57D '
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu-item', onClick: this.log_out.bind(this) },
+                        ' \uB85C\uADF8\uC544\uC6C3 '
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu-item' },
+                        ' \uC608\uC57D \uBC0F \uC774\uC6A9 \uB0B4\uC5ED '
+                    )
+                ),
+                _react2.default.createElement(
+                    'table',
+                    null,
+                    _react2.default.createElement(
+                        'tbody',
+                        null,
+                        _react2.default.createElement(
+                            'tr',
+                            { style: this.state.image[0] == null ? noneStyle : blockStyle },
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                '\uC774\uBBF8\uC9C0'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                '\uCC28\uB7C9 \uBC88\uD638'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                '\uCC28\uB7C9 \uC774\uB984'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                '\uCC28\uB7C9 \uC720\uD615'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                '\uC5F0\uB8CC'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                '\uC0C9\uC0C1'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                '\uC8FC\uD589\uAC70\uB9AC'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                'n\uC778\uC2B9'
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            { style: this.state.image[0] == null ? noneStyle : blockStyle },
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement('img', { src: this.state.image[0], width: '230', height: '130' })
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                this.state.car_number[0]
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                this.state.car_name[0]
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                this.state.car_type[0]
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                this.state.fuel[0]
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                this.state.color[0]
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                this.state.distance[0]
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                this.state.few[0]
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            { style: this.state.image[1] == null ? noneStyle : blockStyle },
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement('img', { src: this.state.image[1], width: '230', height: '130' })
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                this.state.car_number[1]
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                this.state.car_name[1]
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                this.state.car_type[1]
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                this.state.fuel[1]
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                this.state.color[1]
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                this.state.distance[1]
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                this.state.few[1]
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            { style: this.state.image[2] == null ? noneStyle : blockStyle },
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement('img', { src: this.state.image[2], width: '230', height: '130' })
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                this.state.car_number[2]
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                this.state.car_name[2]
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                this.state.car_type[2]
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                this.state.fuel[2]
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                this.state.color[2]
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                this.state.distance[2]
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                this.state.few[2]
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            { style: this.state.image[3] == null ? noneStyle : blockStyle },
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement('img', { src: this.state.image[3], width: '230', height: '130' })
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                this.state.car_number[3]
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                this.state.car_name[3]
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                this.state.car_type[3]
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                this.state.fuel[3]
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                this.state.color[3]
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                this.state.distance[3]
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                this.state.few[3]
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            { style: this.state.image[4] == null ? noneStyle : blockStyle },
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement('img', { src: this.state.image[4], width: '230', height: '130' })
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                this.state.car_number[4]
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                this.state.car_name[4]
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                this.state.car_type[4]
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                this.state.fuel[4]
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                this.state.color[4]
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                this.state.distance[4]
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                this.state.few[4]
+                            )
+                        )
+                    )
+                ),
+                _react2.default.createElement(
+                    'ul',
+                    { id: 'page-numbers' },
+                    renderPageNUmbers
+                )
             );
+
+            if (this.state.returned == "ready") {
+                this.setState.returned = "reservation";
+                return reservation_history_form;
+            } else {
+                return reservation_history_form;
+            }
         }
     }]);
 
-    return ImageTest;
+    return Reservation_history;
 }(_react2.default.Component);
 
-module.exports = ImageTest;
+module.exports = Reservation_history;
 
 /***/ })
 /******/ ]);

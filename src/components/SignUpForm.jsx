@@ -2,7 +2,9 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 
 import SignInForm from './SignInForm.jsx'
+import ImageTest from './ImageTest.jsx'
 import App from './App';
+import './Header.css'
 
 class SignUpForm extends React.Component {
     constructor(props){
@@ -29,7 +31,7 @@ class SignUpForm extends React.Component {
             date_if_issue: '',
             aptitude_test: '',
             result: '',
-            signed: 'f'
+            signed: 'up'
         };
     }
 
@@ -46,7 +48,7 @@ class SignUpForm extends React.Component {
         .then(function(){
             if(this.state.result == true){
                 alert("회원가입에 성공하였습니다.");
-                this.setState({signed:'s'});
+                this.setState({signed:'in'});
             }else{
                 alert("만들어놓은 아이디가 있는지 확인해주시길 바랍니다.");
             }
@@ -165,6 +167,16 @@ class SignUpForm extends React.Component {
         }
     }*/
 
+    click_sign_in(){
+        this.setState({signed:'in'});
+    }
+    click_ImageTest(){
+        this.setState({signed:'image'});
+    }
+    click_home(){
+        this.setState({signed:'home'});
+    }
+
     idOverlap(username){
         if(this.state.username.length<4 || this.state.username.length>15){
             alert("아이디를 5자리 ~ 15자리 이내로 입력해주세요.")
@@ -228,10 +240,19 @@ class SignUpForm extends React.Component {
 
         this.submitGit();
     }
-
+    
     render(){
         let sign_up_Form = (
             <div>
+                <div className="logo">
+                    렌터카
+                </div>
+                <div className="menu">
+                    <div className="menu-item" onClick={this.click_home.bind(this)}> 홈 </div>                                    
+                    <div className="menu-item" onClick={this.click_sign_in.bind(this)}> 로그인 </div>
+                    <div className="menu-item"> 회원가입 </div>
+                    <div className="menu-item" onClick={this.click_ImageTest.bind(this)}> 사진테스트 </div>
+                </div>
                 <p>
                     <label>이름 </label>
                     <input type="text" name="name" placeholder="이름을 입력해주십시오" onChange={this.nameChange.bind(this)}/>
@@ -302,12 +323,23 @@ class SignUpForm extends React.Component {
             <SignInForm />
         )
 
-        if(this.state.signed == 'f'){
-            return sign_up_Form;
-        }else{
-            return sign_up_finish_Form;
-        }
+        let imageTest_Form = (
+            <ImageTest />
+        )
 
+        let homeForm = (
+            <App />
+        )
+
+        if(this.state.signed == 'up'){
+            return sign_up_Form;
+        }else if(this.state.signed == 'in'){
+            return sign_up_finish_Form;
+        }else if(this.state.signed == 'home'){
+            return homeForm;
+        }else{
+            return imageTest_Form;
+        }
     }
 }
 

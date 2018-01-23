@@ -68,6 +68,17 @@ type Rent1 struct {
 	car_number string
 }
 
+type Reservation_History struct {
+	image string
+	car_number string
+	car_name string
+	car_type string
+	fuel string
+	color string
+	distance string
+	few string
+}
+
 // func FloatToString(input_num float64) string {
 //     // to convert a float number to a string
 //     return strconv.FormatFloat(input_num, 'f', 6, 64)
@@ -497,7 +508,7 @@ func main() {
 				log.Fatal(err)
 			}
 			
-			if(count < (int(start_page.(float64))-1) * 5){
+			if count < (int(start_page.(float64))-1) * 5 {
 				count++;
 				continue;
 			}
@@ -624,6 +635,87 @@ func main() {
 
 		c.JSON(200, gin.H {
 			"result": true,
+		})
+	})
+
+	router.POST("/reservation_history", func(c *gin.Context){
+		form := c.PostForm("form")
+
+		var raw map[string]interface{}
+		json.Unmarshal([]byte(form), &raw)
+
+		email := raw["email"]
+		currentPage := raw["currentPage"]
+
+		count := 0
+		index := 0
+
+		var result map[int]map[string]string = map[int]map[string]string{}
+		var car_number string
+		var reservation Reservation_History
+
+		rows, err := db.Query("SELECT car_number FROM reservation where email = ?", email)
+
+		log.Println("LOG:: email = ", email)
+
+		if err != nil {
+			log.Fatal(err)
+		}
+		defer rows.Close()
+
+		for rows.Next(){
+			err := rows.Scan(&car_number)
+			log.Println("LOG:: car_number = ", car_number)
+
+			if err != nil{
+				log.Fatal(err)
+			}
+
+			result[index] = map[string]string{}
+
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			currentPage_number, err := strconv.Atoi(currentPage.(string))
+
+			if count < (currentPage_number -1) * 5 {
+				count++;
+				continue;
+			}
+
+			err = db.QueryRow("SELECT image, car_number, name, type, fuel, color, distance, few FROM car WHERE car_number = ?", car_number).Scan(&reservation.image, &reservation.car_number, &reservation.car_name, &reservation.car_type, &reservation.fuel, &reservation.color, &reservation.distance, &reservation.few)
+		
+			switch{
+			case err == sql.ErrNoRows:
+				log.Println("LOG:: No Rows")
+				count++;
+				continue;
+			case err != nil:
+				log.Println(err)
+			}
+
+			log.Println("LOG :: index = ", index, " | count = ", count, " | image = ", reservation.image)
+
+			err = db.QueryRow("SELECT changed_filename FROM image where original_filename = ?", reservation.image).Scan(&reservation.image)
+
+			result[index]["image"] = reservation.image
+			result[index]["car_number"] = reservation.car_number
+			result[index]["car_name"] = reservation.car_name
+			result[index]["car_type"] = reservation.car_type
+			result[index]["fuel"] = reservation.fuel
+			result[index]["color"] = reservation.color
+			result[index]["distance"] = reservation.distance
+			result[index]["few"] = reservation.few
+
+			count++
+			index++
+		}
+
+		log.Println("result : ", result);
+
+		c.JSON(200, gin.H{
+			"result": result,
 		})
 	})
 
