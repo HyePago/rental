@@ -1,5 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import cookie from "react-cookies"
 
 import SignInForm from './SignInForm.jsx'
 import ImageTest from './ImageTest.jsx'
@@ -31,7 +32,9 @@ class SignUpForm extends React.Component {
             date_if_issue: '',
             aptitude_test: '',
             result: '',
-            signed: 'up'
+            signed: 'up',
+            certification_number: '',
+            input_certification_number: '',
         };
     }
 
@@ -49,11 +52,37 @@ class SignUpForm extends React.Component {
             if(this.state.result == true){
                 alert("회원가입에 성공하였습니다.");
                 this.setState({signed:'in'});
+            }else if(this.state.result == "email"){
+                alert("인증번호를 다시 한 번 확인해주시길 바랍니다.");
             }else{
                 alert("만들어놓은 아이디가 있는지 확인해주시길 바랍니다.");
             }
         }.bind(this));
-       // .then((json) => { this.setState({ email: json.user });});
+    }
+
+    emailAuthentication(opts){
+        fetch('/email', {
+            method: 'POST',
+            headers: {
+                "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+            },
+            body: "form="+JSON.stringify(opts)
+        })
+        .then((response) => { return response.json(); })
+        //.then((json) => { this.setState({result:json.result}); })
+    }
+
+    submitGit_email(){
+        var min = 100000;
+        var max = 999999;
+        var certification_number = parseInt(min + (Math.random() * (max-min)));
+        
+        this.setState({certification_number:certification_number});
+
+        this.emailAuthentication({
+            email:this.state.email,
+            certification_number:certification_number
+        });
     }
 
     submitGit(){
@@ -67,7 +96,8 @@ class SignUpForm extends React.Component {
             license_type: this.state.license_type,
             license_number: this.state.license_number_0+""+this.state.license_number_1+""+this.state.license_number_2+""+this.state.license_number_3,
             date_if_issue: this.state.date_if_issue,
-            aptitude_test: this.state.aptitude_test
+            aptitude_test: this.state.aptitude_test,
+            certification_number: this.state.input_certification_number
         });
     }
 
@@ -78,6 +108,8 @@ class SignUpForm extends React.Component {
         var eng = pw.search(/[a-z]/ig);
         var spe = pw.search(/[`~!@@#$%^&*|₩₩₩'₩";:₩/?]/gi);
         var blank_pattern = /[\s]/g;
+
+        console.log("pw1 = ", pw);
 
         if(pw.length<8 || pw.length>16){
             this.setState({password_feedback:"9자리 ~ 16자리 이내로 입력해주세요."});
@@ -114,6 +146,7 @@ class SignUpForm extends React.Component {
     }
     passwordChange(e){
         this.setState({password:e.target.value});
+        console.log(this.state.password);
         this.chkPwd();
     }
     password_confirmChange(e){
@@ -159,6 +192,9 @@ class SignUpForm extends React.Component {
         var date_if = e.target.value;
         date_if = date_if.replace(/\-/g,'');
         this.setState({aptitude_test:date_if});
+    }
+    input_certification_numberChange(e){
+        this.setState({input_certification_number:e.target.value});
     }
 
    /* maxLengthCheck(object){
@@ -240,6 +276,8 @@ class SignUpForm extends React.Component {
 
         this.submitGit();
     }
+
+    //&nbsp;&nbsp;<span>{this.state.password_confirm_feedback}</span>
     
     render(){
         let sign_up_Form = (
@@ -267,10 +305,14 @@ class SignUpForm extends React.Component {
                     <br/>
                     <label>비밀번호 확인 </label>
                     <input type="password" name="password_confirm" maxLength={16} size="16" onChange={this.password_confirmChange.bind(this)}placeholder="비밀번호를 입력해주세요"/>
-                    &nbsp;&nbsp;<span>{this.state.password_confirm_feedback}</span>
                     <br />
                     <label>이메일 </label>
                     <input type="text" name="email" onChange={this.emailChange.bind(this)} placeholder="예) hyejin@gmail.com"/>
+                    <button onClick={this.submitGit_email.bind(this)}> 인증번호 전송 </button>
+                    <br />
+                    <label>인증번호 </label>
+                    <input type="text" name="certification_number" placeholer="인증번호" onChange={this.input_certification_numberChange.bind(this)}/>
+                    <br />
                     <br />
                     <label>전화번호 </label>
                     <select onChange={this.phone_0Change.bind(this)}>
@@ -343,4 +385,4 @@ class SignUpForm extends React.Component {
     }
 }
 
-module.exports = SignUpForm;
+export default SignUpForm;

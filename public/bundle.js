@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 24);
+/******/ 	return __webpack_require__(__webpack_require__.s = 25);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -71,15 +71,61 @@
 /* WEBPACK VAR INJECTION */(function(process) {
 
 if (process.env.NODE_ENV === 'production') {
-  module.exports = __webpack_require__(25);
-} else {
   module.exports = __webpack_require__(26);
+} else {
+  module.exports = __webpack_require__(27);
 }
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
 /***/ }),
 /* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(process) {
+
+function checkDCE() {
+  /* global __REACT_DEVTOOLS_GLOBAL_HOOK__ */
+  if (
+    typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ === 'undefined' ||
+    typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.checkDCE !== 'function'
+  ) {
+    return;
+  }
+  if (process.env.NODE_ENV !== 'production') {
+    // This branch is unreachable because this function is only called
+    // in production, but the condition is true only in development.
+    // Therefore if the branch is still here, dead code elimination wasn't
+    // properly applied.
+    // Don't change the message. React DevTools relies on it. Also make sure
+    // this message doesn't occur elsewhere in this function, or it will cause
+    // a false positive.
+    throw new Error('^_^');
+  }
+  try {
+    // Verify that the code above has been dead code eliminated (DCE'd).
+    __REACT_DEVTOOLS_GLOBAL_HOOK__.checkDCE(checkDCE);
+  } catch (err) {
+    // DevTools shouldn't crash React, no matter what.
+    // We should still report in case we break this code.
+    console.error(err);
+  }
+}
+
+if (process.env.NODE_ENV === 'production') {
+  // DCE check should happen before ReactDOM bundle executes so that
+  // DevTools can report bad minification during injection.
+  checkDCE();
+  module.exports = __webpack_require__(29);
+} else {
+  module.exports = __webpack_require__(32);
+}
+
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
+
+/***/ }),
+/* 2 */
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -269,53 +315,217 @@ process.umask = function() { return 0; };
 
 
 /***/ }),
-/* 2 */
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(40);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// Prepare cssTransformation
+var transform;
+
+var options = {"hmr":true}
+options.transform = transform
+// add the styles to the DOM
+var update = __webpack_require__(22)(content, options);
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../node_modules/css-loader/index.js!./Header.css", function() {
+			var newContent = require("!!../../node_modules/css-loader/index.js!./Header.css");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(process) {
 
-function checkDCE() {
-  /* global __REACT_DEVTOOLS_GLOBAL_HOOK__ */
-  if (
-    typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ === 'undefined' ||
-    typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.checkDCE !== 'function'
-  ) {
-    return;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+exports.load = load;
+exports.loadAll = loadAll;
+exports.select = select;
+exports.save = save;
+exports.remove = remove;
+exports.setRawCookie = setRawCookie;
+exports.plugToRequest = plugToRequest;
+
+var _cookie = __webpack_require__(37);
+
+var _cookie2 = _interopRequireDefault(_cookie);
+
+var _objectAssign = __webpack_require__(6);
+
+var _objectAssign2 = _interopRequireDefault(_objectAssign);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var IS_NODE = typeof document === 'undefined' || process && process.env && process.env.NODE_ENV === 'test';
+var _rawCookie = {};
+var _res = void 0;
+
+function _isResWritable() {
+  return _res && !_res.headersSent;
+}
+
+function load(name, doNotParse) {
+  var cookies = IS_NODE ? _rawCookie : _cookie2.default.parse(document.cookie);
+  var cookieVal = cookies && cookies[name];
+
+  if (typeof doNotParse === 'undefined') {
+    doNotParse = !cookieVal || cookieVal[0] !== '{' && cookieVal[0] !== '[';
   }
-  if (process.env.NODE_ENV !== 'production') {
-    // This branch is unreachable because this function is only called
-    // in production, but the condition is true only in development.
-    // Therefore if the branch is still here, dead code elimination wasn't
-    // properly applied.
-    // Don't change the message. React DevTools relies on it. Also make sure
-    // this message doesn't occur elsewhere in this function, or it will cause
-    // a false positive.
-    throw new Error('^_^');
+
+  if (!doNotParse) {
+    try {
+      cookieVal = JSON.parse(cookieVal);
+    } catch (err) {
+      // Not serialized object
+    }
   }
-  try {
-    // Verify that the code above has been dead code eliminated (DCE'd).
-    __REACT_DEVTOOLS_GLOBAL_HOOK__.checkDCE(checkDCE);
-  } catch (err) {
-    // DevTools shouldn't crash React, no matter what.
-    // We should still report in case we break this code.
-    console.error(err);
+
+  return cookieVal;
+}
+
+function loadAll(doNotParse) {
+  var cookies = IS_NODE ? _rawCookie : _cookie2.default.parse(document.cookie);
+  var cookieVal = cookies;
+
+  if (typeof doNotParse === 'undefined') {
+    doNotParse = !cookieVal || cookieVal[0] !== '{' && cookieVal[0] !== '[';
+  }
+
+  if (!doNotParse) {
+    try {
+      cookieVal = JSON.parse(cookieVal);
+    } catch (err) {
+      // Not serialized object
+    }
+  }
+
+  return cookieVal;
+}
+
+function select(regex) {
+  var cookies = IS_NODE ? _rawCookie : _cookie2.default.parse(document.cookie);
+
+  if (!cookies) {
+    return {};
+  }
+
+  if (!regex) {
+    return cookies;
+  }
+
+  return Object.keys(cookies).reduce(function (accumulator, name) {
+    if (!regex.test(name)) {
+      return accumulator;
+    }
+
+    var newCookie = {};
+    newCookie[name] = cookies[name];
+    return (0, _objectAssign2.default)({}, accumulator, newCookie);
+  }, {});
+}
+
+function save(name, val, opt) {
+  _rawCookie[name] = val;
+
+  // Allow you to work with cookies as objects.
+  if ((typeof val === 'undefined' ? 'undefined' : _typeof(val)) === 'object') {
+    _rawCookie[name] = JSON.stringify(val);
+  }
+
+  // Cookies only work in the browser
+  if (!IS_NODE) {
+    document.cookie = _cookie2.default.serialize(name, _rawCookie[name], opt);
+  }
+
+  if (_isResWritable() && _res.cookie) {
+    _res.cookie(name, val, opt);
   }
 }
 
-if (process.env.NODE_ENV === 'production') {
-  // DCE check should happen before ReactDOM bundle executes so that
-  // DevTools can report bad minification during injection.
-  checkDCE();
-  module.exports = __webpack_require__(28);
-} else {
-  module.exports = __webpack_require__(31);
+function remove(name, opt) {
+  delete _rawCookie[name];
+
+  if (typeof opt === 'undefined') {
+    opt = {};
+  } else if (typeof opt === 'string') {
+    // Will be deprecated in future versions
+    opt = { path: opt };
+  } else {
+    // Prevent mutation of opt below
+    opt = (0, _objectAssign2.default)({}, opt);
+  }
+
+  if (typeof document !== 'undefined') {
+    opt.expires = new Date(1970, 1, 1, 0, 0, 1);
+    opt.maxAge = 0;
+    document.cookie = _cookie2.default.serialize(name, '', opt);
+  }
+
+  if (_isResWritable() && _res.clearCookie) {
+    _res.clearCookie(name, opt);
+  }
 }
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
+function setRawCookie(rawCookie) {
+  if (rawCookie) {
+    _rawCookie = _cookie2.default.parse(rawCookie);
+  } else {
+    _rawCookie = {};
+  }
+}
+
+function plugToRequest(req, res) {
+  if (req.cookie) {
+    _rawCookie = req.cookie;
+  } else if (req.cookies) {
+    _rawCookie = req.cookies;
+  } else if (req.headers && req.headers.cookie) {
+    setRawCookie(req.headers.cookie);
+  } else {
+    _rawCookie = {};
+  }
+
+  _res = res;
+
+  return function unplug() {
+    _res = null;
+    _rawCookie = {};
+  };
+}
+
+exports.default = {
+  setRawCookie: setRawCookie,
+  load: load,
+  loadAll: loadAll,
+  select: select,
+  save: save,
+  remove: remove,
+  plugToRequest: plugToRequest
+};
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
 /***/ }),
-/* 3 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -357,7 +567,7 @@ emptyFunction.thatReturnsArgument = function (arg) {
 module.exports = emptyFunction;
 
 /***/ }),
-/* 4 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -454,7 +664,115 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 
 
 /***/ }),
-/* 5 */
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactDom = __webpack_require__(1);
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var ImageTest = function (_React$Component) {
+    _inherits(ImageTest, _React$Component);
+
+    function ImageTest(props) {
+        _classCallCheck(this, ImageTest);
+
+        var _this = _possibleConstructorReturn(this, (ImageTest.__proto__ || Object.getPrototypeOf(ImageTest)).call(this, props));
+
+        _this.state = {
+            url: '',
+            formdata: ''
+        };
+        return _this;
+    }
+
+    _createClass(ImageTest, [{
+        key: 'fileChange',
+        value: function fileChange(e) {
+            var formData = new FormData();
+            var data = e.currentTarget.files;
+
+            for (var name in data) {
+                formData.append(name, data[name]);
+                console.log(name + ", " + e.currentTarget.files[name]);
+            }
+
+            this.setState({ formdata: formData });
+        }
+    }, {
+        key: 'setUpload',
+        value: function setUpload() {
+            var _this2 = this;
+
+            var PATH = "http://localhost:5000/public/upload_image/";
+
+            fetch('/upload_image', {
+                method: 'POST',
+                body: this.state.formdata
+            }).then(function (response) {
+                return response.json();
+            }).then(function (json) {
+                _this2.setState({ url: PATH + json.url });
+            });
+        }
+    }, {
+        key: 'UploadCheck',
+        value: function UploadCheck(e) {
+            /*if(this.state.file==""){
+                alert("파일을 선택해주세요.");
+                return;
+            }*/
+
+            if (this.state.formdata == "") {
+                alert("파일을 선택해주세요.");
+                return;
+            }
+
+            this.setUpload();
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            return _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement('input', { type: 'file', onChange: this.fileChange.bind(this), name: 'uploadfile' }),
+                _react2.default.createElement('input', { type: 'hidden', name: 'token', value: '{{.}}' }),
+                _react2.default.createElement(
+                    'button',
+                    { onClick: this.UploadCheck.bind(this) },
+                    'Upload'
+                ),
+                _react2.default.createElement('img', { src: this.state.url }),
+                _react2.default.createElement('br', null)
+            );
+        }
+    }]);
+
+    return ImageTest;
+}(_react2.default.Component);
+
+module.exports = ImageTest;
+
+/***/ }),
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -475,10 +793,10 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 module.exports = emptyObject;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
 /***/ }),
-/* 6 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -494,23 +812,23 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactDom = __webpack_require__(2);
+var _reactDom = __webpack_require__(1);
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
-var _reactCookies = __webpack_require__(7);
+var _reactCookies = __webpack_require__(4);
 
 var _reactCookies2 = _interopRequireDefault(_reactCookies);
 
-var _SendEmail = __webpack_require__(37);
+var _SendEmail = __webpack_require__(38);
 
 var _SendEmail2 = _interopRequireDefault(_SendEmail);
 
-var _SignUpForm = __webpack_require__(19);
+var _SignUpForm = __webpack_require__(10);
 
 var _SignUpForm2 = _interopRequireDefault(_SignUpForm);
 
-var _SignInForm = __webpack_require__(20);
+var _SignInForm = __webpack_require__(11);
 
 var _SignInForm2 = _interopRequireDefault(_SignInForm);
 
@@ -518,15 +836,15 @@ var _Rent_ = __webpack_require__(23);
 
 var _Rent_2 = _interopRequireDefault(_Rent_);
 
-var _ImageTest = __webpack_require__(11);
+var _ImageTest = __webpack_require__(7);
 
 var _ImageTest2 = _interopRequireDefault(_ImageTest);
 
-var _Reservation_history = __webpack_require__(42);
+var _Reservation_history = __webpack_require__(24);
 
 var _Reservation_history2 = _interopRequireDefault(_Reservation_history);
 
-__webpack_require__(8);
+__webpack_require__(3);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -727,350 +1045,15 @@ _reactDom2.default.render(_react2.default.createElement(
 exports.default = App;
 
 /***/ }),
-/* 7 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(process) {
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-exports.load = load;
-exports.loadAll = loadAll;
-exports.select = select;
-exports.save = save;
-exports.remove = remove;
-exports.setRawCookie = setRawCookie;
-exports.plugToRequest = plugToRequest;
-
-var _cookie = __webpack_require__(36);
-
-var _cookie2 = _interopRequireDefault(_cookie);
-
-var _objectAssign = __webpack_require__(4);
-
-var _objectAssign2 = _interopRequireDefault(_objectAssign);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var IS_NODE = typeof document === 'undefined' || process && process.env && process.env.NODE_ENV === 'test';
-var _rawCookie = {};
-var _res = void 0;
-
-function _isResWritable() {
-  return _res && !_res.headersSent;
-}
-
-function load(name, doNotParse) {
-  var cookies = IS_NODE ? _rawCookie : _cookie2.default.parse(document.cookie);
-  var cookieVal = cookies && cookies[name];
-
-  if (typeof doNotParse === 'undefined') {
-    doNotParse = !cookieVal || cookieVal[0] !== '{' && cookieVal[0] !== '[';
-  }
-
-  if (!doNotParse) {
-    try {
-      cookieVal = JSON.parse(cookieVal);
-    } catch (err) {
-      // Not serialized object
-    }
-  }
-
-  return cookieVal;
-}
-
-function loadAll(doNotParse) {
-  var cookies = IS_NODE ? _rawCookie : _cookie2.default.parse(document.cookie);
-  var cookieVal = cookies;
-
-  if (typeof doNotParse === 'undefined') {
-    doNotParse = !cookieVal || cookieVal[0] !== '{' && cookieVal[0] !== '[';
-  }
-
-  if (!doNotParse) {
-    try {
-      cookieVal = JSON.parse(cookieVal);
-    } catch (err) {
-      // Not serialized object
-    }
-  }
-
-  return cookieVal;
-}
-
-function select(regex) {
-  var cookies = IS_NODE ? _rawCookie : _cookie2.default.parse(document.cookie);
-
-  if (!cookies) {
-    return {};
-  }
-
-  if (!regex) {
-    return cookies;
-  }
-
-  return Object.keys(cookies).reduce(function (accumulator, name) {
-    if (!regex.test(name)) {
-      return accumulator;
-    }
-
-    var newCookie = {};
-    newCookie[name] = cookies[name];
-    return (0, _objectAssign2.default)({}, accumulator, newCookie);
-  }, {});
-}
-
-function save(name, val, opt) {
-  _rawCookie[name] = val;
-
-  // Allow you to work with cookies as objects.
-  if ((typeof val === 'undefined' ? 'undefined' : _typeof(val)) === 'object') {
-    _rawCookie[name] = JSON.stringify(val);
-  }
-
-  // Cookies only work in the browser
-  if (!IS_NODE) {
-    document.cookie = _cookie2.default.serialize(name, _rawCookie[name], opt);
-  }
-
-  if (_isResWritable() && _res.cookie) {
-    _res.cookie(name, val, opt);
-  }
-}
-
-function remove(name, opt) {
-  delete _rawCookie[name];
-
-  if (typeof opt === 'undefined') {
-    opt = {};
-  } else if (typeof opt === 'string') {
-    // Will be deprecated in future versions
-    opt = { path: opt };
-  } else {
-    // Prevent mutation of opt below
-    opt = (0, _objectAssign2.default)({}, opt);
-  }
-
-  if (typeof document !== 'undefined') {
-    opt.expires = new Date(1970, 1, 1, 0, 0, 1);
-    opt.maxAge = 0;
-    document.cookie = _cookie2.default.serialize(name, '', opt);
-  }
-
-  if (_isResWritable() && _res.clearCookie) {
-    _res.clearCookie(name, opt);
-  }
-}
-
-function setRawCookie(rawCookie) {
-  if (rawCookie) {
-    _rawCookie = _cookie2.default.parse(rawCookie);
-  } else {
-    _rawCookie = {};
-  }
-}
-
-function plugToRequest(req, res) {
-  if (req.cookie) {
-    _rawCookie = req.cookie;
-  } else if (req.cookies) {
-    _rawCookie = req.cookies;
-  } else if (req.headers && req.headers.cookie) {
-    setRawCookie(req.headers.cookie);
-  } else {
-    _rawCookie = {};
-  }
-
-  _res = res;
-
-  return function unplug() {
-    _res = null;
-    _rawCookie = {};
-  };
-}
-
-exports.default = {
-  setRawCookie: setRawCookie,
-  load: load,
-  loadAll: loadAll,
-  select: select,
-  save: save,
-  remove: remove,
-  plugToRequest: plugToRequest
-};
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
-
-/***/ }),
-/* 8 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(38);
-if(typeof content === 'string') content = [[module.i, content, '']];
-// Prepare cssTransformation
-var transform;
-
-var options = {"hmr":true}
-options.transform = transform
-// add the styles to the DOM
-var update = __webpack_require__(22)(content, options);
-if(content.locals) module.exports = content.locals;
-// Hot Module Replacement
-if(false) {
-	// When the styles change, update the <style> tags
-	if(!content.locals) {
-		module.hot.accept("!!../../node_modules/css-loader/index.js!./Header.css", function() {
-			var newContent = require("!!../../node_modules/css-loader/index.js!./Header.css");
-			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-			update(newContent);
-		});
-	}
-	// When the module is disposed, remove the <style> tags
-	module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 9 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(process) {/**
- * Copyright (c) 2013-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- */
-
-
-
-/**
- * Use invariant() to assert state which your program assumes to be true.
- *
- * Provide sprintf-style format (only %s is supported) and arguments
- * to provide information about what broke and what you were
- * expecting.
- *
- * The invariant message will be stripped in production, but the invariant
- * will remain to ensure logic does not differ in production.
- */
-
-var validateFormat = function validateFormat(format) {};
-
-if (process.env.NODE_ENV !== 'production') {
-  validateFormat = function validateFormat(format) {
-    if (format === undefined) {
-      throw new Error('invariant requires an error message argument');
-    }
-  };
-}
-
-function invariant(condition, format, a, b, c, d, e, f) {
-  validateFormat(format);
-
-  if (!condition) {
-    var error;
-    if (format === undefined) {
-      error = new Error('Minified exception occurred; use the non-minified dev environment ' + 'for the full error message and additional helpful warnings.');
-    } else {
-      var args = [a, b, c, d, e, f];
-      var argIndex = 0;
-      error = new Error(format.replace(/%s/g, function () {
-        return args[argIndex++];
-      }));
-      error.name = 'Invariant Violation';
-    }
-
-    error.framesToPop = 1; // we don't care about invariant's own frame
-    throw error;
-  }
-}
-
-module.exports = invariant;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
-
-/***/ }),
 /* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(process) {/**
- * Copyright (c) 2014-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- */
 
 
-
-var emptyFunction = __webpack_require__(3);
-
-/**
- * Similar to invariant but only logs a warning if the condition is not met.
- * This can be used to log issues in development environments in critical
- * paths. Removing the logging code for production environments will keep the
- * same logic and follow the same code paths.
- */
-
-var warning = emptyFunction;
-
-if (process.env.NODE_ENV !== 'production') {
-  var printWarning = function printWarning(format) {
-    for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-      args[_key - 1] = arguments[_key];
-    }
-
-    var argIndex = 0;
-    var message = 'Warning: ' + format.replace(/%s/g, function () {
-      return args[argIndex++];
-    });
-    if (typeof console !== 'undefined') {
-      console.error(message);
-    }
-    try {
-      // --- Welcome to debugging React ---
-      // This error was thrown as a convenience so that you can use this stack
-      // to find the callsite that caused this warning to fire.
-      throw new Error(message);
-    } catch (x) {}
-  };
-
-  warning = function warning(condition, format) {
-    if (format === undefined) {
-      throw new Error('`warning(condition, format, ...args)` requires a warning ' + 'message argument');
-    }
-
-    if (format.indexOf('Failed Composite propType: ') === 0) {
-      return; // Ignore CompositeComponent proptype check.
-    }
-
-    if (!condition) {
-      for (var _len2 = arguments.length, args = Array(_len2 > 2 ? _len2 - 2 : 0), _key2 = 2; _key2 < _len2; _key2++) {
-        args[_key2 - 2] = arguments[_key2];
-      }
-
-      printWarning.apply(undefined, [format].concat(args));
-    }
-  };
-}
-
-module.exports = warning;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
-
-/***/ }),
-/* 11 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -1078,504 +1061,27 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactDom = __webpack_require__(2);
+var _reactDom = __webpack_require__(1);
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _reactCookies = __webpack_require__(4);
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+var _reactCookies2 = _interopRequireDefault(_reactCookies);
 
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var ImageTest = function (_React$Component) {
-    _inherits(ImageTest, _React$Component);
-
-    function ImageTest(props) {
-        _classCallCheck(this, ImageTest);
-
-        var _this = _possibleConstructorReturn(this, (ImageTest.__proto__ || Object.getPrototypeOf(ImageTest)).call(this, props));
-
-        _this.state = {
-            url: '',
-            formdata: ''
-        };
-        return _this;
-    }
-
-    _createClass(ImageTest, [{
-        key: 'fileChange',
-        value: function fileChange(e) {
-            var formData = new FormData();
-            var data = e.currentTarget.files;
-
-            for (var name in data) {
-                formData.append(name, data[name]);
-                console.log(name + ", " + e.currentTarget.files[name]);
-            }
-
-            this.setState({ formdata: formData });
-        }
-    }, {
-        key: 'setUpload',
-        value: function setUpload() {
-            var _this2 = this;
-
-            var PATH = "http://localhost:5000/public/upload_image/";
-
-            fetch('/upload_image', {
-                method: 'POST',
-                body: this.state.formdata
-            }).then(function (response) {
-                return response.json();
-            }).then(function (json) {
-                _this2.setState({ url: PATH + json.url });
-            });
-        }
-    }, {
-        key: 'UploadCheck',
-        value: function UploadCheck(e) {
-            /*if(this.state.file==""){
-                alert("파일을 선택해주세요.");
-                return;
-            }*/
-
-            if (this.state.formdata == "") {
-                alert("파일을 선택해주세요.");
-                return;
-            }
-
-            this.setUpload();
-        }
-    }, {
-        key: 'render',
-        value: function render() {
-            return _react2.default.createElement(
-                'div',
-                null,
-                _react2.default.createElement('input', { type: 'file', onChange: this.fileChange.bind(this), name: 'uploadfile' }),
-                _react2.default.createElement('input', { type: 'hidden', name: 'token', value: '{{.}}' }),
-                _react2.default.createElement(
-                    'button',
-                    { onClick: this.UploadCheck.bind(this) },
-                    'Upload'
-                ),
-                _react2.default.createElement('img', { src: this.state.url }),
-                _react2.default.createElement('br', null)
-            );
-        }
-    }]);
-
-    return ImageTest;
-}(_react2.default.Component);
-
-module.exports = ImageTest;
-
-/***/ }),
-/* 12 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(process) {/**
- * Copyright (c) 2013-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-
-
-
-if (process.env.NODE_ENV !== 'production') {
-  var invariant = __webpack_require__(9);
-  var warning = __webpack_require__(10);
-  var ReactPropTypesSecret = __webpack_require__(27);
-  var loggedTypeFailures = {};
-}
-
-/**
- * Assert that the values match with the type specs.
- * Error messages are memorized and will only be shown once.
- *
- * @param {object} typeSpecs Map of name to a ReactPropType
- * @param {object} values Runtime values that need to be type-checked
- * @param {string} location e.g. "prop", "context", "child context"
- * @param {string} componentName Name of the component for error messages.
- * @param {?Function} getStack Returns the component stack.
- * @private
- */
-function checkPropTypes(typeSpecs, values, location, componentName, getStack) {
-  if (process.env.NODE_ENV !== 'production') {
-    for (var typeSpecName in typeSpecs) {
-      if (typeSpecs.hasOwnProperty(typeSpecName)) {
-        var error;
-        // Prop type validation may throw. In case they do, we don't want to
-        // fail the render phase where it didn't fail before. So we log it.
-        // After these have been cleaned up, we'll let them throw.
-        try {
-          // This is intentionally an invariant that gets caught. It's the same
-          // behavior as without this statement except with a better message.
-          invariant(typeof typeSpecs[typeSpecName] === 'function', '%s: %s type `%s` is invalid; it must be a function, usually from ' + 'the `prop-types` package, but received `%s`.', componentName || 'React class', location, typeSpecName, typeof typeSpecs[typeSpecName]);
-          error = typeSpecs[typeSpecName](values, typeSpecName, componentName, location, null, ReactPropTypesSecret);
-        } catch (ex) {
-          error = ex;
-        }
-        warning(!error || error instanceof Error, '%s: type specification of %s `%s` is invalid; the type checker ' + 'function must return `null` or an `Error` but returned a %s. ' + 'You may have forgotten to pass an argument to the type checker ' + 'creator (arrayOf, instanceOf, objectOf, oneOf, oneOfType, and ' + 'shape all require an argument).', componentName || 'React class', location, typeSpecName, typeof error);
-        if (error instanceof Error && !(error.message in loggedTypeFailures)) {
-          // Only monitor this failure once because there tends to be a lot of the
-          // same error.
-          loggedTypeFailures[error.message] = true;
-
-          var stack = getStack ? getStack() : '';
-
-          warning(false, 'Failed %s type: %s%s', location, error.message, stack != null ? stack : '');
-        }
-      }
-    }
-  }
-}
-
-module.exports = checkPropTypes;
-
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
-
-/***/ }),
-/* 13 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * Copyright (c) 2013-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- */
-
-
-
-var canUseDOM = !!(typeof window !== 'undefined' && window.document && window.document.createElement);
-
-/**
- * Simple, lightweight module assisting with the detection and context of
- * Worker. Helps avoid circular dependencies and allows code to reason about
- * whether or not they are in a Worker, even if they never include the main
- * `ReactWorker` dependency.
- */
-var ExecutionEnvironment = {
-
-  canUseDOM: canUseDOM,
-
-  canUseWorkers: typeof Worker !== 'undefined',
-
-  canUseEventListeners: canUseDOM && !!(window.addEventListener || window.attachEvent),
-
-  canUseViewport: canUseDOM && !!window.screen,
-
-  isInWorker: !canUseDOM // For now, this is true - might change in the future.
-
-};
-
-module.exports = ExecutionEnvironment;
-
-/***/ }),
-/* 14 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(process) {
-
-/**
- * Copyright (c) 2013-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- * @typechecks
- */
-
-var emptyFunction = __webpack_require__(3);
-
-/**
- * Upstream version of event listener. Does not take into account specific
- * nature of platform.
- */
-var EventListener = {
-  /**
-   * Listen to DOM events during the bubble phase.
-   *
-   * @param {DOMEventTarget} target DOM element to register listener on.
-   * @param {string} eventType Event type, e.g. 'click' or 'mouseover'.
-   * @param {function} callback Callback function.
-   * @return {object} Object with a `remove` method.
-   */
-  listen: function listen(target, eventType, callback) {
-    if (target.addEventListener) {
-      target.addEventListener(eventType, callback, false);
-      return {
-        remove: function remove() {
-          target.removeEventListener(eventType, callback, false);
-        }
-      };
-    } else if (target.attachEvent) {
-      target.attachEvent('on' + eventType, callback);
-      return {
-        remove: function remove() {
-          target.detachEvent('on' + eventType, callback);
-        }
-      };
-    }
-  },
-
-  /**
-   * Listen to DOM events during the capture phase.
-   *
-   * @param {DOMEventTarget} target DOM element to register listener on.
-   * @param {string} eventType Event type, e.g. 'click' or 'mouseover'.
-   * @param {function} callback Callback function.
-   * @return {object} Object with a `remove` method.
-   */
-  capture: function capture(target, eventType, callback) {
-    if (target.addEventListener) {
-      target.addEventListener(eventType, callback, true);
-      return {
-        remove: function remove() {
-          target.removeEventListener(eventType, callback, true);
-        }
-      };
-    } else {
-      if (process.env.NODE_ENV !== 'production') {
-        console.error('Attempted to listen to events during the capture phase on a ' + 'browser that does not support the capture phase. Your application ' + 'will not receive some events.');
-      }
-      return {
-        remove: emptyFunction
-      };
-    }
-  },
-
-  registerDefault: function registerDefault() {}
-};
-
-module.exports = EventListener;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
-
-/***/ }),
-/* 15 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-/**
- * Copyright (c) 2013-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- * @typechecks
- */
-
-/* eslint-disable fb-www/typeof-undefined */
-
-/**
- * Same as document.activeElement but wraps in a try-catch block. In IE it is
- * not safe to call document.activeElement if there is nothing focused.
- *
- * The activeElement will be null only if the document or document body is not
- * yet defined.
- *
- * @param {?DOMDocument} doc Defaults to current document.
- * @return {?DOMElement}
- */
-function getActiveElement(doc) /*?DOMElement*/{
-  doc = doc || (typeof document !== 'undefined' ? document : undefined);
-  if (typeof doc === 'undefined') {
-    return null;
-  }
-  try {
-    return doc.activeElement || doc.body;
-  } catch (e) {
-    return doc.body;
-  }
-}
-
-module.exports = getActiveElement;
-
-/***/ }),
-/* 16 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * Copyright (c) 2013-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- * @typechecks
- * 
- */
-
-/*eslint-disable no-self-compare */
-
-
-
-var hasOwnProperty = Object.prototype.hasOwnProperty;
-
-/**
- * inlined Object.is polyfill to avoid requiring consumers ship their own
- * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/is
- */
-function is(x, y) {
-  // SameValue algorithm
-  if (x === y) {
-    // Steps 1-5, 7-10
-    // Steps 6.b-6.e: +0 != -0
-    // Added the nonzero y check to make Flow happy, but it is redundant
-    return x !== 0 || y !== 0 || 1 / x === 1 / y;
-  } else {
-    // Step 6.a: NaN == NaN
-    return x !== x && y !== y;
-  }
-}
-
-/**
- * Performs equality by iterating through keys on an object and returning false
- * when any key has values which are not strictly equal between the arguments.
- * Returns true when the values of all keys are strictly equal.
- */
-function shallowEqual(objA, objB) {
-  if (is(objA, objB)) {
-    return true;
-  }
-
-  if (typeof objA !== 'object' || objA === null || typeof objB !== 'object' || objB === null) {
-    return false;
-  }
-
-  var keysA = Object.keys(objA);
-  var keysB = Object.keys(objB);
-
-  if (keysA.length !== keysB.length) {
-    return false;
-  }
-
-  // Test for A's keys different from B.
-  for (var i = 0; i < keysA.length; i++) {
-    if (!hasOwnProperty.call(objB, keysA[i]) || !is(objA[keysA[i]], objB[keysA[i]])) {
-      return false;
-    }
-  }
-
-  return true;
-}
-
-module.exports = shallowEqual;
-
-/***/ }),
-/* 17 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-/**
- * Copyright (c) 2013-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- * 
- */
-
-var isTextNode = __webpack_require__(29);
-
-/*eslint-disable no-bitwise */
-
-/**
- * Checks if a given DOM node contains or is another DOM node.
- */
-function containsNode(outerNode, innerNode) {
-  if (!outerNode || !innerNode) {
-    return false;
-  } else if (outerNode === innerNode) {
-    return true;
-  } else if (isTextNode(outerNode)) {
-    return false;
-  } else if (isTextNode(innerNode)) {
-    return containsNode(outerNode, innerNode.parentNode);
-  } else if ('contains' in outerNode) {
-    return outerNode.contains(innerNode);
-  } else if (outerNode.compareDocumentPosition) {
-    return !!(outerNode.compareDocumentPosition(innerNode) & 16);
-  } else {
-    return false;
-  }
-}
-
-module.exports = containsNode;
-
-/***/ }),
-/* 18 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * Copyright (c) 2013-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- */
-
-
-
-/**
- * @param {DOMElement} node input/textarea to focus
- */
-
-function focusNode(node) {
-  // IE8 can throw "Can't move focus to the control because it is invisible,
-  // not enabled, or of a type that does not accept the focus." for all kinds of
-  // reasons that are too expensive and fragile to test.
-  try {
-    node.focus();
-  } catch (e) {}
-}
-
-module.exports = focusNode;
-
-/***/ }),
-/* 19 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _reactDom = __webpack_require__(2);
-
-var _reactDom2 = _interopRequireDefault(_reactDom);
-
-var _SignInForm = __webpack_require__(20);
+var _SignInForm = __webpack_require__(11);
 
 var _SignInForm2 = _interopRequireDefault(_SignInForm);
 
-var _ImageTest = __webpack_require__(11);
+var _ImageTest = __webpack_require__(7);
 
 var _ImageTest2 = _interopRequireDefault(_ImageTest);
 
-var _App = __webpack_require__(6);
+var _App = __webpack_require__(9);
 
 var _App2 = _interopRequireDefault(_App);
 
-__webpack_require__(8);
+__webpack_require__(3);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1614,7 +1120,9 @@ var SignUpForm = function (_React$Component) {
             date_if_issue: '',
             aptitude_test: '',
             result: '',
-            signed: 'up'
+            signed: 'up',
+            certification_number: '',
+            input_certification_number: ''
         };
         return _this;
     }
@@ -1638,11 +1146,40 @@ var SignUpForm = function (_React$Component) {
                 if (this.state.result == true) {
                     alert("회원가입에 성공하였습니다.");
                     this.setState({ signed: 'in' });
+                } else if (this.state.result == "email") {
+                    alert("인증번호를 다시 한 번 확인해주시길 바랍니다.");
                 } else {
                     alert("만들어놓은 아이디가 있는지 확인해주시길 바랍니다.");
                 }
             }.bind(this));
-            // .then((json) => { this.setState({ email: json.user });});
+        }
+    }, {
+        key: 'emailAuthentication',
+        value: function emailAuthentication(opts) {
+            fetch('/email', {
+                method: 'POST',
+                headers: {
+                    "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+                },
+                body: "form=" + JSON.stringify(opts)
+            }).then(function (response) {
+                return response.json();
+            });
+            //.then((json) => { this.setState({result:json.result}); })
+        }
+    }, {
+        key: 'submitGit_email',
+        value: function submitGit_email() {
+            var min = 100000;
+            var max = 999999;
+            var certification_number = parseInt(min + Math.random() * (max - min));
+
+            this.setState({ certification_number: certification_number });
+
+            this.emailAuthentication({
+                email: this.state.email,
+                certification_number: certification_number
+            });
         }
     }, {
         key: 'submitGit',
@@ -1657,7 +1194,8 @@ var SignUpForm = function (_React$Component) {
                 license_type: this.state.license_type,
                 license_number: this.state.license_number_0 + "" + this.state.license_number_1 + "" + this.state.license_number_2 + "" + this.state.license_number_3,
                 date_if_issue: this.state.date_if_issue,
-                aptitude_test: this.state.aptitude_test
+                aptitude_test: this.state.aptitude_test,
+                certification_number: this.state.input_certification_number
             });
         }
     }, {
@@ -1668,6 +1206,8 @@ var SignUpForm = function (_React$Component) {
             var eng = pw.search(/[a-z]/ig);
             var spe = pw.search(/[`~!@@#$%^&*|₩₩₩'₩";:₩/?]/gi);
             var blank_pattern = /[\s]/g;
+
+            console.log("pw1 = ", pw);
 
             if (pw.length < 8 || pw.length > 16) {
                 this.setState({ password_feedback: "9자리 ~ 16자리 이내로 입력해주세요." });
@@ -1706,6 +1246,7 @@ var SignUpForm = function (_React$Component) {
         key: 'passwordChange',
         value: function passwordChange(e) {
             this.setState({ password: e.target.value });
+            console.log(this.state.password);
             this.chkPwd();
         }
     }, {
@@ -1777,6 +1318,11 @@ var SignUpForm = function (_React$Component) {
             var date_if = e.target.value;
             date_if = date_if.replace(/\-/g, '');
             this.setState({ aptitude_test: date_if });
+        }
+    }, {
+        key: 'input_certification_numberChange',
+        value: function input_certification_numberChange(e) {
+            this.setState({ input_certification_number: e.target.value });
         }
 
         /* maxLengthCheck(object){
@@ -1867,6 +1413,9 @@ var SignUpForm = function (_React$Component) {
 
             this.submitGit();
         }
+
+        //&nbsp;&nbsp;<span>{this.state.password_confirm_feedback}</span>
+
     }, {
         key: 'render',
         value: function render() {
@@ -1943,12 +1492,6 @@ var SignUpForm = function (_React$Component) {
                         '\uBE44\uBC00\uBC88\uD638 \uD655\uC778 '
                     ),
                     _react2.default.createElement('input', { type: 'password', name: 'password_confirm', maxLength: 16, size: '16', onChange: this.password_confirmChange.bind(this), placeholder: '\uBE44\uBC00\uBC88\uD638\uB97C \uC785\uB825\uD574\uC8FC\uC138\uC694' }),
-                    '\xA0\xA0',
-                    _react2.default.createElement(
-                        'span',
-                        null,
-                        this.state.password_confirm_feedback
-                    ),
                     _react2.default.createElement('br', null),
                     _react2.default.createElement(
                         'label',
@@ -1956,6 +1499,19 @@ var SignUpForm = function (_React$Component) {
                         '\uC774\uBA54\uC77C '
                     ),
                     _react2.default.createElement('input', { type: 'text', name: 'email', onChange: this.emailChange.bind(this), placeholder: '\uC608) hyejin@gmail.com' }),
+                    _react2.default.createElement(
+                        'button',
+                        { onClick: this.submitGit_email.bind(this) },
+                        ' \uC778\uC99D\uBC88\uD638 \uC804\uC1A1 '
+                    ),
+                    _react2.default.createElement('br', null),
+                    _react2.default.createElement(
+                        'label',
+                        null,
+                        '\uC778\uC99D\uBC88\uD638 '
+                    ),
+                    _react2.default.createElement('input', { type: 'text', name: 'certification_number', placeholer: '\uC778\uC99D\uBC88\uD638', onChange: this.input_certification_numberChange.bind(this) }),
+                    _react2.default.createElement('br', null),
                     _react2.default.createElement('br', null),
                     _react2.default.createElement(
                         'label',
@@ -2101,14 +1657,18 @@ var SignUpForm = function (_React$Component) {
     return SignUpForm;
 }(_react2.default.Component);
 
-module.exports = SignUpForm;
+exports.default = SignUpForm;
 
 /***/ }),
-/* 20 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -2116,27 +1676,39 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactDom = __webpack_require__(2);
+var _reactDom = __webpack_require__(1);
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
-var _App = __webpack_require__(6);
+var _App = __webpack_require__(9);
 
 var _App2 = _interopRequireDefault(_App);
 
-var _SignUpForm = __webpack_require__(19);
-
-var _SignUpForm2 = _interopRequireDefault(_SignUpForm);
-
-var _ImageTest = __webpack_require__(11);
+var _ImageTest = __webpack_require__(7);
 
 var _ImageTest2 = _interopRequireDefault(_ImageTest);
 
-var _reactCookies = __webpack_require__(7);
+var _SignUpForm = __webpack_require__(10);
+
+var _SignUpForm2 = _interopRequireDefault(_SignUpForm);
+
+var _FindId = __webpack_require__(39);
+
+var _FindId2 = _interopRequireDefault(_FindId);
+
+var _FindPwd = __webpack_require__(42);
+
+var _FindPwd2 = _interopRequireDefault(_FindPwd);
+
+var _Admin = __webpack_require__(43);
+
+var _Admin2 = _interopRequireDefault(_Admin);
+
+var _reactCookies = __webpack_require__(4);
 
 var _reactCookies2 = _interopRequireDefault(_reactCookies);
 
-__webpack_require__(8);
+__webpack_require__(3);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2209,10 +1781,14 @@ var SignInForm = function (_React$Component) {
                     aptitude_test: json.aptitude_test
                 });
             }).then(function () {
+                console.log("reuslt = > ", this.state.result);
+
                 if (this.state.result == 0) {
                     alert("아이디 혹은 비밀번호를 다시 한번 확인해주세요.");
                 } else if (this.state.result == 2) {
                     alert("로그인 실패 횟수가 5회를 달성하였습니다. 비밀번호찾기에서 비밀번호를 변경해주세요.");
+                } else if (this.state.result == 5) {
+                    this.setState({ logined: "admin" });
                 } else {
                     alert("로그인에 성공하였습니다.");
 
@@ -2252,6 +1828,16 @@ var SignInForm = function (_React$Component) {
         key: 'click_home',
         value: function click_home() {
             this.setState({ logined: "home" });
+        }
+    }, {
+        key: 'click_findId',
+        value: function click_findId() {
+            this.setState({ logined: "find_id" });
+        }
+    }, {
+        key: 'click_findPwd',
+        value: function click_findPwd() {
+            this.setState({ logined: "find_pwd" });
         }
     }, {
         key: 'render',
@@ -2309,13 +1895,42 @@ var SignInForm = function (_React$Component) {
                         'button',
                         { onClick: this.submitGit.bind(this) },
                         '\uB85C\uADF8\uC778'
+                    ),
+                    _react2.default.createElement(
+                        'button',
+                        { onClick: this.click_findId.bind(this) },
+                        ' \uC544\uC774\uB514 \uCC3E\uAE30 '
+                    ),
+                    _react2.default.createElement(
+                        'button',
+                        { onClick: this.click_findPwd.bind(this) },
+                        ' \uBE44\uBC00\uBC88\uD638 \uCC3E\uAE30 '
                     )
                 )
             );
 
             var logined_Form = _react2.default.createElement(_App2.default, null);
             var ImageTest_Form = _react2.default.createElement(_ImageTest2.default, null);
-            var sign_up_Form = _react2.default.createElement(_SignUpForm2.default, null);
+            var SignUp_Form = _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(_SignUpForm2.default, null)
+            );
+            var find_id_Form = _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(_FindId2.default, null)
+            );
+            var find_pwd_Form = _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(_FindPwd2.default, null)
+            );
+            var admin_Form = _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(_Admin2.default, null)
+            );
 
             if (this.state.logined == "in") {
                 return login_Form;
@@ -2323,10 +1938,14 @@ var SignInForm = function (_React$Component) {
                 return logined_Form;
             } else if (this.state.logined == "image") {
                 return ImageTest_Form;
+            } else if (this.state.logined == "find_id") {
+                return find_id_Form;
+            } else if (this.state.logined == "find_pwd") {
+                return find_pwd_Form;
+            } else if (this.state.logined == "admin") {
+                return admin_Form;
             } else {
-                alert("회원가입은 대체 왜 안되는 걸까요?! ..ㅠㅜㅠㅠㅠ ");
-                //return sign_up_Form;
-                return sign_up_Form;
+                return SignUp_Form;
             }
         }
     }]);
@@ -2334,7 +1953,512 @@ var SignInForm = function (_React$Component) {
     return SignInForm;
 }(_react2.default.Component);
 
-module.exports = SignInForm;
+//module.exports = SignInForm;
+
+
+exports.default = SignInForm;
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(process) {/**
+ * Copyright (c) 2013-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ */
+
+
+
+/**
+ * Use invariant() to assert state which your program assumes to be true.
+ *
+ * Provide sprintf-style format (only %s is supported) and arguments
+ * to provide information about what broke and what you were
+ * expecting.
+ *
+ * The invariant message will be stripped in production, but the invariant
+ * will remain to ensure logic does not differ in production.
+ */
+
+var validateFormat = function validateFormat(format) {};
+
+if (process.env.NODE_ENV !== 'production') {
+  validateFormat = function validateFormat(format) {
+    if (format === undefined) {
+      throw new Error('invariant requires an error message argument');
+    }
+  };
+}
+
+function invariant(condition, format, a, b, c, d, e, f) {
+  validateFormat(format);
+
+  if (!condition) {
+    var error;
+    if (format === undefined) {
+      error = new Error('Minified exception occurred; use the non-minified dev environment ' + 'for the full error message and additional helpful warnings.');
+    } else {
+      var args = [a, b, c, d, e, f];
+      var argIndex = 0;
+      error = new Error(format.replace(/%s/g, function () {
+        return args[argIndex++];
+      }));
+      error.name = 'Invariant Violation';
+    }
+
+    error.framesToPop = 1; // we don't care about invariant's own frame
+    throw error;
+  }
+}
+
+module.exports = invariant;
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
+
+/***/ }),
+/* 13 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(process) {/**
+ * Copyright (c) 2014-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ */
+
+
+
+var emptyFunction = __webpack_require__(5);
+
+/**
+ * Similar to invariant but only logs a warning if the condition is not met.
+ * This can be used to log issues in development environments in critical
+ * paths. Removing the logging code for production environments will keep the
+ * same logic and follow the same code paths.
+ */
+
+var warning = emptyFunction;
+
+if (process.env.NODE_ENV !== 'production') {
+  var printWarning = function printWarning(format) {
+    for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+      args[_key - 1] = arguments[_key];
+    }
+
+    var argIndex = 0;
+    var message = 'Warning: ' + format.replace(/%s/g, function () {
+      return args[argIndex++];
+    });
+    if (typeof console !== 'undefined') {
+      console.error(message);
+    }
+    try {
+      // --- Welcome to debugging React ---
+      // This error was thrown as a convenience so that you can use this stack
+      // to find the callsite that caused this warning to fire.
+      throw new Error(message);
+    } catch (x) {}
+  };
+
+  warning = function warning(condition, format) {
+    if (format === undefined) {
+      throw new Error('`warning(condition, format, ...args)` requires a warning ' + 'message argument');
+    }
+
+    if (format.indexOf('Failed Composite propType: ') === 0) {
+      return; // Ignore CompositeComponent proptype check.
+    }
+
+    if (!condition) {
+      for (var _len2 = arguments.length, args = Array(_len2 > 2 ? _len2 - 2 : 0), _key2 = 2; _key2 < _len2; _key2++) {
+        args[_key2 - 2] = arguments[_key2];
+      }
+
+      printWarning.apply(undefined, [format].concat(args));
+    }
+  };
+}
+
+module.exports = warning;
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(process) {/**
+ * Copyright (c) 2013-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+
+
+if (process.env.NODE_ENV !== 'production') {
+  var invariant = __webpack_require__(12);
+  var warning = __webpack_require__(13);
+  var ReactPropTypesSecret = __webpack_require__(28);
+  var loggedTypeFailures = {};
+}
+
+/**
+ * Assert that the values match with the type specs.
+ * Error messages are memorized and will only be shown once.
+ *
+ * @param {object} typeSpecs Map of name to a ReactPropType
+ * @param {object} values Runtime values that need to be type-checked
+ * @param {string} location e.g. "prop", "context", "child context"
+ * @param {string} componentName Name of the component for error messages.
+ * @param {?Function} getStack Returns the component stack.
+ * @private
+ */
+function checkPropTypes(typeSpecs, values, location, componentName, getStack) {
+  if (process.env.NODE_ENV !== 'production') {
+    for (var typeSpecName in typeSpecs) {
+      if (typeSpecs.hasOwnProperty(typeSpecName)) {
+        var error;
+        // Prop type validation may throw. In case they do, we don't want to
+        // fail the render phase where it didn't fail before. So we log it.
+        // After these have been cleaned up, we'll let them throw.
+        try {
+          // This is intentionally an invariant that gets caught. It's the same
+          // behavior as without this statement except with a better message.
+          invariant(typeof typeSpecs[typeSpecName] === 'function', '%s: %s type `%s` is invalid; it must be a function, usually from ' + 'the `prop-types` package, but received `%s`.', componentName || 'React class', location, typeSpecName, typeof typeSpecs[typeSpecName]);
+          error = typeSpecs[typeSpecName](values, typeSpecName, componentName, location, null, ReactPropTypesSecret);
+        } catch (ex) {
+          error = ex;
+        }
+        warning(!error || error instanceof Error, '%s: type specification of %s `%s` is invalid; the type checker ' + 'function must return `null` or an `Error` but returned a %s. ' + 'You may have forgotten to pass an argument to the type checker ' + 'creator (arrayOf, instanceOf, objectOf, oneOf, oneOfType, and ' + 'shape all require an argument).', componentName || 'React class', location, typeSpecName, typeof error);
+        if (error instanceof Error && !(error.message in loggedTypeFailures)) {
+          // Only monitor this failure once because there tends to be a lot of the
+          // same error.
+          loggedTypeFailures[error.message] = true;
+
+          var stack = getStack ? getStack() : '';
+
+          warning(false, 'Failed %s type: %s%s', location, error.message, stack != null ? stack : '');
+        }
+      }
+    }
+  }
+}
+
+module.exports = checkPropTypes;
+
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
+
+/***/ }),
+/* 15 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * Copyright (c) 2013-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ */
+
+
+
+var canUseDOM = !!(typeof window !== 'undefined' && window.document && window.document.createElement);
+
+/**
+ * Simple, lightweight module assisting with the detection and context of
+ * Worker. Helps avoid circular dependencies and allows code to reason about
+ * whether or not they are in a Worker, even if they never include the main
+ * `ReactWorker` dependency.
+ */
+var ExecutionEnvironment = {
+
+  canUseDOM: canUseDOM,
+
+  canUseWorkers: typeof Worker !== 'undefined',
+
+  canUseEventListeners: canUseDOM && !!(window.addEventListener || window.attachEvent),
+
+  canUseViewport: canUseDOM && !!window.screen,
+
+  isInWorker: !canUseDOM // For now, this is true - might change in the future.
+
+};
+
+module.exports = ExecutionEnvironment;
+
+/***/ }),
+/* 16 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(process) {
+
+/**
+ * Copyright (c) 2013-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ * @typechecks
+ */
+
+var emptyFunction = __webpack_require__(5);
+
+/**
+ * Upstream version of event listener. Does not take into account specific
+ * nature of platform.
+ */
+var EventListener = {
+  /**
+   * Listen to DOM events during the bubble phase.
+   *
+   * @param {DOMEventTarget} target DOM element to register listener on.
+   * @param {string} eventType Event type, e.g. 'click' or 'mouseover'.
+   * @param {function} callback Callback function.
+   * @return {object} Object with a `remove` method.
+   */
+  listen: function listen(target, eventType, callback) {
+    if (target.addEventListener) {
+      target.addEventListener(eventType, callback, false);
+      return {
+        remove: function remove() {
+          target.removeEventListener(eventType, callback, false);
+        }
+      };
+    } else if (target.attachEvent) {
+      target.attachEvent('on' + eventType, callback);
+      return {
+        remove: function remove() {
+          target.detachEvent('on' + eventType, callback);
+        }
+      };
+    }
+  },
+
+  /**
+   * Listen to DOM events during the capture phase.
+   *
+   * @param {DOMEventTarget} target DOM element to register listener on.
+   * @param {string} eventType Event type, e.g. 'click' or 'mouseover'.
+   * @param {function} callback Callback function.
+   * @return {object} Object with a `remove` method.
+   */
+  capture: function capture(target, eventType, callback) {
+    if (target.addEventListener) {
+      target.addEventListener(eventType, callback, true);
+      return {
+        remove: function remove() {
+          target.removeEventListener(eventType, callback, true);
+        }
+      };
+    } else {
+      if (process.env.NODE_ENV !== 'production') {
+        console.error('Attempted to listen to events during the capture phase on a ' + 'browser that does not support the capture phase. Your application ' + 'will not receive some events.');
+      }
+      return {
+        remove: emptyFunction
+      };
+    }
+  },
+
+  registerDefault: function registerDefault() {}
+};
+
+module.exports = EventListener;
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
+
+/***/ }),
+/* 17 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+/**
+ * Copyright (c) 2013-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ * @typechecks
+ */
+
+/* eslint-disable fb-www/typeof-undefined */
+
+/**
+ * Same as document.activeElement but wraps in a try-catch block. In IE it is
+ * not safe to call document.activeElement if there is nothing focused.
+ *
+ * The activeElement will be null only if the document or document body is not
+ * yet defined.
+ *
+ * @param {?DOMDocument} doc Defaults to current document.
+ * @return {?DOMElement}
+ */
+function getActiveElement(doc) /*?DOMElement*/{
+  doc = doc || (typeof document !== 'undefined' ? document : undefined);
+  if (typeof doc === 'undefined') {
+    return null;
+  }
+  try {
+    return doc.activeElement || doc.body;
+  } catch (e) {
+    return doc.body;
+  }
+}
+
+module.exports = getActiveElement;
+
+/***/ }),
+/* 18 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * Copyright (c) 2013-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ * @typechecks
+ * 
+ */
+
+/*eslint-disable no-self-compare */
+
+
+
+var hasOwnProperty = Object.prototype.hasOwnProperty;
+
+/**
+ * inlined Object.is polyfill to avoid requiring consumers ship their own
+ * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/is
+ */
+function is(x, y) {
+  // SameValue algorithm
+  if (x === y) {
+    // Steps 1-5, 7-10
+    // Steps 6.b-6.e: +0 != -0
+    // Added the nonzero y check to make Flow happy, but it is redundant
+    return x !== 0 || y !== 0 || 1 / x === 1 / y;
+  } else {
+    // Step 6.a: NaN == NaN
+    return x !== x && y !== y;
+  }
+}
+
+/**
+ * Performs equality by iterating through keys on an object and returning false
+ * when any key has values which are not strictly equal between the arguments.
+ * Returns true when the values of all keys are strictly equal.
+ */
+function shallowEqual(objA, objB) {
+  if (is(objA, objB)) {
+    return true;
+  }
+
+  if (typeof objA !== 'object' || objA === null || typeof objB !== 'object' || objB === null) {
+    return false;
+  }
+
+  var keysA = Object.keys(objA);
+  var keysB = Object.keys(objB);
+
+  if (keysA.length !== keysB.length) {
+    return false;
+  }
+
+  // Test for A's keys different from B.
+  for (var i = 0; i < keysA.length; i++) {
+    if (!hasOwnProperty.call(objB, keysA[i]) || !is(objA[keysA[i]], objB[keysA[i]])) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+module.exports = shallowEqual;
+
+/***/ }),
+/* 19 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+/**
+ * Copyright (c) 2013-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ * 
+ */
+
+var isTextNode = __webpack_require__(30);
+
+/*eslint-disable no-bitwise */
+
+/**
+ * Checks if a given DOM node contains or is another DOM node.
+ */
+function containsNode(outerNode, innerNode) {
+  if (!outerNode || !innerNode) {
+    return false;
+  } else if (outerNode === innerNode) {
+    return true;
+  } else if (isTextNode(outerNode)) {
+    return false;
+  } else if (isTextNode(innerNode)) {
+    return containsNode(outerNode, innerNode.parentNode);
+  } else if ('contains' in outerNode) {
+    return outerNode.contains(innerNode);
+  } else if (outerNode.compareDocumentPosition) {
+    return !!(outerNode.compareDocumentPosition(innerNode) & 16);
+  } else {
+    return false;
+  }
+}
+
+module.exports = containsNode;
+
+/***/ }),
+/* 20 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * Copyright (c) 2013-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ */
+
+
+
+/**
+ * @param {DOMElement} node input/textarea to focus
+ */
+
+function focusNode(node) {
+  // IE8 can throw "Can't move focus to the control because it is invisible,
+  // not enabled, or of a type that does not accept the focus." for all kinds of
+  // reasons that are too expensive and fragile to test.
+  try {
+    node.focus();
+  } catch (e) {}
+}
+
+module.exports = focusNode;
 
 /***/ }),
 /* 21 */
@@ -2475,7 +2599,7 @@ var singleton = null;
 var	singletonCounter = 0;
 var	stylesInsertedAtTop = [];
 
-var	fixUrls = __webpack_require__(39);
+var	fixUrls = __webpack_require__(41);
 
 module.exports = function(list, options) {
 	if (typeof DEBUG !== "undefined" && DEBUG) {
@@ -2797,25 +2921,33 @@ function updateLink (link, options, obj) {
 "use strict";
 
 
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactDom = __webpack_require__(2);
+var _reactDom = __webpack_require__(1);
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
-var _reactCookies = __webpack_require__(7);
+var _reactCookies = __webpack_require__(4);
 
 var _reactCookies2 = _interopRequireDefault(_reactCookies);
 
-__webpack_require__(40);
+var _Reservation_history = __webpack_require__(24);
+
+var _Reservation_history2 = _interopRequireDefault(_Reservation_history);
+
+__webpack_require__(45);
+
+__webpack_require__(3);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -2894,7 +3026,8 @@ var Rent_1 = function (_React$Component) {
             return_cost: '',
             reservation_number: '',
             test_number: 0,
-            page_numbers: ''
+            page_numbers: '',
+            total_count: ''
         };
 
         _this.handleClick = _this.handleClick.bind(_this);
@@ -3218,7 +3351,9 @@ var Rent_1 = function (_React$Component) {
                 this.setState({ car_number: [] });
 
                 for (var count = 0; this.state.result[count] != null; count++) {
-                    if (this.state.rental_date == this.state.retrun_date) {
+                    var total_rental_date = this.state.return_date - this.state.rental_date;
+
+                    if (total_rental_date == 0) {
                         var total_rental_time = this.state.return_time - this.state.rental_time;
 
                         //this.setState({cost:this.state.result[count]["twelve_hour"]});                    
@@ -3236,8 +3371,6 @@ var Rent_1 = function (_React$Component) {
                             this.setState({ cost: this.state.cost.concat(this.state.result[count]["two_days"]) });
                         }
                     } else {
-                        var total_rental_date = this.state.return_date - this.state.rental_date;
-
                         if (total_rental_date <= 2) {
                             this.setState({ cost: this.state.cost.concat(this.state.result[count]["two_days"] * total_rental_date) });
                         } else if (total_rental_date <= 4) {
@@ -3257,50 +3390,40 @@ var Rent_1 = function (_React$Component) {
                     this.setState({ distance: this.state.distance.concat(this.state.result[count]["distance"]) });
                     this.setState({ registration_date: this.state.registration_date.concat(this.state.result[count]["registration_date"]) });
                     this.setState({ car_number: this.state.car_number.concat(this.state.result[count]["car_number"]) });
-
-                    console.log("console log :: count = ", count);
-                    console.log("console log :: this.state.result[count][car_name] = ", this.state.result[count]["car_name"]);
                 }
 
-                this.setState({ count: this.state.count });
-
-                console.log("console log :: count = ", count);
-                console.log("console log :: lmage = ", this.state.image);
-                console.log("console log :: car_name = ", this.state.car_name);
+                this.setState({ count: count });
+                this.setState({ total_count: this.state.result[0]["total_count"] });
             }.bind(this)).then(function () {
+                var _this3 = this;
+
+                //page
+                var pageNumbers = [];
+                for (var i = 1; i <= Math.floor((this.state.total_count - 1) / 5) + 1; i++) {
+                    pageNumbers.push(i);
+                }
+
+                var renderPageNUmbers = pageNumbers.map(function (number) {
+                    return _react2.default.createElement(
+                        'li',
+                        { key: number, id: number, onClick: _this3.handleClick },
+                        number
+                    );
+                });
+
+                this.setState({ page_numbers: renderPageNUmbers });
+
                 if (this.state.test_number == 0) {
                     this.setState({ test_number: 1 });
                     this.submitGit();
                 } else {
                     this.setState({ test_number: 0 });
                 }
-            }.bind(this)).then(function () {
-                var _this3 = this;
-
-                //page
-                var pageNumbers = [];
-                for (var i = 1; i <= Math.floor(this.state.count / 5) + 1; i++) {
-                    pageNumbers.push(i);
-                    console.log("pagenumber push = ", i, " | count = ", this.state.count);
-                }
-
-                var renderPageNUmbers = pageNumbers.map(function (number) {
-                    return _react2.default.createElement(
-                        'li',
-                        _defineProperty({ key: number, id: number, onClick: _this3.handleClick }, 'onClick', _this3.submitGit.bind(_this3)),
-                        number
-                    );
-                });
-
-                this.setState({ page_numbers: renderPageNUmbers });
             }.bind(this));
         }
     }, {
         key: 'submitGit',
         value: function submitGit() {
-            console.log("submit car_type value : ", this.state.car_type);
-            console.log("submit rental_date", this.state.rental_date);
-
             this.setRent_1({
                 area: this.state.area,
                 rental_point: this.state.rental_point,
@@ -3377,8 +3500,6 @@ var Rent_1 = function (_React$Component) {
     }, {
         key: 'submitReservationNumber',
         value: function submitReservationNumber() {
-            console.log("email test | email : ", this.state.email, " || reservaiton_number : ", this.state.reservation_number);
-
             this.SendToReservationNumber({
                 email: this.state.email,
                 reservation_number: this.state.reservation_number
@@ -3400,12 +3521,6 @@ var Rent_1 = function (_React$Component) {
             } else {
                 this.setState({ time: today.getHours() + "" + today.getMinutes() });
             }
-
-            console.log("date : ", this.state.date);
-            console.log("time : ", this.state.time);
-            console.log("rental : ", this.state.rental_date, " : ", this.state.rental_time);
-            console.log("return : ", this.state.return_date, " : ", this.state.return_time);
-
             if (this.state.area == "" || this.state.rental_point == "" || this.state.return_point == "" || this.state.rental_date == "" || this.state.return_date == "") {
                 alert("빠짐없이 다 입력해주십시오.");
                 return;
@@ -3444,6 +3559,8 @@ var Rent_1 = function (_React$Component) {
             this.setState({
                 currentPage: Number(event.target.id)
             });
+
+            this.submitGit();
         }
 
         //test
@@ -3452,6 +3569,25 @@ var Rent_1 = function (_React$Component) {
         key: 'testdivison_number',
         value: function testdivison_number() {
             alert(this.state.division_number);
+        }
+    }, {
+        key: 'click_home',
+        value: function click_home() {
+            window.location.reload();
+        }
+    }, {
+        key: 'log_out',
+        value: function log_out() {
+            _reactCookies2.default.remove('name', { path: '/' });
+            _reactCookies2.default.remove('username', { path: '/' });
+            _reactCookies2.default.remove('reserves', { path: '/' });
+            _reactCookies2.default.remove('email', { path: '/' });
+            window.location.reload();
+        }
+    }, {
+        key: 'click_reservation',
+        value: function click_reservation() {
+            this.setState({ returned: 'r' });
         }
     }, {
         key: 'render',
@@ -3464,6 +3600,39 @@ var Rent_1 = function (_React$Component) {
             var first_Form = _react2.default.createElement(
                 'div',
                 null,
+                _react2.default.createElement(
+                    'div',
+                    null,
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'logo' },
+                        '\uB80C\uD130\uCE74'
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu' },
+                        _react2.default.createElement(
+                            'div',
+                            { className: 'menu-item', onClick: this.click_home.bind(this) },
+                            ' \uD648 '
+                        ),
+                        _react2.default.createElement(
+                            'div',
+                            { className: 'menu-item' },
+                            ' \uB80C\uD130\uCE74 \uC608\uC57D '
+                        ),
+                        _react2.default.createElement(
+                            'div',
+                            { className: 'menu-item', onClick: this.log_out.bind(this) },
+                            ' \uB85C\uADF8\uC544\uC6C3 '
+                        ),
+                        _react2.default.createElement(
+                            'div',
+                            { className: 'menu-item', onClick: this.click_reservation.bind(this) },
+                            ' \uC608\uC57D \uBC0F \uC774\uC6A9\uB0B4\uC5ED '
+                        )
+                    )
+                ),
                 _react2.default.createElement(
                     'label',
                     null,
@@ -3574,6 +3743,39 @@ var Rent_1 = function (_React$Component) {
             var second_Form = _react2.default.createElement(
                 'div',
                 null,
+                _react2.default.createElement(
+                    'div',
+                    null,
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'logo' },
+                        '\uB80C\uD130\uCE74'
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu' },
+                        _react2.default.createElement(
+                            'div',
+                            { className: 'menu-item', onClick: this.click_home.bind(this) },
+                            ' \uD648 '
+                        ),
+                        _react2.default.createElement(
+                            'div',
+                            { className: 'menu-item' },
+                            ' \uB80C\uD130\uCE74 \uC608\uC57D '
+                        ),
+                        _react2.default.createElement(
+                            'div',
+                            { className: 'menu-item', onClick: this.log_out.bind(this) },
+                            ' \uB85C\uADF8\uC544\uC6C3 '
+                        ),
+                        _react2.default.createElement(
+                            'div',
+                            { className: 'menu-item', onClick: this.click_reservation.bind(this) },
+                            ' \uC608\uC57D \uBC0F \uC774\uC6A9\uB0B4\uC5ED '
+                        )
+                    )
+                ),
                 _react2.default.createElement(
                     'h1',
                     null,
@@ -3886,6 +4088,39 @@ var Rent_1 = function (_React$Component) {
             var third_Form = _react2.default.createElement(
                 'div',
                 null,
+                _react2.default.createElement(
+                    'div',
+                    null,
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'logo' },
+                        '\uB80C\uD130\uCE74'
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu' },
+                        _react2.default.createElement(
+                            'div',
+                            { className: 'menu-item', onClick: this.click_home.bind(this) },
+                            ' \uD648 '
+                        ),
+                        _react2.default.createElement(
+                            'div',
+                            { className: 'menu-item' },
+                            ' \uB80C\uD130\uCE74 \uC608\uC57D '
+                        ),
+                        _react2.default.createElement(
+                            'div',
+                            { className: 'menu-item', onClick: this.log_out.bind(this) },
+                            ' \uB85C\uADF8\uC544\uC6C3 '
+                        ),
+                        _react2.default.createElement(
+                            'div',
+                            { className: 'menu-item', onClick: this.click_reservation.bind(this) },
+                            ' \uC608\uC57D \uBC0F \uC774\uC6A9\uB0B4\uC5ED '
+                        )
+                    )
+                ),
                 _react2.default.createElement('img', { src: this.state.image[this.state.division_number], width: '350', height: '250', onClick: this.testdivison_number.bind(this) }),
                 _react2.default.createElement('br', null),
                 _react2.default.createElement(
@@ -4012,6 +4247,39 @@ var Rent_1 = function (_React$Component) {
                 'div',
                 null,
                 _react2.default.createElement(
+                    'div',
+                    null,
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'logo' },
+                        '\uB80C\uD130\uCE74'
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu' },
+                        _react2.default.createElement(
+                            'div',
+                            { className: 'menu-item', onClick: this.click_home.bind(this) },
+                            ' \uD648 '
+                        ),
+                        _react2.default.createElement(
+                            'div',
+                            { className: 'menu-item' },
+                            ' \uB80C\uD130\uCE74 \uC608\uC57D '
+                        ),
+                        _react2.default.createElement(
+                            'div',
+                            { className: 'menu-item', onClick: this.log_out.bind(this) },
+                            ' \uB85C\uADF8\uC544\uC6C3 '
+                        ),
+                        _react2.default.createElement(
+                            'div',
+                            { className: 'menu-item', onClick: this.click_reservation.bind(this) },
+                            ' \uC608\uC57D \uBC0F \uC774\uC6A9\uB0B4\uC5ED '
+                        )
+                    )
+                ),
+                _react2.default.createElement(
                     'span',
                     null,
                     ' \uAC1C\uC778\uC815\uBCF4 '
@@ -4137,12 +4405,52 @@ var Rent_1 = function (_React$Component) {
                 'div',
                 null,
                 _react2.default.createElement(
+                    'div',
+                    null,
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'logo' },
+                        '\uB80C\uD130\uCE74'
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu' },
+                        _react2.default.createElement(
+                            'div',
+                            { className: 'menu-item', onClick: this.click_home.bind(this) },
+                            ' \uD648 '
+                        ),
+                        _react2.default.createElement(
+                            'div',
+                            { className: 'menu-item' },
+                            ' \uB80C\uD130\uCE74 \uC608\uC57D '
+                        ),
+                        _react2.default.createElement(
+                            'div',
+                            { className: 'menu-item', onClick: this.log_out.bind(this) },
+                            ' \uB85C\uADF8\uC544\uC6C3 '
+                        ),
+                        _react2.default.createElement(
+                            'div',
+                            { className: 'menu-item', onClick: this.click_reservation.bind(this) },
+                            ' \uC608\uC57D \uBC0F \uC774\uC6A9\uB0B4\uC5ED '
+                        )
+                    )
+                ),
+                _react2.default.createElement(
                     'span',
                     null,
                     ' \uC608\uC57D\uBC88\uD638 : ',
                     this.state.reservation_number,
                     ' '
-                )
+                ),
+                _react2.default.createElement('br', null),
+                '\uD68C\uC6D0\uB2D8\uC758 \uBA54\uC77C\uB85C \uC608\uC57D\uBC88\uD638\uB97C \uC804\uC1A1\uD558\uC600\uC2B5\uB2C8\uB2E4.'
+            );
+            var reservation_Form = _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(_Reservation_history2.default, null)
             );
 
             if (this.state.returned == '1') {
@@ -4155,6 +4463,8 @@ var Rent_1 = function (_React$Component) {
                 return fourth_Form;
             } else if (this.state.returned == '5') {
                 return last_Form;
+            } else if (this.state.returned == 'r') {
+                return reservation_Form;
             }
         }
     }]);
@@ -4162,10 +4472,812 @@ var Rent_1 = function (_React$Component) {
     return Rent_1;
 }(_react2.default.Component);
 
-module.exports = Rent_1;
+//module.exports = Rent_1;
+
+
+exports.default = Rent_1;
 
 /***/ }),
 /* 24 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactDom = __webpack_require__(1);
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
+
+var _reactCookies = __webpack_require__(4);
+
+var _reactCookies2 = _interopRequireDefault(_reactCookies);
+
+var _App = __webpack_require__(9);
+
+var _App2 = _interopRequireDefault(_App);
+
+var _Rent_ = __webpack_require__(23);
+
+var _Rent_2 = _interopRequireDefault(_Rent_);
+
+__webpack_require__(3);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Reservation_history = function (_React$Component) {
+    _inherits(Reservation_history, _React$Component);
+
+    function Reservation_history(props) {
+        _classCallCheck(this, Reservation_history);
+
+        var _this = _possibleConstructorReturn(this, (Reservation_history.__proto__ || Object.getPrototypeOf(Reservation_history)).call(this, props));
+
+        _this.handleLoad = _this.handleLoad.bind(_this);
+
+        _this.state = {
+            image: [],
+            car_number: [],
+            car_name: [],
+            fuel: [],
+            color: [],
+            distance: [],
+            few: [],
+            refundable: [],
+            currentPage: '',
+            count: '',
+            returned: 'ready',
+            test_number: 0,
+            total_page: 0,
+            division_number: 0,
+            reservaion_number: [],
+            rental_point: '',
+            return_point: '',
+            rental_date: '',
+            return_date: ''
+        };
+
+        _this.handleClick = _this.handleClick.bind(_this);
+        return _this;
+    }
+
+    _createClass(Reservation_history, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            this.submitGit();
+        }
+    }, {
+        key: 'handleLoad',
+        value: function handleLoad() {
+            this.submitGit();
+        }
+    }, {
+        key: 'handleClick',
+        value: function handleClick(event) {
+            this.setState({ currentPage: event.target.id });
+
+            this.submitGit();
+        }
+    }, {
+        key: 'list_reservation',
+        value: function list_reservation(opts) {
+            var _this2 = this;
+
+            fetch('/reservation_history', {
+                method: 'POST',
+                headers: {
+                    "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+                },
+                body: "form=" + JSON.stringify(opts)
+            }).then(function (response) {
+                return response.json();
+            }).then(function (json) {
+                _this2.setState({ result: json.result });
+            }).then(function () {
+                this.setState({ image: [] });
+                this.setState({ car_number: [] });
+                this.setState({ car_name: [] });
+                this.setState({ fuel: [] });
+                this.setState({ color: [] });
+                this.setState({ distance: [] });
+                this.setState({ few: [] });
+                this.setState({ refundable: [] });
+                this.setState({ reservaion_number: [] });
+
+                for (var count = 0; this.state.result[count] != null; count++) {
+                    this.setState({ image: this.state.image.concat(this.state.result[count]["image"]) });
+                    this.setState({ car_number: this.state.car_number.concat(this.state.result[count]["car_number"]) });
+                    this.setState({ car_name: this.state.car_name.concat(this.state.result[count]["car_name"]) });
+                    this.setState({ fuel: this.state.fuel.concat(this.state.result[count]["fuel"]) });
+                    this.setState({ color: this.state.color.concat(this.state.result[count]["color"]) });
+                    this.setState({ distance: this.state.distance.concat(this.state.result[count]["distance"]) });
+                    this.setState({ few: this.state.few.concat(this.state.result[count]["few"]) });
+                    this.setState({ refundable: this.state.refundable.concat(this.state.result[count]["refundable"]) });
+                    this.setState({ reservaion_number: this.state.reservaion_number.concat(this.state.result[count]["reservation_number"]) });
+                }
+                this.setState({ count: count });
+                this.setState({ total_page: this.state.result[0]["total_page"] });
+            }.bind(this)).then(function () {
+                if (this.state.test_number == 0) {
+                    this.setState({ test_number: 1 });
+                    this.submitGit();
+                } else {
+                    this.setState({ test_number: 0 });
+                }
+            }.bind(this));
+        }
+    }, {
+        key: 'submitGit',
+        value: function submitGit() {
+            this.list_reservation({
+                email: _reactCookies2.default.load('email'),
+                currentPage: this.state.currentPage
+            });
+        }
+    }, {
+        key: 'refund_impormation',
+        value: function refund_impormation() {
+            var _this3 = this;
+
+            fetch('/refund_impormation', {
+                method: 'POST',
+                headers: {
+                    "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+                },
+                body: "reservation_number=" + this.state.reservaion_number[this.state.division_number]
+            }).then(function (response) {
+                return response.json();
+            }).then(function (json) {
+                _this3.setState({
+                    rental_point: json.rental_point,
+                    rental_date: json.rental_date,
+                    return_point: json.return_point,
+                    return_date: json.return_date
+                });
+            }).then(function () {
+                if (this.state.test_number == 0) {
+                    this.setState({ test_number: 1 });
+                    this.refund_impormation();
+                } else {
+                    this.setState({ test_number: 0 });
+                }
+            }.bind(this));
+        }
+    }, {
+        key: 'cancel_reservation',
+        value: function cancel_reservation() {
+            var _this4 = this;
+
+            fetch('/refund', {
+                method: 'POST',
+                headers: {
+                    "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+                },
+                body: "reservation_number=" + this.state.reservaion_number[this.state.division_number]
+            }).then(function (response) {
+                return response.json();
+            }).then(function (json) {
+                console.log("refund result = ", json.result);
+
+                if (json.result == "false") {
+                    alert("다시 한 번 시도해주시길 바랍니다.");
+                }
+
+                _this4.click_home();
+            });
+        }
+    }, {
+        key: 'click_home',
+        value: function click_home() {
+            this.setState({ returned: 'home' });
+        }
+    }, {
+        key: 'click_rent',
+        value: function click_rent() {
+            this.setState({ returned: 'rent' });
+        }
+    }, {
+        key: 'click_refund',
+        value: function click_refund(e) {
+            this.setState({ division_number: e.target.id });
+            this.setState({ returned: 'refund' });
+            this.refund_impormation();
+        }
+    }, {
+        key: 'log_out',
+        value: function log_out() {
+            _reactCookies2.default.remove('name', { path: '/' });
+            _reactCookies2.default.remove('username', { path: '/' });
+            _reactCookies2.default.remove('reserves', { path: '/' });
+            _reactCookies2.default.remove('email', { path: '/' });
+            window.location.reload();
+        }
+    }, {
+        key: 'click_cancel_reservation',
+        value: function click_cancel_reservation() {
+            var answer = confirm("정말 예약 취소하시겠습니까?");
+            if (answer == true) {
+                this.cancel_reservation();
+            }
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var _this5 = this;
+
+            var pageNumbers = [];
+            for (var i = 1; i <= Math.floor((this.state.total_page - 1) / 5) + 1; i++) {
+                pageNumbers.push(i);
+            }
+
+            var renderPageNUmbers = pageNumbers.map(function (number) {
+                return _react2.default.createElement(
+                    'li',
+                    { key: number, id: number, onClick: _this5.handleClick },
+                    number
+                );
+            });
+
+            var noneStyle = {
+                display: 'none'
+            };
+            var blockStyle = {};
+
+            var reservation_history_form = _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(
+                    'div',
+                    { className: 'logo', onClick: this.click_home.bind(this) },
+                    '\uB80C\uD130\uCE74'
+                ),
+                _react2.default.createElement(
+                    'div',
+                    { className: 'menu' },
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu-item', onClick: this.click_home.bind(this) },
+                        ' \uD648 '
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu-item', onClick: this.click_rent.bind(this) },
+                        ' \uB80C\uD130\uCE74 \uC608\uC57D '
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu-item', onClick: this.log_out.bind(this) },
+                        ' \uB85C\uADF8\uC544\uC6C3 '
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu-item' },
+                        ' \uC608\uC57D \uBC0F \uC774\uC6A9 \uB0B4\uC5ED '
+                    )
+                ),
+                _react2.default.createElement(
+                    'table',
+                    null,
+                    _react2.default.createElement(
+                        'tbody',
+                        null,
+                        _react2.default.createElement(
+                            'tr',
+                            { style: this.state.image[0] == null ? noneStyle : blockStyle },
+                            _react2.default.createElement(
+                                'td',
+                                { widrth: '230' },
+                                '\uC774\uBBF8\uC9C0'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                { width: '150' },
+                                '\uCC28\uB7C9 \uBC88\uD638'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                { width: '150' },
+                                '\uCC28\uB7C9 \uC774\uB984'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                { width: '150' },
+                                '\uC5F0\uB8CC'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                { width: '150' },
+                                '\uC0C9\uC0C1'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                { width: '150' },
+                                '\uC8FC\uD589\uAC70\uB9AC'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                { width: '150' },
+                                'n\uC778\uC2B9'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                { width: '150' },
+                                '\uC608\uC57D\uCDE8\uC18C'
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            { style: this.state.image[0] == null ? noneStyle : blockStyle },
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement('img', { src: this.state.image[0], width: '230', height: '130' })
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                this.state.car_number[0]
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                this.state.car_name[0]
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                this.state.fuel[0]
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                this.state.color[0]
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                this.state.distance[0]
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                this.state.few[0]
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                { style: this.state.refundable[0] == "false" ? noneStyle : blockStyle },
+                                _react2.default.createElement(
+                                    'button',
+                                    { id: 0, onClick: this.click_refund.bind(this) },
+                                    ' \uD658\uBD88 '
+                                )
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            { style: this.state.image[1] == null ? noneStyle : blockStyle },
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement('img', { src: this.state.image[1], width: '230', height: '130' })
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                this.state.car_number[1]
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                this.state.car_name[1]
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                this.state.fuel[1]
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                this.state.color[1]
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                this.state.distance[1]
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                this.state.few[1]
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                { style: this.state.refundable[1] == "false" ? noneStyle : blockStyle },
+                                _react2.default.createElement(
+                                    'button',
+                                    { id: 1, onClick: this.click_refund.bind(this) },
+                                    ' \uD658\uBD88 '
+                                )
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            { style: this.state.image[2] == null ? noneStyle : blockStyle },
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement('img', { src: this.state.image[2], width: '230', height: '130' })
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                this.state.car_number[2]
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                this.state.car_name[2]
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                this.state.fuel[2]
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                this.state.color[2]
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                this.state.distance[2]
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                this.state.few[2]
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                { style: this.state.refundable[2] == "false" ? noneStyle : blockStyle },
+                                _react2.default.createElement(
+                                    'button',
+                                    { id: 2, onClick: this.click_refund.bind(this) },
+                                    ' \uD658\uBD88 '
+                                )
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            { style: this.state.image[3] == null ? noneStyle : blockStyle },
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement('img', { src: this.state.image[3], width: '230', height: '130' })
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                this.state.car_number[3]
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                this.state.car_name[3]
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                this.state.fuel[3]
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                this.state.color[3]
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                this.state.distance[3]
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                this.state.few[3]
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                { style: this.state.refundable[3] == "false" ? noneStyle : blockStyle },
+                                _react2.default.createElement(
+                                    'button',
+                                    { id: 3, onClick: this.click_refund.bind(this) },
+                                    ' \uD658\uBD88 '
+                                )
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            { style: this.state.image[4] == null ? noneStyle : blockStyle },
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement('img', { src: this.state.image[4], width: '230', height: '130' })
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                this.state.car_number[4]
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                this.state.car_name[4]
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                this.state.fuel[4]
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                this.state.color[4]
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                this.state.distance[4]
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                this.state.few[4]
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                { style: this.state.refundable[4] == "false" ? noneStyle : blockStyle },
+                                _react2.default.createElement(
+                                    'button',
+                                    { id: 4, onClick: this.click_refund.bind(this) },
+                                    ' \uD658\uBD88 '
+                                )
+                            )
+                        )
+                    )
+                ),
+                _react2.default.createElement(
+                    'ul',
+                    { id: 'page-numbers' },
+                    renderPageNUmbers
+                )
+            );
+
+            var home_Form = _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(_App2.default, null)
+            );
+
+            var refunded_Form = _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(
+                    'div',
+                    { className: 'logo', onClick: this.click_home.bind(this) },
+                    '\uB80C\uD130\uCE74'
+                ),
+                _react2.default.createElement(
+                    'div',
+                    { className: 'menu' },
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu-item', onClick: this.click_home.bind(this) },
+                        ' \uD648 '
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu-item', onClick: this.click_rent.bind(this) },
+                        ' \uB80C\uD130\uCE74 \uC608\uC57D '
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu-item', onClick: this.log_out.bind(this) },
+                        ' \uB85C\uADF8\uC544\uC6C3 '
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu-item' },
+                        ' \uC608\uC57D \uBC0F \uC774\uC6A9 \uB0B4\uC5ED '
+                    )
+                ),
+                _react2.default.createElement(
+                    'table',
+                    null,
+                    _react2.default.createElement(
+                        'tbody',
+                        null,
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'td',
+                                { colSpan: 2 },
+                                _react2.default.createElement('img', { src: this.state.image[this.state.division_number], width: '500', height: '380' })
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                '\uCC28\uC885'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                this.state.car_name[this.state.division_number]
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                '\uC0C9\uC0C1'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                this.state.color[this.state.division_number]
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                '\uC8FC\uD589\uAC70\uB9AC'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                this.state.distance[this.state.division_number]
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                'N\uC778\uC2B9'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                this.state.few[this.state.division_number]
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                '\uB300\uC5EC\uC9C0\uC810'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                this.state.rental_point
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                '\uBC18\uB0A9\uC9C0\uC810'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                this.state.return_point
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                '\uB300\uC5EC \uC77C\uC790'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                this.state.rental_date.slice(0, 16)
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                '\uBC18\uB0A9 \uC77C\uC790'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                this.state.return_date.slice(0, 16)
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'td',
+                                { colSpan: 2 },
+                                _react2.default.createElement(
+                                    'button',
+                                    { onClick: this.click_cancel_reservation.bind(this) },
+                                    ' \uC608\uC57D \uCDE8\uC18C '
+                                )
+                            )
+                        )
+                    )
+                )
+            );
+            var rent_Form = _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(_Rent_2.default, null)
+            );
+
+            if (this.state.returned == "ready") {
+                this.setState.returned = "reservation";
+                return reservation_history_form;
+            } else if (this.state.returned == "refund") {
+                return refunded_Form;
+            } else if (this.state.returned == "home") {
+                return home_Form;
+            } else if (this.state.returned == "rent") {
+                return rent_Form;
+            } else {
+                return reservation_history_form;
+            }
+        }
+    }]);
+
+    return Reservation_history;
+}(_react2.default.Component);
+
+exports.default = Reservation_history;
+
+/***/ }),
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4175,11 +5287,11 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactDom = __webpack_require__(2);
+var _reactDom = __webpack_require__(1);
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
-var _App = __webpack_require__(6);
+var _App = __webpack_require__(9);
 
 var _App2 = _interopRequireDefault(_App);
 
@@ -4190,7 +5302,7 @@ var rootElement = document.getElementById('root');
 _reactDom2.default.render(_react2.default.createElement(_App2.default, null), rootElement);
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4203,7 +5315,7 @@ _reactDom2.default.render(_react2.default.createElement(_App2.default, null), ro
  * LICENSE file in the root directory of this source tree.
  */
 
-var m=__webpack_require__(4),n=__webpack_require__(5),p=__webpack_require__(3),q="function"===typeof Symbol&&Symbol["for"],r=q?Symbol["for"]("react.element"):60103,t=q?Symbol["for"]("react.call"):60104,u=q?Symbol["for"]("react.return"):60105,v=q?Symbol["for"]("react.portal"):60106,w=q?Symbol["for"]("react.fragment"):60107,x="function"===typeof Symbol&&Symbol.iterator;
+var m=__webpack_require__(6),n=__webpack_require__(8),p=__webpack_require__(5),q="function"===typeof Symbol&&Symbol["for"],r=q?Symbol["for"]("react.element"):60103,t=q?Symbol["for"]("react.call"):60104,u=q?Symbol["for"]("react.return"):60105,v=q?Symbol["for"]("react.portal"):60106,w=q?Symbol["for"]("react.fragment"):60107,x="function"===typeof Symbol&&Symbol.iterator;
 function y(a){for(var b=arguments.length-1,e="Minified React error #"+a+"; visit http://facebook.github.io/react/docs/error-decoder.html?invariant\x3d"+a,c=0;c<b;c++)e+="\x26args[]\x3d"+encodeURIComponent(arguments[c+1]);b=Error(e+" for the full message or use the non-minified dev environment for full errors and additional helpful warnings.");b.name="Invariant Violation";b.framesToPop=1;throw b;}
 var z={isMounted:function(){return!1},enqueueForceUpdate:function(){},enqueueReplaceState:function(){},enqueueSetState:function(){}};function A(a,b,e){this.props=a;this.context=b;this.refs=n;this.updater=e||z}A.prototype.isReactComponent={};A.prototype.setState=function(a,b){"object"!==typeof a&&"function"!==typeof a&&null!=a?y("85"):void 0;this.updater.enqueueSetState(this,a,b,"setState")};A.prototype.forceUpdate=function(a){this.updater.enqueueForceUpdate(this,a,"forceUpdate")};
 function B(a,b,e){this.props=a;this.context=b;this.refs=n;this.updater=e||z}function C(){}C.prototype=A.prototype;var D=B.prototype=new C;D.constructor=B;m(D,A.prototype);D.isPureReactComponent=!0;function E(a,b,e){this.props=a;this.context=b;this.refs=n;this.updater=e||z}var F=E.prototype=new C;F.constructor=E;m(F,A.prototype);F.unstable_isAsyncReactComponent=!0;F.render=function(){return this.props.children};var G={current:null},H=Object.prototype.hasOwnProperty,I={key:!0,ref:!0,__self:!0,__source:!0};
@@ -4218,7 +5330,7 @@ isValidElement:K,version:"16.2.0",__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_F
 
 
 /***/ }),
-/* 26 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4239,12 +5351,12 @@ if (process.env.NODE_ENV !== "production") {
   (function() {
 'use strict';
 
-var _assign = __webpack_require__(4);
-var emptyObject = __webpack_require__(5);
-var invariant = __webpack_require__(9);
-var warning = __webpack_require__(10);
-var emptyFunction = __webpack_require__(3);
-var checkPropTypes = __webpack_require__(12);
+var _assign = __webpack_require__(6);
+var emptyObject = __webpack_require__(8);
+var invariant = __webpack_require__(12);
+var warning = __webpack_require__(13);
+var emptyFunction = __webpack_require__(5);
+var checkPropTypes = __webpack_require__(14);
 
 // TODO: this is special because it gets imported during build.
 
@@ -5580,10 +6692,10 @@ module.exports = react;
   })();
 }
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
 /***/ }),
-/* 27 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5602,7 +6714,7 @@ module.exports = ReactPropTypesSecret;
 
 
 /***/ }),
-/* 28 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5618,7 +6730,7 @@ module.exports = ReactPropTypesSecret;
 /*
  Modernizr 3.0.0pre (Custom Build) | MIT
 */
-var aa=__webpack_require__(0),l=__webpack_require__(13),B=__webpack_require__(4),C=__webpack_require__(3),ba=__webpack_require__(14),da=__webpack_require__(15),ea=__webpack_require__(16),fa=__webpack_require__(17),ia=__webpack_require__(18),D=__webpack_require__(5);
+var aa=__webpack_require__(0),l=__webpack_require__(15),B=__webpack_require__(6),C=__webpack_require__(5),ba=__webpack_require__(16),da=__webpack_require__(17),ea=__webpack_require__(18),fa=__webpack_require__(19),ia=__webpack_require__(20),D=__webpack_require__(8);
 function E(a){for(var b=arguments.length-1,c="Minified React error #"+a+"; visit http://facebook.github.io/react/docs/error-decoder.html?invariant\x3d"+a,d=0;d<b;d++)c+="\x26args[]\x3d"+encodeURIComponent(arguments[d+1]);b=Error(c+" for the full message or use the non-minified dev environment for full errors and additional helpful warnings.");b.name="Invariant Violation";b.framesToPop=1;throw b;}aa?void 0:E("227");
 var oa={children:!0,dangerouslySetInnerHTML:!0,defaultValue:!0,defaultChecked:!0,innerHTML:!0,suppressContentEditableWarning:!0,suppressHydrationWarning:!0,style:!0};function pa(a,b){return(a&b)===b}
 var ta={MUST_USE_PROPERTY:1,HAS_BOOLEAN_VALUE:4,HAS_NUMERIC_VALUE:8,HAS_POSITIVE_NUMERIC_VALUE:24,HAS_OVERLOADED_BOOLEAN_VALUE:32,HAS_STRING_BOOLEAN_VALUE:64,injectDOMPropertyConfig:function(a){var b=ta,c=a.Properties||{},d=a.DOMAttributeNamespaces||{},e=a.DOMAttributeNames||{};a=a.DOMMutationMethods||{};for(var f in c){ua.hasOwnProperty(f)?E("48",f):void 0;var g=f.toLowerCase(),h=c[f];g={attributeName:g,attributeNamespace:null,propertyName:f,mutationMethod:null,mustUseProperty:pa(h,b.MUST_USE_PROPERTY),
@@ -5838,7 +6950,7 @@ Z.injectIntoDevTools({findFiberByHostInstance:pb,bundleType:0,version:"16.2.0",r
 
 
 /***/ }),
-/* 29 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5853,7 +6965,7 @@ Z.injectIntoDevTools({findFiberByHostInstance:pb,bundleType:0,version:"16.2.0",r
  * @typechecks
  */
 
-var isNode = __webpack_require__(30);
+var isNode = __webpack_require__(31);
 
 /**
  * @param {*} object The object to check.
@@ -5866,7 +6978,7 @@ function isTextNode(object) {
 module.exports = isTextNode;
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5894,7 +7006,7 @@ function isNode(object) {
 module.exports = isNode;
 
 /***/ }),
-/* 31 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5916,20 +7028,20 @@ if (process.env.NODE_ENV !== "production") {
 'use strict';
 
 var React = __webpack_require__(0);
-var invariant = __webpack_require__(9);
-var warning = __webpack_require__(10);
-var ExecutionEnvironment = __webpack_require__(13);
-var _assign = __webpack_require__(4);
-var emptyFunction = __webpack_require__(3);
-var EventListener = __webpack_require__(14);
-var getActiveElement = __webpack_require__(15);
-var shallowEqual = __webpack_require__(16);
-var containsNode = __webpack_require__(17);
-var focusNode = __webpack_require__(18);
-var emptyObject = __webpack_require__(5);
-var checkPropTypes = __webpack_require__(12);
-var hyphenateStyleName = __webpack_require__(32);
-var camelizeStyleName = __webpack_require__(34);
+var invariant = __webpack_require__(12);
+var warning = __webpack_require__(13);
+var ExecutionEnvironment = __webpack_require__(15);
+var _assign = __webpack_require__(6);
+var emptyFunction = __webpack_require__(5);
+var EventListener = __webpack_require__(16);
+var getActiveElement = __webpack_require__(17);
+var shallowEqual = __webpack_require__(18);
+var containsNode = __webpack_require__(19);
+var focusNode = __webpack_require__(20);
+var emptyObject = __webpack_require__(8);
+var checkPropTypes = __webpack_require__(14);
+var hyphenateStyleName = __webpack_require__(33);
+var camelizeStyleName = __webpack_require__(35);
 
 /**
  * WARNING: DO NOT manually require this module.
@@ -21293,10 +22405,10 @@ module.exports = reactDom;
   })();
 }
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
 /***/ }),
-/* 32 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21311,7 +22423,7 @@ module.exports = reactDom;
 
 
 
-var hyphenate = __webpack_require__(33);
+var hyphenate = __webpack_require__(34);
 
 var msPattern = /^ms-/;
 
@@ -21338,7 +22450,7 @@ function hyphenateStyleName(string) {
 module.exports = hyphenateStyleName;
 
 /***/ }),
-/* 33 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21374,7 +22486,7 @@ function hyphenate(string) {
 module.exports = hyphenate;
 
 /***/ }),
-/* 34 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21389,7 +22501,7 @@ module.exports = hyphenate;
 
 
 
-var camelize = __webpack_require__(35);
+var camelize = __webpack_require__(36);
 
 var msPattern = /^-ms-/;
 
@@ -21417,7 +22529,7 @@ function camelizeStyleName(string) {
 module.exports = camelizeStyleName;
 
 /***/ }),
-/* 35 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21452,7 +22564,7 @@ function camelize(string) {
 module.exports = camelize;
 
 /***/ }),
-/* 36 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21654,7 +22766,7 @@ function tryDecode(str, decode) {
 
 
 /***/ }),
-/* 37 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21666,7 +22778,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactDom = __webpack_require__(2);
+var _reactDom = __webpack_require__(1);
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
@@ -21734,7 +22846,356 @@ var SendEmail = function (_React$Component) {
 module.exports = SendEmail;
 
 /***/ }),
-/* 38 */
+/* 39 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactDom = __webpack_require__(1);
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
+
+var _reactCookies = __webpack_require__(4);
+
+var _reactCookies2 = _interopRequireDefault(_reactCookies);
+
+var _SignInForm = __webpack_require__(11);
+
+var _SignInForm2 = _interopRequireDefault(_SignInForm);
+
+var _ImageTest = __webpack_require__(7);
+
+var _ImageTest2 = _interopRequireDefault(_ImageTest);
+
+var _SignUpForm = __webpack_require__(10);
+
+var _SignUpForm2 = _interopRequireDefault(_SignUpForm);
+
+__webpack_require__(3);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var FindId = function (_React$Component) {
+    _inherits(FindId, _React$Component);
+
+    function FindId(props) {
+        _classCallCheck(this, FindId);
+
+        var _this = _possibleConstructorReturn(this, (FindId.__proto__ || Object.getPrototypeOf(FindId)).call(this, props));
+
+        _this.state = _defineProperty({
+            returned: '',
+            email: '',
+            certification_number: '',
+            input_certification_number: '',
+            name: '',
+            id: '',
+            result: 'ming'
+        }, 'returned', 1);
+        return _this;
+    }
+
+    _createClass(FindId, [{
+        key: 'emailAuthentication',
+        value: function emailAuthentication(opts) {
+            fetch('/email', {
+                method: 'POST',
+                headers: {
+                    "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+                },
+                body: "form=" + JSON.stringify(opts)
+            }).then(function (response) {
+                return response.json();
+            });
+            //.then((json) => { this.setState({result:json.result}); })
+        }
+    }, {
+        key: 'submitGit_email',
+        value: function submitGit_email() {
+            var min = 100000;
+            var max = 999999;
+            var certification_number = parseInt(min + Math.random() * (max - min));
+
+            this.setState({ certification_number: certification_number });
+
+            this.emailAuthentication({
+                email: this.state.email,
+                certification_number: certification_number
+            });
+        }
+    }, {
+        key: 'find_id',
+        value: function find_id(opts) {
+            var _this2 = this;
+
+            fetch('/find_id', {
+                method: 'POST',
+                headers: {
+                    "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+                },
+                body: "form=" + JSON.stringify(opts)
+            }).then(function (response) {
+                return response.json();
+            }).then(function (json) {
+                _this2.setState({ result: json.result, id: json.id });
+            }).then(function () {
+                console.log("result = ", this.state.result);
+                console.log("id = ", this.state.id);
+
+                if (this.state.result == "email") {
+                    alert("인증번호를 확인해주세요.");
+                    return;
+                } else if (this.state.result == "impormation") {
+                    alert("없는 회원 정보입니다.");
+                    return;
+                } else {
+                    this.setState({ returned: 2 });
+                }
+            }.bind(this));
+        }
+    }, {
+        key: 'submitGit_find_id',
+        value: function submitGit_find_id() {
+            this.find_id({
+                email: this.state.email,
+                certification_number: this.state.input_certification_number,
+                name: this.state.name
+            });
+        }
+    }, {
+        key: 'emailChange',
+        value: function emailChange(e) {
+            this.setState({ email: e.target.value });
+        }
+    }, {
+        key: 'input_certification_numberChange',
+        value: function input_certification_numberChange(e) {
+            this.setState({ input_certification_number: e.target.value });
+        }
+    }, {
+        key: 'nameChange',
+        value: function nameChange(e) {
+            this.setState({ name: e.target.value });
+        }
+    }, {
+        key: 'click_sign_up',
+        value: function click_sign_up() {
+            this.setState({ returned: "up" });
+        }
+    }, {
+        key: 'click_sign_in',
+        value: function click_sign_in() {
+            this.setState({ returned: "in" });
+        }
+    }, {
+        key: 'click_ImageTest',
+        value: function click_ImageTest() {
+            this.setState({ returned: "image" });
+        }
+    }, {
+        key: 'click_home',
+        value: function click_home() {
+            window.location.reload();
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var find_id_Form = _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(
+                    'div',
+                    { className: 'logo' },
+                    '\uB80C\uD2B8\uCE74'
+                ),
+                _react2.default.createElement(
+                    'div',
+                    { className: 'menu' },
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu-item', onClick: this.click_home.bind(this) },
+                        ' \uD648 '
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu-item', onClick: this.click_sign_in.bind(this) },
+                        ' \uB85C\uADF8\uC778 '
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu-item', onClick: this.click_sign_up.bind(this) },
+                        ' \uD68C\uC6D0\uAC00\uC785 '
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu-item', onClick: this.click_ImageTest.bind(this) },
+                        ' \uC0AC\uC9C4\uD14C\uC2A4\uD2B8 '
+                    )
+                ),
+                _react2.default.createElement(
+                    'table',
+                    null,
+                    _react2.default.createElement(
+                        'tbody',
+                        null,
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                '\uC774\uB984'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement('input', { type: 'text', placeholder: '\uC774\uB984\uC744 \uC785\uB825\uD574\uC8FC\uC138\uC694', onChange: this.nameChange.bind(this) })
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                '\uC774\uBA54\uC77C'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement('input', { type: 'text', placeholder: '\uC774\uBA54\uC77C\uC744 \uC785\uB825\uD574\uC8FC\uC138\uC694.', onChange: this.emailChange.bind(this) })
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement(
+                                    'button',
+                                    { onClick: this.submitGit_email.bind(this) },
+                                    ' \uC778\uC99D\uBC88\uD638 \uC804\uC1A1 '
+                                )
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                '\uC778\uC99D\uBC88\uD638'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement('input', { type: 'text', placeholder: '\uC778\uC99D\uBC88\uD638\uB97C \uC785\uB825\uD574\uC8FC\uC138\uC694', onChange: this.input_certification_numberChange.bind(this) })
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement(
+                                    'button',
+                                    { onClick: this.submitGit_find_id.bind(this) },
+                                    ' \uC544\uC774\uB514 \uCC3E\uAE30 '
+                                )
+                            )
+                        )
+                    )
+                )
+            );
+            var show_id = _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(
+                    'div',
+                    { className: 'logo' },
+                    '\uB80C\uD2B8\uCE74'
+                ),
+                _react2.default.createElement(
+                    'div',
+                    { className: 'menu' },
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu-item', onClick: this.click_home.bind(this) },
+                        ' \uD648 '
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu-item', onClick: this.click_sign_in.bind(this) },
+                        ' \uB85C\uADF8\uC778 '
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu-item', onClick: this.click_sign_up.bind(this) },
+                        ' \uD68C\uC6D0\uAC00\uC785 '
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu-item', onClick: this.click_ImageTest.bind(this) },
+                        ' \uC0AC\uC9C4\uD14C\uC2A4\uD2B8 '
+                    )
+                ),
+                '\uD68C\uC6D0\uB2D8\uC758 \uC544\uC774\uB514 : ',
+                this.state.id
+            );
+            var sign_in_Form = _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(_SignInForm2.default, null)
+            );
+            var sign_up_Form = _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(_SignUpForm2.default, null)
+            );
+            var image_test_Form = _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(_ImageTest2.default, null)
+            );
+
+            if (this.state.returned == 1) {
+                return find_id_Form;
+            } else if (this.state.returned == 2) {
+                return show_id;
+            } else if (this.state.returned == "in") {
+                return sign_in_Form;
+            } else if (this.state.returned == "up") {
+                return sign_up_Form;
+            } else if (this.state.returned == "image") {
+                return image_test_Form;
+            }
+        }
+    }]);
+
+    return FindId;
+}(_react2.default.Component);
+
+exports.default = FindId;
+
+/***/ }),
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(21)(false);
@@ -21748,7 +23209,7 @@ exports.push([module.i, ".logo {\n    height: 3.5rem;\n    background-color: #21
 
 
 /***/ }),
-/* 39 */
+/* 41 */
 /***/ (function(module, exports) {
 
 
@@ -21843,13 +23304,1281 @@ module.exports = function (css) {
 
 
 /***/ }),
-/* 40 */
+/* 42 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactDom = __webpack_require__(1);
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
+
+var _reactCookies = __webpack_require__(4);
+
+var _reactCookies2 = _interopRequireDefault(_reactCookies);
+
+var _SignInForm = __webpack_require__(11);
+
+var _SignInForm2 = _interopRequireDefault(_SignInForm);
+
+var _ImageTest = __webpack_require__(7);
+
+var _ImageTest2 = _interopRequireDefault(_ImageTest);
+
+var _SignUpForm = __webpack_require__(10);
+
+var _SignUpForm2 = _interopRequireDefault(_SignUpForm);
+
+__webpack_require__(3);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var FindPwd = function (_React$Component) {
+    _inherits(FindPwd, _React$Component);
+
+    function FindPwd(props) {
+        _classCallCheck(this, FindPwd);
+
+        var _this = _possibleConstructorReturn(this, (FindPwd.__proto__ || Object.getPrototypeOf(FindPwd)).call(this, props));
+
+        _this.state = {
+            returned: 1,
+            name: '',
+            input_certification_number: '',
+            certification_number: '',
+            email: '',
+            result: '',
+            id: '',
+            password: '',
+            password_confirm: '',
+            password_feedback: ''
+        };
+        return _this;
+    }
+
+    _createClass(FindPwd, [{
+        key: 'emailAuthentication',
+        value: function emailAuthentication(opts) {
+            fetch('/email', {
+                method: 'POST',
+                headers: {
+                    "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+                },
+                body: "form=" + JSON.stringify(opts)
+            }).then(function (response) {
+                return response.json();
+            });
+            //.then((json) => { this.setState({result:json.result}); })
+        }
+    }, {
+        key: 'submitGit_email',
+        value: function submitGit_email() {
+            var min = 100000;
+            var max = 999999;
+            var certification_number = parseInt(min + Math.random() * (max - min));
+
+            this.setState({ certification_number: certification_number });
+
+            this.emailAuthentication({
+                email: this.state.email,
+                certification_number: certification_number
+            });
+        }
+    }, {
+        key: 'find_pwd',
+        value: function find_pwd(opts) {
+            var _this2 = this;
+
+            fetch('/find_pwd', {
+                method: 'POST',
+                headers: {
+                    "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+                },
+                body: "form=" + JSON.stringify(opts)
+            }).then(function (response) {
+                return response.json();
+            }).then(function (json) {
+                _this2.setState({ result: json.result });
+            }).then(function () {
+                if (this.state.result == "email") {
+                    alert("인증번호를 확인해주세요.");
+                    return;
+                } else if (this.state.result == "impormation") {
+                    alert("입력하신 회원정보를 다시 한 번 확인해주시길 바랍니다.");
+                    return;
+                } else {
+                    this.setState({ returned: 2 });
+                }
+            }.bind(this));
+        }
+    }, {
+        key: 'submitGit_find_pwd',
+        value: function submitGit_find_pwd() {
+            this.find_pwd({
+                email: this.state.email,
+                name: this.state.name,
+                id: this.state.id,
+                certification_number: this.state.input_certification_number
+            });
+        }
+    }, {
+        key: 'click_sign_up',
+        value: function click_sign_up() {
+            this.setState({ returned: "up" });
+        }
+    }, {
+        key: 'click_sign_in',
+        value: function click_sign_in() {
+            this.setState({ returned: "in" });
+        }
+    }, {
+        key: 'click_ImageTest',
+        value: function click_ImageTest() {
+            this.setState({ returned: "image" });
+        }
+    }, {
+        key: 'click_home',
+        value: function click_home() {
+            window.location.reload();
+        }
+    }, {
+        key: 'emailChange',
+        value: function emailChange(e) {
+            this.setState({ email: e.target.value });
+        }
+    }, {
+        key: 'input_certification_numberChange',
+        value: function input_certification_numberChange(e) {
+            this.setState({ input_certification_number: e.target.value });
+        }
+    }, {
+        key: 'nameChange',
+        value: function nameChange(e) {
+            this.setState({ name: e.target.value });
+        }
+    }, {
+        key: 'idChange',
+        value: function idChange(e) {
+            this.setState({ id: e.target.value });
+        }
+
+        //password
+
+    }, {
+        key: 'chkPwd',
+        value: function chkPwd() {
+            var pw = this.state.password;
+            var num = pw.search(/[0-9]/g);
+            var eng = pw.search(/[a-z]/ig);
+            var spe = pw.search(/[`~!@@#$%^&*|₩₩₩'₩";:₩/?]/gi);
+            var blank_pattern = /[\s]/g;
+
+            if (pw.length < 8 || pw.length > 16) {
+                this.setState({ password_feedback: "9자리 ~ 16자리 이내로 입력해주세요." });
+                //alert("9자리 ~ 16자리 이내로 입력해주세요.")
+            } else if (blank_pattern.test(pw) == true) {
+                //else if(pw.search(/₩s/) != -1){
+                this.setState({ password_feedback: "비밀번호는 공백없이 입력해주세요." });
+                //alert("비밀번호는 공백없이 입력해주세요.")
+            } else if (num < 0 || eng < 0 || spe < 0) {
+                this.setState({ password_feedback: "영문, 숫자, 특수문자를 혼합하여 입력해주세요." });
+                //alert("영문, 숫자, 특수문자를 혼합하여 입력해주세요.")
+            } else {
+                this.setState({ password_feedback: '' });
+            }
+        }
+    }, {
+        key: 'passwordChange',
+        value: function passwordChange(e) {
+            this.setState({ password: e.target.value });
+            this.chkPwd();
+        }
+    }, {
+        key: 'password_confirmChange',
+        value: function password_confirmChange(e) {
+            this.setState({ password_confirm: e.target.value });
+        }
+    }, {
+        key: 'change_Pwd',
+        value: function change_Pwd(opts) {
+            var _this3 = this;
+
+            fetch('/change_pwd', {
+                method: 'POST',
+                headers: {
+                    "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+                },
+                body: "form=" + JSON.stringify(opts)
+            }).then(function (response) {
+                return response.json();
+            }).then(function (json) {
+                _this3.setState({ result: json.result, id: json.id });
+            }).then(function () {
+                if (this.state.result == "true") {
+                    alert("비밀번호 변경에 성공하셨습니다.");
+                    this.click_home();
+                } else {
+                    alert("비밀 번호 변경에 실패하셨습니다. 다시 한 번 시도해주세요.");
+                    return;
+                }
+            }.bind(this));
+        }
+    }, {
+        key: 'changeThePwd',
+        value: function changeThePwd() {
+            if (this.state.password_feedback != '') {
+                //if(this.state.password_feedback!='' || this.state.password_confirm_feedback!=''){
+                alert("비밀번호 양식이 맞는 지 확인해주시길 바립니다.");
+                return;
+            } else if (this.state.password != this.state.password_confirm) {
+                alert("비밀번호와 비밀번호 확인이 일치하는 지 확인해주시길 바랍니다.");
+                return;
+            }
+
+            this.change_Pwd({
+                password: this.state.password,
+                email: this.state.email
+            });
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var find_pwd_Form = _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(
+                    'div',
+                    { className: 'logo' },
+                    '\uB80C\uD2B8\uCE74'
+                ),
+                _react2.default.createElement(
+                    'div',
+                    { className: 'menu' },
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu-item', onClick: this.click_home.bind(this) },
+                        ' \uD648 '
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu-item', onClick: this.click_sign_in.bind(this) },
+                        ' \uB85C\uADF8\uC778 '
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu-item', onClick: this.click_sign_up.bind(this) },
+                        ' \uD68C\uC6D0\uAC00\uC785 '
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu-item', onClick: this.click_ImageTest.bind(this) },
+                        ' \uC0AC\uC9C4\uD14C\uC2A4\uD2B8 '
+                    )
+                ),
+                _react2.default.createElement(
+                    'table',
+                    null,
+                    _react2.default.createElement(
+                        'tbody',
+                        null,
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                '\uC774\uB984'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement('input', { type: 'text', placeholder: '\uC774\uB984\uC744 \uC785\uB825\uD574\uC8FC\uC138\uC694', onChange: this.nameChange.bind(this) })
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                '\uC774\uBA54\uC77C'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement('input', { type: 'text', placeholder: '\uC774\uBA54\uC77C\uC744 \uC785\uB825\uD574\uC8FC\uC138\uC694.', onChange: this.emailChange.bind(this) })
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement(
+                                    'button',
+                                    { onClick: this.submitGit_email.bind(this) },
+                                    ' \uC778\uC99D\uBC88\uD638 \uC804\uC1A1 '
+                                )
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                '\uC778\uC99D\uBC88\uD638'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement('input', { type: 'text', placeholder: '\uC778\uC99D\uBC88\uD638\uB97C \uC785\uB825\uD574\uC8FC\uC138\uC694', onChange: this.input_certification_numberChange.bind(this) })
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                '\uC544\uC774\uB514'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement('input', { type: 'text', placeholder: '\uC544\uC774\uB514\uB97C \uC785\uB825\uD574\uC8FC\uC138\uC694.', onChange: this.idChange.bind(this) })
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement(
+                                    'button',
+                                    { onClick: this.submitGit_find_pwd.bind(this) },
+                                    ' \uBE44\uBC00\uBC88\uD638 \uCC3E\uAE30 '
+                                )
+                            )
+                        )
+                    )
+                )
+            );
+            var update_pwd_Form = _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(
+                    'div',
+                    { className: 'logo' },
+                    '\uB80C\uD2B8\uCE74'
+                ),
+                _react2.default.createElement(
+                    'div',
+                    { className: 'menu' },
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu-item', onClick: this.click_home.bind(this) },
+                        ' \uD648 '
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu-item', onClick: this.click_sign_in.bind(this) },
+                        ' \uB85C\uADF8\uC778 '
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu-item', onClick: this.click_sign_up.bind(this) },
+                        ' \uD68C\uC6D0\uAC00\uC785 '
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu-item', onClick: this.click_ImageTest.bind(this) },
+                        ' \uC0AC\uC9C4\uD14C\uC2A4\uD2B8 '
+                    )
+                ),
+                _react2.default.createElement(
+                    'div',
+                    null,
+                    _react2.default.createElement(
+                        'label',
+                        null,
+                        '\uBE44\uBC00\uBC88\uD638 '
+                    ),
+                    _react2.default.createElement('input', { type: 'password', name: 'password', maxLength: 16, size: '16', onChange: this.passwordChange.bind(this), placeholder: '\uBE44\uBC00\uBC88\uD638\uB97C \uC785\uB825\uD574\uC8FC\uC138\uC694' }),
+                    '\xA0\xA0',
+                    _react2.default.createElement(
+                        'span',
+                        null,
+                        this.state.password_feedback
+                    ),
+                    _react2.default.createElement('br', null),
+                    _react2.default.createElement(
+                        'label',
+                        null,
+                        '\uBE44\uBC00\uBC88\uD638 \uD655\uC778 '
+                    ),
+                    _react2.default.createElement('input', { type: 'password', name: 'password_confirm', maxLength: 16, size: '16', onChange: this.password_confirmChange.bind(this), placeholder: '\uBE44\uBC00\uBC88\uD638\uB97C \uC785\uB825\uD574\uC8FC\uC138\uC694' }),
+                    _react2.default.createElement(
+                        'button',
+                        { onClick: this.changeThePwd.bind(this) },
+                        ' \uBE44\uBC00\uBC88\uD638 \uBCC0\uACBD '
+                    )
+                )
+            );
+            var sign_in_Form = _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(_SignInForm2.default, null)
+            );
+            var sign_up_Form = _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(_SignUpForm2.default, null)
+            );
+            var image_test_Form = _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(_ImageTest2.default, null)
+            );
+
+            if (this.state.returned == 1) {
+                return find_pwd_Form;
+            } else if (this.state.returned == 2) {
+                return update_pwd_Form;
+            } else if (this.state.returned == "in") {
+                return sign_in_Form;
+            } else if (this.state.returned == "up") {
+                return sign_up_Form;
+            } else if (this.state.returned == "image") {
+                return image_test_Form;
+            }
+        }
+    }]);
+
+    return FindPwd;
+}(_react2.default.Component);
+
+exports.default = FindPwd;
+
+/***/ }),
+/* 43 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactDom = __webpack_require__(1);
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
+
+var _InsertionCar = __webpack_require__(44);
+
+var _InsertionCar2 = _interopRequireDefault(_InsertionCar);
+
+__webpack_require__(3);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Admin = function (_React$Component) {
+    _inherits(Admin, _React$Component);
+
+    function Admin(props) {
+        _classCallCheck(this, Admin);
+
+        var _this = _possibleConstructorReturn(this, (Admin.__proto__ || Object.getPrototypeOf(Admin)).call(this, props));
+
+        _this.state = {
+            returned: 'main'
+        };
+        return _this;
+    }
+
+    _createClass(Admin, [{
+        key: 'insert_car_Change',
+        value: function insert_car_Change() {
+            this.setState({ returned: 'insert_car' });
+        }
+    }, {
+        key: 'car_impormation_Change',
+        value: function car_impormation_Change() {
+            this.setState({ returned: 'car_impormation' });
+        }
+    }, {
+        key: 'mamber_impormation_Change',
+        value: function mamber_impormation_Change() {
+            this.setState({ returned: 'member_impormation' });
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var main_Form = _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(
+                    'div',
+                    { className: 'logo' },
+                    '\uB80C\uD130\uCE74'
+                ),
+                _react2.default.createElement(
+                    'div',
+                    { className: 'menu' },
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu-item' },
+                        ' \uD648 '
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu-item', onClick: this.insert_car_Change.bind(this) },
+                        ' \uC2E0\uADDC \uCC28\uB7C9 \uB4F1\uB85D '
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu-item', onClick: this.car_impormation_Change.bind(this) },
+                        ' \uCC28\uB7C9 \uC815\uBCF4 \uAD00\uB9AC '
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu-item', onClick: this.mamber_impormation_Change.bind(this) },
+                        ' \uACE0\uAC1D \uC815\uBCF4 \uAD00\uB9AC '
+                    )
+                )
+            );
+            var inser_car_Form = _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(_InsertionCar2.default, null)
+            );
+
+            if (this.state.returned == 'main') {
+                return main_Form;
+            } else if (this.state.returned == 'insert_car') {
+                return inser_car_Form;
+            } else if (this.state.returned == 'car_impormation') {} else if (this.state.returned == 'member_impormation') {}
+        }
+    }]);
+
+    return Admin;
+}(_react2.default.Component);
+
+exports.default = Admin;
+
+/***/ }),
+/* 44 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactDom = __webpack_require__(1);
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
+
+__webpack_require__(3);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var InsertionCar = function (_React$Component) {
+    _inherits(InsertionCar, _React$Component);
+
+    function InsertionCar(props) {
+        _classCallCheck(this, InsertionCar);
+
+        var _this = _possibleConstructorReturn(this, (InsertionCar.__proto__ || Object.getPrototypeOf(InsertionCar)).call(this, props));
+
+        _this.state = {
+            returned: '',
+            formdata: '',
+            car_number: '',
+            color: '',
+            car_type: 1,
+            fuel: '',
+            few: '',
+            distance: '',
+            area: 'inland',
+            point: 'Gangnam',
+            name: '',
+            six_hour: '',
+            ten_hour: '',
+            twelve_hour: '',
+            two_days: '',
+            four_days: '',
+            six_days: '',
+            more: '',
+            car_priceid: '',
+            url: '',
+            result: '',
+            image: ''
+        };
+        return _this;
+    }
+
+    _createClass(InsertionCar, [{
+        key: 'home_impormation_Change',
+        value: function home_impormation_Change() {
+            this.setState({ returned: 'home' });
+        }
+    }, {
+        key: 'car_impormation_Change',
+        value: function car_impormation_Change() {
+            this.setState({ returned: 'car_impormation' });
+        }
+    }, {
+        key: 'mamber_impormation_Change',
+        value: function mamber_impormation_Change() {
+            this.setState({ returned: 'member_impormation' });
+        }
+    }, {
+        key: 'fileChange',
+        value: function fileChange(e) {
+            var formData = new FormData();
+            var data = e.currentTarget.files;
+
+            for (var name in data) {
+                formData.append(name, data[name]);
+                console.log(name + ", " + e.currentTarget.files[name]);
+            }
+
+            this.setState({ formdata: formData });
+        }
+    }, {
+        key: 'car_numberChange',
+        value: function car_numberChange(e) {
+            this.setState({ car_number: e.target.value });
+        }
+    }, {
+        key: 'colorChange',
+        value: function colorChange(e) {
+            this.setState({ color: e.target.value });
+        }
+    }, {
+        key: 'car_typeChange',
+        value: function car_typeChange(e) {
+            this.setState({ car_type: e.target.value });
+        }
+    }, {
+        key: 'fuelChange',
+        value: function fuelChange(e) {
+            this.setState({ fuel: e.target.value });
+        }
+    }, {
+        key: 'fewChange',
+        value: function fewChange(e) {
+            this.setState({ few: e.target.value });
+        }
+    }, {
+        key: 'distanceChange',
+        value: function distanceChange(e) {
+            this.setState({ distance: e.target.value });
+        }
+    }, {
+        key: 'areaChange',
+        value: function areaChange(e) {
+            this.setState({ area: e.target.value });
+        }
+    }, {
+        key: 'pointChange',
+        value: function pointChange(e) {
+            this.setState({ point: e.target.value });
+        }
+    }, {
+        key: 'nameChange',
+        value: function nameChange(e) {
+            this.setState({ name: e.target.value });
+        }
+    }, {
+        key: 'six_hourChange',
+        value: function six_hourChange(e) {
+            this.setState({ six_hour: e.target.value });
+        }
+    }, {
+        key: 'ten_hourChange',
+        value: function ten_hourChange(e) {
+            this.setState({ ten_hour: e.target.value });
+        }
+    }, {
+        key: 'twelve_hourChange',
+        value: function twelve_hourChange(e) {
+            this.setState({ twelve_hour: e.target.value });
+        }
+    }, {
+        key: 'two_daysChange',
+        value: function two_daysChange(e) {
+            this.setState({ two_days: e.target.value });
+        }
+    }, {
+        key: 'four_daysChange',
+        value: function four_daysChange(e) {
+            this.setState({ four_days: e.target.value });
+        }
+    }, {
+        key: 'six_daysChange',
+        value: function six_daysChange(e) {
+            this.setState({ six_days: e.target.value });
+        }
+    }, {
+        key: 'moreChange',
+        value: function moreChange(e) {
+            this.setState({ more: e.target.value });
+        }
+    }, {
+        key: 'AddCheck',
+        value: function AddCheck() {
+            if (this.state.formdata == "" || this.state.car_number == "" || this.state.color == "" || this.state.car_type == "" || this.state.fuel == "" || this.state.few == "" || this.state.distance == "" || this.state.area == "" || this.state.point == "" || this.state.name == "") {
+                alert("빠짐없이 다 입력해주세요. ");
+                return;
+            }
+
+            this.setImageUpload();
+        }
+    }, {
+        key: 'setCarUpload',
+        value: function setCarUpload(opts) {
+            var _this2 = this;
+
+            fetch('/upload_carprice', {
+                method: 'POST',
+                headers: {
+                    "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+                },
+                body: "form=" + JSON.stringify(opts)
+            }).then(function (response) {
+                return response.json();
+            }).then(function (json) {
+                _this2.setState({
+                    car_priceid: json.id
+                });
+            }).then(function () {
+                if (this.state.car_priceid == "" || this.state.car_priceid == null) {
+                    alert("등록에 실패하였습니다. 다시 시도해주세요.");
+                    return;
+                }
+
+                console.log("car price image : ", this.state.image);
+
+                this.setCarPriceUpload({
+                    image: this.state.image,
+                    car_number: this.state.car_number,
+                    color: this.state.color,
+                    type: this.state.car_type,
+                    fuel: this.state.fuel,
+                    few: this.state.few,
+                    distance: this.state.distance,
+                    area: this.state.area,
+                    point: this.state.point,
+                    car_priceid: this.state.car_priceid,
+                    name: this.state.name
+                });
+            }.bind(this));
+        }
+    }, {
+        key: 'setCarPriceUpload',
+        value: function setCarPriceUpload(opts) {
+            var _this3 = this;
+
+            fetch('/upload_car', {
+                method: 'POST',
+                headers: {
+                    "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+                },
+                body: "form=" + JSON.stringify(opts)
+            }).then(function (response) {
+                return response.json();
+            }).then(function (json) {
+                _this3.setState({
+                    car_priceid: json.id
+                });
+            }).then(function () {
+                if (this.state.result == "false") {
+                    alert("등록에 실패하였습니다. 다시 시도해주세요.");
+                    return;
+                }
+
+                this.home_impormation_Change();
+            }.bind(this));
+        }
+    }, {
+        key: 'setImageUpload',
+        value: function setImageUpload() {
+            var _this4 = this;
+
+            var PATH = "http://localhost:5000/public/upload_image/";
+
+            console.log("formdate => ", this.state.formdate);
+
+            fetch('/upload_image', {
+                method: 'POST',
+                body: this.state.formdata
+            }).then(function (response) {
+                return response.json();
+            }).then(function (json) {
+                _this4.setState({ image: json.url });
+            }).then(function () {
+                this.setCarUpload({
+                    six_hour: this.state.six_hour,
+                    ten_hour: this.state.ten_hour,
+                    twelve_hour: this.state.twelve_hour,
+                    two_days: this.state.two_days,
+                    four_days: this.state.four_days,
+                    six_days: this.state.six_days,
+                    more: this.state.more
+                });
+            }.bind(this));
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var inser_car_Form = _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(
+                    'div',
+                    null,
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'logo' },
+                        '\uB80C\uD130\uCE74'
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu' },
+                        _react2.default.createElement(
+                            'div',
+                            { className: 'menu-item', onClick: this.home_impormation_Change.bind(this) },
+                            ' \uD648 '
+                        ),
+                        _react2.default.createElement(
+                            'div',
+                            { className: 'menu-item' },
+                            ' \uC2E0\uADDC \uCC28\uB7C9 \uB4F1\uB85D '
+                        ),
+                        _react2.default.createElement(
+                            'div',
+                            { className: 'menu-item', onClick: this.car_impormation_Change.bind(this) },
+                            ' \uCC28\uB7C9 \uC815\uBCF4 \uAD00\uB9AC '
+                        ),
+                        _react2.default.createElement(
+                            'div',
+                            { className: 'menu-item', onClick: this.mamber_impormation_Change.bind(this) },
+                            ' \uACE0\uAC1D \uC815\uBCF4 \uAD00\uB9AC '
+                        )
+                    )
+                ),
+                _react2.default.createElement(
+                    'table',
+                    null,
+                    _react2.default.createElement(
+                        'tbody',
+                        null,
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                '\uC774\uBBF8\uC9C0'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement('input', { type: 'file', onChange: this.fileChange.bind(this), name: 'uploadfile' }),
+                                _react2.default.createElement('input', { type: 'hidden', name: 'token', value: '{{.}}' })
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                '\uCC28\uB7C9 \uBC88\uD638'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement('input', { type: 'text', onChange: this.car_numberChange.bind(this) })
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                '\uCC28\uB7C9 \uC774\uB984'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement('input', { type: 'text', onChange: this.nameChange.bind(this) })
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                '\uCC28\uB7C9 \uC0C9\uC0C1'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement('input', { type: 'text', onChange: this.colorChange.bind(this) })
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                '\uC720\uD615'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement(
+                                    'select',
+                                    { onChange: this.car_typeChange.bind(this) },
+                                    _react2.default.createElement(
+                                        'option',
+                                        { value: 1 },
+                                        ' \uC18C\uD615 '
+                                    ),
+                                    _react2.default.createElement(
+                                        'option',
+                                        { value: 2 },
+                                        ' \uC911\uD615 '
+                                    ),
+                                    _react2.default.createElement(
+                                        'option',
+                                        { value: 3 },
+                                        ' \uB300\uD615 '
+                                    ),
+                                    _react2.default.createElement(
+                                        'option',
+                                        { value: 4 },
+                                        ' \uC2B9\uD569 '
+                                    ),
+                                    _react2.default.createElement(
+                                        'option',
+                                        { value: 5 },
+                                        ' SUV/RV '
+                                    ),
+                                    _react2.default.createElement(
+                                        'option',
+                                        { value: 6 },
+                                        ' \uC218\uC785\uCC28 '
+                                    ),
+                                    _react2.default.createElement(
+                                        'option',
+                                        { value: 7 },
+                                        ' \uC624\uD508\uCE74 '
+                                    ),
+                                    _react2.default.createElement(
+                                        'option',
+                                        { value: 8 },
+                                        ' \uC804\uAE30\uCC28 '
+                                    ),
+                                    _react2.default.createElement(
+                                        'option',
+                                        { value: 9 },
+                                        ' \uCE90\uB9AD\uD130\uCE74 '
+                                    )
+                                )
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                '\uC5F0\uB8CC'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement('input', { type: 'text', onChange: this.fuelChange.bind(this) })
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                'N\uC778\uC2B9'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement('input', { type: 'number', onChange: this.fewChange.bind(this) })
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                '\uC8FC\uD589\uAC70\uB9AC'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement('input', { type: 'number', onChange: this.distanceChange.bind(this) })
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                '\uC9C0\uC5ED'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement(
+                                    'select',
+                                    { onChange: this.areaChange.bind(this) },
+                                    _react2.default.createElement(
+                                        'option',
+                                        { value: 'inland' },
+                                        ' \uB0B4\uB959 '
+                                    ),
+                                    _react2.default.createElement(
+                                        'option',
+                                        { value: 'jeju' },
+                                        ' \uC81C\uC8FC\uB3C4 '
+                                    ),
+                                    _react2.default.createElement(
+                                        'option',
+                                        { value: 'overseas' },
+                                        ' \uD574\uC678 '
+                                    )
+                                )
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                '\uC9C0\uC810'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement(
+                                    'select',
+                                    { onChange: this.pointChange.bind(this) },
+                                    _react2.default.createElement(
+                                        'option',
+                                        { value: 'Gangnam' },
+                                        ' \uAC15\uB0A8 '
+                                    ),
+                                    _react2.default.createElement(
+                                        'option',
+                                        { value: 'DongDaeMoon' },
+                                        ' \uB3D9\uB300\uBB38 '
+                                    ),
+                                    _react2.default.createElement(
+                                        'option',
+                                        { value: 'Yeouido' },
+                                        ' \uC5EC\uC758\uB3C4 '
+                                    ),
+                                    _react2.default.createElement(
+                                        'option',
+                                        { value: 'Guro' },
+                                        ' \uAD6C\uB85C '
+                                    )
+                                )
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                '6\uC2DC\uAC04'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement('input', { type: 'number', onChange: this.six_hourChange.bind(this) })
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                '10\uC2DC\uAC04'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement('input', { type: 'number', onChange: this.ten_hourChange.bind(this) })
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                '12\uC2DC\uAC04'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement('input', { type: 'number', onChange: this.twelve_hourChange.bind(this) })
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                '1~2\uC77C'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement('input', { type: 'number', onChange: this.two_daysChange.bind(this) })
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                '3~4\uC77C'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement('input', { type: 'number', onChange: this.four_daysChange.bind(this) })
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                '5~6\uC77C'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement('input', { type: 'number', onChange: this.six_daysChange.bind(this) })
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                '7\uC77C \uC774\uC0C1'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement('input', { type: 'number', onChange: this.moreChange.bind(this) })
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement(
+                                    'button',
+                                    { onClick: this.AddCheck.bind(this) },
+                                    ' \uCC28\uB7C9 \uB4F1\uB85D '
+                                )
+                            )
+                        )
+                    )
+                )
+            );
+
+            return inser_car_Form;
+        }
+    }]);
+
+    return InsertionCar;
+}(_react2.default.Component);
+
+exports.default = InsertionCar;
+
+/***/ }),
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(41);
+var content = __webpack_require__(46);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -21874,7 +24603,7 @@ if(false) {
 }
 
 /***/ }),
-/* 41 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(21)(false);
@@ -21886,506 +24615,6 @@ exports.push([module.i, "html, body {\n    margin: 0;\n    font-family: 'Roboto'
 
 // exports
 
-
-/***/ }),
-/* 42 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _reactDom = __webpack_require__(2);
-
-var _reactDom2 = _interopRequireDefault(_reactDom);
-
-var _reactCookies = __webpack_require__(7);
-
-var _reactCookies2 = _interopRequireDefault(_reactCookies);
-
-var _App = __webpack_require__(6);
-
-var _App2 = _interopRequireDefault(_App);
-
-var _Rent_ = __webpack_require__(23);
-
-var _Rent_2 = _interopRequireDefault(_Rent_);
-
-__webpack_require__(8);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var Reservation_history = function (_React$Component) {
-    _inherits(Reservation_history, _React$Component);
-
-    function Reservation_history(props) {
-        _classCallCheck(this, Reservation_history);
-
-        var _this = _possibleConstructorReturn(this, (Reservation_history.__proto__ || Object.getPrototypeOf(Reservation_history)).call(this, props));
-
-        _this.handleLoad = _this.handleLoad.bind(_this);
-
-        _this.state = {
-            image: [],
-            car_number: [],
-            car_type: [],
-            car_name: [],
-            fuel: [],
-            color: [],
-            distance: [],
-            few: [],
-            currentPage: '',
-            count: '',
-            returned: 'ready'
-        };
-
-        _this.handleClick = _this.handleClick.bind(_this);
-        return _this;
-    }
-
-    _createClass(Reservation_history, [{
-        key: 'componentDidMount',
-        value: function componentDidMount() {
-            this.submitGit();
-        }
-    }, {
-        key: 'handleLoad',
-        value: function handleLoad() {
-            this.submitGit();
-        }
-    }, {
-        key: 'handleClick',
-        value: function handleClick(event) {
-            this.setState({
-                currentPage: Number(event.target.id)
-            });
-        }
-    }, {
-        key: 'list_reservation',
-        value: function list_reservation(opts) {
-            var _this2 = this;
-
-            fetch('/reservation_history', {
-                method: 'POST',
-                headers: {
-                    "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
-                },
-                body: "form=" + JSON.stringify(opts)
-            }).then(function (response) {
-                return response.json();
-            }).then(function (json) {
-                _this2.setState({ result: json.result });
-            }).then(function () {
-                this.setState({ iamge: [] });
-                this.setState({ car_number: [] });
-                this.setState({ car_name: [] });
-                this.setState({ fuel: [] });
-                this.setState({ color: [] });
-                this.setState({ distance: [] });
-                this.setState({ few: [] });
-
-                for (var count = 0; this.state.result[count] != null; count++) {
-                    this.setState({ image: this.state.image.concat(this.state.result[count]["image"]) });
-                    this.setState({ car_number: this.state.car_number.concat(this.state.result[count]["car_number"]) });
-                    this.setState({ car_name: this.state.car_name.concat(this.state.result[count]["car_name"]) });
-                    this.setState({ fuel: this.state.fuel.concat(this.state.result[count]["fuel"]) });
-                    this.setState({ color: this.state.color.concat(this.state.result[count]["color"]) });
-                    this.setState({ distance: this.state.distance.concat(this.state.result[count]["distance"]) });
-                    this.setState({ few: this.state.few.concat(this.state.result[count]["few"]) });
-                }
-                this.setState({ count: count });
-
-                console.log("reservation history count : ", count);
-            }.bind(this));
-        }
-    }, {
-        key: 'submitGit',
-        value: function submitGit() {
-            this.list_reservation({
-                email: _reactCookies2.default.load('email'),
-                currentPage: this.state.currentPage
-            });
-        }
-    }, {
-        key: 'click_home',
-        value: function click_home() {
-            this.setState({ returned: 'home' });
-        }
-    }, {
-        key: 'click_rent',
-        value: function click_rent() {
-            this.setState({ returned: 'rent' });
-        }
-    }, {
-        key: 'log_out',
-        value: function log_out() {
-            _reactCookies2.default.remove('name', { path: '/' });
-            _reactCookies2.default.remove('username', { path: '/' });
-            _reactCookies2.default.remove('reserves', { path: '/' });
-            _reactCookies2.default.remove('email', { path: '/' });
-            window.location.reload();
-        }
-    }, {
-        key: 'render',
-        value: function render() {
-            var _this3 = this;
-
-            var pageNumbers = [];
-            for (var i = 1; i <= Math.floor(this.state.count / 5) + 1; i++) {
-                pageNumbers.push(i);
-                console.log("pagenumber push : ", i, " | count : ", this.state.count);
-            }
-
-            var renderPageNUmbers = pageNumbers.map(function (number) {
-                return _react2.default.createElement(
-                    'li',
-                    _defineProperty({ key: number, id: number, onClick: _this3.handleClick }, 'onClick', _this3.submitGit.bind(_this3)),
-                    number
-                );
-            });
-
-            var noneStyle = {
-                display: 'none'
-            };
-            var blockStyle = {};
-
-            var reservation_history_form = _react2.default.createElement(
-                'div',
-                null,
-                _react2.default.createElement(
-                    'div',
-                    { className: 'logo', onClick: this.click_home.bind(this) },
-                    '\uB80C\uD130\uCE74'
-                ),
-                _react2.default.createElement(
-                    'div',
-                    { className: 'menu' },
-                    _react2.default.createElement(
-                        'div',
-                        { className: 'menu-item', onClick: this.click_home.bind(this) },
-                        ' \uD648 '
-                    ),
-                    _react2.default.createElement(
-                        'div',
-                        { className: 'menu-item', onClick: this.click_rent.bind(this) },
-                        ' \uB80C\uD130\uCE74 \uC608\uC57D '
-                    ),
-                    _react2.default.createElement(
-                        'div',
-                        { className: 'menu-item', onClick: this.log_out.bind(this) },
-                        ' \uB85C\uADF8\uC544\uC6C3 '
-                    ),
-                    _react2.default.createElement(
-                        'div',
-                        { className: 'menu-item' },
-                        ' \uC608\uC57D \uBC0F \uC774\uC6A9 \uB0B4\uC5ED '
-                    )
-                ),
-                _react2.default.createElement(
-                    'table',
-                    null,
-                    _react2.default.createElement(
-                        'tbody',
-                        null,
-                        _react2.default.createElement(
-                            'tr',
-                            { style: this.state.image[0] == null ? noneStyle : blockStyle },
-                            _react2.default.createElement(
-                                'td',
-                                null,
-                                '\uC774\uBBF8\uC9C0'
-                            ),
-                            _react2.default.createElement(
-                                'td',
-                                null,
-                                '\uCC28\uB7C9 \uBC88\uD638'
-                            ),
-                            _react2.default.createElement(
-                                'td',
-                                null,
-                                '\uCC28\uB7C9 \uC774\uB984'
-                            ),
-                            _react2.default.createElement(
-                                'td',
-                                null,
-                                '\uCC28\uB7C9 \uC720\uD615'
-                            ),
-                            _react2.default.createElement(
-                                'td',
-                                null,
-                                '\uC5F0\uB8CC'
-                            ),
-                            _react2.default.createElement(
-                                'td',
-                                null,
-                                '\uC0C9\uC0C1'
-                            ),
-                            _react2.default.createElement(
-                                'td',
-                                null,
-                                '\uC8FC\uD589\uAC70\uB9AC'
-                            ),
-                            _react2.default.createElement(
-                                'td',
-                                null,
-                                'n\uC778\uC2B9'
-                            )
-                        ),
-                        _react2.default.createElement(
-                            'tr',
-                            { style: this.state.image[0] == null ? noneStyle : blockStyle },
-                            _react2.default.createElement(
-                                'td',
-                                null,
-                                _react2.default.createElement('img', { src: this.state.image[0], width: '230', height: '130' })
-                            ),
-                            _react2.default.createElement(
-                                'td',
-                                null,
-                                this.state.car_number[0]
-                            ),
-                            _react2.default.createElement(
-                                'td',
-                                null,
-                                this.state.car_name[0]
-                            ),
-                            _react2.default.createElement(
-                                'td',
-                                null,
-                                this.state.car_type[0]
-                            ),
-                            _react2.default.createElement(
-                                'td',
-                                null,
-                                this.state.fuel[0]
-                            ),
-                            _react2.default.createElement(
-                                'td',
-                                null,
-                                this.state.color[0]
-                            ),
-                            _react2.default.createElement(
-                                'td',
-                                null,
-                                this.state.distance[0]
-                            ),
-                            _react2.default.createElement(
-                                'td',
-                                null,
-                                this.state.few[0]
-                            )
-                        ),
-                        _react2.default.createElement(
-                            'tr',
-                            { style: this.state.image[1] == null ? noneStyle : blockStyle },
-                            _react2.default.createElement(
-                                'td',
-                                null,
-                                _react2.default.createElement('img', { src: this.state.image[1], width: '230', height: '130' })
-                            ),
-                            _react2.default.createElement(
-                                'td',
-                                null,
-                                this.state.car_number[1]
-                            ),
-                            _react2.default.createElement(
-                                'td',
-                                null,
-                                this.state.car_name[1]
-                            ),
-                            _react2.default.createElement(
-                                'td',
-                                null,
-                                this.state.car_type[1]
-                            ),
-                            _react2.default.createElement(
-                                'td',
-                                null,
-                                this.state.fuel[1]
-                            ),
-                            _react2.default.createElement(
-                                'td',
-                                null,
-                                this.state.color[1]
-                            ),
-                            _react2.default.createElement(
-                                'td',
-                                null,
-                                this.state.distance[1]
-                            ),
-                            _react2.default.createElement(
-                                'td',
-                                null,
-                                this.state.few[1]
-                            )
-                        ),
-                        _react2.default.createElement(
-                            'tr',
-                            { style: this.state.image[2] == null ? noneStyle : blockStyle },
-                            _react2.default.createElement(
-                                'td',
-                                null,
-                                _react2.default.createElement('img', { src: this.state.image[2], width: '230', height: '130' })
-                            ),
-                            _react2.default.createElement(
-                                'td',
-                                null,
-                                this.state.car_number[2]
-                            ),
-                            _react2.default.createElement(
-                                'td',
-                                null,
-                                this.state.car_name[2]
-                            ),
-                            _react2.default.createElement(
-                                'td',
-                                null,
-                                this.state.car_type[2]
-                            ),
-                            _react2.default.createElement(
-                                'td',
-                                null,
-                                this.state.fuel[2]
-                            ),
-                            _react2.default.createElement(
-                                'td',
-                                null,
-                                this.state.color[2]
-                            ),
-                            _react2.default.createElement(
-                                'td',
-                                null,
-                                this.state.distance[2]
-                            ),
-                            _react2.default.createElement(
-                                'td',
-                                null,
-                                this.state.few[2]
-                            )
-                        ),
-                        _react2.default.createElement(
-                            'tr',
-                            { style: this.state.image[3] == null ? noneStyle : blockStyle },
-                            _react2.default.createElement(
-                                'td',
-                                null,
-                                _react2.default.createElement('img', { src: this.state.image[3], width: '230', height: '130' })
-                            ),
-                            _react2.default.createElement(
-                                'td',
-                                null,
-                                this.state.car_number[3]
-                            ),
-                            _react2.default.createElement(
-                                'td',
-                                null,
-                                this.state.car_name[3]
-                            ),
-                            _react2.default.createElement(
-                                'td',
-                                null,
-                                this.state.car_type[3]
-                            ),
-                            _react2.default.createElement(
-                                'td',
-                                null,
-                                this.state.fuel[3]
-                            ),
-                            _react2.default.createElement(
-                                'td',
-                                null,
-                                this.state.color[3]
-                            ),
-                            _react2.default.createElement(
-                                'td',
-                                null,
-                                this.state.distance[3]
-                            ),
-                            _react2.default.createElement(
-                                'td',
-                                null,
-                                this.state.few[3]
-                            )
-                        ),
-                        _react2.default.createElement(
-                            'tr',
-                            { style: this.state.image[4] == null ? noneStyle : blockStyle },
-                            _react2.default.createElement(
-                                'td',
-                                null,
-                                _react2.default.createElement('img', { src: this.state.image[4], width: '230', height: '130' })
-                            ),
-                            _react2.default.createElement(
-                                'td',
-                                null,
-                                this.state.car_number[4]
-                            ),
-                            _react2.default.createElement(
-                                'td',
-                                null,
-                                this.state.car_name[4]
-                            ),
-                            _react2.default.createElement(
-                                'td',
-                                null,
-                                this.state.car_type[4]
-                            ),
-                            _react2.default.createElement(
-                                'td',
-                                null,
-                                this.state.fuel[4]
-                            ),
-                            _react2.default.createElement(
-                                'td',
-                                null,
-                                this.state.color[4]
-                            ),
-                            _react2.default.createElement(
-                                'td',
-                                null,
-                                this.state.distance[4]
-                            ),
-                            _react2.default.createElement(
-                                'td',
-                                null,
-                                this.state.few[4]
-                            )
-                        )
-                    )
-                ),
-                _react2.default.createElement(
-                    'ul',
-                    { id: 'page-numbers' },
-                    renderPageNUmbers
-                )
-            );
-
-            if (this.state.returned == "ready") {
-                this.setState.returned = "reservation";
-                return reservation_history_form;
-            } else {
-                return reservation_history_form;
-            }
-        }
-    }]);
-
-    return Reservation_history;
-}(_react2.default.Component);
-
-module.exports = Reservation_history;
 
 /***/ })
 /******/ ]);

@@ -1,7 +1,11 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import cookie from "react-cookies"
+
+import Reservation_history from './Reservation_history.jsx'
+
 import './style.css'
+import './Header.css'
 
 class Rent_1 extends React.Component {
     constructor(props){
@@ -72,7 +76,8 @@ class Rent_1 extends React.Component {
             return_cost: '',
             reservation_number: '',
             test_number: 0,
-            page_numbers: ''
+            page_numbers: '',
+            total_count: ''
         }
 
         this.handleClick = this.handleClick.bind(this);
@@ -326,7 +331,9 @@ class Rent_1 extends React.Component {
             this.setState({car_number:[]});
 
             for (var count = 0; this.state.result[count] != null; count++){
-                if (this.state.rental_date == this.state.retrun_date){
+                var total_rental_date = this.state.return_date - this.state.rental_date;                
+
+                if (total_rental_date == 0){
                     var total_rental_time = this.state.return_time - this.state.rental_time;
 
                     //this.setState({cost:this.state.result[count]["twelve_hour"]});                    
@@ -340,8 +347,6 @@ class Rent_1 extends React.Component {
                         this.setState({cost:this.state.cost.concat(this.state.result[count]["two_days"])});
                     }
                 }else{
-                    var total_rental_date = this.state.return_date - this.state.rental_date;
-    
                     if(total_rental_date <= 2) {
                         this.setState({cost:this.state.cost.concat((this.state.result[count]["two_days"]) * total_rental_date)});
                     }else if(total_rental_date <= 4) {
@@ -361,18 +366,28 @@ class Rent_1 extends React.Component {
                 this.setState({distance:this.state.distance.concat(this.state.result[count]["distance"])});
                 this.setState({registration_date:this.state.registration_date.concat(this.state.result[count]["registration_date"])});
                 this.setState({car_number:this.state.car_number.concat(this.state.result[count]["car_number"])});
-
-                console.log("console log :: count = ", count);
-                console.log("console log :: this.state.result[count][car_name] = ", this.state.result[count]["car_name"]);
             }
 
-            this.setState({count:this.state.count});
-
-            console.log("console log :: count = ", count);
-            console.log("console log :: lmage = ", this.state.image);
-            console.log("console log :: car_name = ", this.state.car_name);
+            this.setState({count:count});
+            this.setState({total_count:this.state.result[0]["total_count"]});
         }.bind(this))
         .then(function(){
+            //page
+            const pageNumbers = [];
+            for (let i = 1; i <= (Math.floor((this.state.total_count -1) / 5))+1; i++){
+                pageNumbers.push(i);
+            }
+
+            const renderPageNUmbers = pageNumbers.map(number => {
+                return(
+                    <li key={number} id={number} onClick={this.handleClick}>
+                        {number}
+                    </li>
+                );
+            });
+
+            this.setState({page_numbers:renderPageNUmbers});
+
             if(this.state.test_number==0){
                 this.setState({test_number:1});
                 this.submitGit();
@@ -381,30 +396,9 @@ class Rent_1 extends React.Component {
                 this.setState({test_number:0});
             }
         }.bind(this))
-        .then(function(){
-            //page
-            const pageNumbers = [];
-            for (let i = 1; i <= (Math.floor(this.state.count / 5))+1; i++){
-                pageNumbers.push(i);
-                console.log("pagenumber push = ", i, " | count = ", this.state.count);
-            }
-
-            const renderPageNUmbers = pageNumbers.map(number => {
-                return(
-                    <li key={number} id={number} onClick={this.handleClick} onClick={this.submitGit.bind(this)}>
-                        {number}
-                    </li>
-                );
-            });
-
-            this.setState({page_numbers:renderPageNUmbers});
-        }.bind(this))
     }
 
     submitGit(){
-        console.log("submit car_type value : ", this.state.car_type);
-        console.log("submit rental_date", this.state.rental_date);
-
         this.setRent_1({
             area: this.state.area,
             rental_point: this.state.rental_point,
@@ -470,8 +464,6 @@ class Rent_1 extends React.Component {
     }
 
     submitReservationNumber(){
-        console.log("email test | email : ", this.state.email, " || reservaiton_number : ", this.state.reservation_number);
-
         this.SendToReservationNumber({
             email: this.state.email,
             reservation_number: this.state.reservation_number
@@ -494,12 +486,6 @@ class Rent_1 extends React.Component {
         else{
             this.setState({time: today.getHours() + "" + today.getMinutes()});
         }
-
-        console.log("date : ", this.state.date);
-        console.log("time : ", this.state.time);
-        console.log("rental : ", this.state.rental_date, " : ", this.state.rental_time);
-        console.log("return : ", this.state.return_date, " : ", this.state.return_time);
-
         if(this.state.area=="" || this.state.rental_point=="" || this.state.return_point=="" || this.state.rental_date=="" || this.state.return_date==""){
             alert("빠짐없이 다 입력해주십시오.");
             return;
@@ -536,11 +522,27 @@ class Rent_1 extends React.Component {
         this.setState({
           currentPage: Number(event.target.id)
         });
+
+        this.submitGit();
     }
 
     //test
     testdivison_number(){
         alert(this.state.division_number);
+    }
+
+    click_home(){
+        window.location.reload();
+    }
+    log_out(){
+        cookie.remove('name', {path:'/'});
+        cookie.remove('username', {path:'/'});
+        cookie.remove('reserves', {path:'/'});
+        cookie.remove('email', {path:'/'});
+        window.location.reload();
+    }
+    click_reservation(){
+        this.setState({returned:'r'});
     }
 
     render(){
@@ -553,6 +555,17 @@ class Rent_1 extends React.Component {
 
         let first_Form = (
             <div>
+                <div>
+                    <div className="logo">
+                        렌터카
+                    </div>
+                    <div className="menu">
+                        <div className="menu-item" onClick={this.click_home.bind(this)}> 홈 </div>                                    
+                        <div className="menu-item"> 렌터카 예약 </div>
+                        <div className="menu-item" onClick={this.log_out.bind(this)}> 로그아웃 </div>
+                        <div className="menu-item" onClick={this.click_reservation.bind(this)}> 예약 및 이용내역 </div>
+                    </div>
+                </div>
                 <label> 지역 </label>
                 <select onChange={this.areaChange.bind(this)}>
                     <option id="1" value="inland"> 내륙 </option>
@@ -589,6 +602,17 @@ class Rent_1 extends React.Component {
         )
         let second_Form = (
             <div>
+                <div>
+                    <div className="logo">
+                        렌터카
+                    </div>
+                    <div className="menu">
+                        <div className="menu-item" onClick={this.click_home.bind(this)}> 홈 </div>                                    
+                        <div className="menu-item"> 렌터카 예약 </div>
+                        <div className="menu-item" onClick={this.log_out.bind(this)}> 로그아웃 </div>
+                        <div className="menu-item" onClick={this.click_reservation.bind(this)}> 예약 및 이용내역 </div>
+                    </div>
+                </div>
                 <h1>차량 선택 화면</h1>
                 <br />
                 <input type="radio" name="radio" value="0" onChange={this.car_typeChange.bind(this)} checked={(this.state.car_type=='' || this.state.car_type=='0')?true:false}/>
@@ -711,6 +735,17 @@ class Rent_1 extends React.Component {
 
         let third_Form = (
             <div>
+                <div>
+                    <div className="logo">
+                        렌터카
+                    </div>
+                    <div className="menu">
+                        <div className="menu-item" onClick={this.click_home.bind(this)}> 홈 </div>                                    
+                        <div className="menu-item"> 렌터카 예약 </div>
+                        <div className="menu-item" onClick={this.log_out.bind(this)}> 로그아웃 </div>
+                        <div className="menu-item" onClick={this.click_reservation.bind(this)}> 예약 및 이용내역 </div>
+                    </div>
+                </div>
                 <img src={this.state.image[this.state.division_number]} width="350" height="250" onClick = {this.testdivison_number.bind(this)}/>
                 <br />
                 <span> 자동차 명 :  {this.state.car_name[this.state.division_number]} </span>
@@ -759,6 +794,17 @@ class Rent_1 extends React.Component {
         )
         let fourth_Form = (
             <div>
+                <div>
+                    <div className="logo">
+                        렌터카
+                    </div>
+                    <div className="menu">
+                        <div className="menu-item" onClick={this.click_home.bind(this)}> 홈 </div>                                    
+                        <div className="menu-item"> 렌터카 예약 </div>
+                        <div className="menu-item" onClick={this.log_out.bind(this)}> 로그아웃 </div>
+                        <div className="menu-item" onClick={this.click_reservation.bind(this)}> 예약 및 이용내역 </div>
+                    </div>
+                </div>
                 <span> 개인정보 </span>
                 <br />
                 <span> 이름 </span>
@@ -809,7 +855,25 @@ class Rent_1 extends React.Component {
         )
         let last_Form = (
             <div>
+                <div>
+                    <div className="logo">
+                        렌터카
+                    </div>
+                    <div className="menu">
+                        <div className="menu-item" onClick={this.click_home.bind(this)}> 홈 </div>                                    
+                        <div className="menu-item"> 렌터카 예약 </div>
+                        <div className="menu-item" onClick={this.log_out.bind(this)}> 로그아웃 </div>
+                        <div className="menu-item" onClick={this.click_reservation.bind(this)}> 예약 및 이용내역 </div>
+                    </div>
+                </div>
                 <span> 예약번호 : {this.state.reservation_number} </span>
+                <br />
+                회원님의 메일로 예약번호를 전송하였습니다.
+            </div>
+        )
+        let reservation_Form = (
+            <div>
+                <Reservation_history />
             </div>
         )
 
@@ -824,8 +888,11 @@ class Rent_1 extends React.Component {
             return fourth_Form;
         }else if(this.state.returned == '5'){
             return last_Form;
+        }else if(this.state.returned == 'r'){
+            return reservation_Form;
         }
     }
 }
 
-module.exports = Rent_1;
+//module.exports = Rent_1;
+export default Rent_1;

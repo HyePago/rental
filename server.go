@@ -170,10 +170,23 @@ func main() {
 		}
 
 		c.SaveUploadedFile(v[0], PATH + now + "." + extension[1]) //랜덤-바꾼파일명이 디렉터리에 있는지도 확인!!(있을경우 다시 파일이름 바꾸게)
-		_, err = db.Exec("INSERT INTO image (original_filename, changed_filename) values (?, ?)", v[0].Filename, "http://localhost:5000/public/upload_image/" + now + "."+extension[1])
 
-		if err != nil {
-			log.Fatal(err)
+		err = db.QueryRow("SELECT id FROM image where original_filename = ?", v[0].Filename).Scan(&id)
+		switch {
+		case err == sql.ErrNoRows:
+			_, err = db.Exec("INSERT INTO image (original_filename, changed_filename) values (?, ?)", v[0].Filename, "http://localhost:5000/public/upload_image/" + now + "."+extension[1])
+
+			if err != nil {
+				log.Fatal(err)
+			}
+		case err != nil:
+			log.Println(err)
+		default:
+			_, err = db.Exec("UPDATE image set changed_filename = ? where original_filename = ?", "http://localhost:5000/public/upload_image/" + now + "."+extension[1], v[0].Filename)
+
+			if err != nil {
+				log.Fatal(err)
+			}
 		}
 
 		/*url := c.PostForm("url")
@@ -188,7 +201,7 @@ func main() {
 		*/
 
 		c.JSON(200, gin.H{
-			"url": now + "."+extension[1],
+			"url": v[0].Filename,
 		})
 	})	
 
@@ -220,6 +233,7 @@ func main() {
 		form := c.PostForm("form")
 
 		var raw map[string]interface{}
+		var id string
 		log.Println("**json**")
 		log.Println(form)
 		json.Unmarshal([]byte(form), &raw)
@@ -236,14 +250,32 @@ func main() {
 		case err == sql.ErrNoRows:
 			log.Println("LOG:: 아이디가 존재하지않아요.")
 			log.Println(username)
-			c.JSON(200, gin.H{ 
-				"result": 0,
-				"name": ' ',
-				"username": ' ',
-				"reserves": ' ',
-				"email": ' ',
-			})
-			return;
+
+			//관리자
+			err := db.QueryRow("SELECT id FROM admin where username = ? && password = ?", username, password).Scan(&id)
+
+			switch{
+			case err == sql.ErrNoRows:
+				c.JSON(200, gin.H{ 
+					"result": 0,
+					"name": ' ',
+					"username": ' ',
+					"reserves": ' ',
+					"email": ' ',
+				})
+				return;	
+			case err != nil:
+				log.Println(err)
+			default:
+				c.JSON(200, gin.H{ 
+					"result": 5,
+					"name": ' ',
+					"username": ' ',
+					"reserves": ' ',
+					"email": ' ',
+				})
+				return;
+			}
 		case err != nil:
 			log.Println(err)
 			return;
@@ -310,6 +342,122 @@ func main() {
 		})
 	})
 
+	router.POST("/find_id", func(c *gin.Context) {
+		log.Println("LOG:: sign_in_go")
+		form := c.PostForm("form")
+
+		var raw map[string]interface{}
+		json.Unmarshal([]byte(form), &raw)
+
+		email := raw["email"]
+		certification_number := raw["certification_number"]
+		name := raw["name"]
+
+		var username string
+
+		var id int
+		err := db.QueryRow("SELECT id FROM email_certification where email = ? && number = ?", email, certification_number).Scan(&id)
+
+		switch{
+		case err == sql.ErrNoRows:
+			c.JSON(200, gin.H{
+				"result": "email",
+				"id": "",
+			})
+			return
+		case err != nil:
+			log.Println(err)
+			return
+		}
+
+		err = db.QueryRow("SELECT username FROM users WHERE email = ? && name = ?", email, name).Scan(&username)
+
+		switch{
+		case err == sql.ErrNoRows:
+			c.JSON(200, gin.H{
+				"result": "impormation",
+				"id": "",
+			})
+			return
+		case err != nil:
+			log.Println(err)
+			return
+		}
+
+		c.JSON(200, gin.H{
+			"result": "true",
+			"id": username,
+		})
+	})
+
+	router.POST("/find_pwd", func(c *gin.Context) {
+		form := c.PostForm("form")
+
+		var raw map[string]interface{}
+		json.Unmarshal([]byte(form), &raw)
+
+		email := raw["email"]
+		certification_number := raw["certification_number"]
+		name := raw["name"]
+		username := raw["id"]
+
+		var id int
+		err := db.QueryRow("SELECT id FROM email_certification where email = ? && number = ?", email, certification_number).Scan(&id)
+
+		switch{
+		case err == sql.ErrNoRows:
+			c.JSON(200, gin.H{
+				"result": "email",
+			})
+			return
+		case err != nil:
+			log.Println(err)
+			return
+		}
+
+		err = db.QueryRow("SELECT id FROM users WHERE email = ? && name = ? && username = ?", email, name, username).Scan(&id)
+
+		switch{
+		case err == sql.ErrNoRows:
+			c.JSON(200, gin.H{
+				"result": "impormation",
+			})
+			return
+		case err != nil:
+			log.Println(err)
+			return
+		}
+
+		c.JSON(200, gin.H{
+			"result": "true",
+		})
+	})
+
+	router.POST("/change_pwd", func(c *gin.Context){
+		form := c.PostForm("form")
+		
+		var raw map[string]interface{}
+		json.Unmarshal([]byte(form), &raw)
+
+		password := raw["password"]
+		email := raw["email"]
+
+		_, err := db.Exec("UPDATE users set password = ? WHERE email = ?", password, email)
+
+		if err != nil {
+			log.Fatal(err)
+
+			c.JSON(200, gin.H{
+				"result": "false",
+			})
+			return
+		}
+
+		c.JSON(200, gin.H{
+			"result": "true",
+		})
+	})
+
 	router.POST("/sign_up", func(c *gin.Context) {
 		log.Println("LOG:: sing_up_go")
 		form := c.PostForm("form")
@@ -332,10 +480,23 @@ func main() {
 		license_number := raw["license_number"]
 		date_if_issue := raw["date_if_issue"]
 		aptitude_test := raw["aptitude_test"]
+		certification_number := raw["certification_number"]
 		
 		var id int
 		var user_id int
-		err := db.QueryRow("SELECT id FROM license where number=?", license_number).Scan(&id)
+		
+		err := db.QueryRow("SELECT id FROM email_certification where email = ? && number = ?", email, certification_number).Scan(&id)
+		switch{
+		case err == sql.ErrNoRows:
+			c.JSON(200, gin.H{
+				"result": "email",
+			})
+			return;
+		case err != nil:
+			log.Println(err)
+		}
+		
+		err = db.QueryRow("SELECT id FROM license where number=?", license_number).Scan(&id)
 
 		switch{
 		case err == sql.ErrNoRows:
@@ -384,12 +545,18 @@ func main() {
 	})
 
 	router.POST("/email", func(c *gin.Context) {
-		email := c.PostForm("email")
-		number := randInt(100000,999999)
-		log.Println(email)
-		log.Println(number)
+		form := c.PostForm("form")
 
-		msg := "인증번호 : " + strconv.Itoa(number)
+		var raw map[string]interface{}
+		json.Unmarshal([]byte(form), &raw)
+
+		email := raw["email"].(string)
+		certification_number := strconv.Itoa(int(raw["certification_number"].(float64)))
+
+		log.Println("LOG:: email = ", email)
+		log.Println("LOG:: certification_number = ", certification_number)
+
+		msg := "인증번호 : " + certification_number
 		send(email, msg)
 
 		var id int
@@ -397,12 +564,12 @@ func main() {
 
 		switch {
 		case err == sql.ErrNoRows:
-			_, err = db.Exec("INSERT email_certification set email=?, number=?", email, number)
+			_, err = db.Exec("INSERT email_certification set email=?, number=?", email, certification_number)
 		case err != nil:
 			log.Println(err)
 		default:
 			stmt, _ := db.Prepare("UPDATE email_certification set number=? WHERE email=?")
-			_, err = stmt.Exec(number, email)
+			_, err = stmt.Exec(certification_number, email)
 		}		
 
 		if err != nil {
@@ -412,7 +579,7 @@ func main() {
 		}
 
 		c.JSON(200, gin.H{
-			"email": Email{email},
+			"result": "true",
 		})
 	})
 
@@ -481,6 +648,8 @@ func main() {
 			if err != nil {
 				log.Fatal(err)
 			}
+
+			log.Println("LOG:: 사용불가능 차량 번호 : ", car_number)
 		}
 
 		if car_type != "" {
@@ -514,17 +683,16 @@ func main() {
 			}
 
 			if car_type == "" || car_type == 0 {
-				log.Println("차량 유형 전체 검색")
 				err = db.QueryRow("SELECT image, name, type, fuel, few, color, carprice_id, distance, registration_date, car_number FROM car where carprice_id=? && available=? && point=?", id, 1, rental_point).Scan(&rent1.image, &rent1.car_name, &rent1.car_type, &rent1.fuel, &rent1.few, &rent1.color, &id, &rent1.distance, &rent1.registration_date, &rent1.car_number)
 			} else {
-				log.Println("유형 별 검색, 유형 => ", car_type)
 				err = db.QueryRow("SELECT image, name, type, fuel, few, color, carprice_id, distance, registration_date, car_number FROM car where carprice_id=? && available=? && type = ? && point=?", id, 1, car_type, rental_point).Scan(&rent1.image, &rent1.car_name, &rent1.car_type, &rent1.fuel, &rent1.few, &rent1.color, &id, &rent1.distance, &rent1.registration_date, &rent1.car_number)				
 			}
+
+			log.Println("LOG:: car_name > ", rent1.car_name)
 
 			switch{
 			case err == sql.ErrNoRows:
 				log.Println("LOG:: NO ROWS")
-				count++;
 				continue;
 			case err != nil:
 				log.Println(err)
@@ -560,6 +728,7 @@ func main() {
 				count++;
 				index++;
 			}
+			result[0]["total_count"] = strconv.Itoa(count);
 		}
 
 		_, err = db.Exec("UPDATE car SET available = ?", 1)
@@ -567,12 +736,6 @@ func main() {
 		if err != nil {
 			log.Fatal(err)
 		}
-
-		// if(result[2] == nil){
-		// 	log.Println("true")
-		// }
-
-		log.Println("rent_1 output result = ", result);
 
 		c.JSON(200, gin.H{
 			"result": result,
@@ -644,19 +807,20 @@ func main() {
 		var raw map[string]interface{}
 		json.Unmarshal([]byte(form), &raw)
 
-		email := raw["email"]
+		email := raw["email"].(string)
 		currentPage := raw["currentPage"]
 
 		count := 0
 		index := 0
+		now := time.Now().String()
 
 		var result map[int]map[string]string = map[int]map[string]string{}
 		var car_number string
+		var rental_date string
+		var reservation_number string
 		var reservation Reservation_History
 
-		rows, err := db.Query("SELECT car_number FROM reservation where email = ?", email)
-
-		log.Println("LOG:: email = ", email)
+		rows, err := db.Query("SELECT car_number, rental_date, number FROM reservation where email = ?", email)
 
 		if err != nil {
 			log.Fatal(err)
@@ -664,8 +828,7 @@ func main() {
 		defer rows.Close()
 
 		for rows.Next(){
-			err := rows.Scan(&car_number)
-			log.Println("LOG:: car_number = ", car_number)
+			err := rows.Scan(&car_number, &rental_date, &reservation_number)
 
 			if err != nil{
 				log.Fatal(err)
@@ -689,13 +852,10 @@ func main() {
 			switch{
 			case err == sql.ErrNoRows:
 				log.Println("LOG:: No Rows")
-				count++;
 				continue;
 			case err != nil:
 				log.Println(err)
 			}
-
-			log.Println("LOG :: index = ", index, " | count = ", count, " | image = ", reservation.image)
 
 			err = db.QueryRow("SELECT changed_filename FROM image where original_filename = ?", reservation.image).Scan(&reservation.image)
 
@@ -707,15 +867,148 @@ func main() {
 			result[index]["color"] = reservation.color
 			result[index]["distance"] = reservation.distance
 			result[index]["few"] = reservation.few
+			result[index]["reservation_number"] = reservation_number
+
+			log.Println("LOG:: rental_date = ", rental_date, " | ", "now = ", now)
+			if rental_date <= now {
+				log.Println("LOG:: rental_date <= now")
+				result[index]["refundable"] = "false"
+			} else {
+				log.Println("LOG:: rental_date > now")
+				result[index]["refundable"] = "true"
+			}
 
 			count++
 			index++
-		}
 
-		log.Println("result : ", result);
+			result[0]["total_page"] = strconv.Itoa(count)
+		}
 
 		c.JSON(200, gin.H{
 			"result": result,
+		})
+	})
+
+	router.POST("/refund_impormation", func(c *gin.Context){
+		reservation_number := c.PostForm("reservation_number")
+		var rental_point string
+		var return_point string
+		var rental_date string
+		var return_date string
+
+		err := db.QueryRow("SELECT rental_point, return_point, rental_date, return_date FROM reservation where number=?", reservation_number).Scan(&rental_point, &return_point, &rental_date, &return_date)
+
+		switch{
+		case err == sql.ErrNoRows:
+			log.Println("No Rows")
+		case err != nil:
+			log.Println(err)
+		}
+
+		c.JSON(200, gin.H{
+			"rental_point": rental_point,
+			"return_point": return_point,
+			"rental_date": rental_date,
+			"return_date": return_date,
+		})		
+	})
+
+	router.POST("/refund", func(c *gin.Context){
+		reservation_number := c.PostForm("reservation_number")
+
+		_, err := db.Exec("DELETE FROM reservation where number = ?",reservation_number)
+
+		if err != nil {
+			log.Fatal(err)
+			c.JSON(200, gin.H {
+				"result": "false",
+			})
+			return;
+		}
+
+		c.JSON(200, gin.H {
+			"result": "true",
+		})
+	})
+
+	router.POST("/upload_carprice", func(c *gin.Context){
+		form := c.PostForm("form")
+
+		var raw map[string]interface{}
+		json.Unmarshal([]byte(form), &raw)
+
+		six_hour := raw["six_hour"]
+		ten_hour := raw["ten_hour"]
+		twelve_hour := raw["twelve_hour"]
+		two_days := raw["two_days"]
+		four_days := raw["four_days"]
+		six_days := raw["six_days"]
+		more := raw["more"]
+
+		var id string
+
+		_, err := db.Exec("INSERT INTO car_price (six_hour, ten_hour, twelve, two_days, four_days, six_days, more) values (?, ?, ?, ?, ?, ?, ?)", six_hour, ten_hour, twelve_hour, two_days, four_days, six_days, more)
+		if err != nil {
+			log.Fatal(err)
+			c.JSON(200, gin.H{
+				"id": "",
+			})
+			return;
+		}
+
+		err = db.QueryRow("SELECT id FROM car_price WHERE six_hour=? && ten_hour=? && twelve=? && two_days=? && four_days=? && six_days=? && more = ?", six_hour, ten_hour, twelve_hour, two_days, four_days, six_days, more).Scan(&id)
+
+		switch{
+		case err == sql.ErrNoRows:
+			c.JSON(200, gin.H{
+				"id": "",
+			})
+			return;
+		case err != nil:
+			log.Fatal(err)
+			c.JSON(200, gin.H{
+				"id": "",
+			})
+			return;
+		}
+
+		c.JSON(200, gin.H{
+			"id": id,
+		})
+	})
+
+	router.POST("/upload_car", func(c *gin.Context){
+		form := c.PostForm("form")
+
+		var raw map[string]interface{}
+		json.Unmarshal([]byte(form), &raw)
+
+		image := raw["image"]
+		car_number := raw["car_number"]
+		color := raw["color"]
+		car_type := raw["type"]
+		fuel := raw["fuel"]
+		few := raw["few"]
+		distance := raw["distance"]
+		area := raw["area"]
+		point := raw["point"]
+		car_priceid := raw["car_priceid"]
+		name := raw["name"]
+
+		log.Println("iamge = >" , image);
+
+		_, err := db.Exec("INSERT INTO car (image, car_number, color, type, fuel, few, distance, area, point, carprice_id, name) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", image, car_number, color, car_type, fuel, few, distance, area, point, car_priceid, name)
+
+		if err != nil {
+			log.Fatal(err)
+			c.JSON(200, gin.H{
+				"reuslt": "false",
+			})
+			return;
+		}
+
+		c.JSON(200, gin.H{
+			"result": "true",
 		})
 	})
 

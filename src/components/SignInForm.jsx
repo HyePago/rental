@@ -2,8 +2,11 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 
 import App from './App'
-import SignUpForm from './SignUpForm.jsx'
 import ImageTest from './ImageTest.jsx'
+import SignUpForm from './SignUpForm.jsx'
+import FindId from './FindId.jsx'
+import FindPwd from './FindPwd.jsx'
+import Admin from './Admin.jsx'
 
 import cookie from "react-cookies"
 
@@ -62,10 +65,14 @@ class SignInForm extends React.Component {
                 }); 
             })
         .then(function(){
+            console.log("reuslt = > ", this.state.result);
+
             if(this.state.result == 0){
                 alert("아이디 혹은 비밀번호를 다시 한번 확인해주세요.");
             }else if(this.state.result == 2){
                 alert("로그인 실패 횟수가 5회를 달성하였습니다. 비밀번호찾기에서 비밀번호를 변경해주세요.");
+            }else if(this.state.result == 5){
+                this.setState({logined:"admin"});
             }else{
                 alert("로그인에 성공하였습니다.");
 
@@ -100,6 +107,12 @@ class SignInForm extends React.Component {
     click_home(){
         this.setState({logined:"home"});
     }
+    click_findId(){
+        this.setState({logined:"find_id"});
+    }
+    click_findPwd(){
+        this.setState({logined:"find_pwd"});
+    }
 
     render(){
         let login_Form = (
@@ -121,6 +134,8 @@ class SignInForm extends React.Component {
                     <input type="password" name="password" placeholder="password" onChange={this.passwordChange.bind(this)}></input>
                     <br />
                     <button onClick={this.submitGit.bind(this)}>로그인</button>
+                    <button onClick={this.click_findId.bind(this)}> 아이디 찾기 </button>
+                    <button onClick={this.click_findPwd.bind(this)}> 비밀번호 찾기 </button>
                 </p>
             </div>
         )
@@ -131,8 +146,25 @@ class SignInForm extends React.Component {
         let ImageTest_Form = (
             <ImageTest />
         )
-        let sign_up_Form = (
-            <SignUpForm />
+        let SignUp_Form = (
+            <div>
+                <SignUpForm />
+            </div>
+        )
+        let find_id_Form = (
+            <div>
+                <FindId />
+            </div>
+        )
+        let find_pwd_Form = (
+            <div>
+                <FindPwd />
+            </div>
+        )
+        let admin_Form = (
+            <div>
+                <Admin />
+            </div>
         )
         
         if(this.state.logined == "in"){
@@ -141,12 +173,17 @@ class SignInForm extends React.Component {
             return logined_Form;
         }else if(this.state.logined=="image"){
             return ImageTest_Form;
+        }else if(this.state.logined=="find_id"){
+            return find_id_Form;
+        }else if(this.state.logined=="find_pwd"){
+            return find_pwd_Form;
+        }else if(this.state.logined=="admin"){
+            return admin_Form;
         }else {
-            alert("회원가입은 대체 왜 안되는 걸까요?! ..ㅠㅜㅠㅠㅠ ")
-            //return sign_up_Form;
-            return sign_up_Form;
+            return SignUp_Form;
         }
     }
 }
 
-module.exports = SignInForm;
+//module.exports = SignInForm;
+export default SignInForm;
