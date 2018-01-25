@@ -3581,6 +3581,7 @@ var Rent_1 = function (_React$Component) {
                 _this4.setState({ result: json.result });
             }).then(function () {
                 this.setState({ returned: '5' });
+                _reactCookies2.default.save('reserves', this.state.result, { path: '/' });
                 this.submitReservationNumber();
             }.bind(this));
         }
@@ -24641,7 +24642,7 @@ var VehicleInformation = function (_React$Component) {
             list: '',
             currentPage: '',
             total_page: '',
-            returned: '',
+            returned: 1,
             input_car_type: '',
             image: [],
             car_number: [],
@@ -24661,8 +24662,28 @@ var VehicleInformation = function (_React$Component) {
             four_days: [],
             six_days: [],
             more: [],
+            id: [],
             count: 0,
-            test_number: 0
+            test_number: 0,
+            division_number: 0,
+            upload_car_number: '',
+            upload_color: '',
+            upload_car_type: '',
+            upload_fuel: '',
+            upload_few: '',
+            upload_distance: '',
+            upload_area: '',
+            upload_point: '',
+            upload_ider_repair: '',
+            upload_car_name: '',
+            upload_six_hour: '',
+            upload_ten_hour: '',
+            upload_twelve_hour: '',
+            upload_two_days: '',
+            upload_four_days: '',
+            upload_six_days: '',
+            upload_more: '',
+            result: ''
         };
         return _this;
     }
@@ -24711,6 +24732,7 @@ var VehicleInformation = function (_React$Component) {
                 this.setState({ four_days: [] });
                 this.setState({ six_days: [] });
                 this.setState({ more: [] });
+                this.setState({ id: [] });
 
                 for (var count = 0; this.state.result[count] != null; count++) {
                     this.setState({ image: this.state.image.concat(this.state.result[count]["image"]) });
@@ -24731,6 +24753,7 @@ var VehicleInformation = function (_React$Component) {
                     this.setState({ four_days: this.state.four_days.concat(this.state.result[count]["four_days"]) });
                     this.setState({ six_days: this.state.six_days.concat(this.state.result[count]["six_days"]) });
                     this.setState({ more: this.state.more.concat(this.state.result[count]["more"]) });
+                    this.setState({ id: this.state.id.concat(this.state.result[count]["id"]) });
                 }
                 console.log("car_name : ", this.state.car_name);
                 console.log("count : ", count);
@@ -24760,13 +24783,12 @@ var VehicleInformation = function (_React$Component) {
     }, {
         key: 'handleClick',
         value: function handleClick(e) {
-            console.log("currentPage : ", e.target.id);
             this.setState({ currentPage: e.target.id });
 
             this.submitCarImpormation();
         }
 
-        //change
+        //change & click
 
     }, {
         key: 'click_home',
@@ -24784,15 +24806,232 @@ var VehicleInformation = function (_React$Component) {
             this.setState({ returned: 'member_impormation' });
         }
     }, {
-        key: 'car_typeChange',
-        value: function car_typeChange(e) {
+        key: 'input_car_typeChange',
+        value: function input_car_typeChange(e) {
             this.setState({ input_car_type: e.target.value });
             this.submitCarImpormation();
         }
     }, {
+        key: 'car_impormation_click',
+        value: function car_impormation_click(e) {
+            this.setState({ division_number: e.target.id });
+
+            this.setState({ upload_car_number: this.state.car_number[e.target.id] });
+            this.setState({ upload_color: this.state.color[e.target.id] });
+            this.setState({ upload_car_type: this.state.car_type[e.target.id] });
+            this.setState({ upload_fuel: this.state.fuel[e.target.id] });
+            this.setState({ upload_few: this.state.few[e.target.id] });
+            this.setState({ upload_distance: this.state.distance[e.target.id] });
+            this.setState({ upload_area: this.state.area[e.target.id] });
+            this.setState({ upload_point: this.state.point[e.target.id] });
+            this.setState({ upload_ider_repair: this.state.ider_repair[e.target.id] });
+            this.setState({ upload_car_name: this.state.car_name[e.target.id] });
+            this.setState({ upload_six_hour: this.state.six_hour[e.target.id] });
+            this.setState({ upload_ten_hour: this.state.ten_hour[e.target.id] });
+            this.setState({ upload_twelve_hour: this.state.twelve_hour[e.target.id] });
+            this.setState({ upload_two_days: this.state.two_days[e.target.id] });
+            this.setState({ upload_four_days: this.state.four_days[e.target.id] });
+            this.setState({ upload_six_days: this.state.six_days[e.target.id] });
+            this.setState({ upload_more: this.state.more[e.target.id] });
+
+            this.setState({ returned: 2 });
+        }
+    }, {
+        key: 'back_click',
+        value: function back_click(e) {
+            this.setState({ returned: 1 });
+        }
+    }, {
+        key: 'car_numberChange',
+        value: function car_numberChange(e) {
+            this.setState({ upload_car_number: e.target.value });
+        }
+    }, {
+        key: 'colorChange',
+        value: function colorChange(e) {
+            this.setState({ upload_color: e.target.value });
+        }
+    }, {
+        key: 'car_typeChange',
+        value: function car_typeChange(e) {
+            this.setState({ upload_car_type: e.target.value });
+        }
+    }, {
+        key: 'fuelChange',
+        value: function fuelChange(e) {
+            this.setState({ upload_fuel: e.target.value });
+        }
+    }, {
+        key: 'fewChange',
+        value: function fewChange(e) {
+            this.setState({ upload_few: e.target.value });
+        }
+    }, {
+        key: 'distanceChange',
+        value: function distanceChange(e) {
+            this.setState({ upload_distance: e.target.value });
+        }
+    }, {
+        key: 'areaChange',
+        value: function areaChange(e) {
+            this.setState({ upload_area: e.target.value });
+        }
+    }, {
+        key: 'pointChange',
+        value: function pointChange(e) {
+            this.setState({ upload_point: e.target.value });
+        }
+    }, {
+        key: 'ider_repairChange',
+        value: function ider_repairChange(e) {
+            this.setState({ upload_ider_repair: e.target.value });
+        }
+    }, {
+        key: 'car_nameChange',
+        value: function car_nameChange(e) {
+            this.setState({ upload_car_name: e.target.value });
+        }
+    }, {
+        key: 'six_hourChange',
+        value: function six_hourChange(e) {
+            this.setState({ upload_six_hour: e.target.value });
+        }
+    }, {
+        key: 'ten_hourChange',
+        value: function ten_hourChange(e) {
+            this.setState({ upload_ten_hour: e.target.value });
+        }
+    }, {
+        key: 'twelve_hourChange',
+        value: function twelve_hourChange(e) {
+            this.setState({ upload_twelve_hour: e.target.value });
+        }
+    }, {
+        key: 'two_daysChange',
+        value: function two_daysChange(e) {
+            this.setState({ upload_two_days: e.target.value });
+        }
+    }, {
+        key: 'four_daysChange',
+        value: function four_daysChange(e) {
+            this.setState({ upload_four_days: e.target.value });
+        }
+    }, {
+        key: 'six_daysChange',
+        value: function six_daysChange(e) {
+            this.setState({ upload_six_days: e.target.value });
+        }
+    }, {
+        key: 'moreChange',
+        value: function moreChange(e) {
+            this.setState({ upload_more: e.target.value });
+        }
+
+        //update
+
+    }, {
+        key: 'setCarUpdate',
+        value: function setCarUpdate(opts) {
+            var _this3 = this;
+
+            console.log("setCarUpadet color = ", this.state.color);
+            fetch('/car_update', {
+                method: 'POST',
+                headers: {
+                    "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+                },
+                body: "form=" + JSON.stringify(opts)
+            }).then(function (response) {
+                return response.json();
+            }).then(function (json) {
+                _this3.setState({ result: json.result });
+            }).then(function () {
+                if (this.state.result == "true") {
+                    alert("수정이 완료되었습니다.");
+                    this.submitCarImpormation();
+                    this.back_click();
+                } else {
+                    alert("실패하였습니다, 다시 시도해주세요.");
+                }
+            }.bind(this));
+        }
+    }, {
+        key: 'submitUpdate',
+        value: function submitUpdate() {
+            console.log("submitUpdate color = ", this.state.color);
+            this.setCarUpdate({
+                id: this.state.id[this.state.division_number],
+                car_number: this.state.upload_car_number,
+                color: this.state.upload_color,
+                car_type: this.state.upload_car_type,
+                fuel: this.state.upload_fuel,
+                few: this.state.upload_few,
+                distance: this.state.upload_distance,
+                area: this.state.upload_area,
+                point: this.state.upload_point,
+                ider_repair: this.state.upload_ider_repair,
+                car_name: this.state.upload_car_name,
+                six_hour: this.state.upload_six_hour,
+                ten_hour: this.state.upload_ten_hour,
+                twelve_hour: this.state.upload_twelve_hour,
+                two_days: this.state.upload_two_days,
+                four_days: this.state.upload_four_days,
+                six_days: this.state.upload_six_days,
+                more: this.state.upload_more
+            });
+        }
+    }, {
+        key: 'update_check',
+        value: function update_check() {
+            if (this.state.car_number == "" || this.state.color == "" || this.state.car_type == "" || this.state.fuel == "" || this.state.few == "" || this.state.distance == "" || this.state.area == "" || this.state.point == "" || this.state.ider_repair == "" || this.state.car_name == "" || this.state.six_hour == "" || this.state.ten_hour == "" || this.state.twelve_hour == "" || this.state.two_days == "" || this.state.four_days == "" || this.state.six_days == "" || this.state.more == "") {
+                alert("빠짐없이 다 입력해주세요.");
+                return;
+            }
+
+            console.log("update_check color = ", this.state.color);
+
+            this.submitUpdate();
+        }
+
+        //delete
+
+    }, {
+        key: 'setCarDelete',
+        value: function setCarDelete(opts) {
+            var _this4 = this;
+
+            console.log("setCarUpadet color = ", this.state.color);
+            fetch('/car_delete', {
+                method: 'POST',
+                headers: {
+                    "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+                },
+                body: "id=" + this.state.id[this.state.division_number]
+            }).then(function (response) {
+                return response.json();
+            }).then(function (json) {
+                _this4.setState({ result: json.result });
+            }).then(function () {
+                if (this.state.result == "true") {
+                    alert("삭제가 완료되었습니다.");
+                    this.submitCarImpormation();
+                    this.back_click();
+                } else {
+                    alert("실패하였습니다, 다시 시도해주세요.");
+                }
+            }.bind(this));
+        }
+    }, {
+        key: 'click_delete',
+        value: function click_delete(e) {
+            this.setState({ division_number: e.target.id });
+
+            this.setCarDelete();
+        }
+    }, {
         key: 'render',
         value: function render() {
-            var _this3 = this;
+            var _this5 = this;
 
             var noneStyle = {
                 display: 'none'
@@ -24812,7 +25051,7 @@ var VehicleInformation = function (_React$Component) {
             var renderPageNumbers = pageNumbers.map(function (number) {
                 return _react2.default.createElement(
                     'li',
-                    { key: number, id: number, onClick: _this3.handleClick.bind(_this3) },
+                    { key: number, id: number, onClick: _this5.handleClick.bind(_this5) },
                     number
                 );
             });
@@ -24821,41 +25060,59 @@ var VehicleInformation = function (_React$Component) {
             var impormation_car = impormation_number.map(function (number) {
                 return _react2.default.createElement(
                     'tr',
-                    { key: number, style: _this3.state.image[number] == null ? noneStyle : blockStyle },
+                    { key: number, id: number, style: _this5.state.image[number] == null ? noneStyle : blockStyle },
                     _react2.default.createElement(
                         'td',
                         null,
-                        _react2.default.createElement('img', { src: _this3.state.image[number], width: '230', height: '130' })
+                        _react2.default.createElement('img', { src: _this5.state.image[number], width: '230', height: '130' })
                     ),
                     _react2.default.createElement(
                         'td',
                         null,
-                        _this3.state.car_number[number]
+                        _this5.state.car_number[number]
                     ),
                     _react2.default.createElement(
                         'td',
                         null,
-                        _this3.state.car_name[number]
+                        _this5.state.car_name[number]
                     ),
                     _react2.default.createElement(
                         'td',
                         null,
-                        _this3.state.fuel[number]
+                        _this5.state.fuel[number]
                     ),
                     _react2.default.createElement(
                         'td',
                         null,
-                        _this3.state.color[number]
+                        _this5.state.color[number]
                     ),
                     _react2.default.createElement(
                         'td',
                         null,
-                        _this3.state.distance[number]
+                        _this5.state.distance[number]
                     ),
                     _react2.default.createElement(
                         'td',
                         null,
-                        _this3.state.few[number]
+                        _this5.state.few[number]
+                    ),
+                    _react2.default.createElement(
+                        'td',
+                        null,
+                        _react2.default.createElement(
+                            'button',
+                            { id: number, onClick: _this5.car_impormation_click.bind(_this5) },
+                            ' \uC218\uC815 '
+                        )
+                    ),
+                    _react2.default.createElement(
+                        'td',
+                        null,
+                        _react2.default.createElement(
+                            'button',
+                            { id: number, onClick: _this5.click_delete.bind(_this5) },
+                            ' \uC0AD\uC81C '
+                        )
                     )
                 );
             });
@@ -24883,7 +25140,7 @@ var VehicleInformation = function (_React$Component) {
                     ),
                     _react2.default.createElement(
                         'div',
-                        { className: 'menu-item' },
+                        { className: 'menu-item', onClick: this.back_click.bind(this) },
                         ' \uCC28\uB7C9 \uC815\uBCF4 \uAD00\uB9AC '
                     ),
                     _react2.default.createElement(
@@ -24893,26 +25150,26 @@ var VehicleInformation = function (_React$Component) {
                     )
                 ),
                 _react2.default.createElement('br', null),
-                _react2.default.createElement('input', { type: 'radio', name: 'radio', value: '0', onChange: this.car_typeChange.bind(this), checked: this.state.input_car_type == '' || this.state.input_car_type == '0' ? true : false }),
+                _react2.default.createElement('input', { type: 'radio', name: 'radio', value: '0', onChange: this.input_car_typeChange.bind(this), checked: this.state.input_car_type == '' || this.state.input_car_type == '0' ? true : false }),
                 '\uC804\uCCB4',
-                _react2.default.createElement('input', { type: 'radio', name: 'radio', value: '1', onChange: this.car_typeChange.bind(this) }),
+                _react2.default.createElement('input', { type: 'radio', name: 'radio', value: '1', onChange: this.input_car_typeChange.bind(this) }),
                 '\uC18C\uD615',
-                _react2.default.createElement('input', { type: 'radio', name: 'radio', value: '2', onChange: this.car_typeChange.bind(this) }),
+                _react2.default.createElement('input', { type: 'radio', name: 'radio', value: '2', onChange: this.input_car_typeChange.bind(this) }),
                 '\uC911\uD615',
-                _react2.default.createElement('input', { type: 'radio', name: 'radio', value: '3', onChange: this.car_typeChange.bind(this) }),
+                _react2.default.createElement('input', { type: 'radio', name: 'radio', value: '3', onChange: this.input_car_typeChange.bind(this) }),
                 '\uB300\uD615',
-                _react2.default.createElement('input', { type: 'radio', name: 'radio', value: '4', onChange: this.car_typeChange.bind(this) }),
+                _react2.default.createElement('input', { type: 'radio', name: 'radio', value: '4', onChange: this.input_car_typeChange.bind(this) }),
                 '\uC2B9\uD569',
                 _react2.default.createElement('br', null),
-                _react2.default.createElement('input', { type: 'radio', name: 'radio', value: '5', onChange: this.car_typeChange.bind(this) }),
+                _react2.default.createElement('input', { type: 'radio', name: 'radio', value: '5', onChange: this.input_car_typeChange.bind(this) }),
                 'SUV/RV',
-                _react2.default.createElement('input', { type: 'radio', name: 'radio', value: '6', onChange: this.car_typeChange.bind(this) }),
+                _react2.default.createElement('input', { type: 'radio', name: 'radio', value: '6', onChange: this.input_car_typeChange.bind(this) }),
                 '\uC218\uC785\uCC28',
-                _react2.default.createElement('input', { type: 'radio', name: 'radio', value: '7', onChange: this.car_typeChange.bind(this) }),
+                _react2.default.createElement('input', { type: 'radio', name: 'radio', value: '7', onChange: this.input_car_typeChange.bind(this) }),
                 '\uC624\uD508\uCE74',
-                _react2.default.createElement('input', { type: 'radio', name: 'radio', value: '8', onChange: this.car_typeChange.bind(this) }),
+                _react2.default.createElement('input', { type: 'radio', name: 'radio', value: '8', onChange: this.input_car_typeChange.bind(this) }),
                 '\uC804\uAE30\uCC28',
-                _react2.default.createElement('input', { type: 'radio', name: 'radio', value: '9', onChange: this.car_typeChange.bind(this) }),
+                _react2.default.createElement('input', { type: 'radio', name: 'radio', value: '9', onChange: this.input_car_typeChange.bind(this) }),
                 '\uCE90\uB9AD\uD130\uCE74',
                 _react2.default.createElement('br', null),
                 _react2.default.createElement(
@@ -24969,8 +25226,420 @@ var VehicleInformation = function (_React$Component) {
                     renderPageNumbers
                 )
             );
+            var update_car = _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(
+                    'div',
+                    { className: 'logo' },
+                    '\uB80C\uD130\uCE74'
+                ),
+                _react2.default.createElement(
+                    'div',
+                    { className: 'menu' },
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu-item', onClick: this.click_home.bind(this) },
+                        ' \uD648 '
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu-item', onClick: this.insert_car_Change.bind(this) },
+                        ' \uC2E0\uADDC \uCC28\uB7C9 \uB4F1\uB85D '
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu-item' },
+                        ' \uCC28\uB7C9 \uC815\uBCF4 \uAD00\uB9AC '
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu-item', onClick: this.mamber_impormation_Change.bind(this) },
+                        ' \uACE0\uAC1D \uC815\uBCF4 \uAD00\uB9AC '
+                    )
+                ),
+                _react2.default.createElement(
+                    'table',
+                    null,
+                    _react2.default.createElement(
+                        'tbody',
+                        null,
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'td',
+                                { colSpan: 2 },
+                                _react2.default.createElement('img', { src: this.state.image[this.state.division_number], width: '500', height: '380' })
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                '\uCC28\uB7C9 \uC774\uB984'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement('input', { type: 'text', defaultValue: this.state.upload_car_name, onChange: this.car_nameChange.bind(this) })
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                '\uC790\uB3D9\uCC28 \uBC88\uD638'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement('input', { type: 'text', defaultValue: this.state.upload_car_number, onChange: this.car_numberChange.bind(this) })
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                '\uC0C9\uC0C1'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement('input', { type: 'text', defaultValue: this.state.upload_color, onChange: this.colorChange.bind(this) })
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                '\uC790\uB3D9\uCC28 \uC720\uD615'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement(
+                                    'select',
+                                    { defaultValue: this.state.upload_car_type, onChange: this.car_typeChange.bind(this) },
+                                    _react2.default.createElement(
+                                        'option',
+                                        { value: 1 },
+                                        ' \uC18C\uD615 '
+                                    ),
+                                    _react2.default.createElement(
+                                        'option',
+                                        { value: 2 },
+                                        ' \uC911\uD615 '
+                                    ),
+                                    _react2.default.createElement(
+                                        'option',
+                                        { value: 3 },
+                                        ' \uB300\uD615 '
+                                    ),
+                                    _react2.default.createElement(
+                                        'option',
+                                        { value: 4 },
+                                        ' \uC2B9\uD569 '
+                                    ),
+                                    _react2.default.createElement(
+                                        'option',
+                                        { value: 5 },
+                                        ' SUV/RV '
+                                    ),
+                                    _react2.default.createElement(
+                                        'option',
+                                        { value: 6 },
+                                        ' \uC218\uC785\uCC28 '
+                                    ),
+                                    _react2.default.createElement(
+                                        'option',
+                                        { value: 7 },
+                                        ' \uC624\uD508\uCE74 '
+                                    ),
+                                    _react2.default.createElement(
+                                        'option',
+                                        { value: 8 },
+                                        ' \uC804\uAE30\uCC28 '
+                                    ),
+                                    _react2.default.createElement(
+                                        'option',
+                                        { value: 9 },
+                                        ' \uCE90\uB9AD\uD130\uCE74 '
+                                    )
+                                )
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                '\uC5F0\uB8CC'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement('input', { type: 'text', defaultValue: this.state.upload_fuel, onChange: this.fuelChange.bind(this) })
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                'N\uC778\uC2B9'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement('input', { type: 'number', defaultValue: this.state.upload_few, onChange: this.fewChange.bind(this) })
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                '\uC8FC\uD589\uAC70\uB9AC'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement('input', { type: 'number', defaultValue: this.state.upload_distance, onChange: this.distanceChange.bind(this) })
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                '\uC9C0\uC5ED'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement(
+                                    'select',
+                                    { defaultValue: this.state.upload_area, onChange: this.areaChange.bind(this) },
+                                    _react2.default.createElement(
+                                        'option',
+                                        { value: 'inland' },
+                                        ' \uB0B4\uB959 '
+                                    ),
+                                    _react2.default.createElement(
+                                        'option',
+                                        { value: 'jeju' },
+                                        ' \uC81C\uC8FC\uB3C4 '
+                                    ),
+                                    _react2.default.createElement(
+                                        'option',
+                                        { value: 'overseas' },
+                                        ' \uD574\uC678 '
+                                    )
+                                )
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                '\uC9C0\uC810'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement(
+                                    'select',
+                                    { defaultValue: this.state.upload_point, onChange: this.pointChange.bind(this) },
+                                    _react2.default.createElement(
+                                        'option',
+                                        { value: 'Gangnam' },
+                                        ' \uAC15\uB0A8 '
+                                    ),
+                                    _react2.default.createElement(
+                                        'option',
+                                        { value: 'DongDaeMoon' },
+                                        ' \uB3D9\uB300\uBB38 '
+                                    ),
+                                    _react2.default.createElement(
+                                        'option',
+                                        { value: 'Yeouido' },
+                                        ' \uC5EC\uC758\uB3C4 '
+                                    ),
+                                    _react2.default.createElement(
+                                        'option',
+                                        { value: 'Guro' },
+                                        ' \uAD6C\uB85C '
+                                    )
+                                )
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                '\uC218\uB9AC \uC911 \uC5EC\uBD80'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement(
+                                    'select',
+                                    { defaultValue: this.state.upload_ider_repair, onChange: this.ider_repairChange.bind(this) },
+                                    _react2.default.createElement(
+                                        'option',
+                                        { value: 0 },
+                                        ' \uC0AC\uC6A9 \uAC00\uB2A5 '
+                                    ),
+                                    _react2.default.createElement(
+                                        'option',
+                                        { value: 1 },
+                                        ' \uC218\uB9AC \uC911 '
+                                    )
+                                )
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                '6\uC2DC\uAC04'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement('input', { type: 'number', defaultValue: this.state.upload_six_hour, onChange: this.six_hourChange.bind(this) })
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                '10\uC2DC\uAC04'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement('input', { type: 'number', defaultValue: this.state.upload_ten_hour, onChange: this.ten_hourChange.bind(this) })
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                '12\uC2DC\uAC04'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement('input', { type: 'number', defaultValue: this.state.upload_twelve_hour, onChange: this.twelve_hourChange.bind(this) })
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                '1~2\uC77C'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement('input', { type: 'number', defaultValue: this.state.upload_two_days, onChange: this.two_daysChange.bind(this) })
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                '3~4\uC77C'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement('input', { type: 'number', defaultValue: this.state.upload_four_days, onChange: this.four_daysChange.bind(this) })
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                '5~6\uC77C'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement('input', { type: 'number', defaultValue: this.state.upload_six_days, onChange: this.six_daysChange.bind(this) })
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                '7\uC77C \uC774\uC0C1'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement('input', { type: 'number', defaultValue: this.state.upload_more, onChange: this.moreChange.bind(this) })
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement(
+                                    'button',
+                                    { onClick: this.update_check.bind(this) },
+                                    ' \uC218\uC815 '
+                                ),
+                                _react2.default.createElement(
+                                    'button',
+                                    { onClick: this.back_click.bind(this) },
+                                    ' \uB098\uAC00\uAE30 '
+                                )
+                            )
+                        )
+                    )
+                )
+            );
 
-            return car_impormation_Form;
+            if (this.state.returned == 1) {
+                return car_impormation_Form;
+            } else if (this.state.returned == 2) {
+                return update_car;
+            }
         }
     }]);
 
@@ -25019,7 +25688,7 @@ exports = module.exports = __webpack_require__(21)(false);
 
 
 // module
-exports.push([module.i, "html, body {\n    margin: 0;\n    font-family: 'Roboto', Arial, sans-serif;\n    font-size: 1.2em;\n}\n  \n#page-numbers {    \n    list-style: none;\n    display: flex;\n}\n  \n#page-numbers > li {\n    margin-right: 0.3em;\n    color: blue;\n    user-select: none;\n    cursor: pointer;\n}", ""]);
+exports.push([module.i, "html, body {\n    margin: 0;\n    font-family: 'Roboto', Arial, sans-serif;\n    font-size: 1.2em;\n}\n  \n#page-numbers {    \n    list-style: none;\n    display: flex;\n}\n  \n#page-numbers > li {\n    margin-right: 0.3em;\n    color: blue;\n    user-select: none;\n    cursor: pointer;\n}\n\n", ""]);
 
 // exports
 

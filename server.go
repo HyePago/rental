@@ -774,6 +774,8 @@ func main() {
 		eng_navigation := raw["eng_navigation"]
 		cdw := raw["cdw"]
 
+		var point int
+
 		_, err := db.Exec("INSERT INTO reservation (number, email, car_number, cost, rental_date, return_date, rental_point, return_point, seat, navigation_korean, navigation_english, damage_indemnity) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)",reservation_number, email, car_number, cost, rental_date, return_date, rental_point, return_point, babyseat, kor_navigation, eng_navigation, cdw)
 		
 		if err != nil {
@@ -784,8 +786,25 @@ func main() {
 			return;
 		}
 
+		err = db.QueryRow("SELECT point FROM users WHERE email = ?", email).Scan(&point)
+		switch{
+		case err == sql.ErrNoRows:
+			return;
+		case err != nil:
+			log.Fatal(err)
+		}
+
+		cost_number, err := strconv.Atoi(cost.(string))
+
+		point = point + (cost_number/100)
+		_, err = db.Exec("UPDATE users SET point = ? where email = ?", point, email)
+
+		if err != nil {
+			log.Fatal(err)
+		}
+
 		c.JSON(200, gin.H {
-			"result": true,
+			"result": point,
 		})
 	})
 
@@ -1092,10 +1111,8 @@ func main() {
 			}
 
 			if input_car_type == 0 {
-				log.Println("전체 검색")
 				err = db.QueryRow("SELECT image, available, car_number, color, type, fuel, few, distance, area, point, ider_repair, carprice_id, name FROM car WHERE id=?", id).Scan(&impormation.image, &impormation.available, &impormation.car_number, &impormation.color, &impormation.car_type, &impormation.fuel, &impormation.few, &impormation.distance, &impormation.area, &impormation.point, &impormation.ider_repair, &carprice_id, &impormation.car_name)
 			} else {
-				log.Println("유형 별 검색")
 				err = db.QueryRow("SELECT image, available, car_number, color, type, fuel, few, distance, area, point, ider_repair, carprice_id, name FROM car WHERE id = ? && type = ?", id, input_car_type).Scan(&impormation.image, &impormation.available, &impormation.car_number, &impormation.color, &impormation.car_type, &impormation.fuel, &impormation.few, &impormation.distance, &impormation.area, &impormation.point, &impormation.ider_repair, &carprice_id, &impormation.car_name)				
 			}
 
@@ -1126,6 +1143,7 @@ func main() {
 					return
 				}
 
+				result[index]["id"] = id
 				result[index]["image"] = impormation.image
 				result[index]["car_number"] = impormation.car_number
 				result[index]["car_name"] = impormation.car_name
@@ -1154,6 +1172,102 @@ func main() {
 
 		c.JSON(200, gin.H{
 			"result": result,
+		})
+	})
+
+	router.POST("/car_update", func(c *gin.Context){
+		form := c.PostForm("form")
+
+		var raw map[string]interface{}
+		json.Unmarshal([]byte(form), &raw)
+
+		id := raw["id"]
+		car_number := raw["car_number"]
+		color := raw["color"]
+		car_type := raw["car_type"]
+		fuel := raw["fuel"]
+		few := raw["few"]
+		distance := raw["distance"]
+		area := raw["area"]
+		point := raw["point"]
+		ider_repair := raw["ider_repair"]
+		car_name := raw["car_name"]
+		six_hour := raw["six_hour"]
+		ten_hour := raw["ten_hour"]
+		twelve_hour := raw["twelve_hour"]
+		two_days := raw["two_days"]
+		four_days := raw["four_days"]
+		six_days := raw["six_days"]
+		more := raw["more"]
+
+		var carprice_id string
+
+		log.Println("raw = ", raw)
+		log.Println("distance = ", distance)
+		log.Println("few = ", few)
+		log.Println("LOG:: Before update car | id = ",id)
+
+		_, err := db.Exec("UPDATE car SET car_number=?, color=?, type=?, fuel=?, few=?, distance=?, area=?, point=?, ider_repair=?, name=? where id=?", car_number, color, car_type, fuel, few, distance, area, point, ider_repair, car_name, id)
+		if err != nil {
+			log.Fatal(err)
+			return;
+		}
+
+		log.Println("LOG:: After update car")
+
+		err = db.QueryRow("SELECT carprice_id FROM car WHERE id = ?", id).Scan(&carprice_id)
+		switch{
+		case err == sql.ErrNoRows:
+			log.Println("Not Found car_price");
+			return;
+		case err != nil:
+			log.Fatal(err)
+		}
+
+		log.Println("LOG:: After select carpriceid = ", carprice_id)
+
+		_, err = db.Exec("UPDATE car_price SET six_hour=?, ten_hour=?, twelve=?, two_days=?, four_days=?, six_days=?, more=? WHERE id = ?", six_hour, ten_hour, twelve_hour, two_days, four_days, six_days, more, carprice_id)
+
+		if err != nil {
+			log.Fatal(err)
+			return;
+		}
+
+		c.JSON(200, gin.H{
+			"result": "true",
+		})
+	})
+
+	router.POST("/car_delete", func(c *gin.Context){
+		id := c.PostForm("id")
+
+		var carprice_id string
+		
+		err := db.QueryRow("SELECT carprice_id FROM car WHERE id = ?", id).Scan(&carprice_id)
+		switch{
+		case err == sql.ErrNoRows:
+			log.Println("Not Found car_price")
+			return;
+		case err != nil:
+			log.Fatal(err)
+		}
+
+		_, err = db.Exec("DELETE FROM car where id = ?", id)
+		
+		if err != nil {
+			log.Fatal(err)
+			return
+		}
+
+		_, err = db.Exec("DELETE FROM car_price where id = ?", carprice_id)
+
+		if err != nil {
+			log.Fatal(err)
+			return
+		}
+
+		c.JSON(200, gin.H{
+			"result": "true",
 		})
 	})
 

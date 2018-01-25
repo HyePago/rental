@@ -426,6 +426,7 @@ class Rent_1 extends React.Component {
         .then((json) => { this.setState({result:json.result}); })
         .then(function(){
             this.setState({returned:'5'});
+            cookie.save('reserves', this.state.result, {path: '/'});
             this.submitReservationNumber();            
         }.bind(this)); 
     }
@@ -449,7 +450,7 @@ class Rent_1 extends React.Component {
             babyseat: this.state.babyseat,
             kor_navigation: this.state.kor_navigation,
             eng_navigation: this.state.eng_navigation,
-            cdw: this.state.cdw            
+            cdw: this.state.cdw,
         })
     }
 
