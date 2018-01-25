@@ -2939,6 +2939,10 @@ var _InsertionCar = __webpack_require__(44);
 
 var _InsertionCar2 = _interopRequireDefault(_InsertionCar);
 
+var _VehicleInformation = __webpack_require__(45);
+
+var _VehicleInformation2 = _interopRequireDefault(_VehicleInformation);
+
 __webpack_require__(3);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -3019,12 +3023,15 @@ var Admin = function (_React$Component) {
                 null,
                 _react2.default.createElement(_InsertionCar2.default, null)
             );
+            var car_impormation_Form = _react2.default.createElement(_VehicleInformation2.default, null);
 
             if (this.state.returned == 'main') {
                 return main_Form;
             } else if (this.state.returned == 'insert_car') {
                 return inser_car_Form;
-            } else if (this.state.returned == 'car_impormation') {} else if (this.state.returned == 'member_impormation') {}
+            } else if (this.state.returned == 'car_impormation') {
+                return car_impormation_Form;
+            } else if (this.state.returned == 'member_impormation') {}
         }
     }]);
 
@@ -3062,7 +3069,7 @@ var _Reservation_history = __webpack_require__(25);
 
 var _Reservation_history2 = _interopRequireDefault(_Reservation_history);
 
-__webpack_require__(45);
+__webpack_require__(46);
 
 __webpack_require__(3);
 
@@ -3517,6 +3524,8 @@ var Rent_1 = function (_React$Component) {
                 var _this3 = this;
 
                 //page
+                console.log("total_count = ", this.state.total_count);
+
                 var pageNumbers = [];
                 for (var i = 1; i <= Math.floor((this.state.total_count - 1) / 5) + 1; i++) {
                     pageNumbers.push(i);
@@ -23322,7 +23331,7 @@ exports = module.exports = __webpack_require__(21)(false);
 
 
 // module
-exports.push([module.i, ".logo {\n    height: 3.5rem;\n    background-color: #212529;\n    width: 100vw;\n    line-height: 3.5rem;\n    color: white;\n    font-size: 1.5rem;\n    font-weight: bold;\n    text-align: center;\n}\n\n.menu {\n    background-color: #343a40;\n    height: 3.5rem;\n}\n\n.menu-item {\n    display: inline-block;\n    color: white;\n    font-size: 1rem;\n    line-height: 3.5rem;\n    width: 25%;\n    text-align: center;\n    cursor: pointer;\n    transition: background-color 0.3s;\n    text-decoration: none;\n}\n\n.menu-item:hover {\n    background-color: #495057;\n}\n\n.menu-item:active, .menu-item.active {\n    background-color: #1862ab;\n}", ""]);
+exports.push([module.i, ".logo {\n    height: 3.5rem;\n    background-color: #212529;\n    width: 100vw;\n    line-height: 3.5rem;\n    color: white;\n    font-size: 1.5rem;\n    font-weight: bold;\n    text-align: center;\n}\n\n.menu {\n    background-color: #343a40;\n    height: 3.5rem;\n}\n\n.menu-item {\n    display: inline-block;\n    color: white;\n    font-size: 1rem;\n    line-height: 3.5rem;\n    width: 25%;\n    text-align: center;\n    cursor: pointer;\n    transition: background-color 0.3s;\n    text-decoration: none;\n}\n\n.menu-item:hover {\n    background-color: #495057;\n}\n\n.menu-item:active, .menu-item.active {\n    background-color: #1862ab;\n}\n\n#page-numbers {    \n    list-style: none;\n    display: flex;\n}\n  \n#page-numbers > li {\n    margin-right: 0.3em;\n    color: blue;\n    user-select: none;\n    cursor: pointer;\n}", ""]);
 
 // exports
 
@@ -24593,10 +24602,391 @@ exports.default = InsertionCar;
 /* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactDom = __webpack_require__(1);
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
+
+__webpack_require__(3);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var VehicleInformation = function (_React$Component) {
+    _inherits(VehicleInformation, _React$Component);
+
+    function VehicleInformation(props) {
+        _classCallCheck(this, VehicleInformation);
+
+        var _this = _possibleConstructorReturn(this, (VehicleInformation.__proto__ || Object.getPrototypeOf(VehicleInformation)).call(this, props));
+
+        _this.state = {
+            list: '',
+            currentPage: '',
+            total_page: '',
+            returned: '',
+            input_car_type: '',
+            image: [],
+            car_number: [],
+            car_name: [],
+            color: [],
+            car_type: [],
+            fuel: [],
+            few: [],
+            distance: [],
+            area: [],
+            point: [],
+            ider_repair: [],
+            six_hour: [],
+            ten_hour: [],
+            twelve_hour: [],
+            two_days: [],
+            four_days: [],
+            six_days: [],
+            more: [],
+            count: 0,
+            test_number: 0
+        };
+        return _this;
+    }
+
+    _createClass(VehicleInformation, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            this.setState({ input_car_type: "0" });
+            this.submitCarImpormation();
+        }
+
+        //list
+
+    }, {
+        key: 'setCarImpormation',
+        value: function setCarImpormation(opts) {
+            var _this2 = this;
+
+            fetch('/car_impormation', {
+                method: 'POST',
+                headers: {
+                    "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+                },
+                body: "form=" + JSON.stringify(opts)
+            }).then(function (response) {
+                return response.json();
+            }).then(function (json) {
+                _this2.setState({ result: json.result });
+            }).then(function () {
+                console.log("LOG result = ", this.state.result);
+
+                this.setState({ image: [] });
+                this.setState({ car_number: [] });
+                this.setState({ car_name: [] });
+                this.setState({ color: [] });
+                this.setState({ car_type: [] });
+                this.setState({ fuel: [] });
+                this.setState({ distance: [] });
+                this.setState({ area: [] });
+                this.setState({ point: [] });
+                this.setState({ ider_repair: [] });
+                this.setState({ six_hour: [] });
+                this.setState({ ten_hour: [] });
+                this.setState({ twelve_hour: [] });
+                this.setState({ two_days: [] });
+                this.setState({ four_days: [] });
+                this.setState({ six_days: [] });
+                this.setState({ more: [] });
+
+                for (var count = 0; this.state.result[count] != null; count++) {
+                    this.setState({ image: this.state.image.concat(this.state.result[count]["image"]) });
+                    this.setState({ car_number: this.state.car_number.concat(this.state.result[count]["car_number"]) });
+                    this.setState({ car_name: this.state.car_name.concat(this.state.result[count]["car_name"]) });
+                    this.setState({ color: this.state.color.concat(this.state.result[count]["color"]) });
+                    this.setState({ car_type: this.state.car_type.concat(this.state.result[count]["car_type"]) });
+                    this.setState({ fuel: this.state.fuel.concat(this.state.result[count]["fuel"]) });
+                    this.setState({ few: this.state.few.concat(this.state.result[count]["few"]) });
+                    this.setState({ distance: this.state.distance.concat(this.state.result[count]["distance"]) });
+                    this.setState({ area: this.state.area.concat(this.state.result[count]["area"]) });
+                    this.setState({ point: this.state.point.concat(this.state.result[count]["point"]) });
+                    this.setState({ ider_repair: this.state.ider_repair.concat(this.state.result[count]["ider_repair"]) });
+                    this.setState({ six_hour: this.state.six_hour.concat(this.state.result[count]["six_hour"]) });
+                    this.setState({ ten_hour: this.state.ten_hour.concat(this.state.result[count]["ten_hour"]) });
+                    this.setState({ twelve_hour: this.state.twelve_hour.concat(this.state.result[count]["twelve_hour"]) });
+                    this.setState({ two_days: this.state.two_days.concat(this.state.result[count]["two_days"]) });
+                    this.setState({ four_days: this.state.four_days.concat(this.state.result[count]["four_days"]) });
+                    this.setState({ six_days: this.state.six_days.concat(this.state.result[count]["six_days"]) });
+                    this.setState({ more: this.state.more.concat(this.state.result[count]["more"]) });
+                }
+                console.log("car_name : ", this.state.car_name);
+                console.log("count : ", count);
+
+                this.setState({ count: count });
+                this.setState({ total_page: this.state.result[0]["total_count"] });
+            }.bind(this)).then(function () {
+                if (this.state.test_number == 0) {
+                    this.setState({ test_number: 1 });
+                    this.submitCarImpormation();
+                } else {
+                    this.setState({ test_number: 0 });
+                }
+            }.bind(this));
+        }
+    }, {
+        key: 'submitCarImpormation',
+        value: function submitCarImpormation() {
+            this.setCarImpormation({
+                currentPage: this.state.currentPage,
+                input_car_type: this.state.input_car_type
+            });
+        }
+
+        //page
+
+    }, {
+        key: 'handleClick',
+        value: function handleClick(e) {
+            console.log("currentPage : ", e.target.id);
+            this.setState({ currentPage: e.target.id });
+
+            this.submitCarImpormation();
+        }
+
+        //change
+
+    }, {
+        key: 'click_home',
+        value: function click_home() {
+            this.setState({ returned: 'home' });
+        }
+    }, {
+        key: 'insert_car_Change',
+        value: function insert_car_Change() {
+            this.setState({ returned: 'insert_car' });
+        }
+    }, {
+        key: 'mamber_impormation_Change',
+        value: function mamber_impormation_Change() {
+            this.setState({ returned: 'member_impormation' });
+        }
+    }, {
+        key: 'car_typeChange',
+        value: function car_typeChange(e) {
+            this.setState({ input_car_type: e.target.value });
+            this.submitCarImpormation();
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var _this3 = this;
+
+            var noneStyle = {
+                display: 'none'
+            };
+            var blockStyle = {};
+
+            var impormation_number = [];
+            for (var i = 0; i < 5; i++) {
+                impormation_number.push(i);
+            }
+
+            //page
+            var pageNumbers = [];
+            for (var _i = 1; _i <= Math.floor((this.state.total_page - 1) / 5) + 1; _i++) {
+                pageNumbers.push(_i);
+            }
+            var renderPageNumbers = pageNumbers.map(function (number) {
+                return _react2.default.createElement(
+                    'li',
+                    { key: number, id: number, onClick: _this3.handleClick.bind(_this3) },
+                    number
+                );
+            });
+
+            //list
+            var impormation_car = impormation_number.map(function (number) {
+                return _react2.default.createElement(
+                    'tr',
+                    { key: number, style: _this3.state.image[number] == null ? noneStyle : blockStyle },
+                    _react2.default.createElement(
+                        'td',
+                        null,
+                        _react2.default.createElement('img', { src: _this3.state.image[number], width: '230', height: '130' })
+                    ),
+                    _react2.default.createElement(
+                        'td',
+                        null,
+                        _this3.state.car_number[number]
+                    ),
+                    _react2.default.createElement(
+                        'td',
+                        null,
+                        _this3.state.car_name[number]
+                    ),
+                    _react2.default.createElement(
+                        'td',
+                        null,
+                        _this3.state.fuel[number]
+                    ),
+                    _react2.default.createElement(
+                        'td',
+                        null,
+                        _this3.state.color[number]
+                    ),
+                    _react2.default.createElement(
+                        'td',
+                        null,
+                        _this3.state.distance[number]
+                    ),
+                    _react2.default.createElement(
+                        'td',
+                        null,
+                        _this3.state.few[number]
+                    )
+                );
+            });
+
+            var car_impormation_Form = _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(
+                    'div',
+                    { className: 'logo' },
+                    '\uB80C\uD130\uCE74'
+                ),
+                _react2.default.createElement(
+                    'div',
+                    { className: 'menu' },
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu-item', onClick: this.click_home.bind(this) },
+                        ' \uD648 '
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu-item', onClick: this.insert_car_Change.bind(this) },
+                        ' \uC2E0\uADDC \uCC28\uB7C9 \uB4F1\uB85D '
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu-item' },
+                        ' \uCC28\uB7C9 \uC815\uBCF4 \uAD00\uB9AC '
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu-item', onClick: this.mamber_impormation_Change.bind(this) },
+                        ' \uACE0\uAC1D \uC815\uBCF4 \uAD00\uB9AC '
+                    )
+                ),
+                _react2.default.createElement('br', null),
+                _react2.default.createElement('input', { type: 'radio', name: 'radio', value: '0', onChange: this.car_typeChange.bind(this), checked: this.state.input_car_type == '' || this.state.input_car_type == '0' ? true : false }),
+                '\uC804\uCCB4',
+                _react2.default.createElement('input', { type: 'radio', name: 'radio', value: '1', onChange: this.car_typeChange.bind(this) }),
+                '\uC18C\uD615',
+                _react2.default.createElement('input', { type: 'radio', name: 'radio', value: '2', onChange: this.car_typeChange.bind(this) }),
+                '\uC911\uD615',
+                _react2.default.createElement('input', { type: 'radio', name: 'radio', value: '3', onChange: this.car_typeChange.bind(this) }),
+                '\uB300\uD615',
+                _react2.default.createElement('input', { type: 'radio', name: 'radio', value: '4', onChange: this.car_typeChange.bind(this) }),
+                '\uC2B9\uD569',
+                _react2.default.createElement('br', null),
+                _react2.default.createElement('input', { type: 'radio', name: 'radio', value: '5', onChange: this.car_typeChange.bind(this) }),
+                'SUV/RV',
+                _react2.default.createElement('input', { type: 'radio', name: 'radio', value: '6', onChange: this.car_typeChange.bind(this) }),
+                '\uC218\uC785\uCC28',
+                _react2.default.createElement('input', { type: 'radio', name: 'radio', value: '7', onChange: this.car_typeChange.bind(this) }),
+                '\uC624\uD508\uCE74',
+                _react2.default.createElement('input', { type: 'radio', name: 'radio', value: '8', onChange: this.car_typeChange.bind(this) }),
+                '\uC804\uAE30\uCC28',
+                _react2.default.createElement('input', { type: 'radio', name: 'radio', value: '9', onChange: this.car_typeChange.bind(this) }),
+                '\uCE90\uB9AD\uD130\uCE74',
+                _react2.default.createElement('br', null),
+                _react2.default.createElement(
+                    'table',
+                    null,
+                    _react2.default.createElement(
+                        'tbody',
+                        null,
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'td',
+                                { width: '230' },
+                                '\uC774\uBBF8\uC9C0'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                { width: '150' },
+                                '\uCC28\uB7C9 \uBC88\uD638'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                { width: '150' },
+                                '\uCC28\uB7C9 \uC774\uB984'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                { width: '150' },
+                                '\uC5F0\uB8CC'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                { width: '150' },
+                                '\uC0C9\uC0C1'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                { width: '150' },
+                                '\uC8FC\uD589\uAC70\uB9AC'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                { width: '150' },
+                                'N\uC778\uC2B9'
+                            )
+                        ),
+                        impormation_car
+                    )
+                ),
+                _react2.default.createElement(
+                    'ul',
+                    { id: 'page-numbers' },
+                    renderPageNumbers
+                )
+            );
+
+            return car_impormation_Form;
+        }
+    }]);
+
+    return VehicleInformation;
+}(_react2.default.Component);
+
+exports.default = VehicleInformation;
+
+/***/ }),
+/* 46 */
+/***/ (function(module, exports, __webpack_require__) {
+
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(46);
+var content = __webpack_require__(47);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -24621,7 +25011,7 @@ if(false) {
 }
 
 /***/ }),
-/* 46 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(21)(false);

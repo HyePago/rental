@@ -373,6 +373,8 @@ class Rent_1 extends React.Component {
         }.bind(this))
         .then(function(){
             //page
+            console.log("total_count = ", this.state.total_count);
+
             const pageNumbers = [];
             for (let i = 1; i <= (Math.floor((this.state.total_count -1) / 5))+1; i++){
                 pageNumbers.push(i);

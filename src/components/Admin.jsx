@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom'
 
 import InsertionCar from './InsertionCar.jsx'
+import VehicleInformation from './VehicleInformation.jsx'
 
 import './Header.css'
 
@@ -42,13 +43,16 @@ class Admin extends React.Component {
                 <InsertionCar />
             </div>
         )
+        let car_impormation_Form = (
+            <VehicleInformation />
+        )
 
         if(this.state.returned == 'main'){
             return main_Form;
         } else if(this.state.returned == 'insert_car'){
             return inser_car_Form;
         } else if(this.state.returned == 'car_impormation'){
-
+            return car_impormation_Form;
         } else if(this.state.returned == 'member_impormation'){
 
         }

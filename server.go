@@ -13,7 +13,6 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 	"log"
 	"strings"
-	"reflect"
 )
 
 type User struct {
@@ -77,6 +76,28 @@ type Reservation_History struct {
 	color string
 	distance string
 	few string
+}
+
+type Impormation_car struct {
+	image string
+	available string
+	car_number string
+	car_name string
+	color string
+	car_type string
+	fuel string
+	few string
+	distance string
+	area string
+	point string
+	ider_repair string
+	six_hour string
+	ten_hour string
+	twelve_hour string
+	two_days string
+	four_days string
+	six_days string
+	more string
 }
 
 // func FloatToString(input_num float64) string {
@@ -169,7 +190,7 @@ func main() {
 			}
 		}
 
-		c.SaveUploadedFile(v[0], PATH + now + "." + extension[1]) //랜덤-바꾼파일명이 디렉터리에 있는지도 확인!!(있을경우 다시 파일이름 바꾸게)
+		c.SaveUploadedFile(v[0], "/Users/samjung/documents/rental/public/upload_image/" + now + "." + extension[1]) //랜덤-바꾼파일명이 디렉터리에 있는지도 확인!!(있을경우 다시 파일이름 바꾸게)
 
 		//err = db.QueryRow("SELECT id FROM image where original_filename = ?", v[0].Filename).Scan(&id)
 
@@ -240,18 +261,13 @@ func main() {
 				"users": 'f',
 			})
 		}
-
-		log.Println("LOG: Out the id_overlap")
 	})
 
 	router.POST("/sign_in", func(c *gin.Context){
-		log.Println("LOG:: sign_in_go")
 		form := c.PostForm("form")
 
 		var raw map[string]interface{}
 		var id string
-		log.Println("**json**")
-		log.Println(form)
 		json.Unmarshal([]byte(form), &raw)
 
 		username := raw["username"]
@@ -265,8 +281,6 @@ func main() {
 		switch{
 		case err == sql.ErrNoRows:
 			log.Println("LOG:: 아이디가 존재하지않아요.")
-			log.Println(username)
-
 			//관리자
 			err := db.QueryRow("SELECT id FROM admin where username = ? && password = ?", username, password).Scan(&id)
 
@@ -359,7 +373,6 @@ func main() {
 	})
 
 	router.POST("/find_id", func(c *gin.Context) {
-		log.Println("LOG:: sign_in_go")
 		form := c.PostForm("form")
 
 		var raw map[string]interface{}
@@ -475,14 +488,10 @@ func main() {
 	})
 
 	router.POST("/sign_up", func(c *gin.Context) {
-		log.Println("LOG:: sing_up_go")
 		form := c.PostForm("form")
 
 		var raw map[string]interface{}
 		json.Unmarshal([]byte(form), &raw)
-
-		log.Println("**map**");
-		log.Println(raw["username"]);
 
 		name := raw["name"]
 		username := raw["username"]	
@@ -547,9 +556,7 @@ func main() {
 			return;
 		}
 
-		log.Println("LOG:before, insert users")
 		_, err = db.Exec("INSERT INTO users (email, name, username, password, phone, license_id) VALUES (?, ?, ?, ?, ?, ?)", email, name, username, password, phone, id)
-		log.Println("LOG:after, inser users")
 
 		if err != nil{
 			log.Fatal(err)
@@ -568,9 +575,6 @@ func main() {
 
 		email := raw["email"].(string)
 		certification_number := strconv.Itoa(int(raw["certification_number"].(float64)))
-
-		log.Println("LOG:: email = ", email)
-		log.Println("LOG:: certification_number = ", certification_number)
 
 		msg := "인증번호 : " + certification_number
 		send(email, msg)
@@ -600,7 +604,6 @@ func main() {
 	})
 
 	router.POST("/rent_1", func(c *gin.Context) {
-		log.Println("LOG: /rent_1")
 		form := c.PostForm("form")
 
 		var raw map[string]interface{}
@@ -615,9 +618,6 @@ func main() {
 		return_time := raw["return_time"]
 		start_page := raw["start_number"]
 		car_type := raw["car_type"]
-
-		log.Println("type of car_type : ", reflect.TypeOf(car_type))
-		log.Println("car_type value : ", car_type)
 
 		/*log.Println("rental_date : ", reflect.TypeOf(rental_date))
 		log.Println("rental_time : ", reflect.TypeOf(rental_time))
@@ -692,7 +692,7 @@ func main() {
 			if err != nil {
 				log.Fatal(err)
 			}
-			
+
 			if count < (int(start_page.(float64))-1) * 5 {
 				count++;
 				continue;
@@ -704,11 +704,8 @@ func main() {
 				err = db.QueryRow("SELECT image, name, type, fuel, few, color, carprice_id, distance, registration_date, car_number FROM car where carprice_id=? && available=? && type = ? && point=?", id, 1, car_type, rental_point).Scan(&rent1.image, &rent1.car_name, &rent1.car_type, &rent1.fuel, &rent1.few, &rent1.color, &id, &rent1.distance, &rent1.registration_date, &rent1.car_number)				
 			}
 
-			log.Println("LOG:: car_name > ", rent1.car_name)
-
 			switch{
 			case err == sql.ErrNoRows:
-				log.Println("LOG:: NO ROWS")
 				continue;
 			case err != nil:
 				log.Println(err)
@@ -804,11 +801,6 @@ func main() {
 		//reservation_number := floattostr(raw["reservation_number"].(float64))
 		reservation_number := strconv.Itoa(int(raw["reservation_number"].(float64)))
 
-		log.Println("email : ", email)
-		log.Println("reservation_number : ", reservation_number)
-		log.Println("type of email : ", reflect.TypeOf(email))
-		log.Println("type of reservation_number : ", reflect.TypeOf(reservation_number))
-
 		msg := "인증번호 : " + reservation_number
 		send(email, msg)
 
@@ -885,12 +877,9 @@ func main() {
 			result[index]["few"] = reservation.few
 			result[index]["reservation_number"] = reservation_number
 
-			log.Println("LOG:: rental_date = ", rental_date, " | ", "now = ", now)
 			if rental_date <= now {
-				log.Println("LOG:: rental_date <= now")
 				result[index]["refundable"] = "false"
 			} else {
-				log.Println("LOG:: rental_date > now")
 				result[index]["refundable"] = "true"
 			}
 
@@ -1011,32 +1000,7 @@ func main() {
 		car_priceid := raw["car_priceid"]
 		name := raw["name"]
 
-		//var id string
 		var car_id string
-
-		// log.Println("LOG:: before select image | original_filename = ", image)
-
-		// err := db.QueryRow("SELECT id FROM image WHERE original_filename = ?", image).Scan(&id)
-
-		// log.Println("LOG:: after select image | id = ", id)
-
-		// switch{
-		// case err == sql.ErrNoRows:
-		// 	log.Println("LOG:: before result image")
-		// 	c.JSON(200, gin.H{
-		// 		"result": "image",
-		// 	})
-		// 	log.Println("LOG:: after result image")
-		// 	return
-		// case err != nil:
-		// 	log.Fatal(err)
-		// 	c.JSON(200, gin.H{
-		// 		"result": "false",
-		// 	})
-		// 	return
-		// }
-
-		// log.Println("LOG:: select image id = ", id)
 
 		err := db.QueryRow("SELECT id FROM car WHERE car_number = ?", car_number).Scan(&car_id)
 
@@ -1066,6 +1030,130 @@ func main() {
 
 		c.JSON(200, gin.H{
 			"result": "true",
+		})
+	})
+
+	router.POST("/car_impormation", func(c *gin.Context){
+		form := c.PostForm("form")
+		
+		var raw map[string]interface{}
+		json.Unmarshal([]byte(form), &raw)
+
+		currentPage := raw["currentPage"]
+		input_car_type := raw["input_car_type"]
+
+		var id string
+
+		count := 0
+		index := 0
+
+		var result map[int]map[string]string = map[int]map[string]string{}
+		var impormation Impormation_car
+		var carprice_id string
+
+		rows, err := db.Query("SELECT id FROM car ORDER BY registration_date")
+
+		if err != nil{
+			log.Fatal(err)
+		}
+		defer rows.Close()
+
+		for rows.Next(){
+			err := rows.Scan(&id)
+
+			result[index] = map[string]string{}
+
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			var startPage int
+
+			if currentPage == "" {
+				// if count < (int(currentPage.(float64))-1)*5 {
+				// 	count++
+				// 	continue
+				// }
+				startPage = 0
+			} else{
+				startPage, err = strconv.Atoi(currentPage.(string))
+			}
+			if count < ((startPage)-1)*5 {
+				count++
+				continue
+			}
+
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			if input_car_type == "" || input_car_type == "0" {
+				input_car_type = 0
+			}
+
+			if input_car_type == 0 {
+				log.Println("전체 검색")
+				err = db.QueryRow("SELECT image, available, car_number, color, type, fuel, few, distance, area, point, ider_repair, carprice_id, name FROM car WHERE id=?", id).Scan(&impormation.image, &impormation.available, &impormation.car_number, &impormation.color, &impormation.car_type, &impormation.fuel, &impormation.few, &impormation.distance, &impormation.area, &impormation.point, &impormation.ider_repair, &carprice_id, &impormation.car_name)
+			} else {
+				log.Println("유형 별 검색")
+				err = db.QueryRow("SELECT image, available, car_number, color, type, fuel, few, distance, area, point, ider_repair, carprice_id, name FROM car WHERE id = ? && type = ?", id, input_car_type).Scan(&impormation.image, &impormation.available, &impormation.car_number, &impormation.color, &impormation.car_type, &impormation.fuel, &impormation.few, &impormation.distance, &impormation.area, &impormation.point, &impormation.ider_repair, &carprice_id, &impormation.car_name)				
+			}
+
+			switch{
+			case err == sql.ErrNoRows:
+				log.Println("Not Found Rows impormation.image => ", impormation.image)
+				continue
+			case err != nil:
+				log.Fatal(err)
+			default:
+				err = db.QueryRow("SELECT six_hour, ten_hour, twelve, two_days, four_days, six_days, more FROM car_price WHERE id = ?", carprice_id).Scan(&impormation.six_hour, &impormation.ten_hour, &impormation.twelve_hour, &impormation.two_days, &impormation.four_days, &impormation.six_days, &impormation.more)
+			
+				switch{
+				case err == sql.ErrNoRows:
+					log.Println("Not Found car_price, as id ", carprice_id)
+				case err != nil:
+					log.Fatal(err)
+					return
+				}
+
+				err = db.QueryRow("SELECT changed_filename FROM image WHERE id = ?", impormation.image).Scan(&impormation.image)
+
+				switch{
+				case err == sql.ErrNoRows:
+					return
+				case err != nil:
+					log.Fatal(err)
+					return
+				}
+
+				result[index]["image"] = impormation.image
+				result[index]["car_number"] = impormation.car_number
+				result[index]["car_name"] = impormation.car_name
+				result[index]["color"] = impormation.color
+				result[index]["car_type"] = impormation.car_type
+				result[index]["fuel"] = impormation.fuel
+				result[index]["few"] = impormation.few
+				result[index]["distance"] = impormation.distance
+				result[index]["area"] = impormation.area
+				result[index]["point"] = impormation.point
+				result[index]["ider_repair"] = impormation.ider_repair
+				result[index]["six_hour"] = impormation.six_hour
+				result[index]["ten_hour"] = impormation.ten_hour
+				result[index]["twelve_hour"] = impormation.twelve_hour
+				result[index]["two_days"] = impormation.two_days
+				result[index]["four_days"] = impormation.four_days
+				result[index]["six_days"] = impormation.six_days
+				result[index]["more"] = impormation.more
+
+				count++
+				index++
+			}
+
+			result[0]["total_count"] = strconv.Itoa(count)
+		}
+
+		c.JSON(200, gin.H{
+			"result": result,
 		})
 	})
 
