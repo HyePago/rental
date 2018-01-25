@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom'
 
+import Admin from './Admin.jsx'
+
 import './Header.css'
 
 class InsertionCar extends React.Component {
@@ -26,7 +28,6 @@ class InsertionCar extends React.Component {
             six_days: '',
             more: '',
             car_priceid: '',
-            url: '',
             result: '',
             image: '',
         };
@@ -110,7 +111,7 @@ class InsertionCar extends React.Component {
         this.setImageUpload();
     }
 
-    setCarUpload(opts){
+    setCarPriceUpload(opts){
         fetch('/upload_carprice', {
             method: 'POST',
             headers: {
@@ -133,7 +134,7 @@ class InsertionCar extends React.Component {
 
             console.log("car price image : ", this.state.image);
 
-            this.setCarPriceUpload({
+            this.setCarUpload({
                 image: this.state.image,
                 car_number: this.state.car_number,
                 color: this.state.color,
@@ -149,7 +150,7 @@ class InsertionCar extends React.Component {
         }.bind(this))
     }
 
-    setCarPriceUpload(opts){
+    setCarUpload(opts){
         fetch('/upload_car', {
             method: 'POST',
             headers: {
@@ -161,13 +162,18 @@ class InsertionCar extends React.Component {
         .then((json) => { 
             this.setState(
                 {
-                    car_priceid:json.id
+                    result:json.result
                 }); 
             })
         .then(function(){
+            console.log(this.state.result);
             if(this.state.result=="false"){
                 alert("등록에 실패하였습니다. 다시 시도해주세요.");
                 return;
+            }else if(this.state.result == "image"){
+                alert("이미지 업로드가 제대로 되지 않았습니다. 다시 시도해주세요.");
+            }else if(this.state.result == "car_number"){
+                alert("이미 있는 자동차 번호입니다. 다시 한 번 확인해주세요.");
             }
 
             this.home_impormation_Change();
@@ -184,9 +190,9 @@ class InsertionCar extends React.Component {
             body: this.state.formdata
         })
         .then((response) => {return response.json(); })
-        .then((json) => { this.setState({image: json.url}); })
+        .then((json) => { this.setState({image: json.image_id}); })
         .then(function(){
-            this.setCarUpload({
+            this.setCarPriceUpload({
                 six_hour: this.state.six_hour,
                 ten_hour: this.state.ten_hour,
                 twelve_hour: this.state.twelve_hour,
@@ -380,8 +386,18 @@ class InsertionCar extends React.Component {
             </div>
         )
 
+        let home_Form = (
+            <div>
+                <Admin />
+            </div>
+        )
 
-        return inser_car_Form;
+        if(this.state.returned == 'home'){
+            return home_Form;
+        }
+        else{
+            return inser_car_Form
+        }
     }
 }
 

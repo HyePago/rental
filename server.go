@@ -145,7 +145,7 @@ func main() {
 			return
 		}
 
-		const PATH = "/Users/samjung/documents/rental/public/upload_image/"
+		const PATH = "http://localhost:5000/public/upload_image/"
 		extension := strings.Split(v[0].Filename, ".")
 
 		var id string
@@ -171,23 +171,39 @@ func main() {
 
 		c.SaveUploadedFile(v[0], PATH + now + "." + extension[1]) //랜덤-바꾼파일명이 디렉터리에 있는지도 확인!!(있을경우 다시 파일이름 바꾸게)
 
-		err = db.QueryRow("SELECT id FROM image where original_filename = ?", v[0].Filename).Scan(&id)
+		//err = db.QueryRow("SELECT id FROM image where original_filename = ?", v[0].Filename).Scan(&id)
+
+		_, err = db.Exec("INSERT INTO image (original_filename, changed_filename) values (?, ?)", v[0].Filename, PATH + now + "."+extension[1])
+
+		if err != nil {
+				log.Fatal(err)
+		}
+
+		err = db.QueryRow("SELECT id FROM image where changed_filename=?", PATH + now + "." + extension[1]).Scan(&id)
+
 		switch {
 		case err == sql.ErrNoRows:
-			_, err = db.Exec("INSERT INTO image (original_filename, changed_filename) values (?, ?)", v[0].Filename, "http://localhost:5000/public/upload_image/" + now + "."+extension[1])
-
-			if err != nil {
-				log.Fatal(err)
-			}
+			log.Println("insert image, but select fault")
 		case err != nil:
 			log.Println(err)
-		default:
-			_, err = db.Exec("UPDATE image set changed_filename = ? where original_filename = ?", "http://localhost:5000/public/upload_image/" + now + "."+extension[1], v[0].Filename)
-
-			if err != nil {
-				log.Fatal(err)
-			}
 		}
+
+		// switch {
+		// case err == sql.ErrNoRows:
+		// 	_, err = db.Exec("INSERT INTO image (original_filename, changed_filename) values (?, ?)", v[0].Filename, "http://localhost:5000/public/upload_image/" + now + "."+extension[1])
+
+		// 	if err != nil {
+		// 		log.Fatal(err)
+		// 	}
+		// case err != nil:
+		// 	log.Println(err)
+		// default:
+		// 	_, err = db.Exec("UPDATE image set changed_filename = ? where original_filename = ?", "http://localhost:5000/public/upload_image/" + now + "."+extension[1], v[0].Filename)
+
+		// 	if err != nil {
+		// 		log.Fatal(err)
+		// 	}
+		// }
 
 		/*url := c.PostForm("url")
 
@@ -201,7 +217,7 @@ func main() {
 		*/
 
 		c.JSON(200, gin.H{
-			"url": v[0].Filename,
+			"image_id": id,
 		})
 	})	
 
@@ -706,7 +722,7 @@ func main() {
 					log.Println(err)
 				}
 
-				err = db.QueryRow("SELECT changed_filename FROM image where original_filename = ?", rent1.image).Scan(&rent1.image)
+				err = db.QueryRow("SELECT changed_filename FROM image where id = ?", rent1.image).Scan(&rent1.image)
 
 				result[index]["image"] = rent1.image
 				result[index]["car_name"] = rent1.car_name
@@ -857,7 +873,7 @@ func main() {
 				log.Println(err)
 			}
 
-			err = db.QueryRow("SELECT changed_filename FROM image where original_filename = ?", reservation.image).Scan(&reservation.image)
+			err = db.QueryRow("SELECT changed_filename FROM image where id = ?", reservation.image).Scan(&reservation.image)
 
 			result[index]["image"] = reservation.image
 			result[index]["car_number"] = reservation.car_number
@@ -995,9 +1011,50 @@ func main() {
 		car_priceid := raw["car_priceid"]
 		name := raw["name"]
 
-		log.Println("iamge = >" , image);
+		//var id string
+		var car_id string
 
-		_, err := db.Exec("INSERT INTO car (image, car_number, color, type, fuel, few, distance, area, point, carprice_id, name) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", image, car_number, color, car_type, fuel, few, distance, area, point, car_priceid, name)
+		// log.Println("LOG:: before select image | original_filename = ", image)
+
+		// err := db.QueryRow("SELECT id FROM image WHERE original_filename = ?", image).Scan(&id)
+
+		// log.Println("LOG:: after select image | id = ", id)
+
+		// switch{
+		// case err == sql.ErrNoRows:
+		// 	log.Println("LOG:: before result image")
+		// 	c.JSON(200, gin.H{
+		// 		"result": "image",
+		// 	})
+		// 	log.Println("LOG:: after result image")
+		// 	return
+		// case err != nil:
+		// 	log.Fatal(err)
+		// 	c.JSON(200, gin.H{
+		// 		"result": "false",
+		// 	})
+		// 	return
+		// }
+
+		// log.Println("LOG:: select image id = ", id)
+
+		err := db.QueryRow("SELECT id FROM car WHERE car_number = ?", car_number).Scan(&car_id)
+
+		switch{
+		case err == sql.ErrNoRows:
+		case err != nil:
+			log.Fatal(err)
+			c.JSON(200, gin.H{
+				"result": "false",
+			})
+		default:
+			c.JSON(200, gin.H{
+				"result": "car_number",
+			})
+			return
+		}
+
+		_, err = db.Exec("INSERT INTO car (image, car_number, color, type, fuel, few, distance, area, point, carprice_id, name) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", image, car_number, color, car_type, fuel, few, distance, area, point, car_priceid, name)
 
 		if err != nil {
 			log.Fatal(err)

@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 25);
+/******/ 	return __webpack_require__(__webpack_require__.s = 26);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -71,9 +71,9 @@
 /* WEBPACK VAR INJECTION */(function(process) {
 
 if (process.env.NODE_ENV === 'production') {
-  module.exports = __webpack_require__(26);
-} else {
   module.exports = __webpack_require__(27);
+} else {
+  module.exports = __webpack_require__(28);
 }
 
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
@@ -117,9 +117,9 @@ if (process.env.NODE_ENV === 'production') {
   // DCE check should happen before ReactDOM bundle executes so that
   // DevTools can report bad minification during injection.
   checkDCE();
-  module.exports = __webpack_require__(29);
+  module.exports = __webpack_require__(30);
 } else {
-  module.exports = __webpack_require__(32);
+  module.exports = __webpack_require__(33);
 }
 
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
@@ -321,7 +321,7 @@ process.umask = function() { return 0; };
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(40);
+var content = __webpack_require__(41);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -366,7 +366,7 @@ exports.remove = remove;
 exports.setRawCookie = setRawCookie;
 exports.plugToRequest = plugToRequest;
 
-var _cookie = __webpack_require__(37);
+var _cookie = __webpack_require__(38);
 
 var _cookie2 = _interopRequireDefault(_cookie);
 
@@ -820,7 +820,7 @@ var _reactCookies = __webpack_require__(4);
 
 var _reactCookies2 = _interopRequireDefault(_reactCookies);
 
-var _SendEmail = __webpack_require__(38);
+var _SendEmail = __webpack_require__(39);
 
 var _SendEmail2 = _interopRequireDefault(_SendEmail);
 
@@ -832,7 +832,7 @@ var _SignInForm = __webpack_require__(11);
 
 var _SignInForm2 = _interopRequireDefault(_SignInForm);
 
-var _Rent_ = __webpack_require__(23);
+var _Rent_ = __webpack_require__(24);
 
 var _Rent_2 = _interopRequireDefault(_Rent_);
 
@@ -840,7 +840,7 @@ var _ImageTest = __webpack_require__(7);
 
 var _ImageTest2 = _interopRequireDefault(_ImageTest);
 
-var _Reservation_history = __webpack_require__(24);
+var _Reservation_history = __webpack_require__(25);
 
 var _Reservation_history2 = _interopRequireDefault(_Reservation_history);
 
@@ -1692,15 +1692,15 @@ var _SignUpForm = __webpack_require__(10);
 
 var _SignUpForm2 = _interopRequireDefault(_SignUpForm);
 
-var _FindId = __webpack_require__(39);
+var _FindId = __webpack_require__(40);
 
 var _FindId2 = _interopRequireDefault(_FindId);
 
-var _FindPwd = __webpack_require__(42);
+var _FindPwd = __webpack_require__(43);
 
 var _FindPwd2 = _interopRequireDefault(_FindPwd);
 
-var _Admin = __webpack_require__(43);
+var _Admin = __webpack_require__(23);
 
 var _Admin2 = _interopRequireDefault(_Admin);
 
@@ -2104,7 +2104,7 @@ module.exports = warning;
 if (process.env.NODE_ENV !== 'production') {
   var invariant = __webpack_require__(12);
   var warning = __webpack_require__(13);
-  var ReactPropTypesSecret = __webpack_require__(28);
+  var ReactPropTypesSecret = __webpack_require__(29);
   var loggedTypeFailures = {};
 }
 
@@ -2403,7 +2403,7 @@ module.exports = shallowEqual;
  * 
  */
 
-var isTextNode = __webpack_require__(30);
+var isTextNode = __webpack_require__(31);
 
 /*eslint-disable no-bitwise */
 
@@ -2599,7 +2599,7 @@ var singleton = null;
 var	singletonCounter = 0;
 var	stylesInsertedAtTop = [];
 
-var	fixUrls = __webpack_require__(41);
+var	fixUrls = __webpack_require__(42);
 
 module.exports = function(list, options) {
 	if (typeof DEBUG !== "undefined" && DEBUG) {
@@ -2935,11 +2935,130 @@ var _reactDom = __webpack_require__(1);
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
+var _InsertionCar = __webpack_require__(44);
+
+var _InsertionCar2 = _interopRequireDefault(_InsertionCar);
+
+__webpack_require__(3);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Admin = function (_React$Component) {
+    _inherits(Admin, _React$Component);
+
+    function Admin(props) {
+        _classCallCheck(this, Admin);
+
+        var _this = _possibleConstructorReturn(this, (Admin.__proto__ || Object.getPrototypeOf(Admin)).call(this, props));
+
+        _this.state = {
+            returned: 'main'
+        };
+        return _this;
+    }
+
+    _createClass(Admin, [{
+        key: 'insert_car_Change',
+        value: function insert_car_Change() {
+            this.setState({ returned: 'insert_car' });
+        }
+    }, {
+        key: 'car_impormation_Change',
+        value: function car_impormation_Change() {
+            this.setState({ returned: 'car_impormation' });
+        }
+    }, {
+        key: 'mamber_impormation_Change',
+        value: function mamber_impormation_Change() {
+            this.setState({ returned: 'member_impormation' });
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var main_Form = _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(
+                    'div',
+                    { className: 'logo' },
+                    '\uB80C\uD130\uCE74'
+                ),
+                _react2.default.createElement(
+                    'div',
+                    { className: 'menu' },
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu-item' },
+                        ' \uD648 '
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu-item', onClick: this.insert_car_Change.bind(this) },
+                        ' \uC2E0\uADDC \uCC28\uB7C9 \uB4F1\uB85D '
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu-item', onClick: this.car_impormation_Change.bind(this) },
+                        ' \uCC28\uB7C9 \uC815\uBCF4 \uAD00\uB9AC '
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu-item', onClick: this.mamber_impormation_Change.bind(this) },
+                        ' \uACE0\uAC1D \uC815\uBCF4 \uAD00\uB9AC '
+                    )
+                )
+            );
+            var inser_car_Form = _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(_InsertionCar2.default, null)
+            );
+
+            if (this.state.returned == 'main') {
+                return main_Form;
+            } else if (this.state.returned == 'insert_car') {
+                return inser_car_Form;
+            } else if (this.state.returned == 'car_impormation') {} else if (this.state.returned == 'member_impormation') {}
+        }
+    }]);
+
+    return Admin;
+}(_react2.default.Component);
+
+exports.default = Admin;
+
+/***/ }),
+/* 24 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactDom = __webpack_require__(1);
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
+
 var _reactCookies = __webpack_require__(4);
 
 var _reactCookies2 = _interopRequireDefault(_reactCookies);
 
-var _Reservation_history = __webpack_require__(24);
+var _Reservation_history = __webpack_require__(25);
 
 var _Reservation_history2 = _interopRequireDefault(_Reservation_history);
 
@@ -4478,7 +4597,7 @@ var Rent_1 = function (_React$Component) {
 exports.default = Rent_1;
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4506,7 +4625,7 @@ var _App = __webpack_require__(9);
 
 var _App2 = _interopRequireDefault(_App);
 
-var _Rent_ = __webpack_require__(23);
+var _Rent_ = __webpack_require__(24);
 
 var _Rent_2 = _interopRequireDefault(_Rent_);
 
@@ -5277,7 +5396,7 @@ var Reservation_history = function (_React$Component) {
 exports.default = Reservation_history;
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5302,7 +5421,7 @@ var rootElement = document.getElementById('root');
 _reactDom2.default.render(_react2.default.createElement(_App2.default, null), rootElement);
 
 /***/ }),
-/* 26 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5330,7 +5449,7 @@ isValidElement:K,version:"16.2.0",__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_F
 
 
 /***/ }),
-/* 27 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6695,7 +6814,7 @@ module.exports = react;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
 /***/ }),
-/* 28 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6714,7 +6833,7 @@ module.exports = ReactPropTypesSecret;
 
 
 /***/ }),
-/* 29 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6950,7 +7069,7 @@ Z.injectIntoDevTools({findFiberByHostInstance:pb,bundleType:0,version:"16.2.0",r
 
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6965,7 +7084,7 @@ Z.injectIntoDevTools({findFiberByHostInstance:pb,bundleType:0,version:"16.2.0",r
  * @typechecks
  */
 
-var isNode = __webpack_require__(31);
+var isNode = __webpack_require__(32);
 
 /**
  * @param {*} object The object to check.
@@ -6978,7 +7097,7 @@ function isTextNode(object) {
 module.exports = isTextNode;
 
 /***/ }),
-/* 31 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7006,7 +7125,7 @@ function isNode(object) {
 module.exports = isNode;
 
 /***/ }),
-/* 32 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7040,8 +7159,8 @@ var containsNode = __webpack_require__(19);
 var focusNode = __webpack_require__(20);
 var emptyObject = __webpack_require__(8);
 var checkPropTypes = __webpack_require__(14);
-var hyphenateStyleName = __webpack_require__(33);
-var camelizeStyleName = __webpack_require__(35);
+var hyphenateStyleName = __webpack_require__(34);
+var camelizeStyleName = __webpack_require__(36);
 
 /**
  * WARNING: DO NOT manually require this module.
@@ -22408,7 +22527,7 @@ module.exports = reactDom;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
 /***/ }),
-/* 33 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22423,7 +22542,7 @@ module.exports = reactDom;
 
 
 
-var hyphenate = __webpack_require__(34);
+var hyphenate = __webpack_require__(35);
 
 var msPattern = /^ms-/;
 
@@ -22450,7 +22569,7 @@ function hyphenateStyleName(string) {
 module.exports = hyphenateStyleName;
 
 /***/ }),
-/* 34 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22486,7 +22605,7 @@ function hyphenate(string) {
 module.exports = hyphenate;
 
 /***/ }),
-/* 35 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22501,7 +22620,7 @@ module.exports = hyphenate;
 
 
 
-var camelize = __webpack_require__(36);
+var camelize = __webpack_require__(37);
 
 var msPattern = /^-ms-/;
 
@@ -22529,7 +22648,7 @@ function camelizeStyleName(string) {
 module.exports = camelizeStyleName;
 
 /***/ }),
-/* 36 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22564,7 +22683,7 @@ function camelize(string) {
 module.exports = camelize;
 
 /***/ }),
-/* 37 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22766,7 +22885,7 @@ function tryDecode(str, decode) {
 
 
 /***/ }),
-/* 38 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22846,7 +22965,7 @@ var SendEmail = function (_React$Component) {
 module.exports = SendEmail;
 
 /***/ }),
-/* 39 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23195,7 +23314,7 @@ var FindId = function (_React$Component) {
 exports.default = FindId;
 
 /***/ }),
-/* 40 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(21)(false);
@@ -23209,7 +23328,7 @@ exports.push([module.i, ".logo {\n    height: 3.5rem;\n    background-color: #21
 
 
 /***/ }),
-/* 41 */
+/* 42 */
 /***/ (function(module, exports) {
 
 
@@ -23304,7 +23423,7 @@ module.exports = function (css) {
 
 
 /***/ }),
-/* 42 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23776,125 +23895,6 @@ var FindPwd = function (_React$Component) {
 exports.default = FindPwd;
 
 /***/ }),
-/* 43 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _reactDom = __webpack_require__(1);
-
-var _reactDom2 = _interopRequireDefault(_reactDom);
-
-var _InsertionCar = __webpack_require__(44);
-
-var _InsertionCar2 = _interopRequireDefault(_InsertionCar);
-
-__webpack_require__(3);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var Admin = function (_React$Component) {
-    _inherits(Admin, _React$Component);
-
-    function Admin(props) {
-        _classCallCheck(this, Admin);
-
-        var _this = _possibleConstructorReturn(this, (Admin.__proto__ || Object.getPrototypeOf(Admin)).call(this, props));
-
-        _this.state = {
-            returned: 'main'
-        };
-        return _this;
-    }
-
-    _createClass(Admin, [{
-        key: 'insert_car_Change',
-        value: function insert_car_Change() {
-            this.setState({ returned: 'insert_car' });
-        }
-    }, {
-        key: 'car_impormation_Change',
-        value: function car_impormation_Change() {
-            this.setState({ returned: 'car_impormation' });
-        }
-    }, {
-        key: 'mamber_impormation_Change',
-        value: function mamber_impormation_Change() {
-            this.setState({ returned: 'member_impormation' });
-        }
-    }, {
-        key: 'render',
-        value: function render() {
-            var main_Form = _react2.default.createElement(
-                'div',
-                null,
-                _react2.default.createElement(
-                    'div',
-                    { className: 'logo' },
-                    '\uB80C\uD130\uCE74'
-                ),
-                _react2.default.createElement(
-                    'div',
-                    { className: 'menu' },
-                    _react2.default.createElement(
-                        'div',
-                        { className: 'menu-item' },
-                        ' \uD648 '
-                    ),
-                    _react2.default.createElement(
-                        'div',
-                        { className: 'menu-item', onClick: this.insert_car_Change.bind(this) },
-                        ' \uC2E0\uADDC \uCC28\uB7C9 \uB4F1\uB85D '
-                    ),
-                    _react2.default.createElement(
-                        'div',
-                        { className: 'menu-item', onClick: this.car_impormation_Change.bind(this) },
-                        ' \uCC28\uB7C9 \uC815\uBCF4 \uAD00\uB9AC '
-                    ),
-                    _react2.default.createElement(
-                        'div',
-                        { className: 'menu-item', onClick: this.mamber_impormation_Change.bind(this) },
-                        ' \uACE0\uAC1D \uC815\uBCF4 \uAD00\uB9AC '
-                    )
-                )
-            );
-            var inser_car_Form = _react2.default.createElement(
-                'div',
-                null,
-                _react2.default.createElement(_InsertionCar2.default, null)
-            );
-
-            if (this.state.returned == 'main') {
-                return main_Form;
-            } else if (this.state.returned == 'insert_car') {
-                return inser_car_Form;
-            } else if (this.state.returned == 'car_impormation') {} else if (this.state.returned == 'member_impormation') {}
-        }
-    }]);
-
-    return Admin;
-}(_react2.default.Component);
-
-exports.default = Admin;
-
-/***/ }),
 /* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -23914,6 +23914,10 @@ var _react2 = _interopRequireDefault(_react);
 var _reactDom = __webpack_require__(1);
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
+
+var _Admin = __webpack_require__(23);
+
+var _Admin2 = _interopRequireDefault(_Admin);
 
 __webpack_require__(3);
 
@@ -23953,7 +23957,6 @@ var InsertionCar = function (_React$Component) {
             six_days: '',
             more: '',
             car_priceid: '',
-            url: '',
             result: '',
             image: ''
         };
@@ -24079,8 +24082,8 @@ var InsertionCar = function (_React$Component) {
             this.setImageUpload();
         }
     }, {
-        key: 'setCarUpload',
-        value: function setCarUpload(opts) {
+        key: 'setCarPriceUpload',
+        value: function setCarPriceUpload(opts) {
             var _this2 = this;
 
             fetch('/upload_carprice', {
@@ -24103,7 +24106,7 @@ var InsertionCar = function (_React$Component) {
 
                 console.log("car price image : ", this.state.image);
 
-                this.setCarPriceUpload({
+                this.setCarUpload({
                     image: this.state.image,
                     car_number: this.state.car_number,
                     color: this.state.color,
@@ -24119,8 +24122,8 @@ var InsertionCar = function (_React$Component) {
             }.bind(this));
         }
     }, {
-        key: 'setCarPriceUpload',
-        value: function setCarPriceUpload(opts) {
+        key: 'setCarUpload',
+        value: function setCarUpload(opts) {
             var _this3 = this;
 
             fetch('/upload_car', {
@@ -24133,12 +24136,17 @@ var InsertionCar = function (_React$Component) {
                 return response.json();
             }).then(function (json) {
                 _this3.setState({
-                    car_priceid: json.id
+                    result: json.result
                 });
             }).then(function () {
+                console.log(this.state.result);
                 if (this.state.result == "false") {
                     alert("등록에 실패하였습니다. 다시 시도해주세요.");
                     return;
+                } else if (this.state.result == "image") {
+                    alert("이미지 업로드가 제대로 되지 않았습니다. 다시 시도해주세요.");
+                } else if (this.state.result == "car_number") {
+                    alert("이미 있는 자동차 번호입니다. 다시 한 번 확인해주세요.");
                 }
 
                 this.home_impormation_Change();
@@ -24159,9 +24167,9 @@ var InsertionCar = function (_React$Component) {
             }).then(function (response) {
                 return response.json();
             }).then(function (json) {
-                _this4.setState({ image: json.url });
+                _this4.setState({ image: json.image_id });
             }).then(function () {
-                this.setCarUpload({
+                this.setCarPriceUpload({
                     six_hour: this.state.six_hour,
                     ten_hour: this.state.ten_hour,
                     twelve_hour: this.state.twelve_hour,
@@ -24562,7 +24570,17 @@ var InsertionCar = function (_React$Component) {
                 )
             );
 
-            return inser_car_Form;
+            var home_Form = _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(_Admin2.default, null)
+            );
+
+            if (this.state.returned == 'home') {
+                return home_Form;
+            } else {
+                return inser_car_Form;
+            }
         }
     }]);
 
