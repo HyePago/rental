@@ -11,6 +11,7 @@ import Reservation_history from './Reservation_history.jsx'
 import Non_Member_ServiceCenter from './Non_Member_ServiceCenter.jsx'
 import Member_Service_Center from './Member_Service_Center.jsx'
 import Member_feedback from './Member_feedback.jsx'
+import Non_Member_feedback from './Non_Member_feedback.jsx'
 
 import './Header.css'
 
@@ -56,6 +57,9 @@ class App extends React.Component {
     click_member_show_feedback(){
         this.setState({state_1:'mf'});
     }
+    click_nonmember_show_feedback(){
+        this.setState({state_1:'nf'});
+    }
 
     log_out(){
         cookie.remove('name', {path:'/'});
@@ -92,7 +96,7 @@ class App extends React.Component {
                     <div className="dropdown-menu-item">
                         고객 센터
                         <div className="dropdown-content">
-                            <div>내 의견 보기</div>
+                            <div onClick={this.click_nonmember_show_feedback.bind(this)}>내 의견 보기</div>
                             <div onClick={this.click_nonmember_service.bind(this)}>의견 보내기</div>
                         </div>
                     </div>
@@ -143,6 +147,9 @@ class App extends React.Component {
         let member_show_feedback_Form = (
             <Member_feedback />
         )
+        let non_member_show_feedback_Form = (
+            <Non_Member_feedback />
+        )
     
         if(this.state.state_1=='s'){
             //this.setState({state_1:''});
@@ -165,6 +172,9 @@ class App extends React.Component {
         }
         else if(this.state.state_1=='ms'){
             return member_service_Form;
+        }
+        else if(this.state.state_1=='nf'){
+            return non_member_show_feedback_Form;
         }
         else if(this.state.state_1=='mf'){
             return member_show_feedback_Form;

@@ -1,16 +1,19 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import cookie from "react-cookies"
 
 import './Header.css'
 
-class Member_feedback extends React.Component {
+class Non_Member_feedback extends React.Component {
     constructor(props){
         super(props);
 
         this.state = {
-            returned: '',
-            currentPage: '',
+            returned: 1,
+            email: '',
+            certification_number: '',
+            input_certification_number: '',
+            result: '',
+            currentPage:'',
             total_page: '',
             id: [],
             name: [],
@@ -23,16 +26,48 @@ class Member_feedback extends React.Component {
             division_number: 0,
             input_division:"",
             input_category:"",
-            sort: '1',
+            sort:'1',
             result:'',
             test_number:0,
         }
     }
 
-    componentDidMount(){
-        this.submitGit_FeedbackList();
+    emailChange(e){
+        this.setState({email:e.target.value});
+    }
+    input_certification_numberChange(e){
+        this.setState({input_certification_number:e.target.value});
     }
 
+    //certification
+    setCertification(opts){
+        fetch('/email_certification', {
+            method: 'POST',
+            headers: {
+                "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+            },
+            body: "form="+JSON.stringify(opts)
+        })
+        .then((response) => { return response.json(); })
+        .then((json) => { this.setState({result:json.result}); })
+        .then(function(){
+            if(this.state.result == "false"){
+                alert("인증번호를 다시 한 번 확인해주시길 바랍니다.");
+                return;
+            }
+
+            this.submitGit_FeedbackList();
+            this.setState({returned:2});
+        }.bind(this))
+    }
+    submitGit_certification(){
+        this.setCertification({
+            email:this.state.email,
+            certification_number:this.state.input_certification_number
+        })
+    }
+
+    //feedback_list
     setFeedbackList(opts){
         fetch('/member_feedback_list', {
             method: 'POST',
@@ -46,7 +81,6 @@ class Member_feedback extends React.Component {
         .then(function(){
             this.setState({id:[]});
             this.setState({name:[]});
-            this.setState({email:[]});
             this.setState({phone:[]})
             this.setState({division:[]});
             this.setState({category:[]});
@@ -57,7 +91,6 @@ class Member_feedback extends React.Component {
             for(var count=0; this.state.result[count] != null; count++){
                 this.setState({id:this.state.id.concat(this.state.result[count]["id"])});
                 this.setState({name:this.state.name.concat(this.state.result[count]["name"])});
-                this.setState({email:this.state.email.concat(this.state.result[count]["email"])});
                 this.setState({phone:this.state.phone.concat(this.state.result[count]["phone"])});
                 this.setState({division:this.state.division.concat(this.state.result[count]["division"])});
                 this.setState({category:this.state.category.concat(this.state.result[count]["category"])});
@@ -77,9 +110,8 @@ class Member_feedback extends React.Component {
         }.bind(this))
     }
     submitGit_FeedbackList(){
-        console.log("submit = division : ", this.state.division);
         this.setFeedbackList({
-            email: cookie.load('email'),
+            email:this.state.email,
             currentPage: this.state.currentPage,
             division: this.state.input_division,
             category: this.state.input_category,
@@ -90,26 +122,22 @@ class Member_feedback extends React.Component {
     click_home(){
         window.location.reload();
     }
-    click_rent(){
-        this.setState({state_1:'r'});
+    click_sign_up(){
+        this.setState({state_1:'s'});
     }
-    click_reservation(){
-        this.setState({state_1:'e'});
+    click_sign_in(){
+        this.setState({state_1:'i'});
     }
-    click_member_service(){
-        this.setState({state_1:'ms'});
+    click_ImageTest(){
+        this.setState({state_1:'t'});
     }
-    log_out(){
-        cookie.remove('name', {path:'/'});
-        cookie.remove('username', {path:'/'});
-        cookie.remove('reserves', {path:'/'});
-        cookie.remove('email', {path:'/'});
-        window.location.reload();
+    click_nonmember_service(){
+        this.setState({state_1:'ns'});
     }
+
     division_numberChange(e){
         this.setState({division_number:e.target.id});
-        console.log("division_number = ", e.target.id);
-        this.setState({returned:2});
+        this.setState({returned:3});
     }
     input_categoryChange(e){
         this.setState({input_category:e.target.value});
@@ -130,13 +158,37 @@ class Member_feedback extends React.Component {
         this.submitGit_FeedbackList();
     }
 
+    //email
+    emailAuthentication(opts){
+        fetch('/email', {
+            method: 'POST',
+            headers: {
+                "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+            },
+            body: "form="+JSON.stringify(opts)
+        })
+        .then((response) => { return response.json(); })
+        //.then((json) => { this.setState({result:json.result}); })
+    }
+    submitGit_email(){
+        var min = 100000;
+        var max = 999999;
+        var certification_number = parseInt(min + (Math.random() * (max-min)));
+
+        this.setState({certification_number:certification_number});
+
+        this.emailAuthentication({
+            email: this.state.email,
+            certification_number: certification_number
+        });
+    }
     back_list(){
-        this.setState({returned:''});
+        this.setState({returned:2});
     }
 
     render(){
-        //style
-        const noneStyle = {
+         //style
+         const noneStyle = {
             display: 'none',
         }
         const blockStyle = {
@@ -170,7 +222,7 @@ class Member_feedback extends React.Component {
                         {this.state.title[number]}
                     </td>
                     <td id={number} onClick={this.division_numberChange.bind(this)}>
-                        {this.state.name[number]} ({cookie.load('email')})
+                        {this.state.name[number]} ({this.state.email})
                     </td>
                     <td id={number} onClick={this.division_numberChange.bind(this)}>
                         {this.state.timestamp[number]}
@@ -179,6 +231,53 @@ class Member_feedback extends React.Component {
             )
         })
 
+        let email_Form = (
+            <div>
+                <div className="logo">
+                    렌터카
+                </div>
+                <div className="menu">
+                    <div className="menu-item" onClick={this.click_home.bind(this)}> 홈 </div>                                    
+                    <div className="menu-item" onClick={this.click_sign_in.bind(this)}> 로그인 </div>
+                    <div className="menu-item" onClick={this.click_sign_up.bind(this)}> 회원가입 </div>
+                    <div className="menu-item" onClick={this.click_ImageTest.bind(this)}> 사진테스트 </div>
+                    <div className="dropdown-menu-item">
+                        고객 센터
+                        <div className="dropdown-content">
+                            <div>내 의견 보기</div>
+                            <div onClick={this.click_nonmember_service.bind(this)}>의견 보내기</div>
+                        </div>
+                    </div>
+                </div>
+                <table>
+                    <tbody>
+                        <tr>
+                            <td>
+                                이메일
+                            </td>
+                            <td>
+                                <input type="text" onChange={this.emailChange.bind(this)}/> 
+                                <button onClick={this.submitGit_email.bind(this)}> 인증번호 전송 </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                인증번호
+                            </td>
+                            <td>
+                                <input type="number" onChange={this.input_certification_numberChange.bind(this)}/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <button onClick={this.submitGit_certification.bind(this)}> 확인 </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        )
+
         let show_feedback_list = (
             <div>
                 <div className="logo">
@@ -186,14 +285,14 @@ class Member_feedback extends React.Component {
                 </div>
                 <div className="menu">
                     <div className="menu-item" onClick={this.click_home.bind(this)}> 홈 </div>                                    
-                    <div className="menu-item" onClick={this.click_rent.bind(this)}> 렌터카 예약 </div>
-                    <div className="menu-item" onClick={this.log_out.bind(this)}> 로그아웃 </div>
-                    <div className="menu-item" onClick={this.click_reservation.bind(this)}> 예약 및 이용내역 </div>
+                    <div className="menu-item" onClick={this.click_sign_in.bind(this)}> 로그인 </div>
+                    <div className="menu-item" onClick={this.click_sign_up.bind(this)}> 회원가입 </div>
+                    <div className="menu-item" onClick={this.click_ImageTest.bind(this)}> 사진테스트 </div>
                     <div className="dropdown-menu-item">
                         고객 센터
                         <div className="dropdown-content">
                             <div>내 의견 보기</div>
-                            <div onClick={this.click_member_service.bind(this)}>의견 보내기</div>
+                            <div onClick={this.click_nonmember_service.bind(this)}>의견 보내기</div>
                         </div>
                     </div>
                 </div>
@@ -242,7 +341,6 @@ class Member_feedback extends React.Component {
                 </ul>
             </div>
         )
-
         let show_feedback_Form = (
             <div>
                 <div className="logo">
@@ -250,14 +348,14 @@ class Member_feedback extends React.Component {
                 </div>
                 <div className="menu">
                     <div className="menu-item" onClick={this.click_home.bind(this)}> 홈 </div>                                    
-                    <div className="menu-item" onClick={this.click_rent.bind(this)}> 렌터카 예약 </div>
-                    <div className="menu-item" onClick={this.log_out.bind(this)}> 로그아웃 </div>
-                    <div className="menu-item" onClick={this.click_reservation.bind(this)}> 예약 및 이용내역 </div>
+                    <div className="menu-item" onClick={this.click_sign_in.bind(this)}> 로그인 </div>
+                    <div className="menu-item" onClick={this.click_sign_up.bind(this)}> 회원가입 </div>
+                    <div className="menu-item" onClick={this.click_ImageTest.bind(this)}> 사진테스트 </div>
                     <div className="dropdown-menu-item">
                         고객 센터
                         <div className="dropdown-content">
                             <div>내 의견 보기</div>
-                            <div onClick={this.click_member_service.bind(this)}>의견 보내기</div>
+                            <div onClick={this.click_nonmember_service.bind(this)}>의견 보내기</div>
                         </div>
                     </div>
                 </div>
@@ -313,13 +411,14 @@ class Member_feedback extends React.Component {
             </div>
         )
 
-        if(this.state.returned == 2){
-            return show_feedback_Form;
-        }
-        else{
+        if (this.state.returned == 1){
+            return email_Form;
+        }else if(this.state.returned == 2){
             return show_feedback_list;
+        }else if(this.state.returned == 3){
+            return show_feedback_Form;
         }
     }
 }
 
-export default Member_feedback;
+export default Non_Member_feedback;

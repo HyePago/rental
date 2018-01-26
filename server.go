@@ -1353,6 +1353,8 @@ func main() {
 		var raw map[string]interface{}
 		json.Unmarshal([]byte(form), &raw)
 
+		log.Println("raw => ", raw)
+
 		email := raw["email"]
 		currentPage := raw["currentPage"]
 		division := raw["division"]

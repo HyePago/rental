@@ -724,6 +724,10 @@ var _Member_feedback = __webpack_require__(50);
 
 var _Member_feedback2 = _interopRequireDefault(_Member_feedback);
 
+var _Non_Member_feedback = __webpack_require__(51);
+
+var _Non_Member_feedback2 = _interopRequireDefault(_Non_Member_feedback);
+
 __webpack_require__(2);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -801,6 +805,11 @@ var App = function (_React$Component) {
             this.setState({ state_1: 'mf' });
         }
     }, {
+        key: 'click_nonmember_show_feedback',
+        value: function click_nonmember_show_feedback() {
+            this.setState({ state_1: 'nf' });
+        }
+    }, {
         key: 'log_out',
         value: function log_out() {
             _reactCookies2.default.remove('name', { path: '/' });
@@ -865,7 +874,7 @@ var App = function (_React$Component) {
                             { className: 'dropdown-content' },
                             _react2.default.createElement(
                                 'div',
-                                null,
+                                { onClick: this.click_nonmember_show_feedback.bind(this) },
                                 '\uB0B4 \uC758\uACAC \uBCF4\uAE30'
                             ),
                             _react2.default.createElement(
@@ -947,6 +956,7 @@ var App = function (_React$Component) {
             var non_member_service_Form = _react2.default.createElement(_Non_Member_ServiceCenter2.default, null);
             var member_service_Form = _react2.default.createElement(_Member_Service_Center2.default, null);
             var member_show_feedback_Form = _react2.default.createElement(_Member_feedback2.default, null);
+            var non_member_show_feedback_Form = _react2.default.createElement(_Non_Member_feedback2.default, null);
 
             if (this.state.state_1 == 's') {
                 //this.setState({state_1:''});
@@ -963,6 +973,8 @@ var App = function (_React$Component) {
                 return non_member_service_Form;
             } else if (this.state.state_1 == 'ms') {
                 return member_service_Form;
+            } else if (this.state.state_1 == 'nf') {
+                return non_member_show_feedback_Form;
             } else if (this.state.state_1 == 'mf') {
                 return member_show_feedback_Form;
             } else if (_reactCookies2.default.load('name')) {
@@ -26795,6 +26807,11 @@ var Member_feedback = function (_React$Component) {
             this.submitGit_FeedbackList();
         }
     }, {
+        key: 'back_list',
+        value: function back_list() {
+            this.setState({ returned: '' });
+        }
+    }, {
         key: 'render',
         value: function render() {
             var _this3 = this;
@@ -27141,6 +27158,19 @@ var Member_feedback = function (_React$Component) {
                                 null,
                                 this.state.contents[this.state.division_number]
                             )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement(
+                                    'button',
+                                    { onClick: this.back_list.bind(this) },
+                                    ' \uBAA9\uB85D '
+                                )
+                            )
                         )
                     )
                 )
@@ -27158,6 +27188,758 @@ var Member_feedback = function (_React$Component) {
 }(_react2.default.Component);
 
 exports.default = Member_feedback;
+
+/***/ }),
+/* 51 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactDom = __webpack_require__(1);
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
+
+__webpack_require__(2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Non_Member_feedback = function (_React$Component) {
+    _inherits(Non_Member_feedback, _React$Component);
+
+    function Non_Member_feedback(props) {
+        var _this$state;
+
+        _classCallCheck(this, Non_Member_feedback);
+
+        var _this = _possibleConstructorReturn(this, (Non_Member_feedback.__proto__ || Object.getPrototypeOf(Non_Member_feedback)).call(this, props));
+
+        _this.state = (_this$state = {
+            returned: 1,
+            email: '',
+            certification_number: '',
+            input_certification_number: '',
+            result: '',
+            currentPage: '',
+            total_page: '',
+            id: [],
+            name: [],
+            phone: [],
+            division: [],
+            category: [],
+            title: [],
+            contents: [],
+            timestamp: [],
+            division_number: 0,
+            input_division: "",
+            input_category: "",
+            sort: '1'
+        }, _defineProperty(_this$state, 'result', ''), _defineProperty(_this$state, 'test_number', 0), _this$state);
+        return _this;
+    }
+
+    _createClass(Non_Member_feedback, [{
+        key: 'emailChange',
+        value: function emailChange(e) {
+            this.setState({ email: e.target.value });
+        }
+    }, {
+        key: 'input_certification_numberChange',
+        value: function input_certification_numberChange(e) {
+            this.setState({ input_certification_number: e.target.value });
+        }
+
+        //certification
+
+    }, {
+        key: 'setCertification',
+        value: function setCertification(opts) {
+            var _this2 = this;
+
+            fetch('/email_certification', {
+                method: 'POST',
+                headers: {
+                    "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+                },
+                body: "form=" + JSON.stringify(opts)
+            }).then(function (response) {
+                return response.json();
+            }).then(function (json) {
+                _this2.setState({ result: json.result });
+            }).then(function () {
+                if (this.state.result == "false") {
+                    alert("인증번호를 다시 한 번 확인해주시길 바랍니다.");
+                    return;
+                }
+
+                this.submitGit_FeedbackList();
+                this.setState({ returned: 2 });
+            }.bind(this));
+        }
+    }, {
+        key: 'submitGit_certification',
+        value: function submitGit_certification() {
+            this.setCertification({
+                email: this.state.email,
+                certification_number: this.state.input_certification_number
+            });
+        }
+
+        //feedback_list
+
+    }, {
+        key: 'setFeedbackList',
+        value: function setFeedbackList(opts) {
+            var _this3 = this;
+
+            fetch('/member_feedback_list', {
+                method: 'POST',
+                headers: {
+                    "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+                },
+                body: "form=" + JSON.stringify(opts)
+            }).then(function (response) {
+                return response.json();
+            }).then(function (json) {
+                _this3.setState({ result: json.result });
+            }).then(function () {
+                this.setState({ id: [] });
+                this.setState({ name: [] });
+                this.setState({ phone: [] });
+                this.setState({ division: [] });
+                this.setState({ category: [] });
+                this.setState({ title: [] });
+                this.setState({ contents: [] });
+                this.setState({ timestamp: [] });
+
+                for (var count = 0; this.state.result[count] != null; count++) {
+                    this.setState({ id: this.state.id.concat(this.state.result[count]["id"]) });
+                    this.setState({ name: this.state.name.concat(this.state.result[count]["name"]) });
+                    this.setState({ phone: this.state.phone.concat(this.state.result[count]["phone"]) });
+                    this.setState({ division: this.state.division.concat(this.state.result[count]["division"]) });
+                    this.setState({ category: this.state.category.concat(this.state.result[count]["category"]) });
+                    this.setState({ title: this.state.title.concat(this.state.result[count]["title"]) });
+                    this.setState({ contents: this.state.contents.concat(this.state.result[count]["contents"]) });
+                    this.setState({ timestamp: this.state.timestamp.concat(this.state.result[count]["timestamp"]) });
+                    this.setState({ total_page: this.state.result[0]["total_count"] });
+                }
+            }.bind(this)).then(function () {
+                if (this.state.test_number == 0) {
+                    this.setState({ test_number: 1 });
+                    this.submitGit_FeedbackList();
+                } else {
+                    this.setState({ test_number: 0 });
+                }
+            }.bind(this));
+        }
+    }, {
+        key: 'submitGit_FeedbackList',
+        value: function submitGit_FeedbackList() {
+            this.setFeedbackList({
+                email: this.state.email,
+                currentPage: this.state.currentPage,
+                division: this.state.input_division,
+                category: this.state.input_category,
+                sort: this.state.sort
+            });
+        }
+    }, {
+        key: 'click_home',
+        value: function click_home() {
+            window.location.reload();
+        }
+    }, {
+        key: 'click_sign_up',
+        value: function click_sign_up() {
+            this.setState({ state_1: 's' });
+        }
+    }, {
+        key: 'click_sign_in',
+        value: function click_sign_in() {
+            this.setState({ state_1: 'i' });
+        }
+    }, {
+        key: 'click_ImageTest',
+        value: function click_ImageTest() {
+            this.setState({ state_1: 't' });
+        }
+    }, {
+        key: 'click_nonmember_service',
+        value: function click_nonmember_service() {
+            this.setState({ state_1: 'ns' });
+        }
+    }, {
+        key: 'division_numberChange',
+        value: function division_numberChange(e) {
+            this.setState({ division_number: e.target.id });
+            this.setState({ returned: 3 });
+        }
+    }, {
+        key: 'input_categoryChange',
+        value: function input_categoryChange(e) {
+            this.setState({ input_category: e.target.value });
+            this.submitGit_FeedbackList();
+        }
+    }, {
+        key: 'input_divisionChange',
+        value: function input_divisionChange(e) {
+            this.setState({ input_division: e.target.value });
+            this.submitGit_FeedbackList();
+        }
+    }, {
+        key: 'sortChange',
+        value: function sortChange(e) {
+            this.setState({ sort: e.target.value });
+            this.submitGit_FeedbackList();
+        }
+
+        //page
+
+    }, {
+        key: 'handleClick',
+        value: function handleClick(e) {
+            this.setState({ currentPage: e.target.id });
+            this.submitGit_FeedbackList();
+        }
+
+        //email
+
+    }, {
+        key: 'emailAuthentication',
+        value: function emailAuthentication(opts) {
+            fetch('/email', {
+                method: 'POST',
+                headers: {
+                    "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+                },
+                body: "form=" + JSON.stringify(opts)
+            }).then(function (response) {
+                return response.json();
+            });
+            //.then((json) => { this.setState({result:json.result}); })
+        }
+    }, {
+        key: 'submitGit_email',
+        value: function submitGit_email() {
+            var min = 100000;
+            var max = 999999;
+            var certification_number = parseInt(min + Math.random() * (max - min));
+
+            this.setState({ certification_number: certification_number });
+
+            this.emailAuthentication({
+                email: this.state.email,
+                certification_number: certification_number
+            });
+        }
+    }, {
+        key: 'back_list',
+        value: function back_list() {
+            this.setState({ returned: 2 });
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var _this4 = this;
+
+            //style
+            var noneStyle = {
+                display: 'none'
+            };
+            var blockStyle = {};
+
+            //page_number
+            var pageNumbers = [];
+            for (var i = 1; i <= Math.floor((this.state.total_page - 1) / 5) + 1; i++) {
+                pageNumbers.push(i);
+            }
+            var renderPageNumbers = pageNumbers.map(function (number) {
+                return _react2.default.createElement(
+                    'li',
+                    { key: number, id: number, onClick: _this4.handleClick.bind(_this4) },
+                    number
+                );
+            });
+
+            //list
+            var impormation_number = [];
+            for (var _i = 0; _i < 5; _i++) {
+                impormation_number.push(_i);
+            }
+            var impormation_feedback = impormation_number.map(function (number) {
+                return _react2.default.createElement(
+                    'tr',
+                    { key: number, id: number, style: _this4.state.title[number] == null ? noneStyle : blockStyle },
+                    _react2.default.createElement(
+                        'td',
+                        { id: number, onClick: _this4.division_numberChange.bind(_this4) },
+                        _this4.state.id[number]
+                    ),
+                    _react2.default.createElement(
+                        'td',
+                        { id: number, onClick: _this4.division_numberChange.bind(_this4) },
+                        _this4.state.title[number]
+                    ),
+                    _react2.default.createElement(
+                        'td',
+                        { id: number, onClick: _this4.division_numberChange.bind(_this4) },
+                        _this4.state.name[number],
+                        ' (',
+                        _this4.state.email,
+                        ')'
+                    ),
+                    _react2.default.createElement(
+                        'td',
+                        { id: number, onClick: _this4.division_numberChange.bind(_this4) },
+                        _this4.state.timestamp[number]
+                    )
+                );
+            });
+
+            var email_Form = _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(
+                    'div',
+                    { className: 'logo' },
+                    '\uB80C\uD130\uCE74'
+                ),
+                _react2.default.createElement(
+                    'div',
+                    { className: 'menu' },
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu-item', onClick: this.click_home.bind(this) },
+                        ' \uD648 '
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu-item', onClick: this.click_sign_in.bind(this) },
+                        ' \uB85C\uADF8\uC778 '
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu-item', onClick: this.click_sign_up.bind(this) },
+                        ' \uD68C\uC6D0\uAC00\uC785 '
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu-item', onClick: this.click_ImageTest.bind(this) },
+                        ' \uC0AC\uC9C4\uD14C\uC2A4\uD2B8 '
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'dropdown-menu-item' },
+                        '\uACE0\uAC1D \uC13C\uD130',
+                        _react2.default.createElement(
+                            'div',
+                            { className: 'dropdown-content' },
+                            _react2.default.createElement(
+                                'div',
+                                null,
+                                '\uB0B4 \uC758\uACAC \uBCF4\uAE30'
+                            ),
+                            _react2.default.createElement(
+                                'div',
+                                { onClick: this.click_nonmember_service.bind(this) },
+                                '\uC758\uACAC \uBCF4\uB0B4\uAE30'
+                            )
+                        )
+                    )
+                ),
+                _react2.default.createElement(
+                    'table',
+                    null,
+                    _react2.default.createElement(
+                        'tbody',
+                        null,
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                '\uC774\uBA54\uC77C'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement('input', { type: 'text', onChange: this.emailChange.bind(this) }),
+                                _react2.default.createElement(
+                                    'button',
+                                    { onClick: this.submitGit_email.bind(this) },
+                                    ' \uC778\uC99D\uBC88\uD638 \uC804\uC1A1 '
+                                )
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                '\uC778\uC99D\uBC88\uD638'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement('input', { type: 'number', onChange: this.input_certification_numberChange.bind(this) })
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement(
+                                    'button',
+                                    { onClick: this.submitGit_certification.bind(this) },
+                                    ' \uD655\uC778 '
+                                )
+                            )
+                        )
+                    )
+                )
+            );
+
+            var show_feedback_list = _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(
+                    'div',
+                    { className: 'logo' },
+                    '\uB80C\uD130\uCE74'
+                ),
+                _react2.default.createElement(
+                    'div',
+                    { className: 'menu' },
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu-item', onClick: this.click_home.bind(this) },
+                        ' \uD648 '
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu-item', onClick: this.click_sign_in.bind(this) },
+                        ' \uB85C\uADF8\uC778 '
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu-item', onClick: this.click_sign_up.bind(this) },
+                        ' \uD68C\uC6D0\uAC00\uC785 '
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu-item', onClick: this.click_ImageTest.bind(this) },
+                        ' \uC0AC\uC9C4\uD14C\uC2A4\uD2B8 '
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'dropdown-menu-item' },
+                        '\uACE0\uAC1D \uC13C\uD130',
+                        _react2.default.createElement(
+                            'div',
+                            { className: 'dropdown-content' },
+                            _react2.default.createElement(
+                                'div',
+                                null,
+                                '\uB0B4 \uC758\uACAC \uBCF4\uAE30'
+                            ),
+                            _react2.default.createElement(
+                                'div',
+                                { onClick: this.click_nonmember_service.bind(this) },
+                                '\uC758\uACAC \uBCF4\uB0B4\uAE30'
+                            )
+                        )
+                    )
+                ),
+                _react2.default.createElement('br', null),
+                _react2.default.createElement(
+                    'label',
+                    null,
+                    ' \uAD6C\uBD84 '
+                ),
+                _react2.default.createElement(
+                    'select',
+                    { onChange: this.input_divisionChange.bind(this) },
+                    _react2.default.createElement(
+                        'option',
+                        { value: '' },
+                        ' \uC804\uCCB4 '
+                    ),
+                    _react2.default.createElement(
+                        'option',
+                        { value: '\uCC28\uB7C9' },
+                        ' \uCC28\uB7C9 '
+                    ),
+                    _react2.default.createElement(
+                        'option',
+                        { value: '\uC0AC\uC774\uD2B8' },
+                        ' \uC0AC\uC774\uD2B8 '
+                    )
+                ),
+                _react2.default.createElement('br', null),
+                _react2.default.createElement(
+                    'label',
+                    null,
+                    ' \uCE74\uD14C\uACE0\uB9AC '
+                ),
+                _react2.default.createElement(
+                    'select',
+                    { onChange: this.input_categoryChange.bind(this) },
+                    _react2.default.createElement(
+                        'option',
+                        { value: '' },
+                        ' \uC804\uCCB4 '
+                    ),
+                    _react2.default.createElement(
+                        'option',
+                        { value: '\uCE6D\uCC2C' },
+                        ' \uCE6D\uCC2C '
+                    ),
+                    _react2.default.createElement(
+                        'option',
+                        { value: '\uBD88\uB9CC' },
+                        ' \uBD88\uB9CC '
+                    )
+                ),
+                _react2.default.createElement('br', null),
+                _react2.default.createElement(
+                    'label',
+                    null,
+                    ' \uC815\uB82C\uBC29\uBC95 '
+                ),
+                _react2.default.createElement(
+                    'select',
+                    { defaultValue: 1, onChange: this.sortChange.bind(this) },
+                    _react2.default.createElement(
+                        'option',
+                        { value: 1 },
+                        ' \uB4F1\uB85D\uB41C\uC9C0 \uC624\uB798\uB41C \uC21C '
+                    ),
+                    _react2.default.createElement(
+                        'option',
+                        { value: 2 },
+                        ' \uCD5C\uADFC \uB4F1\uB85D\uB41C \uC21C '
+                    )
+                ),
+                _react2.default.createElement('br', null),
+                _react2.default.createElement(
+                    'table',
+                    null,
+                    _react2.default.createElement(
+                        'tbody',
+                        null,
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'td',
+                                { width: 100 },
+                                '\uBC88\uD638'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                { width: 250 },
+                                '\uC81C\uBAA9'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                { width: 150 },
+                                '\uC774\uB984 (\uC774\uBA54\uC77C)'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                { width: 200 },
+                                '\uC62C\uB9B0 \uB0A0\uC9DC'
+                            )
+                        ),
+                        impormation_feedback
+                    )
+                ),
+                _react2.default.createElement(
+                    'ul',
+                    { id: 'page-numbers' },
+                    renderPageNumbers
+                )
+            );
+            var show_feedback_Form = _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(
+                    'div',
+                    { className: 'logo' },
+                    '\uB80C\uD130\uCE74'
+                ),
+                _react2.default.createElement(
+                    'div',
+                    { className: 'menu' },
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu-item', onClick: this.click_home.bind(this) },
+                        ' \uD648 '
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu-item', onClick: this.click_sign_in.bind(this) },
+                        ' \uB85C\uADF8\uC778 '
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu-item', onClick: this.click_sign_up.bind(this) },
+                        ' \uD68C\uC6D0\uAC00\uC785 '
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu-item', onClick: this.click_ImageTest.bind(this) },
+                        ' \uC0AC\uC9C4\uD14C\uC2A4\uD2B8 '
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'dropdown-menu-item' },
+                        '\uACE0\uAC1D \uC13C\uD130',
+                        _react2.default.createElement(
+                            'div',
+                            { className: 'dropdown-content' },
+                            _react2.default.createElement(
+                                'div',
+                                null,
+                                '\uB0B4 \uC758\uACAC \uBCF4\uAE30'
+                            ),
+                            _react2.default.createElement(
+                                'div',
+                                { onClick: this.click_nonmember_service.bind(this) },
+                                '\uC758\uACAC \uBCF4\uB0B4\uAE30'
+                            )
+                        )
+                    )
+                ),
+                _react2.default.createElement(
+                    'table',
+                    null,
+                    _react2.default.createElement(
+                        'tbody',
+                        null,
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                '\uC81C\uBAA9'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                this.state.title[this.state.division_number]
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                '\uAD6C\uBD84'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                this.state.division[this.state.division_number]
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                '\uCE74\uD14C\uACE0\uB9AC'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                this.state.category[this.state.division_number]
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                '\uC62C\uB9B0 \uB0A0\uC9DC'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                this.state.timestamp[this.state.division_number]
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                '\uB0B4\uC6A9'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                this.state.contents[this.state.division_number]
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement(
+                                    'button',
+                                    { onClick: this.back_list.bind(this) },
+                                    ' \uBAA9\uB85D '
+                                )
+                            )
+                        )
+                    )
+                )
+            );
+
+            if (this.state.returned == 1) {
+                return email_Form;
+            } else if (this.state.returned == 2) {
+                return show_feedback_list;
+            } else if (this.state.returned == 3) {
+                return show_feedback_Form;
+            }
+        }
+    }]);
+
+    return Non_Member_feedback;
+}(_react2.default.Component);
+
+exports.default = Non_Member_feedback;
 
 /***/ })
 /******/ ]);
