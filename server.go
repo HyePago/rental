@@ -1060,6 +1060,7 @@ func main() {
 
 		currentPage := raw["currentPage"]
 		input_car_type := raw["input_car_type"]
+		sort := raw["sort"]
 
 		var id string
 
@@ -1070,7 +1071,15 @@ func main() {
 		var impormation Impormation_car
 		var carprice_id string
 
-		rows, err := db.Query("SELECT id FROM car ORDER BY registration_date")
+		log.Println("sort = ", sort)
+
+		rows, err := db.Query("SELECT id FROM car ORDER BY registration_date DESC")		
+
+		if sort == "1" {
+			rows, err = db.Query("SELECT id FROM car ORDER BY registration_date")
+		}else{
+			rows, err = db.Query("SELECT id FROM car ORDER BY registration_date DESC")	
+		}
 
 		if err != nil{
 			log.Fatal(err)

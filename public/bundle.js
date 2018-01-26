@@ -24683,7 +24683,8 @@ var VehicleInformation = function (_React$Component) {
             upload_four_days: '',
             upload_six_days: '',
             upload_more: '',
-            result: ''
+            result: '',
+            sort: '1'
         };
         return _this;
     }
@@ -24774,7 +24775,8 @@ var VehicleInformation = function (_React$Component) {
         value: function submitCarImpormation() {
             this.setCarImpormation({
                 currentPage: this.state.currentPage,
-                input_car_type: this.state.input_car_type
+                input_car_type: this.state.input_car_type,
+                sort: this.state.sort
             });
         }
 
@@ -24925,6 +24927,12 @@ var VehicleInformation = function (_React$Component) {
         key: 'moreChange',
         value: function moreChange(e) {
             this.setState({ upload_more: e.target.value });
+        }
+    }, {
+        key: 'sortChange',
+        value: function sortChange(e) {
+            this.setState({ sort: e.target.value });
+            this.submitCarImpormation();
         }
 
         //update
@@ -25171,6 +25179,26 @@ var VehicleInformation = function (_React$Component) {
                 '\uC804\uAE30\uCC28',
                 _react2.default.createElement('input', { type: 'radio', name: 'radio', value: '9', onChange: this.input_car_typeChange.bind(this) }),
                 '\uCE90\uB9AD\uD130\uCE74',
+                _react2.default.createElement('br', null),
+                _react2.default.createElement(
+                    'label',
+                    null,
+                    '\uC815\uB82C \uBC29\uBC95'
+                ),
+                _react2.default.createElement(
+                    'select',
+                    { defaultValue: 1, onChange: this.sortChange.bind(this) },
+                    _react2.default.createElement(
+                        'option',
+                        { value: 1 },
+                        ' \uB4F1\uB85D\uB41C\uC9C0 \uC624\uB798\uB41C \uC21C '
+                    ),
+                    _react2.default.createElement(
+                        'option',
+                        { value: 2 },
+                        ' \uCD5C\uADFC \uB4F1\uB85D\uB41C \uC21C '
+                    )
+                ),
                 _react2.default.createElement('br', null),
                 _react2.default.createElement(
                     'table',

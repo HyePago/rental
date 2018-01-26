@@ -53,6 +53,7 @@ class VehicleInformation extends React.Component {
             upload_six_days:'',
             upload_more:'',
             result:'',
+            sort:'1',
         }
     }
 
@@ -134,6 +135,7 @@ class VehicleInformation extends React.Component {
         this.setCarImpormation({
             currentPage: this.state.currentPage,
             input_car_type: this.state.input_car_type,
+            sort: this.state.sort,
         })
     }
 
@@ -234,6 +236,10 @@ class VehicleInformation extends React.Component {
     }
     moreChange(e){
         this.setState({upload_more:e.target.value});
+    }
+    sortChange(e){
+        this.setState({sort:e.target.value});
+        this.submitCarImpormation();
     }
 
     //update
@@ -415,6 +421,14 @@ class VehicleInformation extends React.Component {
                 전기차
                 <input type="radio" name="radio" value="9" onChange={this.input_car_typeChange.bind(this)}/>
                 캐릭터카
+                <br />
+                <label>
+                    정렬 방법
+                </label>
+                <select defaultValue={1} onChange={this.sortChange.bind(this)}>
+                    <option value={1}> 등록된지 오래된 순 </option>
+                    <option value={2}> 최근 등록된 순 </option>
+                </select>
                 <br />
                 <table>
                     <tbody>
