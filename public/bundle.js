@@ -76,7 +76,7 @@ if (process.env.NODE_ENV === 'production') {
   module.exports = __webpack_require__(28);
 }
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ }),
 /* 1 */
@@ -122,10 +122,41 @@ if (process.env.NODE_ENV === 'production') {
   module.exports = __webpack_require__(33);
 }
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ }),
 /* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(41);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// Prepare cssTransformation
+var transform;
+
+var options = {"hmr":true}
+options.transform = transform
+// add the styles to the DOM
+var update = __webpack_require__(22)(content, options);
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../node_modules/css-loader/index.js!./Header.css", function() {
+			var newContent = require("!!../../node_modules/css-loader/index.js!./Header.css");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 3 */
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -315,37 +346,6 @@ process.umask = function() { return 0; };
 
 
 /***/ }),
-/* 3 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(41);
-if(typeof content === 'string') content = [[module.i, content, '']];
-// Prepare cssTransformation
-var transform;
-
-var options = {"hmr":true}
-options.transform = transform
-// add the styles to the DOM
-var update = __webpack_require__(22)(content, options);
-if(content.locals) module.exports = content.locals;
-// Hot Module Replacement
-if(false) {
-	// When the styles change, update the <style> tags
-	if(!content.locals) {
-		module.hot.accept("!!../../node_modules/css-loader/index.js!./Header.css", function() {
-			var newContent = require("!!../../node_modules/css-loader/index.js!./Header.css");
-			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-			update(newContent);
-		});
-	}
-	// When the module is disposed, remove the <style> tags
-	module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
 /* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -522,7 +522,7 @@ exports.default = {
   remove: remove,
   plugToRequest: plugToRequest
 };
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ }),
 /* 5 */
@@ -670,6 +670,329 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 "use strict";
 
 
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactDom = __webpack_require__(1);
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
+
+var _reactCookies = __webpack_require__(4);
+
+var _reactCookies2 = _interopRequireDefault(_reactCookies);
+
+var _SendEmail = __webpack_require__(39);
+
+var _SendEmail2 = _interopRequireDefault(_SendEmail);
+
+var _SignUpForm = __webpack_require__(10);
+
+var _SignUpForm2 = _interopRequireDefault(_SignUpForm);
+
+var _SignInForm = __webpack_require__(11);
+
+var _SignInForm2 = _interopRequireDefault(_SignInForm);
+
+var _Rent_ = __webpack_require__(24);
+
+var _Rent_2 = _interopRequireDefault(_Rent_);
+
+var _ImageTest = __webpack_require__(8);
+
+var _ImageTest2 = _interopRequireDefault(_ImageTest);
+
+var _Reservation_history = __webpack_require__(25);
+
+var _Reservation_history2 = _interopRequireDefault(_Reservation_history);
+
+var _Non_Member_ServiceCenter = __webpack_require__(48);
+
+var _Non_Member_ServiceCenter2 = _interopRequireDefault(_Non_Member_ServiceCenter);
+
+var _Member_Service_Center = __webpack_require__(49);
+
+var _Member_Service_Center2 = _interopRequireDefault(_Member_Service_Center);
+
+var _Member_feedback = __webpack_require__(50);
+
+var _Member_feedback2 = _interopRequireDefault(_Member_feedback);
+
+__webpack_require__(2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var App = function (_React$Component) {
+    _inherits(App, _React$Component);
+
+    function App(props) {
+        _classCallCheck(this, App);
+
+        var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
+
+        _this.state = { state_1: null };
+        return _this;
+    }
+
+    _createClass(App, [{
+        key: 'setEmail',
+        value: function setEmail(email) {
+            fetch('/email', {
+                method: 'POST',
+                headers: {
+                    "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+                },
+                body: 'email=' + email
+            }).then(function (response) {
+                return response.json();
+            });
+            // .then((json) => { this.setState({ email: json.user });});
+        }
+    }, {
+        key: 'click_sign_up',
+        value: function click_sign_up() {
+            this.setState({ state_1: 's' });
+        }
+    }, {
+        key: 'click_sign_in',
+        value: function click_sign_in() {
+            this.setState({ state_1: 'i' });
+        }
+    }, {
+        key: 'click_rent',
+        value: function click_rent() {
+            this.setState({ state_1: 'r' });
+        }
+    }, {
+        key: 'click_ImageTest',
+        value: function click_ImageTest() {
+            this.setState({ state_1: 't' });
+        }
+    }, {
+        key: 'click_reservation',
+        value: function click_reservation() {
+            this.setState({ state_1: 'e' });
+        }
+    }, {
+        key: 'click_nonmember_service',
+        value: function click_nonmember_service() {
+            this.setState({ state_1: 'ns' });
+        }
+    }, {
+        key: 'click_member_service',
+        value: function click_member_service() {
+            this.setState({ state_1: 'ms' });
+        }
+    }, {
+        key: 'click_member_show_feedback',
+        value: function click_member_show_feedback() {
+            this.setState({ state_1: 'mf' });
+        }
+    }, {
+        key: 'log_out',
+        value: function log_out() {
+            _reactCookies2.default.remove('name', { path: '/' });
+            _reactCookies2.default.remove('username', { path: '/' });
+            _reactCookies2.default.remove('reserves', { path: '/' });
+            _reactCookies2.default.remove('email', { path: '/' });
+            window.location.reload();
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            //alert(cookie.load('name'));
+            //cookie.remove('name', {path:'/'})
+            var sign_up_Form = _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(_SignUpForm2.default, {
+                    placeholder: 'Input the id' })
+            );
+            var sign_in_Form = _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(_SignInForm2.default, null)
+            );
+            var list_Form = _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(
+                    'div',
+                    { className: 'logo' },
+                    '\uB80C\uD130\uCE74'
+                ),
+                _react2.default.createElement(
+                    'div',
+                    { className: 'menu' },
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu-item' },
+                        ' \uD648 '
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu-item', onClick: this.click_sign_in.bind(this) },
+                        ' \uB85C\uADF8\uC778 '
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu-item', onClick: this.click_sign_up.bind(this) },
+                        ' \uD68C\uC6D0\uAC00\uC785 '
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu-item', onClick: this.click_ImageTest.bind(this) },
+                        ' \uC0AC\uC9C4\uD14C\uC2A4\uD2B8 '
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'dropdown-menu-item' },
+                        '\uACE0\uAC1D \uC13C\uD130',
+                        _react2.default.createElement(
+                            'div',
+                            { className: 'dropdown-content' },
+                            _react2.default.createElement(
+                                'div',
+                                null,
+                                '\uB0B4 \uC758\uACAC \uBCF4\uAE30'
+                            ),
+                            _react2.default.createElement(
+                                'div',
+                                { onClick: this.click_nonmember_service.bind(this) },
+                                '\uC758\uACAC \uBCF4\uB0B4\uAE30'
+                            )
+                        )
+                    )
+                )
+            );
+            var user_Form = _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(
+                    'div',
+                    { className: 'logo' },
+                    '\uB80C\uD130\uCE74'
+                ),
+                _react2.default.createElement(
+                    'div',
+                    { className: 'menu' },
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu-item' },
+                        ' \uD648 '
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu-item', onClick: this.click_rent.bind(this) },
+                        ' \uB80C\uD130\uCE74 \uC608\uC57D '
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu-item', onClick: this.log_out.bind(this) },
+                        ' \uB85C\uADF8\uC544\uC6C3 '
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu-item', onClick: this.click_reservation.bind(this) },
+                        ' \uC608\uC57D \uBC0F \uC774\uC6A9\uB0B4\uC5ED '
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'dropdown-menu-item' },
+                        '\uACE0\uAC1D \uC13C\uD130',
+                        _react2.default.createElement(
+                            'div',
+                            { className: 'dropdown-content' },
+                            _react2.default.createElement(
+                                'div',
+                                { onClick: this.click_member_show_feedback.bind(this) },
+                                '\uB0B4 \uC758\uACAC \uBCF4\uAE30'
+                            ),
+                            _react2.default.createElement(
+                                'div',
+                                { onClick: this.click_member_service.bind(this) },
+                                '\uC758\uACAC \uBCF4\uB0B4\uAE30'
+                            )
+                        )
+                    )
+                )
+            );
+            var rent_Form = _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(_Rent_2.default, null)
+            );
+            var imagetest_Form = _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(_ImageTest2.default, null)
+            );
+            var reservation_number_Form = _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(_Reservation_history2.default, null)
+            );
+            var non_member_service_Form = _react2.default.createElement(_Non_Member_ServiceCenter2.default, null);
+            var member_service_Form = _react2.default.createElement(_Member_Service_Center2.default, null);
+            var member_show_feedback_Form = _react2.default.createElement(_Member_feedback2.default, null);
+
+            if (this.state.state_1 == 's') {
+                //this.setState({state_1:''});
+                return sign_up_Form;
+            } else if (this.state.state_1 == 'i') {
+                return sign_in_Form;
+            } else if (this.state.state_1 == 'r') {
+                return rent_Form;
+            } else if (this.state.state_1 == 't') {
+                return imagetest_Form;
+            } else if (this.state.state_1 == 'e') {
+                return reservation_number_Form;
+            } else if (this.state.state_1 == 'ns') {
+                return non_member_service_Form;
+            } else if (this.state.state_1 == 'ms') {
+                return member_service_Form;
+            } else if (this.state.state_1 == 'mf') {
+                return member_show_feedback_Form;
+            } else if (_reactCookies2.default.load('name')) {
+                return user_Form;
+            } else {
+                return list_Form;
+            }
+
+            return list_Form;
+        }
+    }]);
+
+    return App;
+}(_react2.default.Component);
+
+_reactDom2.default.render(_react2.default.createElement(
+    'h1',
+    null,
+    'test'
+), document.getElementById('root'));
+
+exports.default = App;
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _react = __webpack_require__(0);
@@ -772,7 +1095,7 @@ var ImageTest = function (_React$Component) {
 module.exports = ImageTest;
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -793,256 +1116,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 module.exports = emptyObject;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
-
-/***/ }),
-/* 9 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _reactDom = __webpack_require__(1);
-
-var _reactDom2 = _interopRequireDefault(_reactDom);
-
-var _reactCookies = __webpack_require__(4);
-
-var _reactCookies2 = _interopRequireDefault(_reactCookies);
-
-var _SendEmail = __webpack_require__(39);
-
-var _SendEmail2 = _interopRequireDefault(_SendEmail);
-
-var _SignUpForm = __webpack_require__(10);
-
-var _SignUpForm2 = _interopRequireDefault(_SignUpForm);
-
-var _SignInForm = __webpack_require__(11);
-
-var _SignInForm2 = _interopRequireDefault(_SignInForm);
-
-var _Rent_ = __webpack_require__(24);
-
-var _Rent_2 = _interopRequireDefault(_Rent_);
-
-var _ImageTest = __webpack_require__(7);
-
-var _ImageTest2 = _interopRequireDefault(_ImageTest);
-
-var _Reservation_history = __webpack_require__(25);
-
-var _Reservation_history2 = _interopRequireDefault(_Reservation_history);
-
-__webpack_require__(3);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var App = function (_React$Component) {
-    _inherits(App, _React$Component);
-
-    function App(props) {
-        _classCallCheck(this, App);
-
-        var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
-
-        _this.state = { state_1: null };
-        return _this;
-    }
-
-    _createClass(App, [{
-        key: 'setEmail',
-        value: function setEmail(email) {
-            fetch('/email', {
-                method: 'POST',
-                headers: {
-                    "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
-                },
-                body: 'email=' + email
-            }).then(function (response) {
-                return response.json();
-            });
-            // .then((json) => { this.setState({ email: json.user });});
-        }
-    }, {
-        key: 'click_sign_up',
-        value: function click_sign_up() {
-            this.setState({ state_1: 's' });
-        }
-    }, {
-        key: 'click_sign_in',
-        value: function click_sign_in() {
-            this.setState({ state_1: 'i' });
-        }
-    }, {
-        key: 'click_rent',
-        value: function click_rent() {
-            this.setState({ state_1: 'r' });
-        }
-    }, {
-        key: 'click_ImageTest',
-        value: function click_ImageTest() {
-            this.setState({ state_1: 't' });
-        }
-    }, {
-        key: 'click_reservation',
-        value: function click_reservation() {
-            this.setState({ state_1: 'e' });
-        }
-    }, {
-        key: 'log_out',
-        value: function log_out() {
-            _reactCookies2.default.remove('name', { path: '/' });
-            _reactCookies2.default.remove('username', { path: '/' });
-            _reactCookies2.default.remove('reserves', { path: '/' });
-            _reactCookies2.default.remove('email', { path: '/' });
-            window.location.reload();
-        }
-    }, {
-        key: 'render',
-        value: function render() {
-            //alert(cookie.load('name'));
-            //cookie.remove('name', {path:'/'})
-            var sign_up_Form = _react2.default.createElement(
-                'div',
-                null,
-                _react2.default.createElement(_SignUpForm2.default, {
-                    placeholder: 'Input the id' })
-            );
-            var sign_in_Form = _react2.default.createElement(
-                'div',
-                null,
-                _react2.default.createElement(_SignInForm2.default, null)
-            );
-            var list_Form = _react2.default.createElement(
-                'div',
-                null,
-                _react2.default.createElement(
-                    'div',
-                    { className: 'logo' },
-                    '\uB80C\uD130\uCE74'
-                ),
-                _react2.default.createElement(
-                    'div',
-                    { className: 'menu' },
-                    _react2.default.createElement(
-                        'div',
-                        { className: 'menu-item' },
-                        ' \uD648 '
-                    ),
-                    _react2.default.createElement(
-                        'div',
-                        { className: 'menu-item', onClick: this.click_sign_in.bind(this) },
-                        ' \uB85C\uADF8\uC778 '
-                    ),
-                    _react2.default.createElement(
-                        'div',
-                        { className: 'menu-item', onClick: this.click_sign_up.bind(this) },
-                        ' \uD68C\uC6D0\uAC00\uC785 '
-                    ),
-                    _react2.default.createElement(
-                        'div',
-                        { className: 'menu-item', onClick: this.click_ImageTest.bind(this) },
-                        ' \uC0AC\uC9C4\uD14C\uC2A4\uD2B8 '
-                    )
-                )
-            );
-            var user_Form = _react2.default.createElement(
-                'div',
-                null,
-                _react2.default.createElement(
-                    'div',
-                    { className: 'logo' },
-                    '\uB80C\uD130\uCE74'
-                ),
-                _react2.default.createElement(
-                    'div',
-                    { className: 'menu' },
-                    _react2.default.createElement(
-                        'div',
-                        { className: 'menu-item' },
-                        ' \uD648 '
-                    ),
-                    _react2.default.createElement(
-                        'div',
-                        { className: 'menu-item', onClick: this.click_rent.bind(this) },
-                        ' \uB80C\uD130\uCE74 \uC608\uC57D '
-                    ),
-                    _react2.default.createElement(
-                        'div',
-                        { className: 'menu-item', onClick: this.log_out.bind(this) },
-                        ' \uB85C\uADF8\uC544\uC6C3 '
-                    ),
-                    _react2.default.createElement(
-                        'div',
-                        { className: 'menu-item', onClick: this.click_reservation.bind(this) },
-                        ' \uC608\uC57D \uBC0F \uC774\uC6A9\uB0B4\uC5ED '
-                    )
-                )
-            );
-            var rent_Form = _react2.default.createElement(
-                'div',
-                null,
-                _react2.default.createElement(_Rent_2.default, null)
-            );
-            var imagetest_Form = _react2.default.createElement(
-                'div',
-                null,
-                _react2.default.createElement(_ImageTest2.default, null)
-            );
-            var reservation_number_Form = _react2.default.createElement(
-                'div',
-                null,
-                _react2.default.createElement(_Reservation_history2.default, null)
-            );
-
-            if (this.state.state_1 == 's') {
-                //this.setState({state_1:''});
-                return sign_up_Form;
-            } else if (this.state.state_1 == 'i') {
-                return sign_in_Form;
-            } else if (this.state.state_1 == 'r') {
-                return rent_Form;
-            } else if (this.state.state_1 == 't') {
-                return imagetest_Form;
-            } else if (this.state.state_1 == 'e') {
-                return reservation_number_Form;
-            } else if (_reactCookies2.default.load('name')) {
-                return user_Form;
-            } else {
-                return list_Form;
-            }
-
-            return list_Form;
-        }
-    }]);
-
-    return App;
-}(_react2.default.Component);
-
-_reactDom2.default.render(_react2.default.createElement(
-    'h1',
-    null,
-    'test'
-), document.getElementById('root'));
-
-exports.default = App;
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ }),
 /* 10 */
@@ -1073,15 +1147,15 @@ var _SignInForm = __webpack_require__(11);
 
 var _SignInForm2 = _interopRequireDefault(_SignInForm);
 
-var _ImageTest = __webpack_require__(7);
+var _ImageTest = __webpack_require__(8);
 
 var _ImageTest2 = _interopRequireDefault(_ImageTest);
 
-var _App = __webpack_require__(9);
+var _App = __webpack_require__(7);
 
 var _App2 = _interopRequireDefault(_App);
 
-__webpack_require__(3);
+__webpack_require__(2);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1680,11 +1754,11 @@ var _reactDom = __webpack_require__(1);
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
-var _App = __webpack_require__(9);
+var _App = __webpack_require__(7);
 
 var _App2 = _interopRequireDefault(_App);
 
-var _ImageTest = __webpack_require__(7);
+var _ImageTest = __webpack_require__(8);
 
 var _ImageTest2 = _interopRequireDefault(_ImageTest);
 
@@ -1708,7 +1782,7 @@ var _reactCookies = __webpack_require__(4);
 
 var _reactCookies2 = _interopRequireDefault(_reactCookies);
 
-__webpack_require__(3);
+__webpack_require__(2);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1739,7 +1813,8 @@ var SignInForm = function (_React$Component) {
             license_type: '',
             license_number: '',
             date_if_issue: '',
-            aptitude_test: ''
+            aptitude_test: '',
+            phone: ''
         };
         return _this;
     }
@@ -1778,7 +1853,8 @@ var SignInForm = function (_React$Component) {
                     license_type: json.license_type,
                     license_number: json.license_number,
                     date_if_issue: json.date_if_issue,
-                    aptitude_test: json.aptitude_test
+                    aptitude_test: json.aptitude_test,
+                    phone: json.phone
                 });
             }).then(function () {
                 console.log("reuslt = > ", this.state.result);
@@ -1796,6 +1872,7 @@ var SignInForm = function (_React$Component) {
                     _reactCookies2.default.save('username', this.state.username, { path: '/' });
                     _reactCookies2.default.save('reserves', this.state.reserves, { path: '/' });
                     _reactCookies2.default.save('email', this.state.email, { path: '/' });
+                    _reactCookies2.default.save('phone', this.state.phone, { path: '/' });
                     _reactCookies2.default.save('license_category', this.state.license_category, { path: '/' });
                     _reactCookies2.default.save('license_type', this.state.license_type, { path: '/' });
                     _reactCookies2.default.save('license_number', this.state.license_number, { path: '/' });
@@ -2016,7 +2093,7 @@ function invariant(condition, format, a, b, c, d, e, f) {
 }
 
 module.exports = invariant;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ }),
 /* 13 */
@@ -2085,7 +2162,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 module.exports = warning;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ }),
 /* 14 */
@@ -2152,7 +2229,7 @@ function checkPropTypes(typeSpecs, values, location, componentName, getStack) {
 
 module.exports = checkPropTypes;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ }),
 /* 15 */
@@ -2272,7 +2349,7 @@ var EventListener = {
 };
 
 module.exports = EventListener;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ }),
 /* 17 */
@@ -2943,7 +3020,7 @@ var _VehicleInformation = __webpack_require__(45);
 
 var _VehicleInformation2 = _interopRequireDefault(_VehicleInformation);
 
-__webpack_require__(3);
+__webpack_require__(2);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -3071,7 +3148,7 @@ var _Reservation_history2 = _interopRequireDefault(_Reservation_history);
 
 __webpack_require__(46);
 
-__webpack_require__(3);
+__webpack_require__(2);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -4631,7 +4708,7 @@ var _reactCookies = __webpack_require__(4);
 
 var _reactCookies2 = _interopRequireDefault(_reactCookies);
 
-var _App = __webpack_require__(9);
+var _App = __webpack_require__(7);
 
 var _App2 = _interopRequireDefault(_App);
 
@@ -4639,7 +4716,7 @@ var _Rent_ = __webpack_require__(24);
 
 var _Rent_2 = _interopRequireDefault(_Rent_);
 
-__webpack_require__(3);
+__webpack_require__(2);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -5420,7 +5497,7 @@ var _reactDom = __webpack_require__(1);
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
-var _App = __webpack_require__(9);
+var _App = __webpack_require__(7);
 
 var _App2 = _interopRequireDefault(_App);
 
@@ -5444,7 +5521,7 @@ _reactDom2.default.render(_react2.default.createElement(_App2.default, null), ro
  * LICENSE file in the root directory of this source tree.
  */
 
-var m=__webpack_require__(6),n=__webpack_require__(8),p=__webpack_require__(5),q="function"===typeof Symbol&&Symbol["for"],r=q?Symbol["for"]("react.element"):60103,t=q?Symbol["for"]("react.call"):60104,u=q?Symbol["for"]("react.return"):60105,v=q?Symbol["for"]("react.portal"):60106,w=q?Symbol["for"]("react.fragment"):60107,x="function"===typeof Symbol&&Symbol.iterator;
+var m=__webpack_require__(6),n=__webpack_require__(9),p=__webpack_require__(5),q="function"===typeof Symbol&&Symbol["for"],r=q?Symbol["for"]("react.element"):60103,t=q?Symbol["for"]("react.call"):60104,u=q?Symbol["for"]("react.return"):60105,v=q?Symbol["for"]("react.portal"):60106,w=q?Symbol["for"]("react.fragment"):60107,x="function"===typeof Symbol&&Symbol.iterator;
 function y(a){for(var b=arguments.length-1,e="Minified React error #"+a+"; visit http://facebook.github.io/react/docs/error-decoder.html?invariant\x3d"+a,c=0;c<b;c++)e+="\x26args[]\x3d"+encodeURIComponent(arguments[c+1]);b=Error(e+" for the full message or use the non-minified dev environment for full errors and additional helpful warnings.");b.name="Invariant Violation";b.framesToPop=1;throw b;}
 var z={isMounted:function(){return!1},enqueueForceUpdate:function(){},enqueueReplaceState:function(){},enqueueSetState:function(){}};function A(a,b,e){this.props=a;this.context=b;this.refs=n;this.updater=e||z}A.prototype.isReactComponent={};A.prototype.setState=function(a,b){"object"!==typeof a&&"function"!==typeof a&&null!=a?y("85"):void 0;this.updater.enqueueSetState(this,a,b,"setState")};A.prototype.forceUpdate=function(a){this.updater.enqueueForceUpdate(this,a,"forceUpdate")};
 function B(a,b,e){this.props=a;this.context=b;this.refs=n;this.updater=e||z}function C(){}C.prototype=A.prototype;var D=B.prototype=new C;D.constructor=B;m(D,A.prototype);D.isPureReactComponent=!0;function E(a,b,e){this.props=a;this.context=b;this.refs=n;this.updater=e||z}var F=E.prototype=new C;F.constructor=E;m(F,A.prototype);F.unstable_isAsyncReactComponent=!0;F.render=function(){return this.props.children};var G={current:null},H=Object.prototype.hasOwnProperty,I={key:!0,ref:!0,__self:!0,__source:!0};
@@ -5481,7 +5558,7 @@ if (process.env.NODE_ENV !== "production") {
 'use strict';
 
 var _assign = __webpack_require__(6);
-var emptyObject = __webpack_require__(8);
+var emptyObject = __webpack_require__(9);
 var invariant = __webpack_require__(12);
 var warning = __webpack_require__(13);
 var emptyFunction = __webpack_require__(5);
@@ -6821,7 +6898,7 @@ module.exports = react;
   })();
 }
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ }),
 /* 29 */
@@ -6859,7 +6936,7 @@ module.exports = ReactPropTypesSecret;
 /*
  Modernizr 3.0.0pre (Custom Build) | MIT
 */
-var aa=__webpack_require__(0),l=__webpack_require__(15),B=__webpack_require__(6),C=__webpack_require__(5),ba=__webpack_require__(16),da=__webpack_require__(17),ea=__webpack_require__(18),fa=__webpack_require__(19),ia=__webpack_require__(20),D=__webpack_require__(8);
+var aa=__webpack_require__(0),l=__webpack_require__(15),B=__webpack_require__(6),C=__webpack_require__(5),ba=__webpack_require__(16),da=__webpack_require__(17),ea=__webpack_require__(18),fa=__webpack_require__(19),ia=__webpack_require__(20),D=__webpack_require__(9);
 function E(a){for(var b=arguments.length-1,c="Minified React error #"+a+"; visit http://facebook.github.io/react/docs/error-decoder.html?invariant\x3d"+a,d=0;d<b;d++)c+="\x26args[]\x3d"+encodeURIComponent(arguments[d+1]);b=Error(c+" for the full message or use the non-minified dev environment for full errors and additional helpful warnings.");b.name="Invariant Violation";b.framesToPop=1;throw b;}aa?void 0:E("227");
 var oa={children:!0,dangerouslySetInnerHTML:!0,defaultValue:!0,defaultChecked:!0,innerHTML:!0,suppressContentEditableWarning:!0,suppressHydrationWarning:!0,style:!0};function pa(a,b){return(a&b)===b}
 var ta={MUST_USE_PROPERTY:1,HAS_BOOLEAN_VALUE:4,HAS_NUMERIC_VALUE:8,HAS_POSITIVE_NUMERIC_VALUE:24,HAS_OVERLOADED_BOOLEAN_VALUE:32,HAS_STRING_BOOLEAN_VALUE:64,injectDOMPropertyConfig:function(a){var b=ta,c=a.Properties||{},d=a.DOMAttributeNamespaces||{},e=a.DOMAttributeNames||{};a=a.DOMMutationMethods||{};for(var f in c){ua.hasOwnProperty(f)?E("48",f):void 0;var g=f.toLowerCase(),h=c[f];g={attributeName:g,attributeNamespace:null,propertyName:f,mutationMethod:null,mustUseProperty:pa(h,b.MUST_USE_PROPERTY),
@@ -7167,7 +7244,7 @@ var getActiveElement = __webpack_require__(17);
 var shallowEqual = __webpack_require__(18);
 var containsNode = __webpack_require__(19);
 var focusNode = __webpack_require__(20);
-var emptyObject = __webpack_require__(8);
+var emptyObject = __webpack_require__(9);
 var checkPropTypes = __webpack_require__(14);
 var hyphenateStyleName = __webpack_require__(34);
 var camelizeStyleName = __webpack_require__(36);
@@ -22534,7 +22611,7 @@ module.exports = reactDom;
   })();
 }
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ }),
 /* 34 */
@@ -23003,7 +23080,7 @@ var _SignInForm = __webpack_require__(11);
 
 var _SignInForm2 = _interopRequireDefault(_SignInForm);
 
-var _ImageTest = __webpack_require__(7);
+var _ImageTest = __webpack_require__(8);
 
 var _ImageTest2 = _interopRequireDefault(_ImageTest);
 
@@ -23011,7 +23088,7 @@ var _SignUpForm = __webpack_require__(10);
 
 var _SignUpForm2 = _interopRequireDefault(_SignUpForm);
 
-__webpack_require__(3);
+__webpack_require__(2);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -23332,7 +23409,7 @@ exports = module.exports = __webpack_require__(21)(false);
 
 
 // module
-exports.push([module.i, ".logo {\n    height: 3.5rem;\n    background-color: #212529;\n    width: 100vw;\n    line-height: 3.5rem;\n    color: white;\n    font-size: 1.5rem;\n    font-weight: bold;\n    text-align: center;\n}\n\n.menu {\n    background-color: #343a40;\n    height: 3.5rem;\n}\n\n.menu-item {\n    display: inline-block;\n    color: white;\n    font-size: 1rem;\n    line-height: 3.5rem;\n    width: 25%;\n    text-align: center;\n    cursor: pointer;\n    transition: background-color 0.3s;\n    text-decoration: none;\n}\n\n.menu-item:hover {\n    background-color: #495057;\n}\n\n.menu-item:active, .menu-item.active {\n    background-color: #1862ab;\n}\n\n#page-numbers {    \n    list-style: none;\n    display: flex;\n}\n  \n#page-numbers > li {\n    margin-right: 0.3em;\n    color: blue;\n    user-select: none;\n    cursor: pointer;\n}", ""]);
+exports.push([module.i, ".logo {\n    height: 3.5rem;\n    background-color: #212529;\n    width: 100vw;\n    line-height: 3.5rem;\n    color: white;\n    font-size: 1.5rem;\n    font-weight: bold;\n    text-align: center;\n}\n\n.menu {\n    background-color: #343a40;\n    height: 3.5rem;\n}\n\n.menu-item {\n    display: inline-block;\n    color: white;\n    font-size: 1rem;\n    line-height: 3.5rem;\n    width: 20%;\n    text-align: center;\n    cursor: pointer;\n    transition: background-color 0.3s;\n    text-decoration: none;\n}\n\n.menu-item:hover {\n    background-color: #495057;\n}\n\n.menu-item:active, .menu-item.active {\n    background-color: #1862ab;\n}\n \n.dropdown-menu-item {\n    display: inline-block;\n    color: white;\n    font-size: 1rem;\n    line-height: 3.5rem;\n    width: 20%;\n    text-align: center;\n    cursor: pointer;\n    transition: background-color 0.3s;\n    text-decoration: none;\n}\n\n.dropdown-menu-item:hover {\n    background-color: #495057\n}\n\n.dropdown-content{\n    display: none;\n    position: absolute;\n    background-color: #f9f9f9;\n    width: 20%;\n    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);\n    z-index: 1;\n}\n\n.dropdown-content div {\n    color: black;\n    padding: 5px 12px;\n    text-decoration: none;\n    display: block;\n    text-align: left;\n}\n\n.dropdown-content a:hover {\n    background-color: #f1f1f1\n}\n\n.dropdown-menu-item:hover .dropdown-content {\n    display: block;\n}\n\n#page-numbers {    \n    list-style: none;\n    display: flex;\n}\n  \n#page-numbers > li {\n    margin-right: 0.3em;\n    color: blue;\n    user-select: none;\n    cursor: pointer;\n}", ""]);
 
 // exports
 
@@ -23461,7 +23538,7 @@ var _SignInForm = __webpack_require__(11);
 
 var _SignInForm2 = _interopRequireDefault(_SignInForm);
 
-var _ImageTest = __webpack_require__(7);
+var _ImageTest = __webpack_require__(8);
 
 var _ImageTest2 = _interopRequireDefault(_ImageTest);
 
@@ -23469,7 +23546,7 @@ var _SignUpForm = __webpack_require__(10);
 
 var _SignUpForm2 = _interopRequireDefault(_SignUpForm);
 
-__webpack_require__(3);
+__webpack_require__(2);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -23929,7 +24006,7 @@ var _Admin = __webpack_require__(23);
 
 var _Admin2 = _interopRequireDefault(_Admin);
 
-__webpack_require__(3);
+__webpack_require__(2);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -24620,7 +24697,7 @@ var _reactDom = __webpack_require__(1);
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
-__webpack_require__(3);
+__webpack_require__(2);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -25720,6 +25797,1367 @@ exports.push([module.i, "html, body {\n    margin: 0;\n    font-family: 'Roboto'
 
 // exports
 
+
+/***/ }),
+/* 48 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactDom = __webpack_require__(1);
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
+
+var _App = __webpack_require__(7);
+
+var _App2 = _interopRequireDefault(_App);
+
+__webpack_require__(2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Non_Member_ServiceCenter = function (_React$Component) {
+    _inherits(Non_Member_ServiceCenter, _React$Component);
+
+    function Non_Member_ServiceCenter(props) {
+        _classCallCheck(this, Non_Member_ServiceCenter);
+
+        var _this = _possibleConstructorReturn(this, (Non_Member_ServiceCenter.__proto__ || Object.getPrototypeOf(Non_Member_ServiceCenter)).call(this, props));
+
+        _this.state = {
+            returned: '',
+            name: '',
+            email: '',
+            certification_number: '',
+            input_certification_number: '',
+            phone_0: "010",
+            phone_1: '',
+            phone_2: '',
+            division: "차량",
+            category: "칭찬",
+            title: '',
+            contents: '',
+            result: '',
+            divison: ''
+        };
+        return _this;
+    }
+
+    _createClass(Non_Member_ServiceCenter, [{
+        key: 'click_home',
+        value: function click_home() {
+            this.setState({ returned: 'h' });
+        }
+    }, {
+        key: 'click_sign_up',
+        value: function click_sign_up() {
+            this.setState({ returned: 's' });
+        }
+    }, {
+        key: 'click_sign_in',
+        value: function click_sign_in() {
+            this.setState({ returned: 'i' });
+        }
+    }, {
+        key: 'click_ImageTest',
+        value: function click_ImageTest() {
+            this.setState({ returned: 't' });
+        }
+    }, {
+        key: 'nameChange',
+        value: function nameChange(e) {
+            this.setState({ name: e.target.value });
+        }
+    }, {
+        key: 'emailChange',
+        value: function emailChange(e) {
+            this.setState({ email: e.target.value });
+        }
+    }, {
+        key: 'certification_numberChange',
+        value: function certification_numberChange(e) {
+            this.setState({ input_certification_number: e.target.value });
+        }
+    }, {
+        key: 'phone_0Change',
+        value: function phone_0Change(e) {
+            this.setState({ phone_0: e.target.value });
+        }
+    }, {
+        key: 'phone_1Change',
+        value: function phone_1Change(e) {
+            this.setState({ phone_1: e.target.value });
+        }
+    }, {
+        key: 'phone_2Change',
+        value: function phone_2Change(e) {
+            this.setState({ phone_2: e.target.value });
+        }
+    }, {
+        key: 'divisionChange',
+        value: function divisionChange(e) {
+            this.setState({ division: e.target.value });
+        }
+    }, {
+        key: 'categoryChange',
+        value: function categoryChange(e) {
+            this.setState({ category: e.target.value });
+        }
+    }, {
+        key: 'titleChange',
+        value: function titleChange(e) {
+            this.setState({ title: e.target.value });
+        }
+    }, {
+        key: 'contentsChange',
+        value: function contentsChange(e) {
+            this.setState({ contents: e.target.value });
+        }
+    }, {
+        key: 'click_upload',
+        value: function click_upload() {
+            if (this.state.name == "" || this.state.email == "" || this.state.phone_0 == "" || this.state.phone_1 == "" || this.state.phone_2 == "" || this.state.input_certification_number == "" || this.state.division == "" || this.state.category == "" || this.state.title == "" || this.state.contents == "") {
+                alert("빠짐없이 다 입력해주십시오");
+                console.log(this.state.name + ", " + this.state.email + ", " + this.state.phone_0 + ", " + this.state.phone_1 + ", " + this.state.phone_2 + ", " + this.state.input_certification_number + ", " + this.state.division + ", " + this.state.category + ", " + this.state.title + ", " + this.state.contents);
+                return;
+            }
+            this.submitGit_email_certification();
+        }
+
+        //upload
+
+    }, {
+        key: 'setUpload',
+        value: function setUpload(opts) {
+            var _this2 = this;
+
+            fetch('/upload_service_center', {
+                method: 'POST',
+                headers: {
+                    "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+                },
+                body: "form=" + JSON.stringify(opts)
+            }).then(function (response) {
+                return response.json();
+            }).then(function (json) {
+                _this2.setState({ result: json.result });
+            }).then(function () {
+                if (this.state.result == "true") {
+                    console.log("업로드 성공");
+                    this.click_home();
+                }
+            }.bind(this));
+        }
+    }, {
+        key: 'submitGit_Upload',
+        value: function submitGit_Upload() {
+            this.setUpload({
+                name: this.state.name,
+                email: this.state.email,
+                phone: this.state.phone_0 + "" + this.state.phone_1 + "" + this.state.phone_2,
+                division: this.state.division,
+                category: this.state.category,
+                title: this.state.title,
+                contents: this.state.contents
+            });
+        }
+
+        //email
+
+    }, {
+        key: 'emailAuthentication',
+        value: function emailAuthentication(opts) {
+            fetch('/email', {
+                method: 'POST',
+                headers: {
+                    "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+                },
+                body: "form=" + JSON.stringify(opts)
+            }).then(function (response) {
+                return response.json();
+            });
+            //.then((json) => { this.setState({result:json.result}); })
+        }
+    }, {
+        key: 'submitGit_email',
+        value: function submitGit_email() {
+            var min = 100000;
+            var max = 999999;
+            var certification_number = parseInt(min + Math.random() * (max - min));
+
+            this.setState({ certification_number: certification_number });
+
+            this.emailAuthentication({
+                email: this.state.email,
+                certification_number: certification_number
+            });
+        }
+    }, {
+        key: 'email_certification',
+        value: function email_certification(opts) {
+            var _this3 = this;
+
+            fetch('/email_certification', {
+                method: 'POST',
+                headers: {
+                    "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+                },
+                body: "form=" + JSON.stringify(opts)
+            }).then(function (response) {
+                return response.json();
+            }).then(function (json) {
+                _this3.setState({ result: json.result });
+            }).then(function () {
+                if (this.state.result == "false") {
+                    alert("인증번호를 다시 한 번 확인해주시길 바랍니다.");
+                    return;
+                }
+
+                this.submitGit_Upload();
+            }.bind(this));
+        }
+    }, {
+        key: 'submitGit_email_certification',
+        value: function submitGit_email_certification() {
+            this.email_certification({
+                email: this.state.email,
+                certification_number: this.state.input_certification_number
+            });
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var writing_Form = _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(
+                    'div',
+                    { className: 'logo' },
+                    '\uB80C\uD130\uCE74'
+                ),
+                _react2.default.createElement(
+                    'div',
+                    { className: 'menu' },
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu-item' },
+                        ' \uD648 '
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu-item', onClick: this.click_sign_in.bind(this) },
+                        ' \uB85C\uADF8\uC778 '
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu-item', onClick: this.click_sign_up.bind(this) },
+                        ' \uD68C\uC6D0\uAC00\uC785 '
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu-item', onClick: this.click_ImageTest.bind(this) },
+                        ' \uC0AC\uC9C4\uD14C\uC2A4\uD2B8 '
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu-item' },
+                        ' \uACE0\uAC1D \uC13C\uD130 '
+                    )
+                ),
+                _react2.default.createElement('br', null),
+                '\uACE0\uAC1D \uC815\uBCF4',
+                _react2.default.createElement(
+                    'table',
+                    null,
+                    _react2.default.createElement(
+                        'tbody',
+                        null,
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                '\uC774\uB984'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement('input', { type: 'text', onChange: this.nameChange.bind(this) })
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                '\uC774\uBA54\uC77C'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement('input', { type: 'text', name: 'email', onChange: this.emailChange.bind(this) }),
+                                _react2.default.createElement(
+                                    'button',
+                                    { onClick: this.submitGit_email.bind(this) },
+                                    ' \uC778\uC99D\uBC88\uD638 \uC804\uC1A1 '
+                                )
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                '\uC778\uC99D\uBC88\uD638'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement('input', { type: 'number', onChange: this.certification_numberChange.bind(this) })
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                '\uC804\uD654\uBC88\uD638'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement(
+                                    'select',
+                                    { onChange: this.phone_0Change.bind(this) },
+                                    _react2.default.createElement(
+                                        'option',
+                                        { id: '010', value: '010' },
+                                        '010'
+                                    ),
+                                    _react2.default.createElement(
+                                        'option',
+                                        { id: '011', value: '011' },
+                                        '011'
+                                    ),
+                                    _react2.default.createElement(
+                                        'option',
+                                        { id: '017', value: '017' },
+                                        '017'
+                                    )
+                                ),
+                                '\xA0 - \xA0',
+                                _react2.default.createElement('input', { type: 'number', max: '9999', size: '4', onChange: this.phone_1Change.bind(this) }),
+                                '\xA0 - \xA0',
+                                _react2.default.createElement('input', { type: 'number', max: '9999', size: '4', onChange: this.phone_2Change.bind(this) })
+                            )
+                        )
+                    )
+                ),
+                _react2.default.createElement('br', null),
+                '\uC758\uACAC \uC791\uC131',
+                _react2.default.createElement(
+                    'table',
+                    null,
+                    _react2.default.createElement(
+                        'tbody',
+                        null,
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                '\uAD6C\uBD84'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement(
+                                    'select',
+                                    { onChange: this.divisionChange.bind(this) },
+                                    _react2.default.createElement(
+                                        'option',
+                                        { value: '\uCC28\uB7C9' },
+                                        '\uCC28\uB7C9'
+                                    ),
+                                    _react2.default.createElement(
+                                        'option',
+                                        { value: '\uC0AC\uC774\uD2B8' },
+                                        '\uC0AC\uC774\uD2B8'
+                                    )
+                                )
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                '\uCE74\uD14C\uACE0\uB9AC'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement(
+                                    'select',
+                                    { onChange: this.categoryChange.bind(this) },
+                                    _react2.default.createElement(
+                                        'option',
+                                        { value: '\uCE6D\uCC2C' },
+                                        '\uCE6D\uCC2C'
+                                    ),
+                                    _react2.default.createElement(
+                                        'option',
+                                        { value: '\uBD88\uB9CC' },
+                                        '\uBD88\uB9CC'
+                                    )
+                                )
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                '\uC81C\uBAA9'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement('input', { type: 'text', onChange: this.titleChange.bind(this) })
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                '\uB0B4\uC6A9'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement('textarea', { rows: 10, cols: 35, onChange: this.contentsChange.bind(this) })
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement(
+                                    'button',
+                                    { onClick: this.click_upload.bind(this) },
+                                    ' \uB4F1\uB85D '
+                                )
+                            )
+                        )
+                    )
+                )
+            );
+
+            var home_Form = _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(_App2.default, null)
+            );
+
+            if (this.state.returned == 'h') {
+                return home_Form;
+            } else {
+                return writing_Form;
+            }
+        }
+    }]);
+
+    return Non_Member_ServiceCenter;
+}(_react2.default.Component);
+
+exports.default = Non_Member_ServiceCenter;
+
+/***/ }),
+/* 49 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactDom = __webpack_require__(1);
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
+
+var _reactCookies = __webpack_require__(4);
+
+var _reactCookies2 = _interopRequireDefault(_reactCookies);
+
+__webpack_require__(2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Member_Service_Center = function (_React$Component) {
+    _inherits(Member_Service_Center, _React$Component);
+
+    function Member_Service_Center(props) {
+        _classCallCheck(this, Member_Service_Center);
+
+        var _this = _possibleConstructorReturn(this, (Member_Service_Center.__proto__ || Object.getPrototypeOf(Member_Service_Center)).call(this, props));
+
+        _this.state = {
+            returned: '',
+            division: "차량",
+            category: "칭찬",
+            title: '',
+            contents: '',
+            result: ''
+        };
+        return _this;
+    }
+
+    _createClass(Member_Service_Center, [{
+        key: 'click_home',
+        value: function click_home() {
+            window.location.reload();
+        }
+    }, {
+        key: 'click_rent',
+        value: function click_rent() {
+            this.setState({ state_1: 'r' });
+        }
+    }, {
+        key: 'click_reservation',
+        value: function click_reservation() {
+            this.setState({ state_1: 'e' });
+        }
+    }, {
+        key: 'log_out',
+        value: function log_out() {
+            _reactCookies2.default.remove('name', { path: '/' });
+            _reactCookies2.default.remove('username', { path: '/' });
+            _reactCookies2.default.remove('reserves', { path: '/' });
+            _reactCookies2.default.remove('email', { path: '/' });
+            window.location.reload();
+        }
+    }, {
+        key: 'divisionChange',
+        value: function divisionChange(e) {
+            this.setState({ division: e.target.value });
+        }
+    }, {
+        key: 'categoryChange',
+        value: function categoryChange(e) {
+            this.setState({ category: e.target.value });
+        }
+    }, {
+        key: 'titleChange',
+        value: function titleChange(e) {
+            this.setState({ title: e.target.value });
+        }
+    }, {
+        key: 'contentsChange',
+        value: function contentsChange(e) {
+            this.setState({ contents: e.target.value });
+        }
+
+        //uplaod
+
+    }, {
+        key: 'setUpload',
+        value: function setUpload(opts) {
+            var _this2 = this;
+
+            fetch('/upload_service_center', {
+                method: 'POST',
+                headers: {
+                    "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+                },
+                body: "form=" + JSON.stringify(opts)
+            }).then(function (response) {
+                return response.json();
+            }).then(function (json) {
+                _this2.setState({ result: json.result });
+            }).then(function () {
+                if (this.state.result == "true") {
+                    console.log("업로드 성공");
+                    this.click_home();
+                }
+            }.bind(this));
+        }
+    }, {
+        key: 'submitGit_Upload',
+        value: function submitGit_Upload() {
+            this.setUpload({
+                division: this.state.division,
+                category: this.state.category,
+                title: this.state.title,
+                contents: this.state.contents,
+                email: _reactCookies2.default.load('email'),
+                name: _reactCookies2.default.load('name'),
+                phone: _reactCookies2.default.load('phone')
+            });
+        }
+    }, {
+        key: 'click_upload',
+        value: function click_upload() {
+            if (this.state.division == "" || this.state.category == "" || this.state.title == "" || this.state.contents == "") {
+                alert("빠짐없이 다 입력해주세요.");
+                return;
+            }
+
+            this.submitGit_Upload();
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var writing_Form = _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(
+                    'div',
+                    { className: 'logo' },
+                    '\uB80C\uD130\uCE74'
+                ),
+                _react2.default.createElement(
+                    'div',
+                    { className: 'menu' },
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu-item', onClick: this.click_home.bind(this) },
+                        ' \uD648 '
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu-item', onClick: this.click_rent.bind(this) },
+                        ' \uB80C\uD130\uCE74 \uC608\uC57D '
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu-item', onClick: this.log_out.bind(this) },
+                        ' \uB85C\uADF8\uC544\uC6C3 '
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu-item', onClick: this.click_reservation.bind(this) },
+                        ' \uC608\uC57D \uBC0F \uC774\uC6A9\uB0B4\uC5ED '
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu-item' },
+                        ' \uACE0\uAC1D \uC13C\uD130 '
+                    )
+                ),
+                _react2.default.createElement('br', null),
+                '\uC758\uACAC \uC791\uC131',
+                _react2.default.createElement(
+                    'table',
+                    null,
+                    _react2.default.createElement(
+                        'tbody',
+                        null,
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                '\uAD6C\uBD84'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement(
+                                    'select',
+                                    { onChange: this.divisionChange.bind(this) },
+                                    _react2.default.createElement(
+                                        'option',
+                                        { value: '\uCC28\uB7C9' },
+                                        '\uCC28\uB7C9'
+                                    ),
+                                    _react2.default.createElement(
+                                        'option',
+                                        { value: '\uC0AC\uC774\uD2B8' },
+                                        '\uC0AC\uC774\uD2B8'
+                                    )
+                                )
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                '\uCE74\uD14C\uACE0\uB9AC'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement(
+                                    'select',
+                                    { onChange: this.categoryChange.bind(this) },
+                                    _react2.default.createElement(
+                                        'option',
+                                        { value: '\uCE6D\uCC2C' },
+                                        '\uCE6D\uCC2C'
+                                    ),
+                                    _react2.default.createElement(
+                                        'option',
+                                        { value: '\uBD88\uB9CC' },
+                                        '\uBD88\uB9CC'
+                                    )
+                                )
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                '\uC81C\uBAA9'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement('input', { type: 'text', onChange: this.titleChange.bind(this) })
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                '\uB0B4\uC6A9'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement('textarea', { rows: 10, cols: 35, onChange: this.contentsChange.bind(this) })
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement(
+                                    'button',
+                                    { onClick: this.click_upload.bind(this) },
+                                    ' \uB4F1\uB85D '
+                                )
+                            )
+                        )
+                    )
+                )
+            );
+
+            return writing_Form;
+        }
+    }]);
+
+    return Member_Service_Center;
+}(_react2.default.Component);
+
+exports.default = Member_Service_Center;
+
+/***/ }),
+/* 50 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactDom = __webpack_require__(1);
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
+
+var _reactCookies = __webpack_require__(4);
+
+var _reactCookies2 = _interopRequireDefault(_reactCookies);
+
+__webpack_require__(2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Member_feedback = function (_React$Component) {
+    _inherits(Member_feedback, _React$Component);
+
+    function Member_feedback(props) {
+        _classCallCheck(this, Member_feedback);
+
+        var _this = _possibleConstructorReturn(this, (Member_feedback.__proto__ || Object.getPrototypeOf(Member_feedback)).call(this, props));
+
+        _this.state = {
+            returned: '',
+            currentPage: '',
+            total_page: '',
+            id: [],
+            name: [],
+            phone: [],
+            division: [],
+            category: [],
+            title: [],
+            contents: [],
+            timestamp: [],
+            division_number: 0,
+            input_division: "",
+            input_category: "",
+            sort: '1',
+            result: '',
+            test_number: 0
+        };
+        return _this;
+    }
+
+    _createClass(Member_feedback, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            this.submitGit_FeedbackList();
+        }
+    }, {
+        key: 'setFeedbackList',
+        value: function setFeedbackList(opts) {
+            var _this2 = this;
+
+            fetch('/member_feedback_list', {
+                method: 'POST',
+                headers: {
+                    "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+                },
+                body: "form=" + JSON.stringify(opts)
+            }).then(function (response) {
+                return response.json();
+            }).then(function (json) {
+                _this2.setState({ result: json.result });
+            }).then(function () {
+                this.setState({ id: [] });
+                this.setState({ name: [] });
+                this.setState({ email: [] });
+                this.setState({ phone: [] });
+                this.setState({ division: [] });
+                this.setState({ category: [] });
+                this.setState({ title: [] });
+                this.setState({ contents: [] });
+                this.setState({ timestamp: [] });
+
+                for (var count = 0; this.state.result[count] != null; count++) {
+                    this.setState({ id: this.state.id.concat(this.state.result[count]["id"]) });
+                    this.setState({ name: this.state.name.concat(this.state.result[count]["name"]) });
+                    this.setState({ email: this.state.email.concat(this.state.result[count]["email"]) });
+                    this.setState({ phone: this.state.phone.concat(this.state.result[count]["phone"]) });
+                    this.setState({ division: this.state.division.concat(this.state.result[count]["division"]) });
+                    this.setState({ category: this.state.category.concat(this.state.result[count]["category"]) });
+                    this.setState({ title: this.state.title.concat(this.state.result[count]["title"]) });
+                    this.setState({ contents: this.state.contents.concat(this.state.result[count]["contents"]) });
+                    this.setState({ timestamp: this.state.timestamp.concat(this.state.result[count]["timestamp"]) });
+                    this.setState({ total_page: this.state.result[0]["total_count"] });
+                }
+            }.bind(this)).then(function () {
+                if (this.state.test_number == 0) {
+                    this.setState({ test_number: 1 });
+                    this.submitGit_FeedbackList();
+                } else {
+                    this.setState({ test_number: 0 });
+                }
+            }.bind(this));
+        }
+    }, {
+        key: 'submitGit_FeedbackList',
+        value: function submitGit_FeedbackList() {
+            console.log("submit = division : ", this.state.division);
+            this.setFeedbackList({
+                email: _reactCookies2.default.load('email'),
+                currentPage: this.state.currentPage,
+                division: this.state.input_division,
+                category: this.state.input_category,
+                sort: this.state.sort
+            });
+        }
+    }, {
+        key: 'click_home',
+        value: function click_home() {
+            window.location.reload();
+        }
+    }, {
+        key: 'click_rent',
+        value: function click_rent() {
+            this.setState({ state_1: 'r' });
+        }
+    }, {
+        key: 'click_reservation',
+        value: function click_reservation() {
+            this.setState({ state_1: 'e' });
+        }
+    }, {
+        key: 'click_member_service',
+        value: function click_member_service() {
+            this.setState({ state_1: 'ms' });
+        }
+    }, {
+        key: 'log_out',
+        value: function log_out() {
+            _reactCookies2.default.remove('name', { path: '/' });
+            _reactCookies2.default.remove('username', { path: '/' });
+            _reactCookies2.default.remove('reserves', { path: '/' });
+            _reactCookies2.default.remove('email', { path: '/' });
+            window.location.reload();
+        }
+    }, {
+        key: 'division_numberChange',
+        value: function division_numberChange(e) {
+            this.setState({ division_number: e.target.id });
+            console.log("division_number = ", e.target.id);
+            this.setState({ returned: 2 });
+        }
+    }, {
+        key: 'input_categoryChange',
+        value: function input_categoryChange(e) {
+            this.setState({ input_category: e.target.value });
+            this.submitGit_FeedbackList();
+        }
+    }, {
+        key: 'input_divisionChange',
+        value: function input_divisionChange(e) {
+            this.setState({ input_division: e.target.value });
+            this.submitGit_FeedbackList();
+        }
+    }, {
+        key: 'sortChange',
+        value: function sortChange(e) {
+            this.setState({ sort: e.target.value });
+            this.submitGit_FeedbackList();
+        }
+
+        //page
+
+    }, {
+        key: 'handleClick',
+        value: function handleClick(e) {
+            this.setState({ currentPage: e.target.id });
+            this.submitGit_FeedbackList();
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var _this3 = this;
+
+            //style
+            var noneStyle = {
+                display: 'none'
+            };
+            var blockStyle = {};
+
+            //page_number
+            var pageNumbers = [];
+            for (var i = 1; i <= Math.floor((this.state.total_page - 1) / 5) + 1; i++) {
+                pageNumbers.push(i);
+            }
+            var renderPageNumbers = pageNumbers.map(function (number) {
+                return _react2.default.createElement(
+                    'li',
+                    { key: number, id: number, onClick: _this3.handleClick.bind(_this3) },
+                    number
+                );
+            });
+
+            //list
+            var impormation_number = [];
+            for (var _i = 0; _i < 5; _i++) {
+                impormation_number.push(_i);
+            }
+            var impormation_feedback = impormation_number.map(function (number) {
+                return _react2.default.createElement(
+                    'tr',
+                    { key: number, id: number, style: _this3.state.title[number] == null ? noneStyle : blockStyle },
+                    _react2.default.createElement(
+                        'td',
+                        { id: number, onClick: _this3.division_numberChange.bind(_this3) },
+                        _this3.state.id[number]
+                    ),
+                    _react2.default.createElement(
+                        'td',
+                        { id: number, onClick: _this3.division_numberChange.bind(_this3) },
+                        _this3.state.title[number]
+                    ),
+                    _react2.default.createElement(
+                        'td',
+                        { id: number, onClick: _this3.division_numberChange.bind(_this3) },
+                        _this3.state.name[number],
+                        ' (',
+                        _reactCookies2.default.load('email'),
+                        ')'
+                    ),
+                    _react2.default.createElement(
+                        'td',
+                        { id: number, onClick: _this3.division_numberChange.bind(_this3) },
+                        _this3.state.timestamp[number]
+                    )
+                );
+            });
+
+            var show_feedback_list = _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(
+                    'div',
+                    { className: 'logo' },
+                    '\uB80C\uD130\uCE74'
+                ),
+                _react2.default.createElement(
+                    'div',
+                    { className: 'menu' },
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu-item', onClick: this.click_home.bind(this) },
+                        ' \uD648 '
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu-item', onClick: this.click_rent.bind(this) },
+                        ' \uB80C\uD130\uCE74 \uC608\uC57D '
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu-item', onClick: this.log_out.bind(this) },
+                        ' \uB85C\uADF8\uC544\uC6C3 '
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu-item', onClick: this.click_reservation.bind(this) },
+                        ' \uC608\uC57D \uBC0F \uC774\uC6A9\uB0B4\uC5ED '
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'dropdown-menu-item' },
+                        '\uACE0\uAC1D \uC13C\uD130',
+                        _react2.default.createElement(
+                            'div',
+                            { className: 'dropdown-content' },
+                            _react2.default.createElement(
+                                'div',
+                                null,
+                                '\uB0B4 \uC758\uACAC \uBCF4\uAE30'
+                            ),
+                            _react2.default.createElement(
+                                'div',
+                                { onClick: this.click_member_service.bind(this) },
+                                '\uC758\uACAC \uBCF4\uB0B4\uAE30'
+                            )
+                        )
+                    )
+                ),
+                _react2.default.createElement('br', null),
+                _react2.default.createElement(
+                    'label',
+                    null,
+                    ' \uAD6C\uBD84 '
+                ),
+                _react2.default.createElement(
+                    'select',
+                    { onChange: this.input_divisionChange.bind(this) },
+                    _react2.default.createElement(
+                        'option',
+                        { value: '' },
+                        ' \uC804\uCCB4 '
+                    ),
+                    _react2.default.createElement(
+                        'option',
+                        { value: '\uCC28\uB7C9' },
+                        ' \uCC28\uB7C9 '
+                    ),
+                    _react2.default.createElement(
+                        'option',
+                        { value: '\uC0AC\uC774\uD2B8' },
+                        ' \uC0AC\uC774\uD2B8 '
+                    )
+                ),
+                _react2.default.createElement('br', null),
+                _react2.default.createElement(
+                    'label',
+                    null,
+                    ' \uCE74\uD14C\uACE0\uB9AC '
+                ),
+                _react2.default.createElement(
+                    'select',
+                    { onChange: this.input_categoryChange.bind(this) },
+                    _react2.default.createElement(
+                        'option',
+                        { value: '' },
+                        ' \uC804\uCCB4 '
+                    ),
+                    _react2.default.createElement(
+                        'option',
+                        { value: '\uCE6D\uCC2C' },
+                        ' \uCE6D\uCC2C '
+                    ),
+                    _react2.default.createElement(
+                        'option',
+                        { value: '\uBD88\uB9CC' },
+                        ' \uBD88\uB9CC '
+                    )
+                ),
+                _react2.default.createElement('br', null),
+                _react2.default.createElement(
+                    'label',
+                    null,
+                    ' \uC815\uB82C\uBC29\uBC95 '
+                ),
+                _react2.default.createElement(
+                    'select',
+                    { defaultValue: 1, onChange: this.sortChange.bind(this) },
+                    _react2.default.createElement(
+                        'option',
+                        { value: 1 },
+                        ' \uB4F1\uB85D\uB41C\uC9C0 \uC624\uB798\uB41C \uC21C '
+                    ),
+                    _react2.default.createElement(
+                        'option',
+                        { value: 2 },
+                        ' \uCD5C\uADFC \uB4F1\uB85D\uB41C \uC21C '
+                    )
+                ),
+                _react2.default.createElement('br', null),
+                _react2.default.createElement(
+                    'table',
+                    null,
+                    _react2.default.createElement(
+                        'tbody',
+                        null,
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'td',
+                                { width: 100 },
+                                '\uBC88\uD638'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                { width: 250 },
+                                '\uC81C\uBAA9'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                { width: 150 },
+                                '\uC774\uB984 (\uC774\uBA54\uC77C)'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                { width: 200 },
+                                '\uC62C\uB9B0 \uB0A0\uC9DC'
+                            )
+                        ),
+                        impormation_feedback
+                    )
+                ),
+                _react2.default.createElement(
+                    'ul',
+                    { id: 'page-numbers' },
+                    renderPageNumbers
+                )
+            );
+
+            var show_feedback_Form = _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(
+                    'div',
+                    { className: 'logo' },
+                    '\uB80C\uD130\uCE74'
+                ),
+                _react2.default.createElement(
+                    'div',
+                    { className: 'menu' },
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu-item', onClick: this.click_home.bind(this) },
+                        ' \uD648 '
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu-item', onClick: this.click_rent.bind(this) },
+                        ' \uB80C\uD130\uCE74 \uC608\uC57D '
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu-item', onClick: this.log_out.bind(this) },
+                        ' \uB85C\uADF8\uC544\uC6C3 '
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'menu-item', onClick: this.click_reservation.bind(this) },
+                        ' \uC608\uC57D \uBC0F \uC774\uC6A9\uB0B4\uC5ED '
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'dropdown-menu-item' },
+                        '\uACE0\uAC1D \uC13C\uD130',
+                        _react2.default.createElement(
+                            'div',
+                            { className: 'dropdown-content' },
+                            _react2.default.createElement(
+                                'div',
+                                null,
+                                '\uB0B4 \uC758\uACAC \uBCF4\uAE30'
+                            ),
+                            _react2.default.createElement(
+                                'div',
+                                { onClick: this.click_member_service.bind(this) },
+                                '\uC758\uACAC \uBCF4\uB0B4\uAE30'
+                            )
+                        )
+                    )
+                ),
+                _react2.default.createElement(
+                    'table',
+                    null,
+                    _react2.default.createElement(
+                        'tbody',
+                        null,
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                '\uC81C\uBAA9'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                this.state.title[this.state.division_number]
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                '\uAD6C\uBD84'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                this.state.division[this.state.division_number]
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                '\uCE74\uD14C\uACE0\uB9AC'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                this.state.category[this.state.division_number]
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                '\uC62C\uB9B0 \uB0A0\uC9DC'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                this.state.timestamp[this.state.division_number]
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                '\uB0B4\uC6A9'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                this.state.contents[this.state.division_number]
+                            )
+                        )
+                    )
+                )
+            );
+
+            if (this.state.returned == 2) {
+                return show_feedback_Form;
+            } else {
+                return show_feedback_list;
+            }
+        }
+    }]);
+
+    return Member_feedback;
+}(_react2.default.Component);
+
+exports.default = Member_feedback;
 
 /***/ })
 /******/ ]);

@@ -100,6 +100,17 @@ type Impormation_car struct {
 	more string
 }
 
+type Feedback struct {
+	name string
+	email string
+	phone string
+	division string
+	category string
+	title string
+	contents string
+	timestamp string
+}
+
 // func FloatToString(input_num float64) string {
 //     // to convert a float number to a string
 //     return strconv.FormatFloat(input_num, 'f', 6, 64)
@@ -268,6 +279,7 @@ func main() {
 
 		var raw map[string]interface{}
 		var id string
+		var phone string
 		json.Unmarshal([]byte(form), &raw)
 
 		username := raw["username"]
@@ -324,7 +336,7 @@ func main() {
 			}
 		}
 
-		err = db.QueryRow("SELECT license_id, name, username, point, email FROM users where username=? && password=?", username, password).Scan(&users.license_id, &users.name, &users.username, &users.reserves, &users.email)
+		err = db.QueryRow("SELECT license_id, name, username, point, email, phone FROM users where username=? && password=?", username, password).Scan(&users.license_id, &users.name, &users.username, &users.reserves, &users.email, &phone)
 
 		switch{
 		case err == sql.ErrNoRows:
@@ -369,6 +381,7 @@ func main() {
 			"license_number": users.license_number,
 			"date_if_issue": users.date_if_issue,
 			"aptitude_test": users.aptitude_test,
+			"phone": phone,
 		})
 	})
 
@@ -1278,6 +1291,166 @@ func main() {
 		c.JSON(200, gin.H{
 			"result": "true",
 		})
+	})
+
+	router.POST("/email_certification", func(c *gin.Context){
+		form := c.PostForm("form")
+
+		var raw map[string]interface{}
+		json.Unmarshal([]byte(form), &raw)
+
+		email := raw["email"]
+		certification_number := raw["certification_number"]
+
+		var id string
+
+		err := db.QueryRow("SELECT id FROM email_certification WHERE email=? && number=?", email, certification_number).Scan(&id)
+
+		switch{
+		case err == sql.ErrNoRows:
+			c.JSON(200, gin.H{
+				"result": "false",
+			})
+		case err != nil:
+			log.Println(err)
+		default:
+			c.JSON(200, gin.H{
+				"result": "true",
+			})
+		}
+	})
+
+	router.POST("/upload_service_center", func(c *gin.Context){
+		form := c.PostForm("form")
+
+		var raw map[string]interface{}
+		json.Unmarshal([]byte(form), &raw)
+
+		log.Println("raw => ", raw)
+
+		name := raw["name"]
+		email := raw["email"]
+		phone := raw["phone"]
+		division := raw["division"]
+		category := raw["category"]
+		title := raw["title"]
+		contents := raw["contents"]
+
+		_, err := db.Exec("INSERT INTO feedback (name, email, phone, divison, category, title, contents) VALUES (?,?,?,?,?,?,?)", name, email, phone, division, category, title, contents)
+
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		c.JSON(200, gin.H{
+			"result":"true",
+		})
+	})
+
+	router.POST("/member_feedback_list", func(c *gin.Context){
+		form := c.PostForm("form")
+
+		var raw map[string]interface{}
+		json.Unmarshal([]byte(form), &raw)
+
+		email := raw["email"]
+		currentPage := raw["currentPage"]
+		division := raw["division"]
+		category := raw["category"]
+		sort := raw["sort"]
+
+		count := 0
+		index := 0
+
+		var result map[int]map[string]string = map[int]map[string]string{}
+		var id string
+		var feedback Feedback
+
+		rows, err := db.Query("SELECT id FROM feedback WHERE email = ?", email)
+
+		if division == "" && category=="" {
+			if sort == "1" {
+				rows, err = db.Query("SELECT id FROM feedback WHERE email = ? ORDER BY timestamp", email)
+			} else {
+				rows, err = db.Query("SELECT id FROM feedback WHERE email = ? ORDER BY timestamp DESC", email)
+			}
+		} else if division=="" && category!="" {
+			if sort == "1" {
+				rows, err = db.Query("SELECT id FROM feedback WHERE email=? && category=? ORDER BY timestamp", email, category)
+			}else{
+				rows, err = db.Query("SELECT id FROM feedback WHERE email=? && category=? ORDER BY timestamp DESC", email, category)
+			}
+		} else if division!="" && category=="" {
+			if sort == "1"{
+				rows, err = db.Query("SELECT id FROM feedback WHERE email=? && divison=? ORDER BY timestamp", email, division)
+			} else {
+				rows, err = db.Query("SELECT id FROM feedback WHERE email=? && divison=? ORDER BY timestamp DESC", email, division)
+			}
+		} else if division!="" && category!="" {
+			if sort == "1"{
+				rows, err = db.Query("SELECT id FROM feedback WHERE email=? && divison=? && category=? ORDER BY timestamp", email, division, category)
+			} else {
+				rows, err = db.Query("SELECT id FROM feedback WHERE email=? && divison=? && category=? ORDER BY timestamp DESC", email, division, category)
+			}
+		}
+
+		if err != nil {
+			log.Fatal(err)
+		}
+		defer rows.Close()
+
+		for rows.Next() {
+			err := rows.Scan(&id)
+ 
+			if err != nil {
+				log.Fatal(err)
+				return;
+			}
+			startPage := 0
+
+			result[index] = map[string]string{}
+
+			if currentPage == "" {
+				startPage = 0
+			} else {
+				startPage, err = strconv.Atoi(currentPage.(string))
+			}
+
+			if count < (startPage - 1) * 5{
+				count++
+				continue
+			}
+
+			err = db.QueryRow("SELECT name, email, phone, divison, category, title, contents, timestamp FROM feedback WHERE id = ?", id).Scan(&feedback.name, &feedback.email, &feedback.phone, &feedback.division, &feedback.category, &feedback.title, &feedback.contents, &feedback.timestamp)
+			
+			switch{
+			case err == sql.ErrNoRows:
+				log.Println("Not Found Rows")
+				return;
+			case err != nil:
+				log.Fatal(err)
+				return
+			}
+
+			result[index]["id"] = id
+			result[index]["name"] = feedback.name
+			result[index]["phone"] = feedback.phone
+			result[index]["division"] = feedback.division
+			result[index]["category"] = feedback.category
+			result[index]["title"] = feedback.title
+			result[index]["contents"] = feedback.contents
+			result[index]["timestamp"] = feedback.timestamp
+
+			count++
+			index++
+
+			result[0]["total_count"] = strconv.Itoa(count)
+		}
+
+		c.JSON(200, gin.H{
+			"result": result,
+		})
+		
 	})
 
 	m.HandleMessage(func(s *melody.Session, message []byte) {

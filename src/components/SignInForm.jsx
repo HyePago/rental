@@ -29,7 +29,8 @@ class SignInForm extends React.Component {
             license_type: '',
             license_number: '',
             date_if_issue: '',
-            aptitude_test: ''
+            aptitude_test: '',
+            phone: '',
         }
     }
 
@@ -61,7 +62,8 @@ class SignInForm extends React.Component {
                     license_type:json.license_type,
                     license_number:json.license_number,
                     date_if_issue:json.date_if_issue,
-                    aptitude_test:json.aptitude_test
+                    aptitude_test:json.aptitude_test,
+                    phone:json.phone,
                 }); 
             })
         .then(function(){
@@ -80,6 +82,7 @@ class SignInForm extends React.Component {
                 cookie.save('username', this.state.username, {path: '/'});
                 cookie.save('reserves', this.state.reserves, {path: '/'});
                 cookie.save('email', this.state.email, {path: '/'});
+                cookie.save('phone', this.state.phone, {path: '/'});
                 cookie.save('license_category', this.state.license_category, {path: '/'});
                 cookie.save('license_type', this.state.license_type, {path: '/'});
                 cookie.save('license_number', this.state.license_number, {path: '/'});

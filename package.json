@@ -16,6 +16,7 @@
     "react-dom": "^16.2.0",
     "react-js-pagination": "^3.0.0",
     "react-paginate": "^5.0.0",
+    "react-simple-dropdown": "^3.2.0",
     "react-time": "^4.3.0"
   },
   "devDependencies": {
