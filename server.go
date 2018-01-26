@@ -1455,6 +1455,111 @@ func main() {
 		
 	})
 
+	router.POST("/feedback_list", func(c *gin.Context){
+		form := c.PostForm("form")
+
+		var raw map[string]interface{}
+		json.Unmarshal([]byte(form), &raw)
+
+		currentPage := raw["currentPage"]
+		division := raw["division"]
+		category := raw["category"]
+		sort := raw["sort"]
+
+		count := 0
+		index := 0
+
+		var result map[int]map[string]string = map[int]map[string]string{}
+		var id string
+		var feedback Feedback
+
+		rows, err := db.Query("SELECT id FROM feedback")
+
+		if division=="" && category=="" {
+			if sort == "1" {
+				rows, err = db.Query("SELECT id FROM feedback ORDER BY timestamp")
+			}else {
+				rows, err = db.Query("SELECT id FROM feedback ORDER BY timestamp DESC")
+			}
+		} else if division=="" && category!="" {
+			if sort == "1" {
+				rows, err = db.Query("SELECT id FROM feedback WHERE category=? ORDER BY timestamp", category)
+			}else {
+				rows, err = db.Query("SELECT id FROM feedback WHERE category=? ORDER BY timestamp DESC", category)
+			}
+		} else if division!="" && category=="" {
+			if sort == "1" {
+				rows, err = db.Query("SELECT id FROM feedback WHERE divison=? ORDER BY timestamp", division)
+			} else {
+				rows, err = db.Query("SELECT id FROM feedback WHERE divison=? ORDER BY timestamp DESC", division)
+			}
+		} else if division!="" && category!="" {
+			if sort == "1" {
+				rows, err = db.Query("SELECT id FROM feedback WHERE divison=? && category=? ORDER BY timestamp", category, division)
+			} else {
+				rows, err = db.Query("SELECT id FROM feedback WHERE divison=? && category=? ORDER BY timestamp DESC", category, division)
+			}
+		}
+
+		if err != nil {
+			log.Fatal(err)
+		}
+		defer rows.Close()
+
+		for rows.Next() {
+			err := rows.Scan(&id)
+
+			if err != nil {
+				log.Fatal(err)
+				return;
+			}
+
+			startPage := 0
+
+			result[index] = map[string]string{}
+
+			if currentPage == "" {
+				startPage = 0
+			} else {
+				startPage, err = strconv.Atoi(currentPage.(string))
+			}
+
+			if count < (startPage - 1) * 5{
+				count++
+				continue
+			}
+
+			err = db.QueryRow("SELECT name, email, phone, divison, category, title, contents, timestamp FROM feedback WHERE id = ?", id).Scan(&feedback.name, &feedback.email, &feedback.phone, &feedback.division, &feedback.category, &feedback.title, &feedback.contents, &feedback.timestamp)
+
+			switch {
+			case err == sql.ErrNoRows:
+				log.Println("Not Found Rows")
+				return
+			case err != nil:
+				log.Fatal(err)
+				return
+			}
+
+			result[index]["id"] = id
+			result[index]["name"] = feedback.name
+			result[index]["phone"] = feedback.phone
+			result[index]["division"] = feedback.division
+			result[index]["category"] = feedback.category
+			result[index]["title"] = feedback.title
+			result[index]["contents"] = feedback.contents
+			result[index]["timestamp"] = feedback.timestamp
+
+			count++
+			index++
+
+			result[0]["total_count"] = strconv.Itoa(count)
+		}
+
+		c.JSON(200, gin.H{
+			"result": result,
+		})
+	})
+
 	m.HandleMessage(func(s *melody.Session, message []byte) {
 		
 	})

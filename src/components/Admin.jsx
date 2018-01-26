@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom'
 
 import InsertionCar from './InsertionCar.jsx'
 import VehicleInformation from './VehicleInformation.jsx'
+import Total_Feedback_List from './Total_Feedback_LIst.jsx'
 
 import './Header.css'
 
@@ -46,6 +47,9 @@ class Admin extends React.Component {
         let car_impormation_Form = (
             <VehicleInformation />
         )
+        let member_feedback_list = (
+            <Total_Feedback_List />
+        )
 
         if(this.state.returned == 'main'){
             return main_Form;
@@ -54,7 +58,7 @@ class Admin extends React.Component {
         } else if(this.state.returned == 'car_impormation'){
             return car_impormation_Form;
         } else if(this.state.returned == 'member_impormation'){
-
+            return member_feedback_list;
         }
     }
 }
