@@ -1,11 +1,9 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import cookie from "react-cookies"
-
+import { Link } from 'react-router-dom'
 import SignInForm from './SignInForm.jsx'
-import ImageTest from './ImageTest.jsx'
-import App from './App';
-import './Header.css'
+import './Sign_Up_Style.css'
 
 class SignUpForm extends React.Component {
     constructor(props){
@@ -203,16 +201,6 @@ class SignUpForm extends React.Component {
         }
     }*/
 
-    click_sign_in(){
-        this.setState({signed:'in'});
-    }
-    click_ImageTest(){
-        this.setState({signed:'image'});
-    }
-    click_home(){
-        this.setState({signed:'home'});
-    }
-
     idOverlap(username){
         if(this.state.username.length<4 || this.state.username.length>15){
             alert("아이디를 5자리 ~ 15자리 이내로 입력해주세요.")
@@ -282,105 +270,159 @@ class SignUpForm extends React.Component {
     render(){
         let sign_up_Form = (
             <div>
-                <div className="logo">
-                    렌터카
-                </div>
-                <div className="menu">
-                    <div className="menu-item" onClick={this.click_home.bind(this)}> 홈 </div>                                    
-                    <div className="menu-item" onClick={this.click_sign_in.bind(this)}> 로그인 </div>
-                    <div className="menu-item"> 회원가입 </div>
-                    <div className="menu-item" onClick={this.click_ImageTest.bind(this)}> 사진테스트 </div>
-                </div>
-                <p>
-                    <label>이름 </label>
-                    <input type="text" name="name" placeholder="이름을 입력해주십시오" onChange={this.nameChange.bind(this)}/>
-                    <br/>
-                    <label>아이디 </label>
-                    <input type="text" name="id" onChange={this.usernameChange.bind(this)} size="15" placeholder={this.props.placeholder} maxLength={15}/>
-                    <button onClick={this.idOverlap.bind(this)}>아이디 중복 확인</button>
-                    <br/>
-                    <label>비밀번호 </label>
-                    <input type="password" name="password" maxLength={16} size="16" onChange={this.passwordChange.bind(this)} placeholder="비밀번호를 입력해주세요"/>
-                    &nbsp;&nbsp;<span>{this.state.password_feedback}</span>
-                    <br/>
-                    <label>비밀번호 확인 </label>
-                    <input type="password" name="password_confirm" maxLength={16} size="16" onChange={this.password_confirmChange.bind(this)}placeholder="비밀번호를 입력해주세요"/>
-                    <br />
-                    <label>이메일 </label>
-                    <input type="text" name="email" onChange={this.emailChange.bind(this)} placeholder="예) hyejin@gmail.com"/>
-                    <button onClick={this.submitGit_email.bind(this)}> 인증번호 전송 </button>
-                    <br />
-                    <label>인증번호 </label>
-                    <input type="text" name="certification_number" placeholer="인증번호" onChange={this.input_certification_numberChange.bind(this)}/>
-                    <br />
-                    <br />
-                    <label>전화번호 </label>
-                    <select onChange={this.phone_0Change.bind(this)}>
-                        <option id="010" value="010">010</option>
-                        <option id="011" value="011">011</option>
-                        <option id="017" value="017">017</option>
-                    </select>
-                    &nbsp;-&nbsp;
-                    <input type="number" onChange={this.phone_1Change.bind(this)} name="phone_1" max="9999" maxLength={4} size="4"></input>
-                    &nbsp;-&nbsp;
-                    <input type="number" onChange={this.phone_2Change.bind(this)} name="phone_2" max="9999" maxLength={4} size="4"></input>
-                    <br />
-                    <label>면허구분</label>
-                    <select onChange={this.license_categoryChange.bind(this)}>
-                        <option id="1" value="1">국내</option>
-                        <option id="2" value="2">국외</option>
-                    </select>
-                    <br />
-                    <label>면허 종류</label>
-                    <select onChange={this.license_typeChange.bind(this)}>
-                        <option id="1" value="1">1종대형</option>
-                        <option id="2" value="2">1종보통</option>
-                        <option id="3" value="3">2종보통</option>
-                    </select>
-                    <br />
-                    <label>면허증 번호</label>
-                    <select onChange={this.license_number_0Change.bind(this)}>
-                        <option id="1" value="1">서울</option>
-                        <option id="2" value="2">11</option>
-                    </select>
-                    &nbsp;
-                    <input type="text" size="2" maxLength={2} onChange={this.license_number_1Change.bind(this)}></input>
-                    -
-                    <input type="text" size="6" maxLength={6} onChange={this.license_number_2Change.bind(this)}></input>
-                    -
-                    <input type="text" size="2" maxLength={2} onChange={this.license_number_3Change.bind(this)}></input>
-                    <br />
-                    <label>면허발급일자</label>
-                    <input type="date" onChange={this.date_if_issueChange.bind(this)}></input>
-                    <br />
-                    <label>적성검사</label>
-                    <input type="date" onChange={this.aptitude_testChange.bind(this)}></input>
-                    <br /><br />
-                    <button onClick={this.SignUpCheck.bind(this)}>회원가입</button>
-                </p>
+                <table width="940" className="out_table">
+                    <tbody>
+                        <form name="write_form_member" method="post">
+                            <tr>
+                                <td>
+                                    <div> 회원가입 폼 </div>
+                                </td>
+                            </tr>
+                            <tr height={2} bgcolor="cadetblue">
+                                <td></td>
+                            </tr>
+                            <tr height="372px">
+                                <td colSpan={2}>
+                                    <table width="780">
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <table width="940">
+                                                        <tbody>
+                                                            <tr>
+                                                                <th>이름</th>
+                                                                <td>
+                                                                    <input type="text" onChange={this.nameChange.bind(this)} />
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>아이디</th>
+                                                                <td>
+                                                                    <input type="text" onChange={this.usernameChange.bind(this)} />
+                                                                    <button onClick={this.idOverlap.bind(this)}>아이디 중복 확인</button>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>비밀번호</th>
+                                                                <td>
+                                                                    <input type="password" onChange={this.passwordChange.bind(this)} />
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>비밀번호 확인</th>
+                                                                <td>
+                                                                    <input type="password" onChange={this.password_confirmChange.bind(this)} />
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>이메일</th>
+                                                                <td>
+                                                                    <input type="text" onChange={this.emailChange.bind(this)} />
+                                                                    <button onClick={this.submitGit_email.bind(this)}> 인증번호 전송 </button>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>인증번호</th>
+                                                                <td>
+                                                                    <input type="text" onChange={this.input_certification_numberChange.bind(this)} />
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>전화번호</th>
+                                                                <td>
+                                                                    <select onChange={this.phone_0Change.bind(this)}>
+                                                                        <option id="010" value="010">010</option>
+                                                                        <option id="011" value="011">011</option>
+                                                                        <option id="017" value="017">017</option>
+                                                                    </select>
+                                                                    &nbsp;-&nbsp;
+                                                                    <input type="number" onChange={this.phone_1Change.bind(this)} max={9999} maxLength={4} size={4} />
+                                                                    &nbsp;-&nbsp;
+                                                                    <input type="number" onChange={this.phone_2Change.bind(this)} max={9999} maxLength={4} size={4} />
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>면허구분</th>
+                                                                <td>
+                                                                    <select onChange={this.license_categoryChange.bind(this)}>
+                                                                        <option id="1" value="1"> 국내 </option>
+                                                                        <option id="2" value="2"> 국외 </option>
+                                                                    </select>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>면허 종류</th>
+                                                                <td>
+                                                                    <select onChange={this.license_typeChange.bind(this)}>
+                                                                        <option id="1" value="1">1종대형</option>
+                                                                        <option id="2" value="2">1종보통</option>
+                                                                        <option id="3" value="3">2종보통</option>
+                                                                    </select>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>면허증 번호</th>
+                                                                <td>
+                                                                    <select onChange={this.license_number_0Change.bind(this)}>
+                                                                        <option id="1" value="1">서울</option>
+                                                                        <option id="2" value="2">11</option>
+                                                                    </select>
+                                                                    &nbsp;
+                                                                    <input type="text" size={2} maxLength={2} onChange={this.license_number_1Change.bind(this)} />
+                                                                    -
+                                                                    <input type="text" size={6} maxLength={6} onChange={this.license_number_2Change.bind(this)} />
+                                                                    -
+                                                                    <input type="text" size={2} maxLength={2} onChange={this.license_number_3Change.bind(this)} />
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>면허발급일자</th>
+                                                                <td>
+                                                                    <input type="date" onChange={this.date_if_issueChange.bind(this)} />
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>적성검사</th>
+                                                                <td>
+                                                                    <input type="date" onChange={this.aptitude_testChange.bind(this)} />
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            <tr height={2} bgcolor="cadetblue">
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td colSpan={2} align="center">
+                                                    <div id="member_button">
+                                                        <button onClick={this.SignUpCheck.bind(this)}>회원가입</button>
+                                                        <Link to="/"><button>취소</button></Link>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                        </form>
+                    </tbody>
+                </table>
             </div>
         )
-
         let sign_up_finish_Form = (
             <SignInForm />
-        )
-
-        let imageTest_Form = (
-            <ImageTest />
-        )
-
-        let homeForm = (
-            <App />
         )
 
         if(this.state.signed == 'up'){
             return sign_up_Form;
         }else if(this.state.signed == 'in'){
             return sign_up_finish_Form;
-        }else if(this.state.signed == 'home'){
-            return homeForm;
-        }else{
-            return imageTest_Form;
         }
     }
 }

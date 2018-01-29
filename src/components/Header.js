@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom'
 import cookie from "react-cookies"
+import { Link } from 'react-router-dom'
 
 import Reservation_history from './Reservation_history.jsx'
 import Rent_1 from './Rent_1.jsx'
@@ -79,10 +80,10 @@ class Header extends React.Component {
         let non_member_top_Form = (
             <div>
                 <div className="menu">
-                    <div className="logo" onClick={this.click_logo.bind(this)}> 로고 </div>
+                    <Link to="/"><div className="logo"> 로고 </div></Link>
                     <div className="menu-item"> 예약 및 이용내역 </div>
-                    <div className="menu-item" onClick={this.click_sign_in.bind(this)}> 로그인 </div>
-                    <div className="menu-item" onClick={this.click_sign_up.bind(this)}> 회원가입 </div>
+                    <Link to="/api/v1/signin"> <div className="menu-item"> 로그인 </div> </Link>
+                    <Link to="/api/v1/signup"> <div className="menu-item"> 회원가입 </div> </Link>
                     <div className="dropdown-menu-item"> 
                             고객센터
                         <div className="dropdown-content">
@@ -104,13 +105,13 @@ class Header extends React.Component {
             <Member_Service_Center />
         )
         let Member_Feedback_Form = (
-            <Member_Feedback_Form />
+            <Member_feedback />
         )
         let Sign_In_Form = (
             <SignInForm />
         )
         let Sign_Up_Form = (
-            <Sign_Up_Form />
+            <SignUpForm />
         )
         let NonMember_Service_Center_Form = (
             <Non_Member_ServiceCenter />
@@ -119,33 +120,55 @@ class Header extends React.Component {
             <Non_Member_feedback />
         )
 
-        if(cookie.load('name')) { 
-            console.log("member_Form");
-            if(this.state.returned == 'reservation'){
-                return Reservation_history_Form;
-            } else if(this.state.returned == 'rent'){
-                return Rent_Form;
-            } else if(this.state.returned == 'ms'){
-                return Member_Service_Center_Form;
-            } else if(this.state.returned == 'mf'){
-                return Member_Feedback_Form;
-            } else {
-                return member_top_Form;
-            }
+        if(this.state.returned == 'reservation'){
+            return Reservation_history_Form;
+        } else if(this.state.returned == 'rent'){
+            return Rent_Form;
+        } else if(this.state.returned == 'ms'){
+            return Member_Service_Center_Form;
+        } else if(this.state.returned == 'mf'){
+            return Member_Feedback_Form;
+        } else if(this.state.returned == 'si'){
+            return Sign_In_Form;
+        } else if(this.state.returned == 'su'){
+            return Sign_Up_Form;
+        } else if(this.state.returned == 'ns'){
+            return NonMember_Service_Center_Form;
+        } else if(this.state.returned == 'nf'){
+            return NonMember_Feedback_Form;
+        } else if(this.state.returned == 'none'){
+            return;
+        }else if(cookie.load('name')){
+            return member_top_Form;
         } else {
-            console.log("non_member_Form");
-            if(this.state.returned == 'si'){
-                return Sign_In_Form;
-            } else if(this.state.returned == 'su'){
-                return Sign_Up_Form;
-            } else if(this.state.returned == 'ns'){
-                return NonMember_Service_Center_Form;
-            } else if(this.state.returned == 'nf'){
-                return NonMember_Feedback_Form;
-            } else {
-                return non_member_top_Form;
-            }
+            return non_member_top_Form;
         }
+
+        // if(cookie.load('name')) { 
+        //     if(this.state.returned == 'reservation'){
+        //         return Reservation_history_Form;
+        //     } else if(this.state.returned == 'rent'){
+        //         return Rent_Form;
+        //     } else if(this.state.returned == 'ms'){
+        //         return Member_Service_Center_Form;
+        //     } else if(this.state.returned == 'mf'){
+        //         return Member_Feedback_Form;
+        //     } else {
+        //         return member_top_Form;
+        //     }
+        // } else {
+        //     if(this.state.returned == 'si'){
+        //         return Sign_In_Form;
+        //     } else if(this.state.returned == 'su'){
+        //         return Sign_Up_Form;
+        //     } else if(this.state.returned == 'ns'){
+        //         return NonMember_Service_Center_Form;
+        //     } else if(this.state.returned == 'nf'){
+        //         return NonMember_Feedback_Form;
+        //     } else {
+        //         return non_member_top_Form;
+        //     }
+        // }
     }
 }
 

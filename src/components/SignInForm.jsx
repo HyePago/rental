@@ -2,10 +2,11 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import cookie from "react-cookies"
 
+import { Link } from 'react-router-dom'
+
 import Header from './Header.js'
 import FindId from './FindId.jsx'
 import FindPwd from './FindPwd.jsx'
-
 
 import './Header.css'
 
@@ -86,7 +87,7 @@ class SignInForm extends React.Component {
                 cookie.save('date_if_issue', this.state.date_if_issue, {path: '/'});
                 cookie.save('aptitude_test', this.state.aptitude_test, {path: '/'});
 
-                this.setState({logined:"home"});
+                window.location.reload();
             }
         }.bind(this));
     }
@@ -108,18 +109,16 @@ class SignInForm extends React.Component {
     render(){
         let login_Form = (
             <div>
-                <Header />
-                <p>
-                    <label>아이디</label>
-                    <input type="text" name="username" placeholder="id" onChange={this.idChange.bind(this)}></input>
-                    <br />
-                    <label>비밀번호</label>
-                    <input type="password" name="password" placeholder="password" onChange={this.passwordChange.bind(this)}></input>
-                    <br />
-                    <button onClick={this.submitGit.bind(this)}>로그인</button>
-                    <button onClick={this.click_findId.bind(this)}> 아이디 찾기 </button>
-                    <button onClick={this.click_findPwd.bind(this)}> 비밀번호 찾기 </button>
-                </p>
+                <form className="signIn" id="signinForm">
+                    <input type="text" className="signInInput" placeholder="username" autoFocus required onChange={this.idChange.bind(this)} />
+                    <input type="password" className="signInInput" placeholder="password" required onChange={this.passwordChange.bind(this)}/>
+                    <button className="signInButton" onClick={this.submitGit.bind(this)}> Log In </button>
+                    <div className="signIn_extra_service">
+                        <Link to="/api/v1/find_id"><div className="signIn_extra_service_content"> 아이디 찾기 </div></Link>
+                        &nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;
+                        <Link to="/api/vi/find_password"><div className="signIn_extra_service_content"> 비밀번호 찾기 </div></Link>
+                    </div>
+                </form>
             </div>
         )
 

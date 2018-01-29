@@ -1,11 +1,8 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-
 import cookie from "react-cookies"
 
-import SignInForm from './SignInForm.jsx'
-import ImageTest from './ImageTest.jsx'
-import SignUpForm from './SignUpForm.jsx'
+import Header from './Header.js'
 
 import './Header.css'
 
@@ -92,31 +89,9 @@ class FindId extends React.Component {
         this.setState({name:e.target.value});
     }
 
-    click_sign_up(){
-        this.setState({returned:"up"});
-    }
-    click_sign_in(){
-        this.setState({returned:"in"});
-    }
-    click_ImageTest(){
-        this.setState({returned:"image"});
-    }
-    click_home(){
-        window.location.reload();
-    }
-
     render(){
         let find_id_Form = (
             <div>
-                <div className="logo">
-                    렌트카
-                </div>
-                <div className="menu">
-                    <div className="menu-item" onClick={this.click_home.bind(this)}> 홈 </div>                                    
-                    <div className="menu-item" onClick={this.click_sign_in.bind(this)}> 로그인 </div>
-                    <div className="menu-item" onClick={this.click_sign_up.bind(this)}> 회원가입 </div>
-                    <div className="menu-item" onClick={this.click_ImageTest.bind(this)}> 사진테스트 </div>
-                </div>
                 <table>
                     <tbody>
                         <tr>
@@ -157,31 +132,7 @@ class FindId extends React.Component {
         )
         let show_id = (
             <div>
-                <div className="logo">
-                    렌트카
-                </div>
-                <div className="menu">
-                    <div className="menu-item" onClick={this.click_home.bind(this)}> 홈 </div>                                    
-                    <div className="menu-item" onClick={this.click_sign_in.bind(this)}> 로그인 </div>
-                    <div className="menu-item" onClick={this.click_sign_up.bind(this)}> 회원가입 </div>
-                    <div className="menu-item" onClick={this.click_ImageTest.bind(this)}> 사진테스트 </div>
-                </div>
                 회원님의 아이디 : {this.state.id}
-            </div>
-        )
-        let sign_in_Form = (
-            <div>
-                <SignInForm />
-            </div>
-        )
-        let sign_up_Form = (
-            <div>
-                <SignUpForm />
-            </div>
-        )
-        let image_test_Form = (
-            <div>
-                <ImageTest />
             </div>
         )
 
@@ -189,12 +140,6 @@ class FindId extends React.Component {
             return find_id_Form;
         }else if(this.state.returned == 2){
             return show_id;
-        }else if(this.state.returned == "in"){
-            return sign_in_Form;
-        }else if(this.state.returned == "up"){
-            return sign_up_Form;
-        }else if(this.state.returned == "image"){
-            return image_test_Form;
         }
     }
 }

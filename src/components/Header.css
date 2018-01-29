@@ -1,24 +1,31 @@
+/* body */
+body {
+    font: 13px/20px 'Helvetica Neue', Helvetica, Arial, sans-serit;
+    color: #333333;
+    background-color: white;
+}
+
+/* top menu */
 .logo {
     height: 2.5rem;
     background-color: white;
-    width: 60%;
+    width: 50%;
     text-align: center;
     line-height: 2.5rem;
     font-size: 1.5rem;
     font-weight: bold;
     display: inline-block;
     margin-top: 0%;
+    color: gray;
 }
-
 .menu {
     background-color: white;
     height: 2.5rem;
 }
-
 .menu-item {
     display: inline-block;
     color: cadetblue;
-    font-size: 1rem;
+    font-size: 0.85rem;
     line-height: 2.5rem;
     width: 10%;
     text-align: center;
@@ -27,19 +34,16 @@
     text-decoration: none;
     margin-top: 0%;
 }
-
 .menu-item:hover {
     background-color: rgb(248, 248, 248);
 }
-
 .menu-item:active, .menu-item:active {
     background-color: aquamarine;
 }
-
 .dropdown-menu-item {
     display: inline-block;
     color: cadetblue;
-    font-size: 1rem;
+    font-size: 0.85rem;
     line-height: 2.5rem;
     width: 10%;
     text-align: center;
@@ -47,11 +51,9 @@
     transition: background-color 0.3s;
     text-decoration: none;
 }
-
 .dropdown-menu-item:hover{
     background-color: rgb(248, 248, 248);
 }
-
 .dropdown-content {
     display: none;
     position: absolute;
@@ -61,7 +63,6 @@
     z-index: 1;
     font-size: 0.7rem;
 }
-
 .dropdown-content div {
     color: rgb(83, 121, 122);
     padding: 5px 12px;
@@ -69,23 +70,133 @@
     display: block;
     text-align: left;
 }
-
 .dropdown-content a:hover {
     background-color: rgb(248, 248, 248);
 }
-
 .dropdown-menu-item:hover .dropdown-content{
     display: block;
 }
 
+/* page numbers  */
 #page-numbers {
     list-style: none;
     display: flex;
 }
-
 #page-numbers > li {
     margin-right: 0.3em;
     color: cadetblue;
     user-select: none;
     cursor: pointer;
+}
+
+/* sign in */
+.signIn {
+    position: relative;
+    margin: 100px auto;
+    width: 280px;
+    padding: 33px 25px 29px;
+    background: white;
+    border-bottom: 1px solid #C4C4C4;
+    border-radius: 5px;
+    -webkit-box-shadow: 0 1px 5px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.25);   
+}
+.signIn::before, .signIn::after {
+    content: '';
+    position: absolute;
+    bottom: 1px;
+    left: 0;
+    right: 0;
+    height: 10px;
+    background: inherit;
+    border-bottom: 1px solid #D2D2D2;
+    border-radius: 4px
+}
+.signIn::after {
+    bottom: 3px;
+    border-color: #DCDCDC;
+}
+input {
+    font-family: inherit;
+    color: inherit;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.signInInput {
+    width: 100%;
+    height: 50px;
+    margin-bottom: 25px;
+    padding: 0 15px 2px;
+    font-size: 17px;
+    background: white;
+    border: 2px solid #EBEBEB;
+    -webkit-box-shadow: inset 0 -2px #EBEBEB;
+    box-shadow: inset 0 -2px #EBEBEB;
+}
+.signInInput:focus {
+    border-color: #62C2E4;
+    outline: none;
+    -webkit-box-shadow: inset 0 -2px #62C2E4;
+    box-shadow: inset 0 -2px #62C2E4;
+}
+.signIn_extra_service{
+    width: 100%;
+    align-content: center;
+    align-items: center;
+    text-align: center;
+}
+.signIn_extra_service_content{
+    display: inline-block;
+    position: relative;
+    margin: 20px auto auto auto;
+    text-align: center;
+}
+.lt-ie9 .signInInput {
+    line-height: 48px;
+}
+.signInButton {
+   position: relative;
+   vertical-align: top;
+   width: 100%;
+   height: 54px;
+   padding: 0;
+   font-size: 22px;
+   color: white;
+   text-align: center;
+   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+   background: rgb(95, 158, 160); /*95 158 160*/
+   border: 0;
+   border-bottom: 2px solid rgb(83, 158, 135);
+   border-radius: 5px;
+   cursor: pointer;
+   -webkit-box-shadow: inset 0 -2px rgb(83, 158, 135);
+   box-shadow: inset 0 -2px rgb(83, 158, 135);
+}
+.signInButton:active {
+   top: 1px;
+   outline: none;
+   -webkit-box-shadow: none;
+   box-shadow: none;
+}
+:-moz-placeholder {
+   color: #AAAAAA;
+   font-weight: 300;
+}
+::-moz-placeholder {
+   color: #AAAAAA;
+   opacity: 1;
+   font-weight: 300;
+}
+::-webkit-input-placeholder {
+   color: #AAAAAA;
+   font-weight: 300;
+}
+:-ms-input-placeholder {
+   color: #AAAAAA;
+   font-weight: 300;
+}
+::-moz-focus-inner {
+   border: 0;
+   padding: 0;
 }

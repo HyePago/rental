@@ -1,0 +1,56 @@
+body {margin-top:20px;
+    margin-left:30px;
+   font-family:맑은 고딕,돋움,굴림;
+   color:#888888;
+   font-size:8pt;
+  }
+table {
+    border-collapse:collapse;
+    font-size:9pt;
+    align-content: center;
+    align-items: center;
+    position: relative;
+    margin: auto auto;
+    text-align: center;
+}
+.out_table{
+    margin-top: 28px;
+}
+select {
+    font-size:8pt;
+    font-family:맑은 고딕,돋움,굴림;
+    height:18px
+}
+option {
+    border:#cccccc solid 1px;
+    font-family:돋움,굴림;
+    color:#888888;
+    font-size:8px;}
+input {height:18px;}
+th,td {padding-left:20px;
+     text-align:left;
+    background-repeat:no-repeat;
+    background-position:left;
+    border-bottom:#eeeeee solid 1px;
+   }
+#pink_line {margin-left:"0";}
+#member_button {margin-top:10px;
+              text-align:center;
+          }
+#mbname,#mbid,#mbpw,#mbpw2,#email_dns,#mbpw3 {width:150px;
+                                            height:18px;
+                                }
+#mbjumin_1,#mbjumin_2,#zip_h_1,#zip_h_2 {width:68px;
+                                       height:18px;
+                            }
+#addr_h1 {width:350px;
+        height:18px;
+     }
+#addr_h2 {width:700px;
+        height:18px;
+     }
+#mbpw2 {width:200px;
+      height:18px;
+    }
+#cel1,#tel_h2_1,#tel_h2_2 {width:68px;}
+#tel_h1 {width:55px;}
