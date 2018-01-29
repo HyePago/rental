@@ -54,6 +54,9 @@ class VehicleInformation extends React.Component {
             upload_more:'',
             result:'',
             sort:'1',
+            search_select: '1',
+            search_text:'',
+            searching: 0,
         }
     }
 
@@ -143,7 +146,11 @@ class VehicleInformation extends React.Component {
     handleClick(e){
         this.setState({currentPage: e.target.id});
 
-        this.submitCarImpormation();
+        if(this.state.searching == 0){
+            this.submitCarImpormation();
+        } else {
+            this.submitGit_Search();
+        }
     }
 
     //change & click
@@ -158,7 +165,11 @@ class VehicleInformation extends React.Component {
     }
     input_car_typeChange(e){
         this.setState({input_car_type:e.target.value});
-        this.submitCarImpormation();
+        if(this.state.searching == 0){
+            this.submitCarImpormation();
+        } else {
+            this.submitGit_Search();
+        }
     }
     car_impormation_click(e){
         this.setState({division_number:e.target.id});
@@ -239,7 +250,17 @@ class VehicleInformation extends React.Component {
     }
     sortChange(e){
         this.setState({sort:e.target.value});
-        this.submitCarImpormation();
+        if(this.state.searching == 0){
+            this.submitCarImpormation();
+        } else {
+            this.submitGit_Search();
+        }
+    }
+    search_selectChange(e){
+        this.setState({search_select:e.target.value});
+    }
+    search_textChange(e){
+        this.setState({search_text:e.target.value});
     }
 
     //update
@@ -326,6 +347,95 @@ class VehicleInformation extends React.Component {
         this.setState({division_number:e.target.id});
 
         this.setCarDelete();
+    }
+
+    //search
+    setSearch(opts){
+        fetch('/search_car_impormation', {
+            method: 'POST',
+            headers: {
+                "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+            },
+            body: "form="+JSON.stringify(opts)
+        })
+        .then((response) => { return response.json(); })
+        .then((json) => { this.setState({result:json.result}); })
+        .then(function(){
+            this.setState({image:[]});
+            this.setState({car_number:[]});
+            this.setState({car_name:[]});
+            this.setState({color:[]});
+            this.setState({car_type:[]});
+            this.setState({fuel:[]});
+            this.setState({distance:[]});
+            this.setState({area:[]});
+            this.setState({point:[]});
+            this.setState({ider_repair:[]});
+            this.setState({six_hour:[]});
+            this.setState({ten_hour:[]});
+            this.setState({twelve_hour:[]});
+            this.setState({two_days:[]});
+            this.setState({four_days:[]});
+            this.setState({six_days:[]});
+            this.setState({more:[]});
+            this.setState({id:[]});
+
+            for(var count=0; this.state.result[count] != null; count++){
+                this.setState({image:this.state.image.concat(this.state.result[count]["image"])});
+                this.setState({car_number:this.state.car_number.concat(this.state.result[count]["car_number"])});
+                this.setState({car_name:this.state.car_name.concat(this.state.result[count]["car_name"])});
+                this.setState({color:this.state.color.concat(this.state.result[count]["color"])});
+                this.setState({car_type:this.state.car_type.concat(this.state.result[count]["car_type"])});
+                this.setState({fuel:this.state.fuel.concat(this.state.result[count]["fuel"])});
+                this.setState({few:this.state.few.concat(this.state.result[count]["few"])});
+                this.setState({distance:this.state.distance.concat(this.state.result[count]["distance"])});
+                this.setState({area:this.state.area.concat(this.state.result[count]["area"])});
+                this.setState({point:this.state.point.concat(this.state.result[count]["point"])});
+                this.setState({ider_repair:this.state.ider_repair.concat(this.state.result[count]["ider_repair"])});
+                this.setState({six_hour:this.state.six_hour.concat(this.state.result[count]["six_hour"])});
+                this.setState({ten_hour:this.state.ten_hour.concat(this.state.result[count]["ten_hour"])});
+                this.setState({twelve_hour:this.state.twelve_hour.concat(this.state.result[count]["twelve_hour"])});
+                this.setState({two_days:this.state.two_days.concat(this.state.result[count]["two_days"])});
+                this.setState({four_days:this.state.four_days.concat(this.state.result[count]["four_days"])});
+                this.setState({six_days:this.state.six_days.concat(this.state.result[count]["six_days"])});
+                this.setState({more:this.state.more.concat(this.state.result[count]["more"])});
+                this.setState({id:this.state.id.concat(this.state.result[count]["id"])});
+            }
+
+            this.setState({count: count});
+            this.setState({total_page: this.state.result[0]["total_count"]});
+        }.bind(this))
+        .then(function(){
+            if(this.state.test_number==0){
+                this.setState({test_number:1});
+                this.submitGit_Search()
+            } else {
+                this.setState({test_number:0});
+            }
+        }.bind(this))
+    }
+
+    submitGit_Search(){
+        this.setSearch({
+            currentPage:this.state.currentPage,
+            input_car_type: this.state.input_car_type,
+            sort:this.state.sort,
+            search_select:this.state.search_select,
+            search_text:this.state.search_text,
+            test_number:this.state.test_number,
+        })        
+    }
+
+    click_search_button(){
+        this.setState({currentPage:''});
+
+        if(this.state.search_text != "" && this.state.search_text != ""){
+            this.setState({searching: 1});
+            this.submitGit_Search();
+        } else {
+            this.setState({searching: 0});
+            this.submitCarImpormation();
+        }
     }
 
     render(){
@@ -461,6 +571,16 @@ class VehicleInformation extends React.Component {
                 <ul id="page-numbers">
                     {renderPageNumbers}
                 </ul>
+                <br />
+                <select onChange={this.search_selectChange.bind(this)}>
+                    <option value={1}> 차량 번호 </option>
+                    <option value={2}> 차량 이름 </option>
+                    <option value={3}> 연료 </option>
+                    <option value={4}> 색상 </option>
+                    <option value={5}> N인승 </option>
+                </select>
+                <input type="text" onChange={this.search_textChange.bind(this)}/>
+                <button onClick={this.click_search_button.bind(this)}> 검색 </button>
             </div>
         )
         let update_car = (

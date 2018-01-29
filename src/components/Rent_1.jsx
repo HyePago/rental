@@ -451,6 +451,7 @@ class Rent_1 extends React.Component {
             kor_navigation: this.state.kor_navigation,
             eng_navigation: this.state.eng_navigation,
             cdw: this.state.cdw,
+            usepoint: this.state.usepoint,
         })
     }
 
@@ -464,6 +465,8 @@ class Rent_1 extends React.Component {
         })
         .then((response) => { return response.json(); })
         .then((json) => { this.setState({result:json.result}); })
+        .then(function(){
+        }.bind(this))
     }
 
     submitReservationNumber(){

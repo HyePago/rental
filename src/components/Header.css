@@ -1,66 +1,69 @@
 .logo {
-    height: 3.5rem;
-    background-color: #212529;
-    width: 100vw;
-    line-height: 3.5rem;
-    color: white;
+    height: 2.5rem;
+    background-color: white;
+    width: 60%;
+    text-align: center;
+    line-height: 2.5rem;
     font-size: 1.5rem;
     font-weight: bold;
-    text-align: center;
+    display: inline-block;
+    margin-top: 0%;
 }
 
 .menu {
-    background-color: #343a40;
-    height: 3.5rem;
+    background-color: white;
+    height: 2.5rem;
 }
 
 .menu-item {
     display: inline-block;
-    color: white;
+    color: cadetblue;
     font-size: 1rem;
-    line-height: 3.5rem;
-    width: 20%;
+    line-height: 2.5rem;
+    width: 10%;
     text-align: center;
     cursor: pointer;
     transition: background-color 0.3s;
     text-decoration: none;
+    margin-top: 0%;
 }
 
 .menu-item:hover {
-    background-color: #495057;
+    background-color: rgb(248, 248, 248);
 }
 
-.menu-item:active, .menu-item.active {
-    background-color: #1862ab;
+.menu-item:active, .menu-item:active {
+    background-color: aquamarine;
 }
- 
+
 .dropdown-menu-item {
     display: inline-block;
-    color: white;
+    color: cadetblue;
     font-size: 1rem;
-    line-height: 3.5rem;
-    width: 20%;
+    line-height: 2.5rem;
+    width: 10%;
     text-align: center;
     cursor: pointer;
     transition: background-color 0.3s;
     text-decoration: none;
 }
 
-.dropdown-menu-item:hover {
-    background-color: #495057
+.dropdown-menu-item:hover{
+    background-color: rgb(248, 248, 248);
 }
 
-.dropdown-content{
+.dropdown-content {
     display: none;
     position: absolute;
-    background-color: #f9f9f9;
-    width: 20%;
+    background-color: white;
+    width: 10%;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     z-index: 1;
+    font-size: 0.7rem;
 }
 
 .dropdown-content div {
-    color: black;
+    color: rgb(83, 121, 122);
     padding: 5px 12px;
     text-decoration: none;
     display: block;
@@ -68,21 +71,21 @@
 }
 
 .dropdown-content a:hover {
-    background-color: #f1f1f1
+    background-color: rgb(248, 248, 248);
 }
 
-.dropdown-menu-item:hover .dropdown-content {
+.dropdown-menu-item:hover .dropdown-content{
     display: block;
 }
 
-#page-numbers {    
+#page-numbers {
     list-style: none;
     display: flex;
 }
-  
+
 #page-numbers > li {
     margin-right: 0.3em;
-    color: blue;
+    color: cadetblue;
     user-select: none;
     cursor: pointer;
 }

@@ -1,14 +1,11 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import cookie from "react-cookies"
 
-import App from './App'
-import ImageTest from './ImageTest.jsx'
-import SignUpForm from './SignUpForm.jsx'
+import Header from './Header.js'
 import FindId from './FindId.jsx'
 import FindPwd from './FindPwd.jsx'
-import Admin from './Admin.jsx'
 
-import cookie from "react-cookies"
 
 import './Header.css'
 
@@ -101,15 +98,6 @@ class SignInForm extends React.Component {
         });
     }
 
-    click_sign_up(){
-        this.setState({logined:"up"});
-    }
-    click_ImageTest(){
-        this.setState({logined:"image"});
-    }
-    click_home(){
-        this.setState({logined:"home"});
-    }
     click_findId(){
         this.setState({logined:"find_id"});
     }
@@ -120,15 +108,7 @@ class SignInForm extends React.Component {
     render(){
         let login_Form = (
             <div>
-                <div className="logo">
-                    렌터카
-                </div>
-                <div className="menu">
-                    <div className="menu-item" onClick={this.click_home.bind(this)}> 홈 </div>                                    
-                    <div className="menu-item"> 로그인 </div>
-                    <div className="menu-item" onClick={this.click_sign_up.bind(this)}> 회원가입 </div>
-                    <div className="menu-item" onClick={this.click_ImageTest.bind(this)}> 사진테스트 </div>
-                </div>
+                <Header />
                 <p>
                     <label>아이디</label>
                     <input type="text" name="username" placeholder="id" onChange={this.idChange.bind(this)}></input>
@@ -143,17 +123,6 @@ class SignInForm extends React.Component {
             </div>
         )
 
-        let logined_Form = (
-            <App />
-        )
-        let ImageTest_Form = (
-            <ImageTest />
-        )
-        let SignUp_Form = (
-            <div>
-                <SignUpForm />
-            </div>
-        )
         let find_id_Form = (
             <div>
                 <FindId />
@@ -164,29 +133,15 @@ class SignInForm extends React.Component {
                 <FindPwd />
             </div>
         )
-        let admin_Form = (
-            <div>
-                <Admin />
-            </div>
-        )
         
-        if(this.state.logined == "in"){
-            return login_Form;
-        }else if(this.state.logined=="home"){
-            return logined_Form;
-        }else if(this.state.logined=="image"){
-            return ImageTest_Form;
-        }else if(this.state.logined=="find_id"){
+        if(this.state.logined=="find_id"){
             return find_id_Form;
         }else if(this.state.logined=="find_pwd"){
             return find_pwd_Form;
-        }else if(this.state.logined=="admin"){
-            return admin_Form;
         }else {
-            return SignUp_Form;
+            return login_Form;
         }
     }
 }
 
-//module.exports = SignInForm;
 export default SignInForm;

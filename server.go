@@ -13,6 +13,7 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 	"log"
 	"strings"
+	"reflect"
 )
 
 type User struct {
@@ -111,10 +112,10 @@ type Feedback struct {
 	timestamp string
 }
 
-// func FloatToString(input_num float64) string {
-//     // to convert a float number to a string
-//     return strconv.FormatFloat(input_num, 'f', 6, 64)
-// } 
+	func FloatToString(input_num float64) string {
+		// to convert a float number to a string
+		return strconv.FormatFloat(input_num, 'f', 6, 64)
+	} 
 
  func send(email string, body string){
 	 from := "hyepago@gmail.com"
@@ -786,6 +787,7 @@ func main() {
 		kor_navigation := raw["kor_navigation"]
 		eng_navigation := raw["eng_navigation"]
 		cdw := raw["cdw"]
+		usepoint := raw["usepoint"]
 
 		var point int
 
@@ -809,7 +811,19 @@ func main() {
 
 		cost_number, err := strconv.Atoi(cost.(string))
 
-		point = point + (cost_number/100)
+		if usepoint != "" {
+			usepoint_int, err := strconv.Atoi(usepoint.(string))
+			point = point + (cost_number/100) - usepoint_int
+
+			if err != nil {
+				log.Fatal(err)
+			}
+		} else {
+			point = point + (cost_number/100)
+		}
+
+		log.Println("point = ", point)
+
 		_, err = db.Exec("UPDATE users SET point = ? where email = ?", point, email)
 
 		if err != nil {
@@ -837,7 +851,7 @@ func main() {
 		send(email, msg)
 
 		c.JSON(200, gin.H {
-			"result": true,
+			"result": "true",
 		})
 	})
 
@@ -1551,6 +1565,179 @@ func main() {
 
 			count++
 			index++
+
+			result[0]["total_count"] = strconv.Itoa(count)
+		}
+
+		c.JSON(200, gin.H{
+			"result": result,
+		})
+	})
+
+	router.POST("/search_car_impormation", func(c *gin.Context){
+		form := c.PostForm("form")
+
+		var raw map[string]interface{}
+		json.Unmarshal([]byte(form), &raw)
+
+		currentPage := raw["currentPage"]
+		input_car_type := raw["input_car_type"]
+		sort := raw["sort"]
+		search_select := raw["search_select"]
+		search_text := raw["search_text"]
+
+		var search_text_string string
+
+		log.Println("search_text type of = ", reflect.TypeOf(search_text))
+
+		type_search_text := reflect.TypeOf(search_text)
+
+		if type_search_text.Kind() == reflect.String {
+			search_text_string = search_text.(string)
+		} else {
+			search_text_string = FloatToString(search_text.(float64))
+		}
+
+		// if reflect.TypeOf(search_text) == (string) {
+		// 	search_text_string = search_text.(string)
+		// } else {
+		// 	search_text_string = FloatToString(search_text.(float64))
+		// }
+
+		var like_text = "%" + search_text_string + "%"
+		count := 0
+		index := 0
+		var id string
+		var result map[int]map[string]string = map[int]map[string]string{}
+		var impormation Impormation_car
+		var carprice_id string
+
+		rows, err := db.Query("SELECT id FROM car ORDER BY registration_date DESC")
+
+		if sort == "1" {
+			rows, err = db.Query("SELECT id FROM car ORDER BY registration_date")
+		} else {
+			rows, err = db.Query("SELECT id FROM car ORDER BY registration_date DESC")
+		}
+
+		if err != nil {
+			log.Fatal(err)
+		}
+		defer rows.Close()
+
+		for rows.Next(){
+			err := rows.Scan(&id)
+
+			result[index] = map[string]string{}
+
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			var startPage int
+
+			if currentPage == "" {
+				startPage = 0
+			} else {
+				startPage, err = strconv.Atoi(currentPage.(string))
+			}
+
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			if count < ((startPage) - 1) * 5 {
+				count++
+				continue
+			}
+
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			if input_car_type == "" || input_car_type == "0" {
+				input_car_type = 0
+			}
+			
+			if input_car_type == 0 {
+				switch{
+				case search_select == "1":
+					err = db.QueryRow("SELECT image, available, car_number, color, type, fuel, few, distance, area, point, ider_repair, carprice_id, name FROM car WHERE id = ? && car_number LIKE ?", id, like_text).Scan(&impormation.image, &impormation.available, &impormation.car_number, &impormation.color, &impormation.car_type, &impormation.fuel, &impormation.few, &impormation.distance, &impormation.area, &impormation.point, &impormation.ider_repair, &carprice_id, &impormation.car_name)
+				case search_select == "2":
+					err = db.QueryRow("SELECT image, available, car_number, color, type, fuel, few, distance, area, point, ider_repair, carprice_id, name FROM car WHERE id = ? && name LIKE ?", id, like_text).Scan(&impormation.image, &impormation.available, &impormation.car_number, &impormation.color, &impormation.car_type, &impormation.fuel, &impormation.few, &impormation.distance, &impormation.area, &impormation.point, &impormation.ider_repair, &carprice_id, &impormation.car_name)
+				case search_select == "3":
+					err = db.QueryRow("SELECT image, available, car_number, color, type, fuel, few, distance, area, point, ider_repair, carprice_id, name FROM car WHERE id = ? && fuel LIKE ?", id, like_text).Scan(&impormation.image, &impormation.available, &impormation.car_number, &impormation.color, &impormation.car_type, &impormation.fuel, &impormation.few, &impormation.distance, &impormation.area, &impormation.point, &impormation.ider_repair, &carprice_id, &impormation.car_name)
+				case search_select == "4":
+					err = db.QueryRow("SELECT image, available, car_number, color, type, fuel, few, distance, area, point, ider_repair, carprice_id, name FROM car WHERE id = ? &&  color LIKE ?", id, like_text).Scan(&impormation.image, &impormation.available, &impormation.car_number, &impormation.color, &impormation.car_type, &impormation.fuel, &impormation.few, &impormation.distance, &impormation.area, &impormation.point, &impormation.ider_repair, &carprice_id, &impormation.car_name)
+				case search_select == "5":
+					err = db.QueryRow("SELECT image, available, car_number, color, type, fuel, few, distance, area, point, ider_repair, carprice_id, name FROM car WHERE id = ? && few = ?", id, search_text).Scan(&impormation.image, &impormation.available, &impormation.car_number, &impormation.color, &impormation.car_type, &impormation.fuel, &impormation.few, &impormation.distance, &impormation.area, &impormation.point, &impormation.ider_repair, &carprice_id, &impormation.car_name)
+				}
+			} else {
+				switch{
+				case search_select == "1":
+					err = db.QueryRow("SELECT image, available, car_number, color, type, fuel, few, distance, area, point, ider_repair, carprice_id, name FROM car WHERE id = ? && car_number LIKE ? && type = ?", id, like_text, input_car_type).Scan(&impormation.image, &impormation.available, &impormation.car_number, &impormation.color, &impormation.car_type, &impormation.fuel, &impormation.few, &impormation.distance, &impormation.area, &impormation.point, &impormation.ider_repair, &carprice_id, &impormation.car_name)
+				case search_select == "2":
+					err = db.QueryRow("SELECT image, available, car_number, color, type, fuel, few, distance, area, point, ider_repair, carprice_id, name FROM car WHERE id = ? && name LIKE ? && type = ?", id, like_text, input_car_type).Scan(&impormation.image, &impormation.available, &impormation.car_number, &impormation.color, &impormation.car_type, &impormation.fuel, &impormation.few, &impormation.distance, &impormation.area, &impormation.point, &impormation.ider_repair, &carprice_id, &impormation.car_name)
+				case search_select == "3":
+					err = db.QueryRow("SELECT image, available, car_number, color, type, fuel, few, distance, area, point, ider_repair, carprice_id, name FROM car WHERE id = ? && fuel LIKE ? && type = ?", id, like_text, input_car_type).Scan(&impormation.image, &impormation.available, &impormation.car_number, &impormation.color, &impormation.car_type, &impormation.fuel, &impormation.few, &impormation.distance, &impormation.area, &impormation.point, &impormation.ider_repair, &carprice_id, &impormation.car_name)
+				case search_select == "4":
+					err = db.QueryRow("SELECT image, available, car_number, color, type, fuel, few, distance, area, point, ider_repair, carprice_id, name FROM car WHERE id = ? &&  color LIKE ? && type = ?", id, like_text, input_car_type).Scan(&impormation.image, &impormation.available, &impormation.car_number, &impormation.color, &impormation.car_type, &impormation.fuel, &impormation.few, &impormation.distance, &impormation.area, &impormation.point, &impormation.ider_repair, &carprice_id, &impormation.car_name)
+				case search_select == "5":
+					err = db.QueryRow("SELECT image, available, car_number, color, type, fuel, few, distance, area, point, ider_repair, carprice_id, name FROM car WHERE id = ? && few = ? && type = ?", id, search_text, input_car_type).Scan(&impormation.image, &impormation.available, &impormation.car_number, &impormation.color, &impormation.car_type, &impormation.fuel, &impormation.few, &impormation.distance, &impormation.area, &impormation.point, &impormation.ider_repair, &carprice_id, &impormation.car_name)
+				}
+			}
+			
+			switch{
+			case err == sql.ErrNoRows:
+				log.Println("Not Found Rows")
+				continue
+			case err != nil:
+				log.Fatal(err)
+				return
+			default:
+				err = db.QueryRow("SELECT six_hour, ten_hour, twelve, two_days, four_days, six_days, more FROM car_price WHERE id = ?", carprice_id).Scan(&impormation.six_hour, &impormation.ten_hour, &impormation.twelve_hour, &impormation.two_days, &impormation.four_days, &impormation.six_days, &impormation.more)
+			
+				switch{
+				case err == sql.ErrNoRows:
+					log.Println("Not Found car_price, as id ", carprice_id)
+				case err != nil:
+					log.Fatal(err)
+					return
+				}
+
+				err = db.QueryRow("SELECT changed_filename FROM image WHERE id = ?", impormation.image).Scan(&impormation.image)
+
+				switch {
+				case err == sql.ErrNoRows:
+					return
+				case err != nil:
+					log.Fatal(err)
+					return
+				}
+
+				result[index]["id"] = id
+				result[index]["image"] = impormation.image
+				result[index]["car_number"] = impormation.car_number
+				result[index]["car_name"] = impormation.car_name
+				result[index]["color"] = impormation.color
+				result[index]["car_type"] = impormation.car_type
+				result[index]["fuel"] = impormation.fuel
+				result[index]["few"] = impormation.few
+				result[index]["distance"] = impormation.distance
+				result[index]["area"] = impormation.area
+				result[index]["point"] = impormation.point
+				result[index]["ider_repair"] = impormation.ider_repair
+				result[index]["six_hour"] = impormation.six_hour
+				result[index]["ten_hour"] = impormation.ten_hour
+				result[index]["twelve_hour"] = impormation.twelve_hour
+				result[index]["two_days"] = impormation.two_days
+				result[index]["four_days"] = impormation.four_days
+				result[index]["six_days"] = impormation.six_days
+				result[index]["more"] = impormation.more
+
+				count++
+				index++
+			}
 
 			result[0]["total_count"] = strconv.Itoa(count)
 		}
