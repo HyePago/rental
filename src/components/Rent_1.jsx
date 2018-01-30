@@ -556,17 +556,6 @@ class Rent_1 extends React.Component {
 
         let first_Form = (
             <div>
-                <div>
-                    <div className="logo">
-                        렌터카
-                    </div>
-                    <div className="menu">
-                        <div className="menu-item" onClick={this.click_home.bind(this)}> 홈 </div>                                    
-                        <div className="menu-item"> 렌터카 예약 </div>
-                        <div className="menu-item" onClick={this.log_out.bind(this)}> 로그아웃 </div>
-                        <div className="menu-item" onClick={this.click_reservation.bind(this)}> 예약 및 이용내역 </div>
-                    </div>
-                </div>
                 <label> 지역 </label>
                 <select onChange={this.areaChange.bind(this)}>
                     <option id="1" value="inland"> 내륙 </option>
@@ -603,17 +592,6 @@ class Rent_1 extends React.Component {
         )
         let second_Form = (
             <div>
-                <div>
-                    <div className="logo">
-                        렌터카
-                    </div>
-                    <div className="menu">
-                        <div className="menu-item" onClick={this.click_home.bind(this)}> 홈 </div>                                    
-                        <div className="menu-item"> 렌터카 예약 </div>
-                        <div className="menu-item" onClick={this.log_out.bind(this)}> 로그아웃 </div>
-                        <div className="menu-item" onClick={this.click_reservation.bind(this)}> 예약 및 이용내역 </div>
-                    </div>
-                </div>
                 <h1>차량 선택 화면</h1>
                 <br />
                 <input type="radio" name="radio" value="0" onChange={this.car_typeChange.bind(this)} checked={(this.state.car_type=='' || this.state.car_type=='0')?true:false}/>
@@ -736,17 +714,6 @@ class Rent_1 extends React.Component {
 
         let third_Form = (
             <div>
-                <div>
-                    <div className="logo">
-                        렌터카
-                    </div>
-                    <div className="menu">
-                        <div className="menu-item" onClick={this.click_home.bind(this)}> 홈 </div>                                    
-                        <div className="menu-item"> 렌터카 예약 </div>
-                        <div className="menu-item" onClick={this.log_out.bind(this)}> 로그아웃 </div>
-                        <div className="menu-item" onClick={this.click_reservation.bind(this)}> 예약 및 이용내역 </div>
-                    </div>
-                </div>
                 <img src={this.state.image[this.state.division_number]} width="350" height="250" onClick = {this.testdivison_number.bind(this)}/>
                 <br />
                 <span> 자동차 명 :  {this.state.car_name[this.state.division_number]} </span>
@@ -795,17 +762,6 @@ class Rent_1 extends React.Component {
         )
         let fourth_Form = (
             <div>
-                <div>
-                    <div className="logo">
-                        렌터카
-                    </div>
-                    <div className="menu">
-                        <div className="menu-item" onClick={this.click_home.bind(this)}> 홈 </div>                                    
-                        <div className="menu-item"> 렌터카 예약 </div>
-                        <div className="menu-item" onClick={this.log_out.bind(this)}> 로그아웃 </div>
-                        <div className="menu-item" onClick={this.click_reservation.bind(this)}> 예약 및 이용내역 </div>
-                    </div>
-                </div>
                 <span> 개인정보 </span>
                 <br />
                 <span> 이름 </span>
@@ -856,17 +812,6 @@ class Rent_1 extends React.Component {
         )
         let last_Form = (
             <div>
-                <div>
-                    <div className="logo">
-                        렌터카
-                    </div>
-                    <div className="menu">
-                        <div className="menu-item" onClick={this.click_home.bind(this)}> 홈 </div>                                    
-                        <div className="menu-item"> 렌터카 예약 </div>
-                        <div className="menu-item" onClick={this.log_out.bind(this)}> 로그아웃 </div>
-                        <div className="menu-item" onClick={this.click_reservation.bind(this)}> 예약 및 이용내역 </div>
-                    </div>
-                </div>
                 <span> 예약번호 : {this.state.reservation_number} </span>
                 <br />
                 회원님의 메일로 예약번호를 전송하였습니다.

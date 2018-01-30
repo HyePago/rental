@@ -56,7 +56,7 @@ class Header extends React.Component {
                     <Link to="/"><div className="logo"> 로고 </div></Link>
                     <Link to="/reservation_member"><div className="menu-item"> 예약 및 이용 내역 </div> </Link>
                     <div className="menu-item" onClick={this.log_out.bind(this)}> 로그아웃 </div>
-                    <div className="menu-item" onClick={this.click_rent.bind(this)}> 렌터카 예약 </div>
+                    <Link to="/search_rent"><div className="menu-item"> 렌터카 예약 </div></Link>
                     <div className="dropdown-menu-item"> 
                             고객센터
                         <div className="dropdown-content">

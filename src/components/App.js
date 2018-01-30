@@ -11,6 +11,8 @@ import FindId from './FindId.jsx'
 import FindPwd from './FindPwd.jsx'
 import Non_Member_reservation from './Non_Member_reservation.jsx'
 import Reservation_history from './Reservation_history.jsx'
+import Main from './Main.jsx'
+import Rent_1 from './Rent_1.jsx'
 import history from './history';
 
 class App extends React.Component {
@@ -22,13 +24,14 @@ class App extends React.Component {
                 <div>
                     <main>
                         <Switch>
-                            <Route exact path='/' />
+                            <Route exact path='/' component={Main}/>
                             <Route path='/signin' component={SignInForm} />
                             <Route path='/signup' component={SignUpForm} />
                             <Route path='/find_id' component={FindId} />
                             <Route path='/find_password' component={FindPwd} />
                             <Route path='/reservation_non_member' component={Non_Member_reservation} />
                             <Route path='/reservation_member' component={Reservation_history} />
+                            <Route path='/search_rent' component={Rent_1} />
                         </Switch>   
                     </main>
                 </div>
