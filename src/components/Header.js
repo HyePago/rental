@@ -23,9 +23,6 @@ class Header extends React.Component {
         }
     }
 
-    click_logo(){
-        window.location.reload();
-    }
     click_member_reservation(){
         this.setState({returned: 'reservation'});
     }
@@ -43,13 +40,7 @@ class Header extends React.Component {
         cookie.remove('username', {path:'/'});
         cookie.remove('reserves', {path:'/'});
         cookie.remove('email', {path:'/'});
-        window.location.reload();
-    }
-    click_sign_in(){
-        this.setState({returned:'si'});
-    }
-    click_sign_up(){
-        this.setState({returned:'su'});
+        window.location.reload();7
     }
     click_nonmember_service_center(){
         this.setState({returned:'ns'});
@@ -62,7 +53,7 @@ class Header extends React.Component {
         let member_top_Form = (
             <div>
                 <div className="menu">
-                    <div className="logo" onClick={this.click_logo.bind(this)}> 로고 </div>
+                    <Link to="/"><div className="logo"> 로고 </div></Link>
                     <div className="menu-item" onClick={this.click_member_reservation.bind(this)}> 예약 및 이용 내역 </div>
                     <div className="menu-item" onClick={this.log_out.bind(this)}> 로그아웃 </div>
                     <div className="menu-item" onClick={this.click_rent.bind(this)}> 렌터카 예약 </div>
@@ -81,9 +72,9 @@ class Header extends React.Component {
             <div>
                 <div className="menu">
                     <Link to="/"><div className="logo"> 로고 </div></Link>
-                    <div className="menu-item"> 예약 및 이용내역 </div>
-                    <Link to="/api/v1/signin"> <div className="menu-item"> 로그인 </div> </Link>
-                    <Link to="/api/v1/signup"> <div className="menu-item"> 회원가입 </div> </Link>
+                    <Link to="/reservation_non_member"><div className="menu-item"> 예약 및 이용내역 </div></Link>
+                    <Link to="/signin"> <div className="menu-item"> 로그인 </div> </Link>
+                    <Link to="/signup"> <div className="menu-item"> 회원가입 </div> </Link>
                     <div className="dropdown-menu-item"> 
                             고객센터
                         <div className="dropdown-content">
@@ -107,12 +98,6 @@ class Header extends React.Component {
         let Member_Feedback_Form = (
             <Member_feedback />
         )
-        let Sign_In_Form = (
-            <SignInForm />
-        )
-        let Sign_Up_Form = (
-            <SignUpForm />
-        )
         let NonMember_Service_Center_Form = (
             <Non_Member_ServiceCenter />
         )
@@ -128,10 +113,6 @@ class Header extends React.Component {
             return Member_Service_Center_Form;
         } else if(this.state.returned == 'mf'){
             return Member_Feedback_Form;
-        } else if(this.state.returned == 'si'){
-            return Sign_In_Form;
-        } else if(this.state.returned == 'su'){
-            return Sign_Up_Form;
         } else if(this.state.returned == 'ns'){
             return NonMember_Service_Center_Form;
         } else if(this.state.returned == 'nf'){

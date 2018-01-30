@@ -1,13 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Link } from 'react-router'
-import { Switch, Route } from 'react-router-dom'
+//import { Link, Switch } from 'react-router'
+// import { Switch, Route } from 'react-router-dom'
+import { Router, Route, Switch } from 'react-router-dom';
 
 import Header from './Header.js'
 import SignInForm from './SignInForm.jsx'
 import SignUpForm from './SignUpForm.jsx'
 import FindId from './FindId.jsx'
 import FindPwd from './FindPwd.jsx'
+import Non_Member_reservation from './Non_Member_reservation.jsx'
+import history from './history';
 
 class App extends React.Component {
 
@@ -19,10 +22,11 @@ class App extends React.Component {
                     <main>
                         <Switch>
                             <Route exact path='/' />
-                            <Route path='/api/v1/signin' component={SignInForm} />
-                            <Route path='/api/v1/signup' component={SignUpForm} />
-                            <Route path='/api/v1/find_id' component={FindId} />
-                            <Route path='api/vi/find_password' component={FindPwd} />
+                            <Route path='/signin' component={SignInForm} />
+                            <Route path='/signup' component={SignUpForm} />
+                            <Route path='/find_id' component={FindId} />
+                            <Route path='/find_password' component={FindPwd} />
+                            <Route path='/reservation_non_member' component={Non_Member_reservation} />
                         </Switch>   
                     </main>
                 </div>

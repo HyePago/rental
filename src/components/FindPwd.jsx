@@ -180,15 +180,6 @@ class FindPwd extends React.Component {
     render(){
         let find_pwd_Form = (
             <div>
-                <div className="logo">
-                    렌트카
-                </div>
-                <div className="menu">
-                    <div className="menu-item" onClick={this.click_home.bind(this)}> 홈 </div>                                    
-                    <div className="menu-item" onClick={this.click_sign_in.bind(this)}> 로그인 </div>
-                    <div className="menu-item" onClick={this.click_sign_up.bind(this)}> 회원가입 </div>
-                    <div className="menu-item" onClick={this.click_ImageTest.bind(this)}> 사진테스트 </div>
-                </div>
                 <table>
                     <tbody>
                         <tr>

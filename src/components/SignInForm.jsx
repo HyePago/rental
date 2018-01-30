@@ -8,6 +8,8 @@ import Header from './Header.js'
 import FindId from './FindId.jsx'
 import FindPwd from './FindPwd.jsx'
 
+import history from './history';
+
 import './Header.css'
 
 class SignInForm extends React.Component {
@@ -37,6 +39,10 @@ class SignInForm extends React.Component {
     }
     passwordChange(e){
         this.setState({password:e.target.value});
+    }
+
+    home_go(){
+        document.location.href = "/";
     }
 
     setSignIn(opts){
@@ -86,8 +92,9 @@ class SignInForm extends React.Component {
                 cookie.save('license_number', this.state.license_number, {path: '/'});
                 cookie.save('date_if_issue', this.state.date_if_issue, {path: '/'});
                 cookie.save('aptitude_test', this.state.aptitude_test, {path: '/'});
-
-                window.location.reload();
+                
+                document.location.href = "/";
+               // this.home_go();
             }
         }.bind(this));
     }
@@ -112,11 +119,12 @@ class SignInForm extends React.Component {
                 <form className="signIn" id="signinForm">
                     <input type="text" className="signInInput" placeholder="username" autoFocus required onChange={this.idChange.bind(this)} />
                     <input type="password" className="signInInput" placeholder="password" required onChange={this.passwordChange.bind(this)}/>
-                    <button className="signInButton" onClick={this.submitGit.bind(this)}> Log In </button>
+                    <button className="signInButton" onClick={this.submitGit.bind(this)}>Log In</button>
+                    {/* <Link onClick={this.submitGit.bind(this)} to="/"><button className="signInButton" >Log In</button></Link> */}
                     <div className="signIn_extra_service">
-                        <Link to="/api/v1/find_id"><div className="signIn_extra_service_content"> 아이디 찾기 </div></Link>
+                        <Link to="/find_id"><div className="signIn_extra_service_content"> 아이디 찾기 </div></Link>
                         &nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;
-                        <Link to="/api/vi/find_password"><div className="signIn_extra_service_content"> 비밀번호 찾기 </div></Link>
+                        <Link to="/find_password"><div className="signIn_extra_service_content"> 비밀번호 찾기 </div></Link>
                     </div>
                 </form>
             </div>

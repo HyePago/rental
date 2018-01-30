@@ -9,7 +9,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 //import { Router, Route, browserHistory, IndexRoute } from 'react-router';
-import { Switch, BrowserRouter, Route } from 'react-router-dom'
+//import { Switch, BrowserRouter, Route } from 'react-router-dom'
+
+import { Router, Route } from 'react-router'
+import createBrowserHistory from 'history/createBrowserHistory'
+const history = createBrowserHistory()
 
 import App from './components/App';
 import SignUpForm from './components/SignUpForm.jsx'
@@ -27,7 +31,7 @@ import Non_Member_feedback from './components/Non_Member_feedback.jsx'
 //  </Router>, document.getElementById('root'));
 
 ReactDOM.render((
-    <BrowserRouter>
+    <Router history={history}>
         <App />
-    </BrowserRouter>
+    </Router>
 ), document.getElementById('root'));

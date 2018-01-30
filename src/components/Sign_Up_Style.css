@@ -28,29 +28,39 @@ option {
     font-size:8px;}
 input {height:18px;}
 th,td {padding-left:20px;
-     text-align:left;
+    text-align:left;
     background-repeat:no-repeat;
     background-position:left;
     border-bottom:#eeeeee solid 1px;
-   }
+}
 #pink_line {margin-left:"0";}
-#member_button {margin-top:10px;
-              text-align:center;
-          }
-#mbname,#mbid,#mbpw,#mbpw2,#email_dns,#mbpw3 {width:150px;
-                                            height:18px;
-                                }
-#mbjumin_1,#mbjumin_2,#zip_h_1,#zip_h_2 {width:68px;
-                                       height:18px;
-                            }
-#addr_h1 {width:350px;
-        height:18px;
-     }
-#addr_h2 {width:700px;
-        height:18px;
-     }
-#mbpw2 {width:200px;
-      height:18px;
-    }
-#cel1,#tel_h2_1,#tel_h2_2 {width:68px;}
-#tel_h1 {width:55px;}
+#member_button {
+    margin-top:10px;
+    text-align:center;
+}
+#mbname,#mbid,#mbpw,#mbpw2,#email_dns,#mbpw3 {
+    width:150px;
+    height:18px;
+}
+#mbjumin_1,#mbjumin_2,#zip_h_1,#zip_h_2 {
+    width:68px;
+    height:18px;
+}
+#addr_h1 {
+    width:350px;
+    height:18px;
+}
+#addr_h2 {
+    width:700px;
+    height:18px;
+}
+#mbpw2 {
+    width:200px;
+    height:18px;
+}
+#cel1,#tel_h2_1,#tel_h2_2 {
+    width:68px;
+}
+#tel_h1 {
+    width:55px;
+}
