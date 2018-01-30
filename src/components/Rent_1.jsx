@@ -497,11 +497,6 @@ class Rent_1 extends React.Component {
             return;
         }
 
-        if(parseInt(this.state.rental_date) > (parseInt(this.state.date) + 60)){
-            alert("대여일자는 현재일로부터 60일 이내에만 가능합니다.");
-            return;
-        }
-
         if((parseInt(this.state.rental_date) < parseInt(this.state.date))|| ((parseInt(this.state.rental_date) == parseInt(this.state.date)) && ((parseInt(this.state.rental_time) - parseInt(this.state.time)) < 0))){
             alert("지나간 날에는 대여할 수 없습니다.");
             return;

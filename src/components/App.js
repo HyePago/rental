@@ -10,6 +10,7 @@ import SignUpForm from './SignUpForm.jsx'
 import FindId from './FindId.jsx'
 import FindPwd from './FindPwd.jsx'
 import Non_Member_reservation from './Non_Member_reservation.jsx'
+import Reservation_history from './Reservation_history.jsx'
 import history from './history';
 
 class App extends React.Component {
@@ -27,6 +28,7 @@ class App extends React.Component {
                             <Route path='/find_id' component={FindId} />
                             <Route path='/find_password' component={FindPwd} />
                             <Route path='/reservation_non_member' component={Non_Member_reservation} />
+                            <Route path='/reservation_member' component={Reservation_history} />
                         </Switch>   
                     </main>
                 </div>

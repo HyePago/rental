@@ -77,6 +77,10 @@ type Reservation_History struct {
 	color string
 	distance string
 	few string
+	rental_point string
+	return_point string
+	rental_date string
+	return_date string
 }
 
 type Impormation_car struct {
@@ -874,7 +878,7 @@ func main() {
 		var reservation_number string
 		var reservation Reservation_History
 
-		rows, err := db.Query("SELECT car_number, rental_date, number FROM reservation where email = ?", email)
+		rows, err := db.Query("SELECT car_number, rental_date, number FROM reservation where email = ? ORDER BY id DESC", email)
 
 		if err != nil {
 			log.Fatal(err)
@@ -1740,6 +1744,63 @@ func main() {
 			}
 
 			result[0]["total_count"] = strconv.Itoa(count)
+		}
+
+		c.JSON(200, gin.H{
+			"result": result,
+		})
+	})
+
+	router.POST("/reservation_non_member", func(c *gin.Context){
+		form := c.PostForm("form")
+
+		var raw map[string]interface{}
+		json.Unmarshal([]byte(form), &raw)
+
+		email := raw["email"]
+		reservation_number := raw["reservation_number"]
+
+		now := time.Now().String()
+
+		var result map[string]string = map[string]string{}
+		var reservation Reservation_History
+
+		err := db.QueryRow("SELECT car_number, rental_date, return_date, rental_point, return_point FROM reservation WHERE number = ? && email=?", reservation_number, email).Scan(&reservation.car_number, &reservation.rental_date, &reservation.return_date, &reservation.rental_point, &reservation.return_point)
+
+		switch{
+		case err == sql.ErrNoRows:
+			return
+		case err != nil:
+			log.Fatal(err)
+			return
+		}
+
+		err = db.QueryRow("SELECT image, name, type, fuel, color, distance, few FROM car WHERE car_number = ?", reservation.car_number).Scan(&reservation.image, &reservation.car_name, &reservation.car_type, &reservation.fuel, &reservation.color, &reservation.distance, &reservation.few)
+		switch{
+		case err == sql.ErrNoRows:
+			return
+		case err != nil:
+			return
+		}
+
+		err = db.QueryRow("SELECT changed_filename FROM image WHERE id = ?", reservation.image).Scan(&reservation.image)
+
+		result["image"] = reservation.image
+		result["car_number"] = reservation.car_number
+		result["car_name"] = reservation.car_name
+		result["fuel"] = reservation.fuel
+		result["color"] = reservation.color
+		result["distance"] = reservation.distance
+		result["few"] = reservation.few
+		result["rental_point"] = reservation.rental_point
+		result["return_point"] = reservation.return_point
+		result["rental_date"] = reservation.rental_date
+		result["return_date"] = reservation.return_date
+
+		if reservation.rental_date <= now {
+			result["refundable"] = "false"
+		} else {
+			result["refundable"] = "true"
 		}
 
 		c.JSON(200, gin.H{

@@ -94,7 +94,6 @@ class SignInForm extends React.Component {
                 cookie.save('aptitude_test', this.state.aptitude_test, {path: '/'});
                 
                 document.location.href = "/";
-               // this.home_go();
             }
         }.bind(this));
     }

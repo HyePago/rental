@@ -81,12 +81,24 @@ body {
 #page-numbers {
     list-style: none;
     display: flex;
+    position: absolute;
+    margin: 23px auto;
+    text-align: center;
+    align-content: center;
 }
 #page-numbers > li {
-    margin-right: 0.3em;
+    margin-right: 1em;
     color: cadetblue;
     user-select: none;
     cursor: pointer;
+    font-size: 0.8rem;
+    text-align: center;
+    align-content: center;
+}
+.page_td {
+    margin: auto auto;
+    align-content: center;
+    text-align: center;
 }
 
 /* sign in */
@@ -199,4 +211,125 @@ input {
 ::-moz-focus-inner {
    border: 0;
    padding: 0;
+}
+
+.reservation_button {
+    position: relative;
+    padding: 0.25em 0.4em;
+    margin-top: 8px;
+    margin-bottom: 12px;
+    width: 20%;
+    font-size: 7px;
+    text-align: center;
+    color: white;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.25);
+    background: rgb(148, 187, 175);
+    border: 0;
+    border-bottom: 2px solid rgb(114, 172, 123);
+    cursor: pointer;
+    -webkit-box-shadow: inset 0 -2px rgb(114, 172, 123);
+    box-shadow: inset 0 -2px rgb(114, 172, 123);
+    border-radius: 5px;
+}
+.reservation_button:active{
+    top: 1px;
+    outline: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+.reservation_button:hover{
+    background: rgb(143, 175, 165);
+}
+.reservation_button:focus{
+    outline: none;
+}
+
+.refund_button {
+    position: relative;
+    padding: 0.35em 0.6em;
+    width: 28%;
+    font-size: 12.3px;
+    text-align: center;
+    color: white;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.25);
+    background: rgb(148, 187, 175);
+    border: 0;
+    border-bottom: 2px solid rgb(114, 172, 123);
+    cursor: pointer;
+    -webkit-box-shadow: inset 0 -2px rgb(114, 172, 123);
+    box-shadow: inset 0 -2px rgb(114, 172, 123);
+    border-radius: 5px;
+}
+.refund_button:active{
+    top: 1px;
+    outline: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+.refund_button:hover{
+    background: rgb(143, 175, 165);
+}
+.refund_button:focus{
+    outline: none;
+}
+
+.email_certification_table{
+    margin-top: 11%;
+}
+.email_certification_reservation_search_button{
+    position: relative;
+    padding: 0.35em 0.6em;
+    width: 28%;
+    font-size: 11.3px;
+    text-align: center;
+    color: white;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.25);
+    background: rgb(148, 187, 175);
+    border: 0;
+    border-bottom: 2px solid rgb(114, 172, 123);
+    cursor: pointer;
+    -webkit-box-shadow: inset 0 -2px rgb(114, 172, 123);
+    box-shadow: inset 0 -2px rgb(114, 172, 123);
+    border-radius: 5px;
+    margin: 10px 20px;
+}
+.email_certification_reservation_search_button:active{
+    top: 1px;
+    outline: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+.email_certification_reservation_search_button:hover{
+    background: rgb(143, 175, 165);
+}
+.email_certification_reservation_search_button:focus{
+    outline: none;
+}
+.send_certification_number_button {
+    position: relative;
+    padding: 0.35em 0.35em;
+    font-size: 10.3px;
+    text-align: center;
+    color: black;
+    text-shadow: 0 1px 2px rgba(255,255,255,0.25);
+    background: white;
+    border: 0;
+    border-bottom: 2px solid rgb(228, 242, 245);
+    cursor: pointer;
+    -webkit-box-shadow: inset 0 -2px rgb(228, 242, 245);
+    box-shadow: inset 0 -2px rgb(228, 242, 245);
+    border-radius: 5px;
+    margin: 10px 20px;
+}
+.send_certification_number_button:active{
+    top: 1px;
+    outline: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+.send_certification_number_button:hover{
+    background: rgb(236, 240, 240);
+}
+.send_certification_number_button:focus{
+    outline: none;
 }

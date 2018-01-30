@@ -9,35 +9,24 @@ class Non_Member_reservation extends React.Component {
 
         this.state = {
             returned: 1,
+            result: '',
             email: '',
             input_certification_number: '',
             certification_number: '',
-            image: [],
-            car_number: [],
-            car_name: [],
-            fuel: [],
-            color: [],
-            distance: [],
-            few: [],
-            refundable: [],
-            reservation_number: [],
+            reservation_number: '',
+            image: '',
+            car_number: '',
+            car_name: '',
+            fuel: '',
+            color: '',
+            distance: '',
+            few: '',
+            refundable: '',
             rental_point: '',
             return_point: '',
             rental_date: '',
             return_date: '',
-            currentPage: '',
-            total_page: '',
-            test_number: 0,
-            division_number: 0,
         }
-
-        this.handleClick = this.handleClick.bind(this);
-    }
-    // page
-    handleClick(event){
-        this.setState({currentPage: event.target.id});
-
-        this.submitGit_reservation_list();
     }
 
     emailChange(e){
@@ -46,8 +35,14 @@ class Non_Member_reservation extends React.Component {
     input_certification_numberChange(e){
         this.setState({input_certification_number:e.target.value});
     }
+    reservation_numberChange(e){
+        this.setState({reservation_number:e.target.value});
+    }
+    click_back(){
+        this.setState({returned:1});
+    }
 
-    // send_email
+    // send _ email
     emailAuthentication(opts){
         fetch('/email', {
             method: 'POST',
@@ -88,8 +83,7 @@ class Non_Member_reservation extends React.Component {
                 return;
             }
 
-            this.submitGit_reservation_list();
-            this.setState({returned:2});
+            this.submitGit_reservation_cetification();
         }.bind(this))
     }
     submitGit_certification(){
@@ -99,9 +93,9 @@ class Non_Member_reservation extends React.Component {
         })
     }
 
-    //reservation_list
-    list_reservation(opts){
-        fetch('/reservation_history', {
+    // reservation_number _ certification
+    setReservation_certification(opts){
+        fetch('/reservation_non_member', {
             method: 'POST',
             headers: {
                 "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
@@ -111,97 +105,45 @@ class Non_Member_reservation extends React.Component {
         .then((response) => { return response.json(); })
         .then((json) => { this.setState({result:json.result}); })
         .then(function(){
-            this.setState({image:[]});
-            this.setState({car_number:[]});
-            this.setState({car_name:[]});
-            this.setState({fuel:[]});
-            this.setState({color:[]})
-            this.setState({distance:[]});
-            this.setState({few:[]});
-            this.setState({refundable:[]});
-            this.setState({reservation_number:[]});
+            this.setState({image:this.state.result["image"]});
+            this.setState({car_number:this.state.result["car_number"]});
+            this.setState({car_name:this.state.result["car_name"]});
+            this.setState({fuel:this.state.result["fuel"]});
+            this.setState({color:this.state.result["color"]});
+            this.setState({distance:this.state.result["distance"]});
+            this.setState({few:this.state.result["few"]});
+            this.setState({refundable:this.state.result["refundable"]});
+            this.setState({rental_point:this.state.result["rental_point"]});
+            this.setState({return_point:this.state.result["return_point"]});
+            this.setState({rental_date:this.state.result["rental_date"]});
+            this.setState({return_date:this.state.result["return_date"]});
 
-            for(var count = 0; this.state.result[count] != null; count++){
-                this.setState({image:this.state.image.concat(this.state.result[count]["image"])});
-                this.setState({car_number:this.state.car_number.concat(this.state.result[count]["car_number"])});
-                this.setState({car_name:this.state.car_name.concat(this.state.result[count]["car_name"])});
-                this.setState({fuel:this.state.fuel.concat(this.state.result[count]["fuel"])});
-                this.setState({color:this.state.color.concat(this.state.result[count]["color"])});
-                this.setState({distance:this.state.distance.concat(this.state.result[count]["distance"])});
-                this.setState({few:this.state.few.concat(this.state.result[count]["few"])});
-                this.setState({refundable:this.state.refundable.concat(this.state.result[count]["refundable"])});
-                this.setState({reservation_number:this.state.reservation_number.concat(this.state.result[count]["reservation_number"])});
-            }
-            this.setState({count:count});
-            this.setState({total_page:this.state.result[0]["total_page"]});
-        }.bind(this))
-        .then(function(){
-            if(this.state.test_number==0){
-                this.setState({test_number:1});
-                this.submitGit_reservation_list();
-            }
-            else{
-                this.setState({test_number:0});
-            }
+            this.setState({returned:2});
         }.bind(this))
     }
-    submitGit_reservation_list(){
-        this.list_reservation({
+    submitGit_reservation_cetification(){
+        this.setReservation_certification({
             email: this.state.email,
-            currentPage: this.state.currentPage
+            reservation_number: this.state.reservation_number
         })
     }
 
-    //refund
-    refund_impormation(){
-        fetch('/refund_impormation', {
-            method: 'POST',
-            headers: {
-                "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
-            },
-            body: "reservation_number="+this.state.reservation_number[this.state.division_number]
-        })
-        .then((response) => { return response.json(); })
-        .then((json) => { 
-            this.setState(
-                {
-                    rental_point:json.rental_point,
-                    rental_date:json.rental_date,
-                    return_point:json.return_point,
-                    return_date:json.return_date
-                }); 
-        })
-        .then(function(){
-            if(this.state.test_number==0){
-                this.setState({test_number:1});
-                this.refund_impormation();
-            }
-            else{
-                this.setState({test_number:0});
-            }
-        }.bind(this))
-    }
-    click_refund(e){
-        this.setState({division_number:e.target.id});
-        console.log("e.target.id = > ", e.target.id);
-        this.setState({returned:'refund'});
-        this.refund_impormation();
-    }
+    // refund
     cancel_reservation(){
         fetch('/refund', {
             method: 'POST',
             headers: {
                 "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
             },
-            body: "reservation_number="+this.state.reservation_number[this.state.division_number]
+            body: "reservation_number="+this.state.reservation_number
         })
         .then((response) => { return response.json(); })
         .then((json) => { 
             if(json.result == "false"){
                 alert("다시 한 번 시도해주시길 바랍니다.");
             }
-            this.submitGit_reservation_list();
-            this.setState({returned:2});
+
+            document.location.href = "/";
         })
     }
     click_cancel_reservation(){
@@ -212,136 +154,59 @@ class Non_Member_reservation extends React.Component {
     }
 
     render(){
-        //page
-        const pageNumbers = [];
-        for (let i = 1; i <= (Math.floor((this.state.total_page-1) / 5))+1; i++){
-            pageNumbers.push(i);
-        }
-        const renderPageNUmbers = pageNumbers.map(number => {
-            return(
-                <li key={number} id={number} onClick={this.handleClick}>
-                    {number}
-                </li>
-            );
-        });
-
         //style
         const noneStyle = {
             display: 'none',
         }
         const blockStyle = {}
 
-        //list
-        const list_number = [];
-        for(let i = 0; i < 5; i++){
-            list_number.push(i);
-        }
-        const reservation_list = list_number.map(number => {
-            return(
-                <tr key={number} id={number} style={this.state.image[number] == null ? noneStyle : blockStyle}>
-                    <td>
-                        <img src={this.state.image[number]} width="230" height="130" />
-                    </td>
-                    <td>
-                        {this.state.car_number[number]}
-                    </td>
-                    <td>
-                        {this.state.car_name[number]}
-                    </td>
-                    <td>
-                        {this.state.fuel[number]}
-                    </td>
-                    <td>
-                        {this.state.color[number]}
-                    </td>
-                    <td>
-                        {this.state.distance[number]}
-                    </td>
-                    <td>
-                        {this.state.few[number]}
-                    </td>
-                    <td style={this.state.refundable[number] == "false"? noneStyle : blockStyle}>
-                        <button id={number} onClick={this.click_refund.bind(this)}> 환불 </button>
-                    </td>
-                </tr>
-            )
-        })
-
         let email_certification_Form = (
             <div>
-                <table>
+                <table className="email_certification_table">
                     <tbody>
                         <tr>
-                            <td>
+                            <th width="77" height="35">
                                 이메일
-                            </td>
+                            </th>
                             <td>
                                 <input type="text" onChange={this.emailChange.bind(this)} />
-                                <button onClick={this.submitGit_email.bind(this)}> 인증번호 전송 </button>
+                                &nbsp;&nbsp;
+                                <button onClick={this.submitGit_email.bind(this)} className="send_certification_number_button"> 인증번호 전송 </button>
                             </td>
                         </tr>
                         <tr>
-                            <td>
+                            <th height="35">
                                 인증번호
-                            </td>
+                            </th>
                             <td>
                                 <input type="number" onChange={this.input_certification_numberChange.bind(this)} />
                             </td>
                         </tr>
                         <tr>
+                            <th height="35">
+                                예약 번호
+                            </th>
                             <td>
-                                <button onClick={this.submitGit_certification.bind(this)}> 확인 </button>
+                                <input type="number" onChange={this.reservation_numberChange.bind(this)}/>
                             </td>
                         </tr>
-                    </tbody>
-                </table>
-            </div>
-        )
-        let reservation_list_Form = (
-            <div>
-                <table>
-                    <tbody>
                         <tr>
-                            <td widrth="230">
-                                이미지
-                            </td>
-                            <td width="150">
-                                차량 번호
-                            </td>
-                            <td width="150">
-                                차량 이름
-                            </td>
-                            <td width="150">
-                                연료
-                            </td>
-                            <td width="150">
-                                색상
-                            </td>
-                            <td width="150">
-                                주행거리
-                            </td>
-                            <td width="150">
-                                n인승
-                            </td>
-                            <td width="150">
-                                예약취소
+                            <td></td>
+                            <td>
+                                <button onClick={this.submitGit_certification.bind(this)} className="email_certification_reservation_search_button"> 검색 </button>
                             </td>
                         </tr>
-                        {reservation_list}
                     </tbody>
                 </table>
-                <ul id="page-numbers">
-                    {renderPageNUmbers}
-                </ul>
             </div>
         )
-        let refuned_Form = (
+        let refunded_Form = (
             <div>
                 <table>
                     <tbody>
                         <tr>
                             <td colSpan={2}>
-                                <img src={this.state.image[this.state.division_number]} width="500" height="380" />
+                                <img src={this.state.image} width="500" heigth="380" />
                             </td>
                         </tr>
                         <tr>
@@ -349,7 +214,7 @@ class Non_Member_reservation extends React.Component {
                                 차종
                             </td>
                             <td>
-                                {this.state.car_name[this.state.division_number]}
+                                {this.state.car_name}
                             </td>
                         </tr>
                         <tr>
@@ -357,7 +222,7 @@ class Non_Member_reservation extends React.Component {
                                 색상
                             </td>
                             <td>
-                                {this.state.color[this.state.division_number]}
+                                {this.state.color}
                             </td>
                         </tr>
                         <tr>
@@ -365,7 +230,7 @@ class Non_Member_reservation extends React.Component {
                                 주행거리
                             </td>
                             <td>
-                                {this.state.distance[this.state.division_number]}
+                                {this.state.distance}
                             </td>
                         </tr>
                         <tr>
@@ -373,7 +238,7 @@ class Non_Member_reservation extends React.Component {
                                 N인승
                             </td>
                             <td>
-                                {this.state.few[this.state.division_number]}
+                                {this.state.few}
                             </td>
                         </tr>
                         <tr>
@@ -409,8 +274,11 @@ class Non_Member_reservation extends React.Component {
                             </td>
                         </tr>
                         <tr>
-                            <td colSpan={2}>
+                            <td colSpan={2} style={this.state.refundable=="false"? noneStyle : blockStyle}>
                                 <button onClick={this.click_cancel_reservation.bind(this)}> 예약 취소 </button>
+                            </td>
+                            <td>
+                                <button onClick={this.click_back.bind(this)}> 뒤로 </button>
                             </td>
                         </tr>
                     </tbody>
@@ -421,9 +289,7 @@ class Non_Member_reservation extends React.Component {
         if(this.state.returned == 1){
             return email_certification_Form;
         } else if(this.state.returned == 2){
-            return reservation_list_Form;
-        } else if(this.state.returned == 'refund'){
-            return refuned_Form;
+            return refunded_Form;
         }
     }
 }

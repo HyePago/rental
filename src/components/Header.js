@@ -40,7 +40,7 @@ class Header extends React.Component {
         cookie.remove('username', {path:'/'});
         cookie.remove('reserves', {path:'/'});
         cookie.remove('email', {path:'/'});
-        window.location.reload();7
+        window.location.reload();
     }
     click_nonmember_service_center(){
         this.setState({returned:'ns'});
@@ -54,7 +54,7 @@ class Header extends React.Component {
             <div>
                 <div className="menu">
                     <Link to="/"><div className="logo"> 로고 </div></Link>
-                    <div className="menu-item" onClick={this.click_member_reservation.bind(this)}> 예약 및 이용 내역 </div>
+                    <Link to="/reservation_member"><div className="menu-item"> 예약 및 이용 내역 </div> </Link>
                     <div className="menu-item" onClick={this.log_out.bind(this)}> 로그아웃 </div>
                     <div className="menu-item" onClick={this.click_rent.bind(this)}> 렌터카 예약 </div>
                     <div className="dropdown-menu-item"> 

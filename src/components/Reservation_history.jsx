@@ -145,7 +145,8 @@ class Reservation_history extends React.Component{
                 alert("다시 한 번 시도해주시길 바랍니다.");
             }
 
-            this.click_home();
+            this.submitGit();
+            this.setState({returned:'ready'});
         })
     }
 
@@ -197,16 +198,7 @@ class Reservation_history extends React.Component{
 
         let reservation_history_form = (
             <div>
-                <div className="logo" onClick={this.click_home.bind(this)}>
-                    렌터카
-                </div>
-                <div className="menu">
-                    <div className="menu-item" onClick={this.click_home.bind(this)}> 홈 </div>
-                    <div className="menu-item" onClick={this.click_rent.bind(this)}> 렌터카 예약 </div>
-                    <div className="menu-item" onClick={this.log_out.bind(this)}> 로그아웃 </div>
-                    <div className="menu-item"> 예약 및 이용 내역 </div>
-                </div>
-                <table>
+                <table className="out_table">
                     <tbody>
                         <tr style={this.state.image[0]==null?noneStyle:blockStyle}>
                             <td widrth="230">
@@ -257,7 +249,7 @@ class Reservation_history extends React.Component{
                                 {this.state.few[0]}
                             </td>
                             <td style={this.state.refundable[0]=="false"?noneStyle:blockStyle}>
-                                <button id={0} onClick={this.click_refund.bind(this)}> 환불 </button>
+                                <button id={0} onClick={this.click_refund.bind(this)} className="refund_button"> 환불 </button>
                             </td>
                         </tr>
                         <tr style={this.state.image[1]==null?noneStyle:blockStyle}>
@@ -283,7 +275,7 @@ class Reservation_history extends React.Component{
                                 {this.state.few[1]}
                             </td>
                             <td style={this.state.refundable[1]=="false"?noneStyle:blockStyle}>
-                                <button id={1} onClick={this.click_refund.bind(this)}> 환불 </button>
+                                <button id={1} onClick={this.click_refund.bind(this)} className="refund_button"> 환불 </button>
                             </td>
                         </tr>
                         <tr style={this.state.image[2]==null?noneStyle:blockStyle}>
@@ -309,7 +301,7 @@ class Reservation_history extends React.Component{
                                 {this.state.few[2]}
                             </td>
                             <td style={this.state.refundable[2]=="false"?noneStyle:blockStyle}>
-                                <button id={2} onClick={this.click_refund.bind(this)}> 환불 </button>
+                                <button id={2} onClick={this.click_refund.bind(this)} className="refund_button"> 환불 </button>
                             </td>
                         </tr>
                         <tr style={this.state.image[3]==null?noneStyle:blockStyle}>
@@ -335,7 +327,7 @@ class Reservation_history extends React.Component{
                                 {this.state.few[3]}
                             </td>
                             <td style={this.state.refundable[3]=="false"?noneStyle:blockStyle}>
-                                <button id={3} onClick={this.click_refund.bind(this)}> 환불 </button>
+                                <button id={3} onClick={this.click_refund.bind(this)} className="refund_button"> 환불 </button>
                             </td>
                         </tr>
                         <tr style={this.state.image[4]==null?noneStyle:blockStyle}>
@@ -361,14 +353,22 @@ class Reservation_history extends React.Component{
                                 {this.state.few[4]}
                             </td>
                             <td style={this.state.refundable[4]=="false"?noneStyle:blockStyle}>
-                                <button id={4} onClick={this.click_refund.bind(this)}> 환불 </button>
+                                <button id={4} onClick={this.click_refund.bind(this)} className="refund_button"> 환불 </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td> </td>
+                            <td> </td>
+                            <td> </td>
+                            <td className="page_td">
+                                <ul id="page-numbers">
+                                    {renderPageNUmbers}
+                                </ul>
                             </td>
                         </tr>
                     </tbody>
                 </table>
-                <ul id="page-numbers">
-                    {renderPageNUmbers}
-                </ul>
+                
             </div>
         )
 
@@ -380,17 +380,8 @@ class Reservation_history extends React.Component{
 
         let refunded_Form = (
             <div>
-                <div className="logo" onClick={this.click_home.bind(this)}>
-                    렌터카
-                </div>
-                <div className="menu">
-                    <div className="menu-item" onClick={this.click_home.bind(this)}> 홈 </div>
-                    <div className="menu-item" onClick={this.click_rent.bind(this)}> 렌터카 예약 </div>
-                    <div className="menu-item" onClick={this.log_out.bind(this)}> 로그아웃 </div>
-                    <div className="menu-item"> 예약 및 이용 내역 </div>
-                </div>
                 <table>
-                    <tbody>
+                    <tbody className="out_table">
                         <tr>
                             <td colSpan={2}>
                                 <img src={this.state.image[this.state.division_number]} width="500" height="380"/>
@@ -461,8 +452,9 @@ class Reservation_history extends React.Component{
                             </td>
                         </tr>
                         <tr>
-                            <td colSpan={2}>
-                                <button onClick={this.click_cancel_reservation.bind(this)}> 예약 취소 </button>
+                            <td></td>
+                            <td>
+                                <button className="reservation_button" onClick={this.click_cancel_reservation.bind(this)}> 예약 취소 </button>
                             </td>
                         </tr>
                     </tbody>
