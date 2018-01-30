@@ -40,7 +40,8 @@ class Header extends React.Component {
         cookie.remove('username', {path:'/'});
         cookie.remove('reserves', {path:'/'});
         cookie.remove('email', {path:'/'});
-        window.location.reload();
+
+        document.location.href = "/";
     }
     click_nonmember_service_center(){
         this.setState({returned:'ns'});

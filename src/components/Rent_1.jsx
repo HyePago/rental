@@ -556,67 +556,98 @@ class Rent_1 extends React.Component {
 
         let first_Form = (
             <div>
-                <label> 지역 </label>
-                <select onChange={this.areaChange.bind(this)}>
-                    <option id="1" value="inland"> 내륙 </option>
-                    <option id="2" value="jeju"> 제주 </option>
-                    <option id="3" value="overseas"> 해외 </option>
-                </select>
-                <br />
-                <label> 대여지점 </label>
-                <select onChange={this.rental_pointChange.bind(this)}>
-                    <option id="1" value="Gangnam">강남</option>
-                    <option id="2" value="DongDaeMoon">동대문</option>
-                    <option id="3" value="Yeouido">여의도</option>
-                    <option id="4" value="Guro">구로</option>
-                </select>
-                <br />
-                <label> 반납지점 </label>
-                <select onChange={this.return_pointChange.bind(this)}>
-                    <option id="1" value="Gangnam">강남</option>
-                    <option id="2" value="DongDaeMoon">동대문</option>
-                    <option id="3" value="Yeouido">여의도</option>
-                    <option id="4" value="Guro">구로</option>
-                </select>
-                <br />
-                <label> 대여일시 </label>
-                <input type="date" name="rental_date" onChange={this.rental_dateChange.bind(this)}></input>
-                <input type="time" name="rental_time" onChange={this.rental_timeChange.bind(this)}></input>
-                <br />
-                <label> 반납일시 </label>
-                <input type="date" name="return_date" onChange={this.return_dateChange.bind(this)}></input>
-                <input type="time" name="return_time" onChange={this.return_timeChange.bind(this)}></input>
-                <br />
-                <button onClick={this.rent_1_Check.bind(this)}>검색</button>
-            </div>
+                <table className="search_rent_out_table">
+                    <tbody>
+                        <tr>
+                            <th width="77"> 지역 </th>
+                            <td>
+                                <select onChange={this.areaChange.bind(this)} className="search_rent_select">
+                                    <option id="1" value="inland"> 내륙 </option>
+                                    <option id="2" value="jeju"> 제주 </option>
+                                    <option id="3" value="overseas"> 해외 </option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th> 대여지점 </th>
+                            <td>
+                                <select onChange={this.rental_pointChange.bind(this)} className="search_rent_select">>
+                                    <option id="1" value="Gangnam">강남</option>
+                                    <option id="2" value="DongDaeMoon">동대문</option>
+                                    <option id="3" value="Yeouido">여의도</option>
+                                    <option id="4" value="Guro">구로</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th> 반납지점 </th>
+                            <td>
+                                <select onChange={this.return_pointChange.bind(this)} className="search_rent_select">>
+                                    <option id="1" value="Gangnam">강남</option>
+                                    <option id="2" value="DongDaeMoon">동대문</option>
+                                    <option id="3" value="Yeouido">여의도</option>
+                                    <option id="4" value="Guro">구로</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th> 대여일시 </th>
+                            <td>
+                                <input type="date" name="rental_date" onChange={this.rental_dateChange.bind(this)} className="search_rent_date"></input>&nbsp;
+                                <input type="time" name="rental_time" onChange={this.rental_timeChange.bind(this)} className="search_rent_date"></input>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th> 반납일시 </th>
+                            <td>
+                                <input type="date" name="return_date" onChange={this.return_dateChange.bind(this)} className="search_rent_date"></input>&nbsp;
+                                <input type="time" name="return_time" onChange={this.return_timeChange.bind(this)} className="search_rent_date"></input>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td> </td>
+                            <td>
+                                <button onClick={this.rent_1_Check.bind(this)} className="search_rent_button"> 검색 </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>            
         )
         let second_Form = (
             <div>
-                <h1>차량 선택 화면</h1>
-                <br />
-                <input type="radio" name="radio" value="0" onChange={this.car_typeChange.bind(this)} checked={(this.state.car_type=='' || this.state.car_type=='0')?true:false}/>
-                전체
-                <input type="radio" name="radio" value="1" onChange={this.car_typeChange.bind(this)}/>
-                소형
-                <input type="radio" name="radio" value="2" onChange={this.car_typeChange.bind(this)}/>
-                중형
-                <input type="radio" name="radio" value="3" onChange={this.car_typeChange.bind(this)}/>
-                대형
-                <input type="radio" name="radio" value="4" onChange={this.car_typeChange.bind(this)}/>
-                승합
-                <br />
-                <input type="radio" name="radio" value="5" onChange={this.car_typeChange.bind(this)}/>
-                SUV/RV
-                <input type="radio" name="radio" value="6" onChange={this.car_typeChange.bind(this)}/>
-                수입차
-                <input type="radio" name="radio" value="7" onChange={this.car_typeChange.bind(this)}/>
-                오픈카
-                <input type="radio" name="radio" value="8" onChange={this.car_typeChange.bind(this)}/>
-                전기차
-                <input type="radio" name="radio" value="9" onChange={this.car_typeChange.bind(this)}/>
-                캐릭터카
-                <br />
-                <br />
+                <table className="select_car_radio_table">
+                    <tbody>
+                        <tr>
+                            <td>
+                                <input type="radio" name="radio" value="0" onChange={this.car_typeChange.bind(this)} checked={(this.state.car_type=='' || this.state.car_type=='0')?true:false}/>
+                                전체
+                                <input type="radio" name="radio" value="1" onChange={this.car_typeChange.bind(this)}/>
+                                소형
+                                <input type="radio" name="radio" value="2" onChange={this.car_typeChange.bind(this)}/>
+                                중형
+                                <input type="radio" name="radio" value="3" onChange={this.car_typeChange.bind(this)}/>
+                                대형
+                                <input type="radio" name="radio" value="4" onChange={this.car_typeChange.bind(this)}/>
+                                 승합
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="radio" name="radio" value="5" onChange={this.car_typeChange.bind(this)}/>
+                                SUV/RV
+                                <input type="radio" name="radio" value="6" onChange={this.car_typeChange.bind(this)}/>
+                                수입차
+                                <input type="radio" name="radio" value="7" onChange={this.car_typeChange.bind(this)}/>
+                                오픈카
+                                <input type="radio" name="radio" value="8" onChange={this.car_typeChange.bind(this)}/>
+                                전기차
+                                <input type="radio" name="radio" value="9" onChange={this.car_typeChange.bind(this)}/>
+                                캐릭터카
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
                 <table>
                     <tbody>
                         <tr style={this.state.car_name[0]==null?noneStyle:blockStyle} onClick={this.tr_click_0.bind(this)}>
