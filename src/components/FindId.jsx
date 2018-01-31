@@ -2,8 +2,6 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import cookie from "react-cookies"
 
-import Header from './Header.js'
-
 import './Header.css'
 
 class FindId extends React.Component {

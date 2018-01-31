@@ -3,10 +3,6 @@ import ReactDOM from 'react-dom'
 
 import cookie from "react-cookies"
 
-import SignInForm from './SignInForm.jsx'
-import ImageTest from './ImageTest.jsx'
-import SignUpForm from './SignUpForm.jsx'
-
 import './Header.css'
 
 class FindPwd extends React.Component {
@@ -82,19 +78,6 @@ class FindPwd extends React.Component {
         })
     }
 
-    click_sign_up(){
-        this.setState({returned:"up"});
-    }
-    click_sign_in(){
-        this.setState({returned:"in"});
-    }
-    click_ImageTest(){
-        this.setState({returned:"image"});
-    }
-    click_home(){
-        window.location.reload();
-    }
-
     emailChange(e){
         this.setState({email:e.target.value});
     }
@@ -154,7 +137,7 @@ class FindPwd extends React.Component {
         .then(function(){
             if(this.state.result == "true"){
                 alert("비밀번호 변경에 성공하셨습니다.");
-                this.click_home();
+                document.location.href = "/signin";
             }else{
                 alert("비밀 번호 변경에 실패하셨습니다. 다시 한 번 시도해주세요.");
                 return;
@@ -228,15 +211,6 @@ class FindPwd extends React.Component {
         )
         let update_pwd_Form = (
             <div>
-                <div className="logo">
-                    렌트카
-                </div>
-                <div className="menu">
-                    <div className="menu-item" onClick={this.click_home.bind(this)}> 홈 </div>                                    
-                    <div className="menu-item" onClick={this.click_sign_in.bind(this)}> 로그인 </div>
-                    <div className="menu-item" onClick={this.click_sign_up.bind(this)}> 회원가입 </div>
-                    <div className="menu-item" onClick={this.click_ImageTest.bind(this)}> 사진테스트 </div>
-                </div>
                 <div>
                     <label>비밀번호 </label>
                     <input type="password" name="password" maxLength={16} size="16" onChange={this.passwordChange.bind(this)} placeholder="비밀번호를 입력해주세요"/>
@@ -248,32 +222,11 @@ class FindPwd extends React.Component {
                 </div>
             </div>
         )
-        let sign_in_Form = (
-            <div>
-                <SignInForm />
-            </div>
-        )
-        let sign_up_Form = (
-            <div>
-                <SignUpForm />
-            </div>
-        )
-        let image_test_Form = (
-            <div>
-                <ImageTest />
-            </div>
-        )
 
         if(this.state.returned == 1){
             return find_pwd_Form;
         }else if(this.state.returned == 2){
             return update_pwd_Form;
-        }else if(this.state.returned == "in"){
-            return sign_in_Form;
-        }else if(this.state.returned == "up"){
-            return sign_up_Form;
-        }else if(this.state.returned == "image"){
-            return image_test_Form;
         }
     }
 }

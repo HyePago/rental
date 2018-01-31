@@ -13,6 +13,7 @@ import Non_Member_reservation from './Non_Member_reservation.jsx'
 import Reservation_history from './Reservation_history.jsx'
 import Main from './Main.jsx'
 import Rent_1 from './Rent_1.jsx'
+import MyPage from './MyPage.jsx'
 import history from './history';
 
 class App extends React.Component {
@@ -32,6 +33,7 @@ class App extends React.Component {
                             <Route path='/reservation_non_member' component={Non_Member_reservation} />
                             <Route path='/reservation_member' component={Reservation_history} />
                             <Route path='/search_rent' component={Rent_1} />
+                            <Route path="/mypage" component={MyPage} />
                         </Switch>   
                     </main>
                 </div>

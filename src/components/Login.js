@@ -109,7 +109,7 @@ class Login extends React.Component {
         let member_Form = (
             <div className="main_login">
                 <div className="main_impormation">
-                    <b> {cookie.load('name')} 님 </b>
+                    <Link to="/mypage"><b> {cookie.load('name')}</b></Link> 님
                     <br />
                 </div>
                 <div className="main_impormation">
