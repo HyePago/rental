@@ -90,17 +90,6 @@ class Member_Service_Center extends React.Component {
     render(){
         let writing_Form = (
             <div>
-                <div className="logo">
-                    렌터카
-                </div>
-                <div className="menu">
-                    <div className="menu-item" onClick={this.click_home.bind(this)}> 홈 </div>                                    
-                    <div className="menu-item" onClick={this.click_rent.bind(this)}> 렌터카 예약 </div>
-                    <div className="menu-item" onClick={this.log_out.bind(this)}> 로그아웃 </div>
-                    <div className="menu-item" onClick={this.click_reservation.bind(this)}> 예약 및 이용내역 </div>
-                    <div className="menu-item"> 고객 센터 </div>
-                </div>
-                <br />
                 의견 작성
                 <table>
                     <tbody>

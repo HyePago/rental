@@ -1,8 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
-import Admin from './Admin.jsx'
-
 import './Header.css'
 
 class Total_Feedback_List extends React.Component {

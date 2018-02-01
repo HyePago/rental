@@ -1,12 +1,14 @@
-import  React from 'react'
+import React from 'react'
 import ReactDOM from 'react-dom'
 import cookie from 'react-cookies'
 
 import { Link } from 'react-router-dom'
 
-import history from './history'
+import history from './history';
 
-class Mypage extends React.Component {
+import './Header.css'
+
+class MyPage extends React.Component {
     constructor(props){
         super(props);
 
@@ -23,16 +25,17 @@ class Mypage extends React.Component {
             license_number_3: cookie.load('license_number').slice(9,11),
             date_if_issue: cookie.load('date_if_issue').slice(0,10),
             aptitude_test: cookie.load('aptitude_test').slice(0,10),
-            result: '',
             password: '',
             update_password: '',
             update_password_confirm: '',
-            password_feedback: '',
+            password_feedback:'false',
+            result: '',
             email: '',
             input_certification_number: '',
         }
     }
 
+    // click & change
     phone_0Change(e){
         this.setState({phone_0:e.target.value});
     }
@@ -75,6 +78,9 @@ class Mypage extends React.Component {
     update_password_confirmChange(e){
         this.setState({update_password_confirm:e.target.value});
     }
+    update_password_click(){
+        this.setState({returned:'pwd'});
+    }
     emailChange(e){
         this.setState({email:e.target.value});
     }
@@ -82,58 +88,32 @@ class Mypage extends React.Component {
         this.setState({input_certification_number:e.target.value});
     }
 
-    //update
-    cancel_click(){
-        document.location.href = "/";
-    }
-    setUpdate(opts){
-        fetch('/update_user_impormation', {
-            method: 'POST',
-            headers: {
-                "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
-            },
-            body: "form="+JSON.stringify(opts)
-        })
-        .then((response) => { return response.json(); })
-        .then((json) => { this.setState({result:json.result}); })
-        .then(function(){
-            if(this.state.result == "true"){
-                alert("정보수정이 성공적으로 완료되었습니다.");
+    // password
+    check_Password(){
+        var pw = this.state.password;
+        var num = pw.search(/[0-9]/g);
+        var eng = pw.search(/[a-z]/ig);
+        var spe = pw.search(/[`~!@@#$%^&*|₩₩₩'₩";:₩/?]/gi);
+        var blank_pattern = /[\s]/g;
 
-                cookie.save('phone', this.state.phone_0+""+this.state.phone_1+""+this.state.phone_2, {path: '/'});
-                cookie.save('license_category', this.state.license_category, {path:'/'});
-                cookie.save('license_type', this.state.license_type, {path: '/'});
-                cookie.save('license_number', this.state.license_number_0+""+this.state.license_number_1+""+this.state.license_number_2+""+this.state.license_number_3, {path: '/'});
-                cookie.save('date_if_issue', this.state.date_if_issue, {path: '/'});
-                cookie.save('aptitude_test', this.state.aptitude_test, {path: '/'});
-            }
-        }.bind(this));
-    }
-    submitGit_update(){
-        this.setUpdate({
-            email: cookie.load('email'),
-            phone: this.state.phone_0+""+this.state.phone_1+""+this.state.phone_2,
-            license_category: this.state.license_category,
-            license_type: this.state.license_type,
-            license_number: this.state.license_number_0+""+this.state.license_number_1+""+this.state.license_number_2+""+this.state.license_number_3,
-            date_if_issue: this.state.date_if_issue,
-            aptitude_test: this.state.aptitude_test
-        })
-    }
-    update_click(){
-        if(this.state.phone_0=='' || this.state.phone_1=='' || this.state.phone_2=='' || this.state.license_category=='' || this.state.license_type=='' || this.state.license_number_0=='' || this.state.license_number_1=='' || this.state.license_number_2=='' || this.state.license_number_3=='' || this.state.date_if_issue=='' || this.state.aptitude_test==''){
-            alert("빠짐없이 입력해주세요.");
-        } else{
-            this.submitGit_update();
+        if(pw.length < 8 || pw.length > 16){
+            alert("9자리 ~ 16자리 이내로 입력해주세요.");
+            this.setState({password_feedback:'false'});
+        } else if(blank_pattern.test(pw) == true){
+            alert("비밀번호는 공백없이 입력해주세요.");
+            this.setState({password_feedback:'false'});
+        } else if(num < 0 || eng < 0 || spe < 0){
+            alert("영문, 숫자, 특수문자를 혼합하여 입력해주세요.");
+            this.setState({password_feedback:'false'});
+        } else {
+            this.setState({password_feedback:'true'});
         }
-    }
 
-    //password
-    mypage_password_update_button_click(){
-        this.setState({returned:2});
-    }
-    mypage_email_update_button_click(){
-        this.setState({returned:3});
+        if(this.state.returned == 'pwd'){
+            this.setState({returned:2});
+        }else{
+            this.setState({returned:'pwd'});
+        }
     }
     check_Update_Password(){
         var pw = this.state.update_password;
@@ -157,6 +137,12 @@ class Mypage extends React.Component {
         } else {
             this.setState({password_feedback:'true'});
         }
+
+        if(this.state.returned == 'pwd'){
+            this.setState({returned:2});
+        }else{
+            this.setState({returned:'pwd'});
+        }
     }
     changeThePwd(opts){
         fetch('/mypage_change_pwd', {
@@ -174,6 +160,11 @@ class Mypage extends React.Component {
                 this.setState({returned:1});
             }else{
                 alert("현재 비밀번호가 일치하는 지 확인해 주시길 바랍니다.");
+                if(this.state.returned == 'pwd'){
+                    this.setState({returned:2});
+                }else{
+                    this.setState({returned:'pwd'});
+                }
                 return;
             }
         }.bind(this))
@@ -181,10 +172,17 @@ class Mypage extends React.Component {
     submit_Password(){
         if(this.state.password=='' || this.state.update_password=='' || this.state.update_password_confirm==''){
             alert("빠짐없이 다 입력해주세요.");
+            if(this.state.returned == 'pwd'){
+                this.setState({returned:2});
+            }else{
+                this.setState({returned:'pwd'});
+            }
             return;
         }
+        this.check_Password();
         this.check_Update_Password();
         if(this.state.password_feedback=='true'){
+            this.setState({returned:1});
             this.changeThePwd({
                 email: cookie.load('email'),
                 password: this.state.password,
@@ -194,9 +192,16 @@ class Mypage extends React.Component {
 
         return;
     }
+    update_password_cancel(){
+        this.setState({returned:1});
+    }
 
-    //email
+    // email
+    updateEmailClick(){
+        this.setState({returned:'email'});
+    }
     emailAuthentication(opts){
+        alert("before ")
         fetch('/email', {
             method: 'POST',
             headers: {
@@ -205,14 +210,14 @@ class Mypage extends React.Component {
             body: "form="+JSON.stringify(opts)
         })
         .then((response) => { return response.json(); })
-        //.then((json) => { this.setState({result:json.result}); })
+        .then((json) => { this.setState({result:json.result}); })
+        .then(function(){
+            alert("before return");
+            return false;
+            alert("atfer return");
+        }.bind(this))
     }
     submitGit_sendEmail(){
-        if(this.state.email == ''){
-            alert("이메일을 입력해주세요");
-            return;
-        }
-
         var min = 100000;
         var max = 999999;
         var certification_number = parseInt(min + (Math.random() * (max-min)));
@@ -223,6 +228,8 @@ class Mypage extends React.Component {
             email:this.state.email,
             certification_number:certification_number
         });
+        
+        return false;
     }
     setCertification(opts){
         fetch('/email_certification', {
@@ -248,14 +255,6 @@ class Mypage extends React.Component {
             email:this.state.email,
             certification_number:this.state.input_certification_number
         })
-    }
-    click_update_email(){
-        if(this.state.email=='' || this.state.input_certification_number==''){
-            alert("빠짐없이 입력해주세요.");
-            return;
-        }
-
-        this.submitGit_certification();
     }
     setUpateEmail(opts){
         fetch('/update_email', {
@@ -283,10 +282,63 @@ class Mypage extends React.Component {
             update_email: this.state.email
         })
     }
+    click_update_email(){
+        if(this.state.email=='' || this.state.input_certification_number==''){
+            alert("빠짐없이 입력해주세요.");
+            return;
+        }
 
-    //cancel
-    update_cancel(){
-        this.setState({returned:1});
+        this.submitGit_certification();
+    }
+
+    //mypage
+    cancel_click(){
+        alert("cancel_click");
+        document.location.href = "/app";
+        alert("document_location_href");
+    }
+    setUpdate(opts){
+        fetch('/update_user_impormation', {
+            method: 'POST',
+            headers: {
+                "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+            },
+            body: "form="+JSON.stringify(opts)
+        })
+        .then((response) => { return response.json(); })
+        .then((json) => { this.setState({result:json.result}); })
+        .then(function(){
+            if(this.state.result == "true"){
+                alert("정보수정이 성공적으로 완료되었습니다.");
+
+                cookie.save('phone', this.state.phone_0+""+this.state.phone_1+""+this.state.phone_2, {path: '/'});
+                cookie.save('license_category', this.state.license_category, {path:'/'});
+                cookie.save('license_type', this.state.license_type, {path: '/'});
+                cookie.save('license_number', this.state.license_number_0+""+this.state.license_number_1+""+this.state.license_number_2+""+this.state.license_number_3, {path: '/'});
+                cookie.save('date_if_issue', this.state.date_if_issue, {path: '/'});
+                cookie.save('aptitude_test', this.state.aptitude_test, {path: '/'});
+                
+                this.cancel_click();
+            }
+        }.bind(this));
+    }
+    submitGit_update(){
+        this.setUpdate({
+            email: cookie.load('email'),
+            phone: this.state.phone_0+""+this.state.phone_1+""+this.state.phone_2,
+            license_category: this.state.license_category,
+            license_type: this.state.license_type,
+            license_number: this.state.license_number_0+""+this.state.license_number_1+""+this.state.license_number_2+""+this.state.license_number_3,
+            date_if_issue: this.state.date_if_issue,
+            aptitude_test: this.state.aptitude_test
+        })
+    }
+    update_click(){
+        if(this.state.phone_0=='' || this.state.phone_1=='' || this.state.phone_2=='' || this.state.license_category=='' || this.state.license_type=='' || this.state.license_number_0=='' || this.state.license_number_1=='' || this.state.license_number_2=='' || this.state.license_number_3=='' || this.state.date_if_issue=='' || this.state.aptitude_test==''){
+            alert("빠짐없이 입력해주세요.");
+        } else{
+            this.submitGit_update();
+        }
     }
 
     render(){
@@ -322,7 +374,7 @@ class Mypage extends React.Component {
                                             <tr>
                                                 <th> 비밀번호 </th>
                                                 <td>
-                                                    <button type="button" className="mypage_button" onClick={this.mypage_password_update_button_click.bind(this)}> 비밀번호 변경 </button>
+                                                    <button className="mypage_button" onClick={this.update_password_click.bind(this)}> 비밀번호 변경 </button>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -330,7 +382,7 @@ class Mypage extends React.Component {
                                                     이메일
                                                 </th>
                                                 <td>
-                                                    {cookie.load('email')} &nbsp; <button className="mypage_button" onClick={this.mypage_email_update_button_click.bind(this)}> 이메일 변경</button>
+                                                    {cookie.load('email')} &nbsp; <button className="mypage_button" onClick={this.updateEmailClick.bind(this)}> 이메일 변경</button>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -398,7 +450,7 @@ class Mypage extends React.Component {
                                             <tr>
                                                 <td> </td>
                                                 <td align="center">
-                                                    <button type="button" onClick={this.update_click.bind(this)} className="mypage_finish_button"> 수정 </button>
+                                                    <button onClick={this.update_click.bind(this)} className="mypage_finish_button"> 수정 </button>
                                                     &nbsp;
                                                     &nbsp;
                                                     <Link to="/"><button className="mypage_finish_button"> 취소 </button></Link>
@@ -416,8 +468,41 @@ class Mypage extends React.Component {
                 </table>
             </div>
         )
-
-        let update_Password_Form = (
+        let second_test_Form = (
+            <div>
+                <table className="mypage_password_table">
+                    <tbody>
+                        <form className="mypage_password_form">
+                            <tr>
+                                <th> 현재 비밀번호 </th>
+                                <td>
+                                    <input type="password" maxLength={16} size="16" placeholder="Password" onChange={this.passwordChange.bind(this)} className="mypage_password_input" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <th> 변경 비밀번호 </th>
+                                <td>
+                                    <input type="password" maxLength={16} size="16" placeholder="Password" onChange={this.update_passwordChange.bind(this)} className="mypage_password_input" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <th> 비밀번호 확인 </th>
+                                <td>
+                                    <input type="password" maxLength={16} size="16" placeholder="Password" onChange={this.update_password_confirmChange.bind(this)} className="mypage_password_input" />
+                                </td>
+                            </tr>
+                           <tr>
+                                <th><button className="mypage_password_button" onClick={this.submit_Password.bind(this)}> 비밀번호 변경 </button></th>
+                                <td>
+                                    <button className="mypage_password_button" onClick={this.cancel_click.bind(this)}> 취소 </button>
+                                </td>
+                            </tr>
+                        </form>
+                    </tbody>
+                </table>
+            </div>
+        )
+        let update_password_Form = (
             <div>
                 <table className="mypage_password_table">
                     <tbody>
@@ -442,8 +527,8 @@ class Mypage extends React.Component {
                             </tr>
                             <tr>
                                 <td colSpan={2} align="center">
-                                    <button type="button" className="mypage_password_button" onClick={this.submit_Password.bind(this)}> 비밀번호 변경 </button>
-                                    <button type="button" className="mypage_password_button" onClick={this.update_cancel.bind(this)}> 취소 </button>
+                                    <button className="mypage_password_button" onClick={this.submit_Password.bind(this)}> 비밀번호 변경 </button>
+                                    <button className="mypage_password_button" onClick={this.update_password_cancel.bind(this)}> 취소 </button>
                                 </td>
                             </tr>
                         </form>
@@ -451,7 +536,7 @@ class Mypage extends React.Component {
                 </table>
             </div>
         )
-        let update_Email_Form = (
+        let update_email_Form = (
             <div>
                 <table className="mypage_email_table">
                     <tbody>
@@ -461,7 +546,7 @@ class Mypage extends React.Component {
                             <td>
                                 <input type="text" onChange={this.emailChange.bind(this)} className="mypage_email_input"/>
                                 &nbsp; &nbsp;
-                                <button type="button" onClick={this.submitGit_sendEmail.bind(this)} className="mypage_send_email_button"> 인증번호 전송 </button>
+                                <div><button onClick={this.submitGit_sendEmail.bind(this)} type="button" className="mypage_send_email_button"> 인증번호 전송 </button></div>
                             </td>
                         </tr>
                         <tr>
@@ -472,24 +557,26 @@ class Mypage extends React.Component {
                         </tr>
                         <tr>
                             <td colSpan={2} align="center">
-                                <button type="button" onClick={this.click_update_email.bind(this)} className="mypage_email_button"> 이메일 변경 </button>
-                                <button type="button" onClick={this.update_cancel.bind(this)} className="mypage_email_button"> 취소 </button>
+                                <button onClick={this.click_update_email.bind(this)} className="mypage_email_button"> 이메일 변경 </button>
+                                <button onClick={this.update_password_cancel.bind(this)} className="mypage_email_button"> 취소 </button>
                             </td>
                         </tr>
                         </form>
-                    </tbody> 
+                    </tbody>
                 </table>                           
             </div>
         )
 
         if(this.state.returned == 1){
             return changing_impormation_Form;
+        } else if(this.state.returned == 'pwd'){
+            return update_password_Form;
         } else if(this.state.returned == 2){
-            return update_Password_Form;
-        } else if(this.state.returned == 3){
-            return update_Email_Form;
+            return second_test_Form;
+        } else if(this.state.returned == 'email'){
+            return update_email_Form;
         }
     }
 }
 
-export default Mypage;
+export default MyPage;

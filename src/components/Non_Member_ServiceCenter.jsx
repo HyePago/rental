@@ -72,7 +72,6 @@ class Non_Member_ServiceCenter extends React.Component {
     click_upload(){
         if(this.state.name=="" || this.state.email=="" || this.state.phone_0=="" || this.state.phone_1=="" || this.state.phone_2=="" || this.state.input_certification_number=="" || this.state.division=="" || this.state.category=="" || this.state.title=="" || this.state.contents==""){
             alert("빠짐없이 다 입력해주십시오");
-            console.log(this.state.name+", "+this.state.email+", "+this.state.phone_0+", "+this.state.phone_1+", "+this.state.phone_2+", "+this.state.input_certification_number+", "+this.state.division+", "+this.state.category+", "+this.state.title+", "+this.state.contents);            
             return;
         }
         this.submitGit_email_certification();
@@ -91,8 +90,8 @@ class Non_Member_ServiceCenter extends React.Component {
         .then((json) => { this.setState({result:json.result}); })
         .then(function(){
             if(this.state.result=="true"){
-                console.log("업로드 성공");
-                this.click_home();
+                alert("업로드에 성공하셨습니다.");
+                document.location.href = "/";
             }
         }.bind(this))
     }
@@ -123,6 +122,11 @@ class Non_Member_ServiceCenter extends React.Component {
     }
 
     submitGit_email(){
+        if(this.state.email == ''){
+            alert("이메일을 입력해주세요.");
+            return;
+        }
+
         var min = 100000;
         var max = 999999;
         var certification_number = parseInt(min + (Math.random() * (max-min)));
@@ -164,17 +168,6 @@ class Non_Member_ServiceCenter extends React.Component {
     render(){
         let writing_Form = (
             <div>
-                <div className="logo">
-                    렌터카
-                </div>
-                <div className="menu">
-                    <div className="menu-item"> 홈 </div>                                    
-                    <div className="menu-item" onClick={this.click_sign_in.bind(this)}> 로그인 </div>
-                    <div className="menu-item" onClick={this.click_sign_up.bind(this)}> 회원가입 </div>
-                    <div className="menu-item" onClick={this.click_ImageTest.bind(this)}> 사진테스트 </div>
-                    <div className="menu-item"> 고객 센터 </div>
-                </div>
-                <br />
                 고객 정보
                 <table>
                     <tbody>
@@ -192,7 +185,7 @@ class Non_Member_ServiceCenter extends React.Component {
                             </td>
                             <td>
                                 <input type="text" name="email" onChange={this.emailChange.bind(this)}/>
-                                <button onClick={this.submitGit_email.bind(this)}> 인증번호 전송 </button>
+                                <button type="button" onClick={this.submitGit_email.bind(this)}> 인증번호 전송 </button>
                             </td>
                         </tr>
                         <tr>
@@ -273,18 +266,7 @@ class Non_Member_ServiceCenter extends React.Component {
             </div>
         )
         
-        let home_Form = (
-            <div>
-                <App />
-            </div>
-        )
-
-        if(this.state.returned=='h'){
-            return home_Form;
-        }
-        else{
-            return writing_Form;
-        }
+        return writing_Form;
     }
 }
 

@@ -5,8 +5,6 @@ import cookie from "react-cookies"
 import { Link } from 'react-router-dom'
 
 import Header from './Header.js'
-import FindId from './FindId.jsx'
-import FindPwd from './FindPwd.jsx'
 
 import history from './history';
 
@@ -78,10 +76,9 @@ class SignInForm extends React.Component {
             }else if(this.state.result == 2){
                 alert("로그인 실패 횟수가 5회를 달성하였습니다. 비밀번호찾기에서 비밀번호를 변경해주세요.");
             }else if(this.state.result == 5){
-                this.setState({logined:"admin"});
+                cookie.save('admin', "true", {path: '/'});
+                document.location.href = "/";
             }else{
-                alert("로그인에 성공하였습니다.");
-
                 cookie.save('name', this.state.name, {path: '/'});
                 cookie.save('username', this.state.username, {path: '/'});
                 cookie.save('reserves', this.state.reserves, {path: '/'});
@@ -99,17 +96,17 @@ class SignInForm extends React.Component {
     }
 
     submitGit(){
+        if(this.state.id==''){
+            alert("아이디를 입력해주세요.");
+            return;
+        }else if(this.state.password == ''){
+            alert("비밀번호를 입력해주세요.");
+            return;
+        }
         this.setSignIn({
             username: this.state.id,
             password: this.state.password
         });
-    }
-
-    click_findId(){
-        this.setState({logined:"find_id"});
-    }
-    click_findPwd(){
-        this.setState({logined:"find_pwd"});
     }
 
     render(){
@@ -118,35 +115,18 @@ class SignInForm extends React.Component {
                 <form className="signIn" id="signinForm">
                     <input type="text" className="signInInput" placeholder="username" autoFocus required onChange={this.idChange.bind(this)} />
                     <input type="password" className="signInInput" placeholder="password" required onChange={this.passwordChange.bind(this)}/>
-                    <button className="signInButton" onClick={this.submitGit.bind(this)}>Log In</button>
+                    <button type="button" className="signInButton" onClick={this.submitGit.bind(this)}>Log In</button>
                     {/* <Link onClick={this.submitGit.bind(this)} to="/"><button className="signInButton" >Log In</button></Link> */}
                     <div className="signIn_extra_service">
                         <Link to="/find_id"><div className="signIn_extra_service_content"> 아이디 찾기 </div></Link>
-                        &nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;
+                        <div className="signIn_extra_service_content"> &nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp; </div>
                         <Link to="/find_password"><div className="signIn_extra_service_content"> 비밀번호 찾기 </div></Link>
                     </div>
                 </form>
             </div>
         )
 
-        let find_id_Form = (
-            <div>
-                <FindId />
-            </div>
-        )
-        let find_pwd_Form = (
-            <div>
-                <FindPwd />
-            </div>
-        )
-        
-        if(this.state.logined=="find_id"){
-            return find_id_Form;
-        }else if(this.state.logined=="find_pwd"){
-            return find_pwd_Form;
-        }else {
-            return login_Form;
-        }
+        return login_Form;
     }
 }
 

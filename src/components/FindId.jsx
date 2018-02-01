@@ -32,6 +32,10 @@ class FindId extends React.Component {
         //.then((json) => { this.setState({result:json.result}); })
     }
     submitGit_email(){
+        if(this.state.email == ''){
+            alert("이메일을 입력해주세요");
+        }
+
         var min = 100000;
         var max = 999999;
         var certification_number = parseInt(min + (Math.random() * (max-min)));
@@ -70,6 +74,10 @@ class FindId extends React.Component {
         }.bind(this))
     }
     submitGit_find_id(){
+        if(this.state.name=='' || this.state.email=='' || this.state.input_certification_number==''){
+            alert("빠짐없이 다 입력해주세요.");
+            return;
+        }
         this.find_id({
             email:this.state.email,
             certification_number:this.state.input_certification_number,
@@ -87,50 +95,72 @@ class FindId extends React.Component {
         this.setState({name:e.target.value});
     }
 
+    click_cancel(){
+        document.location.href = "/";
+    }
+
     render(){
         let find_id_Form = (
             <div>
-                <table>
+                <table className="find_id_table">
                     <tbody>
-                        <tr>
-                            <td>
-                                이름
-                            </td>
-                            <td>
-                                <input type="text" placeholder="이름을 입력해주세요" onChange={this.nameChange.bind(this)}/>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                이메일
-                            </td>
-                            <td>
-                                <input type="text" placeholder="이메일을 입력해주세요." onChange={this.emailChange.bind(this)}/>
-                            </td>
-                            <td>
-                                <button onClick={this.submitGit_email.bind(this)}> 인증번호 전송 </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                인증번호
-                            </td>
-                            <td>    
-                                <input type="text" placeholder="인증번호를 입력해주세요" onChange={this.input_certification_numberChange.bind(this)}/>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <button onClick={this.submitGit_find_id.bind(this)}> 아이디 찾기 </button>
-                            </td>
-                        </tr>
+                        <div className="find_id_div">
+                            <tr>
+                                <th>
+                                    이름
+                                </th>
+                                <td>
+                                    <input type="text" placeholder="이름을 입력해주세요" onChange={this.nameChange.bind(this)}/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    이메일
+                                </th>
+                                <td>
+                                    <input type="text" placeholder="이메일을 입력해주세요." onChange={this.emailChange.bind(this)}/>
+                                    &nbsp;&nbsp;&nbsp;
+                                    <button onClick={this.submitGit_email.bind(this)} className="find_id_email_send_button"> 인증번호 전송 </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    인증번호
+                                </th>
+                                <td>    
+                                    <input type="text" placeholder="인증번호를 입력해주세요" onChange={this.input_certification_numberChange.bind(this)}/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td> </td>
+                                <td>
+                                    <button onClick={this.submitGit_find_id.bind(this)} className="find_id_button"> 아이디 찾기 </button>
+                                    <button className="find_id_button" onClick={this.click_cancel.bind(this)}> 취소 </button>
+                                </td>
+                            </tr>
+                        </div>
                     </tbody>
                 </table>
             </div>
         )
         let show_id = (
             <div>
-                회원님의 아이디 : {this.state.id}
+                <table className="find_id_table">
+                    <tbody>
+                        <div className="find_id_div">
+                            <tr>
+                                <th>
+                                    아이디 
+                                </th>
+                                <td width="100px">
+                                    {this.state.id}
+                                </td>
+                                <td>
+                                </td>
+                            </tr>
+                        </div>
+                    </tbody>
+                </table>
             </div>
         )
 

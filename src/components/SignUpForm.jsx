@@ -2,7 +2,6 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import cookie from "react-cookies"
 import { Link } from 'react-router-dom'
-import SignInForm from './SignInForm.jsx'
 import './Sign_Up_Style.css'
 
 class SignUpForm extends React.Component {
@@ -14,9 +13,7 @@ class SignUpForm extends React.Component {
             username: '',
             username_ch: '',
             password: '',
-            password_feedback: '',
             password_confirm: '',
-            password_confirm_feedback: '',
             email: '',
             phone_0: '010',
             phone_1: '',
@@ -49,7 +46,7 @@ class SignUpForm extends React.Component {
         .then(function(){
             if(this.state.result == true){
                 alert("회원가입에 성공하였습니다.");
-                this.setState({signed:'in'});
+                document.location.href = "/";
             }else if(this.state.result == "email"){
                 alert("인증번호를 다시 한 번 확인해주시길 바랍니다.");
             }else{
@@ -71,6 +68,11 @@ class SignUpForm extends React.Component {
     }
 
     submitGit_email(){
+        if(this.state.email == ''){
+            alert("이메일을 입력해주세요.");
+            return;
+        }
+
         var min = 100000;
         var max = 999999;
         var certification_number = parseInt(min + (Math.random() * (max-min)));
@@ -107,32 +109,20 @@ class SignUpForm extends React.Component {
         var spe = pw.search(/[`~!@@#$%^&*|₩₩₩'₩";:₩/?]/gi);
         var blank_pattern = /[\s]/g;
 
-        console.log("pw1 = ", pw);
-
         if(pw.length<8 || pw.length>16){
-            this.setState({password_feedback:"9자리 ~ 16자리 이내로 입력해주세요."});
-            //alert("9자리 ~ 16자리 이내로 입력해주세요.")
+            alert("9자리 ~ 16자리 이내로 입력해주세요.");
+            return false;
         }
         else if(blank_pattern.test(pw)==true){
-        //else if(pw.search(/₩s/) != -1){
-            this.setState({password_feedback:"비밀번호는 공백없이 입력해주세요."});
-            //alert("비밀번호는 공백없이 입력해주세요.")
+            alert("비밀번호는 공백없이 입력해주세요.");
+            return false;
         }
         else if(num<0 || eng<0 || spe<0){
-            this.setState({password_feedback:"영문, 숫자, 특수문자를 혼합하여 입력해주세요."});
-            //alert("영문, 숫자, 특수문자를 혼합하여 입력해주세요.")
+            alert("영문, 숫자, 특수문자를 혼합하여 입력해주세요.")
+            return false;
         }
         else{
-            this.setState({password_feedback:''});
-        }
-    }
-
-    chkConfirmPwd(){
-        if(this.state.password != this.state.password_confirm){
-            this.setState({password_confirm_feedback: "비밀번호와 일치하지않습니다."});
-        }
-        else{
-            this.setState({password_confirm_feedback: ''});
+            return true;
         }
     }
 
@@ -144,12 +134,9 @@ class SignUpForm extends React.Component {
     }
     passwordChange(e){
         this.setState({password:e.target.value});
-        console.log(this.state.password);
-        this.chkPwd();
     }
     password_confirmChange(e){
         this.setState({password_confirm:e.target.value});
-        this.chkConfirmPwd();        
     }
     emailChange(e){
         this.setState({email:e.target.value});
@@ -203,7 +190,8 @@ class SignUpForm extends React.Component {
 
     idOverlap(username){
         if(this.state.username.length<4 || this.state.username.length>15){
-            alert("아이디를 5자리 ~ 15자리 이내로 입력해주세요.")
+            alert("아이디를 5자리 ~ 15자리 이내로 입력해주세요.");
+            return;
         }
         else{
             fetch('/id_overlap', {
@@ -218,6 +206,7 @@ class SignUpForm extends React.Component {
             .then(function(){
                 if(this.state.username_ch == 116){
                     alert("사용 가능한 아이디입니다.");
+                    return;
                 }
                 else{
                     alert("이미 사용중인 아이디입니다, 다른 아이디를 입력해주십시오.");
@@ -227,6 +216,11 @@ class SignUpForm extends React.Component {
     }
 
     SignUpCheck(){
+        if(this.state.name=="" || this.state.username=="" || this.state.password=="" || this.state.password_confirm=="" || this.state.email=="" || this.state.phone_1=="" || this.state.phone_2=="" || this.state.license_number_1=="" || this.state.license_number_2=="" || this.state.license_number_3==""){
+            alert("빠짐없이 다 입력해주십시오.");
+            return;
+        }
+
         if(this.state.username.length<4 || this.state.username.length>15){
             alert("아이디를 5자리 ~ 15자리 이내로 입력해주세요.")
             return;
@@ -250,15 +244,12 @@ class SignUpForm extends React.Component {
                 }
             }.bind(this));
         }
-        this.chkPwd();
-        if(this.state.password_feedback!=''){        
-        //if(this.state.password_feedback!='' || this.state.password_confirm_feedback!=''){
-            alert("비밀번호를 다시 한 번 확인해주십시오.");
+
+        if(!(this.chkPwd())){
             return;
         }
-        
-        if(this.state.name=="" || this.state.username=="" || this.state.password=="" || this.state.password_confirm=="" || this.state.email=="" || this.state.phone_1=="" || this.state.phone_2=="" || this.state.license_number_1=="" || this.state.license_number_2=="" || this.state.license_number_3==""){
-            alert("빠짐없이 다 입력해주십시오.");
+        if(this.state.password != this.state.password_confirm){
+            alert("비밀번호 확인을 확인해주세요.");
             return;
         }
 
@@ -270,12 +261,12 @@ class SignUpForm extends React.Component {
     render(){
         let sign_up_Form = (
             <div>
-                <table width="940" className="out_table">
+                <table width="940" className="sign_up_out_table">
                     <tbody>
                         <form name="write_form_member" method="post">
                             <tr>
                                 <td>
-                                    <div> 회원가입 폼 </div>
+                                    <div className="sign_up_logo"> 회원가입 폼 </div>
                                 </td>
                             </tr>
                             <tr height={2} bgcolor="cadetblue">
@@ -283,7 +274,7 @@ class SignUpForm extends React.Component {
                             </tr>
                             <tr height="372px">
                                 <td colSpan={2}>
-                                    <table width="780">
+                                    <table width="780" className="sign_up_inner_table">
                                         <tbody>
                                             <tr>
                                                 <td>
@@ -291,25 +282,25 @@ class SignUpForm extends React.Component {
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <table width="940">
+                                                    <table width="940" className="singup_innertable">
                                                         <tbody>
                                                             <tr>
                                                                 <th>이름</th>
                                                                 <td>
-                                                                    <input type="text" onChange={this.nameChange.bind(this)} />
+                                                                    <input type="text" onChange={this.nameChange.bind(this)} size={7} />
                                                                 </td>
                                                             </tr>
                                                             <tr>
                                                                 <th>아이디</th>
                                                                 <td>
-                                                                    <input type="text" onChange={this.usernameChange.bind(this)} />
-                                                                    <button onClick={this.idOverlap.bind(this)}>아이디 중복 확인</button>
+                                                                    <input type="text" onChange={this.usernameChange.bind(this)} maxLength={15} size={15} />
+                                                                    <button type="button" onClick={this.idOverlap.bind(this)}>아이디 중복 확인</button>
                                                                 </td>
                                                             </tr>
                                                             <tr>
                                                                 <th>비밀번호</th>
                                                                 <td>
-                                                                    <input type="password" onChange={this.passwordChange.bind(this)} />
+                                                                    <input type="password" onChange={this.passwordChange.bind(this)} maxLength={16} size={16} />
                                                                 </td>
                                                             </tr>
                                                             <tr>
@@ -322,13 +313,13 @@ class SignUpForm extends React.Component {
                                                                 <th>이메일</th>
                                                                 <td>
                                                                     <input type="text" onChange={this.emailChange.bind(this)} />
-                                                                    <button onClick={this.submitGit_email.bind(this)}> 인증번호 전송 </button>
+                                                                    <button type="button" onClick={this.submitGit_email.bind(this)}> 인증번호 전송 </button>
                                                                 </td>
                                                             </tr>
                                                             <tr>
                                                                 <th>인증번호</th>
                                                                 <td>
-                                                                    <input type="text" onChange={this.input_certification_numberChange.bind(this)} />
+                                                                    <input type="number" onChange={this.input_certification_numberChange.bind(this)} />
                                                                 </td>
                                                             </tr>
                                                             <tr>
@@ -339,9 +330,9 @@ class SignUpForm extends React.Component {
                                                                         <option id="011" value="011">011</option>
                                                                         <option id="017" value="017">017</option>
                                                                     </select>
-                                                                    &nbsp;-&nbsp;
+                                                                    &nbsp;&nbsp;-&nbsp;&nbsp;
                                                                     <input type="number" onChange={this.phone_1Change.bind(this)} max={9999} maxLength={4} size={4} />
-                                                                    &nbsp;-&nbsp;
+                                                                    &nbsp;&nbsp;-&nbsp;&nbsp;
                                                                     <input type="number" onChange={this.phone_2Change.bind(this)} max={9999} maxLength={4} size={4} />
                                                                 </td>
                                                             </tr>
@@ -373,9 +364,9 @@ class SignUpForm extends React.Component {
                                                                     </select>
                                                                     &nbsp;
                                                                     <input type="text" size={2} maxLength={2} onChange={this.license_number_1Change.bind(this)} />
-                                                                    -
+                                                                    &nbsp;&nbsp;-&nbsp;&nbsp;
                                                                     <input type="text" size={6} maxLength={6} onChange={this.license_number_2Change.bind(this)} />
-                                                                    -
+                                                                    &nbsp;&nbsp;-&nbsp;&nbsp;
                                                                     <input type="text" size={2} maxLength={2} onChange={this.license_number_3Change.bind(this)} />
                                                                 </td>
                                                             </tr>
@@ -401,7 +392,7 @@ class SignUpForm extends React.Component {
                                             <tr>
                                                 <td colSpan={2} align="center">
                                                     <div id="member_button">
-                                                        <button onClick={this.SignUpCheck.bind(this)}>회원가입</button>
+                                                        <button type="button" onClick={this.SignUpCheck.bind(this)}>회원가입</button>
                                                         <Link to="/"><button>취소</button></Link>
                                                     </div>
                                                 </td>
@@ -415,15 +406,8 @@ class SignUpForm extends React.Component {
                 </table>
             </div>
         )
-        let sign_up_finish_Form = (
-            <SignInForm />
-        )
 
-        if(this.state.signed == 'up'){
-            return sign_up_Form;
-        }else if(this.state.signed == 'in'){
-            return sign_up_finish_Form;
-        }
+        return sign_up_Form;
     }
 }
 

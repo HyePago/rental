@@ -2,9 +2,6 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import cookie from "react-cookies"
 
-import App from './App'
-import Rent_1 from './Rent_1.jsx'
-
 import './Header.css'
 
 class Reservation_history extends React.Component{
@@ -150,23 +147,10 @@ class Reservation_history extends React.Component{
         })
     }
 
-    click_home(){
-        this.setState({returned:'home'});
-    }    
-    click_rent(){
-        this.setState({returned:'rent'});
-    }
     click_refund(e){
         this.setState({division_number:e.target.id});
         this.setState({returned:'refund'});
         this.refund_impormation();
-    }
-    log_out(){
-        cookie.remove('name', {path:'/'});
-        cookie.remove('username', {path:'/'});
-        cookie.remove('reserves', {path:'/'});
-        cookie.remove('email', {path:'/'});
-        window.location.reload();
     }
     click_cancel_reservation(){
         var answer = confirm("정말 예약 취소하시겠습니까?");
@@ -372,12 +356,6 @@ class Reservation_history extends React.Component{
             </div>
         )
 
-        let home_Form = (
-            <div>
-                <App />
-            </div>
-        )
-
         let refunded_Form = (
             <div>
                 <table>
@@ -461,21 +439,12 @@ class Reservation_history extends React.Component{
                 </table>
             </div> 
         )
-        let rent_Form = (
-            <div>
-                <Rent_1 />
-            </div>
-        )
 
         if(this.state.returned=="ready"){
             this.setState.returned="reservation"            
             return reservation_history_form;
         }else if(this.state.returned=="refund"){
             return refunded_Form;
-        }else if(this.state.returned=="home"){
-            return home_Form;
-        }else if(this.state.returned=="rent"){
-            return rent_Form;
         }else{
             return reservation_history_form;
         }

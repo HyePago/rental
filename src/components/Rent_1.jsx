@@ -2,8 +2,6 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import cookie from "react-cookies"
 
-import Reservation_history from './Reservation_history.jsx'
-
 import './style.css'
 import './Header.css'
 
@@ -848,11 +846,6 @@ class Rent_1 extends React.Component {
                 회원님의 메일로 예약번호를 전송하였습니다.
             </div>
         )
-        let reservation_Form = (
-            <div>
-                <Reservation_history />
-            </div>
-        )
 
         if(this.state.returned == '1'){
             return first_Form;
@@ -865,8 +858,6 @@ class Rent_1 extends React.Component {
             return fourth_Form;
         }else if(this.state.returned == '5'){
             return last_Form;
-        }else if(this.state.returned == 'r'){
-            return reservation_Form;
         }
     }
 }

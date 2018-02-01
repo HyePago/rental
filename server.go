@@ -779,6 +779,8 @@ func main() {
 		var raw map[string]interface{}
 		json.Unmarshal([]byte(form), &raw)
 
+		log.Println("form => ", form)
+
 		reservation_number := raw["reservation_number"]
 		email := raw["email"]
 		car_number := raw["car_number"]
@@ -813,7 +815,22 @@ func main() {
 			log.Fatal(err)
 		}
 
-		cost_number, err := strconv.Atoi(cost.(string))
+		// cost_number, err := strconv.Atoi(cost.(string))
+		// log.Println("cost_number = ", cost_number)
+
+		 type_cost := reflect.TypeOf(cost)
+
+		var cost_number int
+
+		if type_cost.Kind() == reflect.String {
+			cost_number, err = strconv.Atoi(cost.(string))
+
+			if err != nil {
+				log.Fatal(err)
+			}
+		} else {
+			cost_number = int(cost.(float64))
+		}
 
 		if usepoint != "" {
 			usepoint_int, err := strconv.Atoi(usepoint.(string))
@@ -833,6 +850,7 @@ func main() {
 		if err != nil {
 			log.Fatal(err)
 		}
+
 
 		c.JSON(200, gin.H {
 			"result": point,
@@ -1805,6 +1823,281 @@ func main() {
 
 		c.JSON(200, gin.H{
 			"result": result,
+		})
+	})
+
+	router.POST("/mypage_change_pwd", func(c *gin.Context) {
+		form := c.PostForm("form")
+
+		var raw map[string]interface{}
+		json.Unmarshal([]byte(form), &raw)
+
+		var id string
+
+		email := raw["email"]
+		password := raw["password"]
+		update_password := raw["update_password"]
+
+		err := db.QueryRow("SELECT id FROM users WHERE email=? && password=?", email, password).Scan(&id)
+		switch{
+		case err == sql.ErrNoRows:
+			c.JSON(200, gin.H{
+				"result": "false",
+			})
+			return
+		case err != nil:
+			log.Fatal(err)
+			return
+		}
+
+		_, err = db.Exec("UPDATE users set password=? WHERE email = ?", update_password, email)
+
+		if err != nil{
+			log.Fatal(err)
+			return
+		}
+
+		c.JSON(200, gin.H {
+			"result": "true",
+		})
+	})
+
+	router.POST("/update_email", func(c *gin.Context){
+		form := c.PostForm("form")
+
+		var raw map[string]interface{}
+		json.Unmarshal([]byte(form), &raw)
+
+		email := raw["email"]
+		update_email := raw["update_email"]
+
+		log.Println("email = ", email)
+		log.Println("update_email = ", update_email)
+
+		_, err := db.Exec("UPDATE users set email=? WHERE email=?", update_email, email)
+
+		if err != nil {
+			log.Fatal(err)
+
+			c.JSON(200, gin.H{
+				"result": "false",
+			})
+			return
+		}
+
+		_, err = db.Exec("UPDATE feedback set email=? WHERE email=?", update_email, email)
+		if err != nil {
+			log.Fatal(err)
+
+			c.JSON(200, gin.H{
+				"result": "false",
+			})
+			return
+		}
+
+		_, err = db.Exec("UPDATE reservation set email=? WHERE email=?", update_email, email)
+		if err != nil {
+			log.Fatal(err)
+
+			c.JSON(200, gin.H{
+				"result": "false",
+			})
+			return
+		}
+
+		c.JSON(200, gin.H {
+			"result": "true",
+		})
+	})
+
+	router.POST("/update_user_impormation", func(c *gin.Context){
+		form := c.PostForm("form")
+
+		var raw map[string]interface{}
+		json.Unmarshal([]byte(form), &raw)
+
+		var license_id string
+
+		email := raw["email"]
+		phone := raw["phone"]
+		license_category := raw["license_category"]
+		license_type := raw["license_type"]
+		license_number := raw["license_number"]
+		date_if_issue := raw["date_if_issue"]
+		aptitude_test := raw["aptitude_test"]
+
+		_, err := db.Exec("UPDATE users set phone=? WHERE email=?", phone, email)
+		if err != nil {
+			log.Fatal(err)
+
+			c.JSON(200, gin.H{
+				"result": "false",
+			})
+
+			return
+		}
+
+		err = db.QueryRow("SELECT license_id FROM users WHERE email = ?", email).Scan(&license_id)
+
+		switch{
+		case err == sql.ErrNoRows:
+			c.JSON(200, gin.H {
+				"result": "false",
+			})
+
+			return
+		case err != nil :
+			log.Fatal(err)
+			c.JSON(200, gin.H{
+				"result": "false",
+			})
+			return
+		}
+
+		_, err = db.Exec("UPDATE license set category=?, type=?, number=?, date_if_issue=?, aptitude_test=? WHERE id = ?", license_category, license_type, license_number, date_if_issue, aptitude_test, license_id)
+
+		if err != nil {
+			log.Fatal(err)
+
+			c.JSON(200, gin.H{
+				"result": "false",
+			})
+			return
+		}
+
+		c.JSON(200, gin.H{
+			"result": "true",
+		})
+	})
+
+	router.POST("/upload_notice", func(c *gin.Context) {
+		log.Println("LOG: /rent_1")
+		form := c.PostForm("form")
+
+		var raw map[string]interface{}
+		json.Unmarshal([]byte(form), &raw)
+
+		title := raw["title"]
+		content := raw["content"]
+
+		_, err := db.Exec("INSERT INTO notice (title, contents) VALUES (?, ?)", title, content)	
+
+		if err != nil {
+			log.Fatal(err)
+			c.JSON(200, gin.H{
+				"result": "false",
+			})
+			return
+		}
+
+		c.JSON(200, gin.H{
+			"result": "true",
+		})
+	})
+
+	router.POST("/notice_list", func(c *gin.Context){
+		form := c.PostForm("form")
+
+		var raw map[string]interface{}
+		json.Unmarshal([]byte(form), &raw)
+
+		sort := raw["sort"]
+		currentPage := raw["currentPage"]
+
+		count := 0
+		index := 0
+
+		var id string
+		var title string
+		var contents string
+		var timestamp string
+
+		var result map[int]map[string]string = map[int]map[string]string{}
+
+		rows, err := db.Query("SELECT id FROM notice")
+
+		if sort == "1"{
+			rows, err = db.Query("SELECT id FROM notice ORDER BY timestamp")
+		} else {
+			rows, err = db.Query("SELECT id FROM notice ORDER BY timestamp DESC")
+		}
+
+		if err != nil {
+			log.Fatal(err)
+		}
+		defer rows.Close()
+
+		for rows.Next(){
+			err := rows.Scan(&id)
+
+			if err != nil {
+				log.Fatal(err)
+				return
+			}
+
+			startPage := 0
+
+			result[index] = map[string]string{}
+
+			if currentPage == "" {
+				startPage = 0
+			} else {
+				startPage, err = strconv.Atoi(currentPage.(string))
+			}
+
+			if count < (startPage - 1) * 20 {
+				count++; 
+				continue;
+			}
+
+			err = db.QueryRow("SELECT title, contents, timestamp FROM notice WHERE id = ?", id).Scan(&title, &contents, &timestamp)
+
+			switch{
+			case err == sql.ErrNoRows:
+				return
+			case err != nil:
+				log.Fatal(err)
+				return
+			}
+
+			result[index]["id"] = id
+			result[index]["title"] = title
+			result[index]["content"] = contents
+			result[index]["timestamp"] = timestamp
+
+			count++
+			index++
+
+			result[0]["total_count"] = strconv.Itoa(count)
+		}
+
+		c.JSON(200, gin.H{
+			"result": result,
+		})
+	})
+
+	router.POST("/update_notice", func(c *gin.Context){
+		form := c.PostForm("form")
+
+		var raw map[string]interface{}
+		json.Unmarshal([]byte(form), &raw)
+
+		id := raw["id"]
+		title := raw["title"]
+		content := raw["content"]
+
+		_, err := db.Exec("UPDATE notice set title=?, contents=? WHERE id = ?", title, content, id)
+
+		if err != nil {
+			log.Fatal(err)
+			c.JSON(200, gin.H{
+				"result": "false",
+			})
+			return
+		}
+
+		c.JSON(200, gin.H{
+			"result": "true",
 		})
 	})
 

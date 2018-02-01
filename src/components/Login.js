@@ -60,10 +60,9 @@ class Login extends React.Component {
             }else if(this.state.result == 2){
                 alert("로그인 실패 횟수가 5회를 달성하였습니다. 비밀번호찾기에서 비밀번호를 변경해주세요.");
             }else if(this.state.result == 5){
-                this.setState({logined:"admin"});
+                cookie.save('admin', "true", {path: '/'});
+                document.location.href = "/";
             }else{
-                alert("로그인에 성공하였습니다.");
-
                 cookie.save('name', this.state.name, {path: '/'});
                 cookie.save('username', this.state.username, {path: '/'});
                 cookie.save('reserves', this.state.reserves, {path: '/'});
@@ -80,6 +79,14 @@ class Login extends React.Component {
         }.bind(this));
     }
     submitGit_Login(){
+        if(this.state.id == ''){
+            alert("아이디를 입력해주세요");
+            return;
+        }else if(this.state.password == ''){
+            alert("비밀번호를 입력해주세요.");
+            return;
+        }
+
         this.setLogIn({
             username: this.state.id,
             password: this.state.password
@@ -117,10 +124,16 @@ class Login extends React.Component {
                 </div>
             </div>
         )
+        let admin_Form = (
+            <div>
+            </div>
+        )
 
         if(cookie.load('name')){
             return member_Form;;
-        }else{
+        } else if(cookie.load('admin')){
+            return admin_Form;
+        } else{
             return non_member_Form;
         }
     }

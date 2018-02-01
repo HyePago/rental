@@ -14,6 +14,14 @@ import Reservation_history from './Reservation_history.jsx'
 import Main from './Main.jsx'
 import Rent_1 from './Rent_1.jsx'
 import MyPage from './MyPage.jsx'
+import Member_Service_Center from './Member_Service_Center.jsx'
+import Member_feedback from './Member_feedback.jsx'
+import Upload_Notice from './Upload_Notice.jsx'
+import Notice from './Notice.jsx'
+import Update_Notice from './Update_Notice.jsx'
+import Non_Member_feedback from './Non_Member_feedback.jsx'
+import Non_Member_ServiceCenter from './Non_Member_ServiceCenter.jsx'
+
 import history from './history';
 
 class App extends React.Component {
@@ -34,6 +42,13 @@ class App extends React.Component {
                             <Route path='/reservation_member' component={Reservation_history} />
                             <Route path='/search_rent' component={Rent_1} />
                             <Route path="/mypage" component={MyPage} />
+                            <Route path="/member_service_center" component={Member_Service_Center} />
+                            <Route path="/Member_feedback" component={Member_feedback} />
+                            <Route path="/upload_notice" component={Upload_Notice} />
+                            <Route path="/notice" component={Notice} />
+                            <Route path="/update_notice" component={Update_Notice} />
+                            <Route path="/non_member_feedback" component={Non_Member_feedback}/>
+                            <Route path="/non_member_service_center" component={Non_Member_ServiceCenter} />
                         </Switch>   
                     </main>
                 </div>

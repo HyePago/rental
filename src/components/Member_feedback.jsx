@@ -181,23 +181,6 @@ class Member_feedback extends React.Component {
 
         let show_feedback_list = (
             <div>
-                <div className="logo">
-                    렌터카
-                </div>
-                <div className="menu">
-                    <div className="menu-item" onClick={this.click_home.bind(this)}> 홈 </div>                                    
-                    <div className="menu-item" onClick={this.click_rent.bind(this)}> 렌터카 예약 </div>
-                    <div className="menu-item" onClick={this.log_out.bind(this)}> 로그아웃 </div>
-                    <div className="menu-item" onClick={this.click_reservation.bind(this)}> 예약 및 이용내역 </div>
-                    <div className="dropdown-menu-item">
-                        고객 센터
-                        <div className="dropdown-content">
-                            <div>내 의견 보기</div>
-                            <div onClick={this.click_member_service.bind(this)}>의견 보내기</div>
-                        </div>
-                    </div>
-                </div>
-                <br />
                 <label> 구분 </label>
                 <select onChange={this.input_divisionChange.bind(this)}>
                     <option value=""> 전체 </option>
@@ -245,22 +228,6 @@ class Member_feedback extends React.Component {
 
         let show_feedback_Form = (
             <div>
-                <div className="logo">
-                    렌터카
-                </div>
-                <div className="menu">
-                    <div className="menu-item" onClick={this.click_home.bind(this)}> 홈 </div>                                    
-                    <div className="menu-item" onClick={this.click_rent.bind(this)}> 렌터카 예약 </div>
-                    <div className="menu-item" onClick={this.log_out.bind(this)}> 로그아웃 </div>
-                    <div className="menu-item" onClick={this.click_reservation.bind(this)}> 예약 및 이용내역 </div>
-                    <div className="dropdown-menu-item">
-                        고객 센터
-                        <div className="dropdown-content">
-                            <div>내 의견 보기</div>
-                            <div onClick={this.click_member_service.bind(this)}>의견 보내기</div>
-                        </div>
-                    </div>
-                </div>
                 <table>
                     <tbody>
                         <tr>

@@ -54,6 +54,10 @@ class Non_Member_reservation extends React.Component {
         .then((Response) => { return Response.json(); })
     }
     submitGit_email(){
+        if(this.state.email == ''){
+            alert("이메일을 입력해주시길 바랍니다.");
+            return;
+        }
         var min = 100000;
         var max = 999999;
         var certification_number = parseInt(min + (Math.random() * (max-min)));
@@ -105,6 +109,8 @@ class Non_Member_reservation extends React.Component {
         .then((response) => { return response.json(); })
         .then((json) => { this.setState({result:json.result}); })
         .then(function(){
+            console.log("setreservation");
+            
             this.setState({image:this.state.result["image"]});
             this.setState({car_number:this.state.result["car_number"]});
             this.setState({car_name:this.state.result["car_name"]});
@@ -143,7 +149,8 @@ class Non_Member_reservation extends React.Component {
                 alert("다시 한 번 시도해주시길 바랍니다.");
             }
 
-            document.location.href = "/";
+            alert("예약 취소가 완료되었습니다.");
+            this.setState({returned:1});
         })
     }
     click_cancel_reservation(){

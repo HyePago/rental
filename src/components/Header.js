@@ -22,6 +22,10 @@ class Header extends React.Component {
 
         document.location.href = "/";
     }
+    admin_log_out(){
+        cookie.remove('admin', {path:'/'});
+        document.location.href = "/";
+    }
 
     render(){
         let member_top_Form = (
@@ -34,8 +38,9 @@ class Header extends React.Component {
                     <div className="dropdown-menu-item"> 
                             고객센터
                         <div className="dropdown-content">
-                            <div> 내 의견 보기 </div>
-                            <div> 의견 보내기 </div>
+                            <Link to="/Member_feedback" className="link_content"><div> 내 의견 보기 </div></Link>
+                            <Link to="/member_service_center" className="link_content"><div> 의견 보내기 </div></Link>
+                            <Link to="/notice" className="link_content"> <div> 공지사항 </div> </Link>
                         </div>
                     </div>
                 </div>
@@ -52,15 +57,36 @@ class Header extends React.Component {
                     <div className="dropdown-menu-item"> 
                             고객센터
                         <div className="dropdown-content">
-                            <div> 내 의견 보기 </div>
-                            <div> 의견 보내기 </div>
+                            <Link to="/non_member_feedback" className="link_content"><div> 내 의견 보기 </div></Link>
+                            <Link to="/non_member_service_center" className="link_content"><div> 의견 보내기 </div></Link>
+                            <Link to="/notice" className="link_content"> <div> 공지사항 </div> </Link>
                         </div>
                     </div>
                 </div>
             </div>
         )
+        let admin_Form = (
+            <div>
+                <div className="menu">
+                    <Link to="/"><div className="logo">로고</div></Link>
+                    <div className="menu-item"> 신규차량등록 </div>
+                    <div className="menu-item"> 차량 정보 관리 </div>
+                    <div className="dropdown-menu-item"> 
+                        고객 센터 관리 
+                        <div className="dropdown-content">
+                            <div> 고객 의견 관리 </div>
+                            <Link to="/upload_notice" className="link_content"><div> 공지사항 등록 </div></Link>
+                            <Link to="/update_notice" className="link_content"><div> 공지사항 목록 </div></Link>
+                        </div>
+                    </div>
+                    <div className="menu-item" onClick={this.admin_log_out.bind(this)}> 로그아웃 </div>
+                </div>
+            </div>
+        )
 
-        if(cookie.load('name')){
+        if(cookie.load('admin')){
+            return admin_Form;
+        } else if(cookie.load('name')){
             return member_top_Form;
         } else {
             return non_member_top_Form;

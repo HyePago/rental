@@ -61,6 +61,11 @@ class Non_Member_feedback extends React.Component {
         }.bind(this))
     }
     submitGit_certification(){
+        if(this.state.email == '' || this.state.input_certification_number == ''){
+            alert("빠짐없이 입력해주세요.");
+            return;
+        }
+
         this.setCertification({
             email:this.state.email,
             certification_number:this.state.input_certification_number
@@ -171,6 +176,11 @@ class Non_Member_feedback extends React.Component {
         //.then((json) => { this.setState({result:json.result}); })
     }
     submitGit_email(){
+        if(this.state.email == ''){
+            alert("이메일을 입력해주세요.");
+            return;
+        }
+
         var min = 100000;
         var max = 999999;
         var certification_number = parseInt(min + (Math.random() * (max-min)));
@@ -233,22 +243,6 @@ class Non_Member_feedback extends React.Component {
 
         let email_Form = (
             <div>
-                <div className="logo">
-                    렌터카
-                </div>
-                <div className="menu">
-                    <div className="menu-item" onClick={this.click_home.bind(this)}> 홈 </div>                                    
-                    <div className="menu-item" onClick={this.click_sign_in.bind(this)}> 로그인 </div>
-                    <div className="menu-item" onClick={this.click_sign_up.bind(this)}> 회원가입 </div>
-                    <div className="menu-item" onClick={this.click_ImageTest.bind(this)}> 사진테스트 </div>
-                    <div className="dropdown-menu-item">
-                        고객 센터
-                        <div className="dropdown-content">
-                            <div>내 의견 보기</div>
-                            <div onClick={this.click_nonmember_service.bind(this)}>의견 보내기</div>
-                        </div>
-                    </div>
-                </div>
                 <table>
                     <tbody>
                         <tr>
@@ -280,23 +274,6 @@ class Non_Member_feedback extends React.Component {
 
         let show_feedback_list = (
             <div>
-                <div className="logo">
-                    렌터카
-                </div>
-                <div className="menu">
-                    <div className="menu-item" onClick={this.click_home.bind(this)}> 홈 </div>                                    
-                    <div className="menu-item" onClick={this.click_sign_in.bind(this)}> 로그인 </div>
-                    <div className="menu-item" onClick={this.click_sign_up.bind(this)}> 회원가입 </div>
-                    <div className="menu-item" onClick={this.click_ImageTest.bind(this)}> 사진테스트 </div>
-                    <div className="dropdown-menu-item">
-                        고객 센터
-                        <div className="dropdown-content">
-                            <div>내 의견 보기</div>
-                            <div onClick={this.click_nonmember_service.bind(this)}>의견 보내기</div>
-                        </div>
-                    </div>
-                </div>
-                <br />
                 <label> 구분 </label>
                 <select onChange={this.input_divisionChange.bind(this)}>
                     <option value=""> 전체 </option>
@@ -343,22 +320,6 @@ class Non_Member_feedback extends React.Component {
         )
         let show_feedback_Form = (
             <div>
-                <div className="logo">
-                    렌터카
-                </div>
-                <div className="menu">
-                    <div className="menu-item" onClick={this.click_home.bind(this)}> 홈 </div>                                    
-                    <div className="menu-item" onClick={this.click_sign_in.bind(this)}> 로그인 </div>
-                    <div className="menu-item" onClick={this.click_sign_up.bind(this)}> 회원가입 </div>
-                    <div className="menu-item" onClick={this.click_ImageTest.bind(this)}> 사진테스트 </div>
-                    <div className="dropdown-menu-item">
-                        고객 센터
-                        <div className="dropdown-content">
-                            <div>내 의견 보기</div>
-                            <div onClick={this.click_nonmember_service.bind(this)}>의견 보내기</div>
-                        </div>
-                    </div>
-                </div>
                 <table>
                     <tbody>
                         <tr>

@@ -19,7 +19,6 @@ class FindPwd extends React.Component {
             id: '',
             password: '',
             password_confirm: '',
-            password_feedback: '',
         }
     }
 
@@ -35,6 +34,11 @@ class FindPwd extends React.Component {
         //.then((json) => { this.setState({result:json.result}); })
     }
     submitGit_email(){
+        if(this.state.email==''){
+            alert("이메일을 입력해주세요.");
+            return;
+        }
+
         var min = 100000;
         var max = 999999;
         var certification_number = parseInt(min + (Math.random() * (max-min)));
@@ -70,6 +74,10 @@ class FindPwd extends React.Component {
         }.bind(this))
     }
     submitGit_find_pwd(){
+        if(this.state.name=='' || this.state.email=='' || this.state.input_certification_number=='' || this.state.id==''){
+            alert("빠짐없이 다 입력해주세요.");
+            return;
+        }
         this.find_pwd({
             email:this.state.email,
             name:this.state.name,
@@ -100,25 +108,24 @@ class FindPwd extends React.Component {
         var blank_pattern = /[\s]/g;
 
         if(pw.length<8 || pw.length>16){
-            this.setState({password_feedback:"9자리 ~ 16자리 이내로 입력해주세요."});
-            //alert("9자리 ~ 16자리 이내로 입력해주세요.")
+            alert("9자리 ~ 16자리 이내로 입력해주세요.")
+            return false;
         }
         else if(blank_pattern.test(pw)==true){
         //else if(pw.search(/₩s/) != -1){
-            this.setState({password_feedback:"비밀번호는 공백없이 입력해주세요."});
-            //alert("비밀번호는 공백없이 입력해주세요.")
+            alert("비밀번호는 공백없이 입력해주세요.")
+            return false;
         }
         else if(num<0 || eng<0 || spe<0){
-            this.setState({password_feedback:"영문, 숫자, 특수문자를 혼합하여 입력해주세요."});
-            //alert("영문, 숫자, 특수문자를 혼합하여 입력해주세요.")
+            alert("영문, 숫자, 특수문자를 혼합하여 입력해주세요.");
+            return false;
         }
         else{
-            this.setState({password_feedback:''});
+            return true;
         }
     }
     passwordChange(e){
         this.setState({password:e.target.value});
-        this.chkPwd();
     }
     password_confirmChange(e){
         this.setState({password_confirm:e.target.value});
@@ -137,7 +144,7 @@ class FindPwd extends React.Component {
         .then(function(){
             if(this.state.result == "true"){
                 alert("비밀번호 변경에 성공하셨습니다.");
-                document.location.href = "/signin";
+                document.location.href = "/";
             }else{
                 alert("비밀 번호 변경에 실패하셨습니다. 다시 한 번 시도해주세요.");
                 return;
@@ -145,11 +152,14 @@ class FindPwd extends React.Component {
         }.bind(this))
     }
     changeThePwd(){
-        if(this.state.password_feedback!=''){        
-            //if(this.state.password_feedback!='' || this.state.password_confirm_feedback!=''){
-            alert("비밀번호 양식이 맞는 지 확인해주시길 바립니다.");
+        if(this.state.password=='' || this.state.password_confirm==''){
+            alert("빠짐없이 입력해주세요.")
             return;
-        }else if(this.state.password != this.state.password_confirm){
+        }
+        if(!(this.chkPwd())){
+            return;
+        }
+        else if(this.state.password != this.state.password_confirm){
             alert("비밀번호와 비밀번호 확인이 일치하는 지 확인해주시길 바랍니다.");
             return;
         }
@@ -181,7 +191,7 @@ class FindPwd extends React.Component {
                                 <input type="text" placeholder="이메일을 입력해주세요." onChange={this.emailChange.bind(this)}/>
                             </td>
                             <td>
-                                <button onClick={this.submitGit_email.bind(this)}> 인증번호 전송 </button>
+                                <button type="button" onClick={this.submitGit_email.bind(this)}> 인증번호 전송 </button>
                             </td>
                         </tr>
                         <tr>
@@ -189,7 +199,7 @@ class FindPwd extends React.Component {
                                 인증번호
                             </td>
                             <td>    
-                                <input type="text" placeholder="인증번호를 입력해주세요" onChange={this.input_certification_numberChange.bind(this)}/>
+                                <input type="number" placeholder="인증번호를 입력해주세요" onChange={this.input_certification_numberChange.bind(this)}/>
                             </td>
                         </tr>
                         <tr>
@@ -218,7 +228,7 @@ class FindPwd extends React.Component {
                     <br/>
                     <label>비밀번호 확인 </label>
                     <input type="password" name="password_confirm" maxLength={16} size="16" onChange={this.password_confirmChange.bind(this)}placeholder="비밀번호를 입력해주세요"/>
-                    <button onClick={this.changeThePwd.bind(this)}> 비밀번호 변경 </button>
+                    <button type="button" onClick={this.changeThePwd.bind(this)}> 비밀번호 변경 </button>
                 </div>
             </div>
         )
