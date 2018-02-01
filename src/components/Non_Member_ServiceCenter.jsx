@@ -168,38 +168,41 @@ class Non_Member_ServiceCenter extends React.Component {
     render(){
         let writing_Form = (
             <div>
-                고객 정보
                 <table>
                     <tbody>
                         <tr>
-                            <td>
+                            <th> 고객정보 </th>
+                            <td> </td>
+                        </tr>
+                        <tr>
+                            <th>
                                 이름
-                            </td>
+                            </th>
                             <td>
                                 <input type="text" onChange={this.nameChange.bind(this)}/>
                             </td>
                         </tr>
                         <tr>
-                            <td>
+                            <th>
                                 이메일
-                            </td>
+                            </th>
                             <td>
                                 <input type="text" name="email" onChange={this.emailChange.bind(this)}/>
                                 <button type="button" onClick={this.submitGit_email.bind(this)}> 인증번호 전송 </button>
                             </td>
                         </tr>
                         <tr>
-                            <td>
+                            <th>
                                 인증번호
-                            </td>
+                            </th>
                             <td>
                                 <input type="number" onChange={this.certification_numberChange.bind(this)}/>
                             </td>
                         </tr>
                         <tr>
-                            <td>
+                            <th>
                                 전화번호
-                            </td>
+                            </th>
                             <td>
                                 <select onChange={this.phone_0Change.bind(this)}>
                                     <option id="010" value="010">010</option>
@@ -215,13 +218,18 @@ class Non_Member_ServiceCenter extends React.Component {
                     </tbody>
                 </table>
                 <br />
-                의견 작성
                 <table>
                     <tbody>
                         <tr>
-                            <td>
+                            <th>
+                                의견작성
+                            </th>
+                            <td> </td>
+                        </tr>
+                        <tr>
+                            <th>
                                 구분
-                            </td>
+                            </th>
                             <td>
                                 <select onChange={this.divisionChange.bind(this)}>
                                     <option value="차량">차량</option>
@@ -230,9 +238,9 @@ class Non_Member_ServiceCenter extends React.Component {
                             </td>
                         </tr>
                         <tr>
-                            <td>
+                            <th>
                                 카테고리
-                            </td>
+                            </th>
                             <td>
                                 <select onChange={this.categoryChange.bind(this)}>
                                     <option value="칭찬">칭찬</option>
@@ -241,17 +249,17 @@ class Non_Member_ServiceCenter extends React.Component {
                             </td>
                         </tr>
                         <tr>
-                            <td>
+                            <th>
                                 제목
-                            </td>
+                            </th>
                             <td>
                                 <input type="text" onChange={this.titleChange.bind(this)}/>
                             </td>
                         </tr>
                         <tr>
-                            <td>
+                            <th>
                                 내용
-                            </td>
+                            </th>
                             <td>
                                 <textarea rows={10} cols={35} onChange={this.contentsChange.bind(this)}/>
                             </td>

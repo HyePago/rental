@@ -29,6 +29,13 @@ class Non_Member_feedback extends React.Component {
             sort:'1',
             result:'',
             test_number:0,
+            search_select: '1',
+            search_text: '',
+            searching: 0,
+            update_division: '',
+            update_category: '',
+            update_title: '',
+            update_contents: '',
         }
     }
 
@@ -37,6 +44,35 @@ class Non_Member_feedback extends React.Component {
     }
     input_certification_numberChange(e){
         this.setState({input_certification_number:e.target.value});
+    }
+    search_selectChange(e){
+        this.setState({search_select:e.target.value});
+    }
+    search_textChange(e){
+        this.setState({search_text:e.target.value});
+    }
+    update_click(){
+        this.setState({returned: 4});
+
+        this.setState({update_division:this.state.division[this.state.division_number]});
+        this.setState({update_category:this.state.category[this.state.division_number]});
+        this.setState({update_title:this.state.title[this.state.division_number]});
+        this.setState({update_contents:this.state.contents[this.state.division_number]});
+    }
+    update_titleChange(e){
+        this.setState({update_title:e.target.value});
+    }
+    update_contentsChange(e){
+        this.setState({update_contents:e.target.value});
+    }
+    update_categoryChange(e){
+        this.setState({update_category:e.target.value});
+    }
+    update_divisionChange(e){
+        this.setState({update_division:e.target.value});
+    }
+    update_cancel_click(){
+        this.setState({returned:3});
     }
 
     //certification
@@ -106,7 +142,7 @@ class Non_Member_feedback extends React.Component {
             }
         }.bind(this))
         .then(function(){
-            if(this.state.test_number==0){
+            if(this.state.test_number == 0){
                 this.setState({test_number:1});
                 this.submitGit_FeedbackList();
             }else{
@@ -146,21 +182,37 @@ class Non_Member_feedback extends React.Component {
     }
     input_categoryChange(e){
         this.setState({input_category:e.target.value});
-        this.submitGit_FeedbackList();
+        if(this.state.searching == 0){
+            this.submitGit_FeedbackList();
+        } else {
+            this.submitGit_Search();
+        }
     }
     input_divisionChange(e){
         this.setState({input_division:e.target.value});
-        this.submitGit_FeedbackList();
+        if(this.state.searching == 0){
+            this.submitGit_FeedbackList();
+        }else{
+            this.submitGit_Search();
+        }
     }
     sortChange(e){
         this.setState({sort:e.target.value});
-        this.submitGit_FeedbackList();
+        if(this.state.searching==0){
+            this.submitGit_FeedbackList();
+        } else{
+            this.submitGit_Search();
+        }
     }
 
     //page
     handleClick(e){
         this.setState({currentPage: e.target.id});
-        this.submitGit_FeedbackList();
+        if(this.state.searching==0){
+            this.submitGit_FeedbackList();
+        } else{
+            this.submitGit_Search();
+        }
     }
 
     //email
@@ -194,6 +246,108 @@ class Non_Member_feedback extends React.Component {
     }
     back_list(){
         this.setState({returned:2});
+    }
+
+    //search
+    click_search_button(){
+        this.setState({currentPage:''});
+
+        if(this.state.search_text != ''){
+            this.setState({searching:1});
+            this.submitGit_Search();
+        }else{
+            this.setState({searching:0});
+            this.submitGit_FeedbackList();
+        }
+    }
+    setSearch(opts){
+        fetch('/search_member_feedback', {
+            method: 'POST',
+            headers: {
+                "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+            },
+            body: "form="+JSON.stringify(opts)
+        })
+        .then((response) => { return response.json(); })
+        .then((json) => { this.setState({result:json.result}); })
+        .then(function(){
+            this.setState({id:[]});
+            this.setState({name:[]});
+            this.setState({phone:[]})
+            this.setState({division:[]});
+            this.setState({category:[]});
+            this.setState({title:[]});
+            this.setState({contents:[]});
+            this.setState({timestamp:[]});
+
+            for(var count=0; this.state.result[count] != null; count++){
+                this.setState({id:this.state.id.concat(this.state.result[count]["id"])});
+                this.setState({name:this.state.name.concat(this.state.result[count]["name"])});
+                this.setState({phone:this.state.phone.concat(this.state.result[count]["phone"])});
+                this.setState({division:this.state.division.concat(this.state.result[count]["division"])});
+                this.setState({category:this.state.category.concat(this.state.result[count]["category"])});
+                this.setState({title:this.state.title.concat(this.state.result[count]["title"])});
+                this.setState({contents:this.state.contents.concat(this.state.result[count]["contents"])});
+                this.setState({timestamp:this.state.timestamp.concat(this.state.result[count]["timestamp"])});
+                this.setState({total_page:this.state.result[0]["total_count"]});
+            }
+        }.bind(this))
+        .then(function(){
+            if(this.state.test_number==0){
+                this.setState({test_number:1});
+                this.submitGit_Search();
+            }else {
+                this.setState({test_number:0});
+            }
+        }.bind(this))
+    }
+    submitGit_Search(){
+        this.setSearch({
+            currentPage: this.state.currentPage,
+            email: this.state.email,
+            division: this.state.input_division,
+            category: this.state.input_category,
+            sort: this.state.sort,
+            search_text: this.state.search_text,
+            search_select: this.state.search_select,
+        })
+    }
+
+    //update
+    setUpdate(opts){
+        fetch('/update_feedback', {
+            method: 'POST',
+            headers: {
+                "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+            },
+            body: "form="+JSON.stringify(opts)
+        })
+        .then((response) => { return response.json(); })
+        .then((json) => { this.setState({result:json.result}); })
+        .then(function(){
+            if(this.state.result == "true"){
+                this.submitGit_FeedbackList();
+                this.setState({returned: 3});
+            } else {
+                alert("업로드에 실패하였습니다.");
+                return;
+            }
+        }.bind(this))
+    }
+
+    submitGit_Update(){
+        if(this.state.update_title=='' || this.state.update_contents==''){
+            alert("빠짐없이 다 입력해주세요.");
+            return;
+        }
+
+        this.setUpdate({
+            id: this.state.id[this.state.division_number],
+            title: this.state.update_title,
+            division: this.state.update_division,
+            category: this.state.update_category,
+            contents: this.state.update_contents,
+        })
     }
 
     render(){
@@ -274,28 +428,43 @@ class Non_Member_feedback extends React.Component {
 
         let show_feedback_list = (
             <div>
-                <label> 구분 </label>
-                <select onChange={this.input_divisionChange.bind(this)}>
-                    <option value=""> 전체 </option>
-                    <option value="차량"> 차량 </option>
-                    <option value="사이트"> 사이트 </option>
-                </select>
-                <br />
-                <label> 카테고리 </label>
-                <select onChange={this.input_categoryChange.bind(this)}>
-                    <option value=""> 전체 </option>
-                    <option value="칭찬"> 칭찬 </option>
-                    <option value="불만"> 불만 </option>
-                </select>
-                <br />
-                <label> 정렬방법 </label>
-                <select defaultValue={1} onChange={this.sortChange.bind(this)}>
-                    <option value={1}> 등록된지 오래된 순 </option>
-                    <option value={2}> 최근 등록된 순 </option>
-                </select>
-                <br />
                 <table>
                     <tbody>
+                        <tr>
+                            <th>
+                                구분
+                            </th>
+                            <td>
+                                <select onChange={this.input_divisionChange.bind(this)}>
+                                    <option value=""> 전체 </option>
+                                    <option value="차량"> 차량 </option>
+                                    <option value="사이트"> 사이트 </option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                카테고리
+                            </th>
+                            <td>
+                                <select onChange={this.input_categoryChange.bind(this)}>
+                                    <option value=""> 전체 </option>
+                                    <option value="칭찬"> 칭찬 </option>
+                                    <option value="불만"> 불만 </option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                정렬방법
+                            </th>
+                            <td>
+                                <select defaultValue={1} onChange={this.sortChange.bind(this)}>
+                                    <option value={1}> 등록된지 오래된 순 </option>
+                                    <option value={2}> 최근 등록된 순 </option>
+                                </select>
+                            </td>
+                        </tr>
                         <tr>
                             <td width={100}>
                                 번호
@@ -311,11 +480,28 @@ class Non_Member_feedback extends React.Component {
                             </td>
                         </tr>
                         {impormation_feedback}
+                        <tr>
+                            <th> </th>
+                            <td> 
+                                <ul id="page-numbers">
+                                    {renderPageNumbers}
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th> </th>
+                            <td colSpan={3}>
+                                <select onChange={this.search_selectChange.bind(this)}>
+                                    <option value={1}> 글 제목 </option>
+                                    <option value={2}> 글 내용 </option>
+                                </select>
+                                &nbsp;
+                                <input type="text" onChange={this.search_textChange.bind(this)} />
+                                <button onClick={this.click_search_button.bind(this)}> 검색 </button>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
-                <ul id="page-numbers">
-                    {renderPageNumbers}
-                </ul>
             </div>
         )
         let show_feedback_Form = (
@@ -323,48 +509,111 @@ class Non_Member_feedback extends React.Component {
                 <table>
                     <tbody>
                         <tr>
-                            <td>
+                            <th>
                                 제목
-                            </td>
+                            </th>
                             <td>
                                 {this.state.title[this.state.division_number]}
                             </td>
                         </tr>
                         <tr>
-                            <td>
+                            <th>
                                 구분
-                            </td>
+                            </th>
                             <td>
                                 {this.state.division[this.state.division_number]}
                             </td>
                         </tr>
                         <tr>
-                            <td>
+                            <th>
                                 카테고리
-                            </td>
+                            </th>
                             <td>
                                 {this.state.category[this.state.division_number]}
                             </td>
                         </tr>
                         <tr>
-                            <td>
+                            <th>
                                 올린 날짜
-                            </td>
+                            </th>
                             <td>
                                 {this.state.timestamp[this.state.division_number]}
                             </td>
                         </tr>
                         <tr>
-                            <td>
+                            <th>
                                 내용
-                            </td>
+                            </th>
                             <td>
                                 {this.state.contents[this.state.division_number]}
                             </td>
                         </tr>
                         <tr>
+                            <th></th>
                             <td>
                                 <button onClick={this.back_list.bind(this)}> 목록 </button>
+                                <button onClick={this.update_click.bind(this)}> 수정 </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        )
+        let update_feedback_Form = (
+            <div>
+                <table>
+                    <tbody>
+                        <tr>
+                            <th>
+                                제목
+                            </th>
+                            <td>
+                                <input type="text" onChange={this.update_titleChange.bind(this)} defaultValue={this.state.update_title} />
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                구분
+                            </th>
+                            <td>
+                                <select defaultValue={this.state.update_division} onChange={this.update_divisionChange.bind(this)}>
+                                    <option value="차량"> 차량 </option>
+                                    <option value="사이트"> 사이트 </option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                카테고리
+                            </th>
+                            <td>
+                                <select defaultValue={this.state.update_category} onChange={this.update_categoryChange.bind(this)}>
+                                    <option value="칭찬"> 칭찬 </option>
+                                    <option value="불만"> 불만 </option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                올린 날짜
+                            </th>
+                            <td>
+                                {this.state.timestamp[this.state.division_number]}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                내용
+                            </th>
+                            <td>
+                                <textarea rows={10} cols={35} onChange={this.update_contentsChange.bind(this)} defaultValue={this.state.update_contents} />
+                            </td>
+                        </tr>
+                        <tr>
+                            <th></th>
+                            <td>
+                                <button onClick={this.submitGit_Update.bind(this)}> 수정 </button>
+                                <button onClick={this.update_cancel_click.bind(this)}> 취소 </button>
                             </td>
                         </tr>
                     </tbody>
@@ -378,6 +627,8 @@ class Non_Member_feedback extends React.Component {
             return show_feedback_list;
         }else if(this.state.returned == 3){
             return show_feedback_Form;
+        }else if(this.state.returned == 4){
+            return update_feedback_Form;
         }
     }
 }

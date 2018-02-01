@@ -5479,7 +5479,7 @@ var Non_Member_feedback = function (_React$Component) {
             input_division: "",
             input_category: "",
             sort: '1'
-        }, _defineProperty(_this$state, 'result', ''), _defineProperty(_this$state, 'test_number', 0), _this$state);
+        }, _defineProperty(_this$state, 'result', ''), _defineProperty(_this$state, 'test_number', 0), _defineProperty(_this$state, 'search_select', '1'), _defineProperty(_this$state, 'search_text', ''), _defineProperty(_this$state, 'searching', 0), _defineProperty(_this$state, 'update_division', ''), _defineProperty(_this$state, 'update_category', ''), _defineProperty(_this$state, 'update_title', ''), _defineProperty(_this$state, 'update_contents', ''), _this$state);
         return _this;
     }
 
@@ -5492,6 +5492,51 @@ var Non_Member_feedback = function (_React$Component) {
         key: 'input_certification_numberChange',
         value: function input_certification_numberChange(e) {
             this.setState({ input_certification_number: e.target.value });
+        }
+    }, {
+        key: 'search_selectChange',
+        value: function search_selectChange(e) {
+            this.setState({ search_select: e.target.value });
+        }
+    }, {
+        key: 'search_textChange',
+        value: function search_textChange(e) {
+            this.setState({ search_text: e.target.value });
+        }
+    }, {
+        key: 'update_click',
+        value: function update_click() {
+            this.setState({ returned: 4 });
+
+            this.setState({ update_division: this.state.division[this.state.division_number] });
+            this.setState({ update_category: this.state.category[this.state.division_number] });
+            this.setState({ update_title: this.state.title[this.state.division_number] });
+            this.setState({ update_contents: this.state.contents[this.state.division_number] });
+        }
+    }, {
+        key: 'update_titleChange',
+        value: function update_titleChange(e) {
+            this.setState({ update_title: e.target.value });
+        }
+    }, {
+        key: 'update_contentsChange',
+        value: function update_contentsChange(e) {
+            this.setState({ update_contents: e.target.value });
+        }
+    }, {
+        key: 'update_categoryChange',
+        value: function update_categoryChange(e) {
+            this.setState({ update_category: e.target.value });
+        }
+    }, {
+        key: 'update_divisionChange',
+        value: function update_divisionChange(e) {
+            this.setState({ update_division: e.target.value });
+        }
+    }, {
+        key: 'update_cancel_click',
+        value: function update_cancel_click() {
+            this.setState({ returned: 3 });
         }
 
         //certification
@@ -5628,19 +5673,31 @@ var Non_Member_feedback = function (_React$Component) {
         key: 'input_categoryChange',
         value: function input_categoryChange(e) {
             this.setState({ input_category: e.target.value });
-            this.submitGit_FeedbackList();
+            if (this.state.searching == 0) {
+                this.submitGit_FeedbackList();
+            } else {
+                this.submitGit_Search();
+            }
         }
     }, {
         key: 'input_divisionChange',
         value: function input_divisionChange(e) {
             this.setState({ input_division: e.target.value });
-            this.submitGit_FeedbackList();
+            if (this.state.searching == 0) {
+                this.submitGit_FeedbackList();
+            } else {
+                this.submitGit_Search();
+            }
         }
     }, {
         key: 'sortChange',
         value: function sortChange(e) {
             this.setState({ sort: e.target.value });
-            this.submitGit_FeedbackList();
+            if (this.state.searching == 0) {
+                this.submitGit_FeedbackList();
+            } else {
+                this.submitGit_Search();
+            }
         }
 
         //page
@@ -5649,7 +5706,11 @@ var Non_Member_feedback = function (_React$Component) {
         key: 'handleClick',
         value: function handleClick(e) {
             this.setState({ currentPage: e.target.id });
-            this.submitGit_FeedbackList();
+            if (this.state.searching == 0) {
+                this.submitGit_FeedbackList();
+            } else {
+                this.submitGit_Search();
+            }
         }
 
         //email
@@ -5692,10 +5753,128 @@ var Non_Member_feedback = function (_React$Component) {
         value: function back_list() {
             this.setState({ returned: 2 });
         }
+
+        //search
+
+    }, {
+        key: 'click_search_button',
+        value: function click_search_button() {
+            this.setState({ currentPage: '' });
+
+            if (this.state.search_text != '') {
+                this.setState({ searching: 1 });
+                this.submitGit_Search();
+            } else {
+                this.setState({ searching: 0 });
+                this.submitGit_FeedbackList();
+            }
+        }
+    }, {
+        key: 'setSearch',
+        value: function setSearch(opts) {
+            var _this4 = this;
+
+            fetch('/search_member_feedback', {
+                method: 'POST',
+                headers: {
+                    "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+                },
+                body: "form=" + JSON.stringify(opts)
+            }).then(function (response) {
+                return response.json();
+            }).then(function (json) {
+                _this4.setState({ result: json.result });
+            }).then(function () {
+                this.setState({ id: [] });
+                this.setState({ name: [] });
+                this.setState({ phone: [] });
+                this.setState({ division: [] });
+                this.setState({ category: [] });
+                this.setState({ title: [] });
+                this.setState({ contents: [] });
+                this.setState({ timestamp: [] });
+
+                for (var count = 0; this.state.result[count] != null; count++) {
+                    this.setState({ id: this.state.id.concat(this.state.result[count]["id"]) });
+                    this.setState({ name: this.state.name.concat(this.state.result[count]["name"]) });
+                    this.setState({ phone: this.state.phone.concat(this.state.result[count]["phone"]) });
+                    this.setState({ division: this.state.division.concat(this.state.result[count]["division"]) });
+                    this.setState({ category: this.state.category.concat(this.state.result[count]["category"]) });
+                    this.setState({ title: this.state.title.concat(this.state.result[count]["title"]) });
+                    this.setState({ contents: this.state.contents.concat(this.state.result[count]["contents"]) });
+                    this.setState({ timestamp: this.state.timestamp.concat(this.state.result[count]["timestamp"]) });
+                    this.setState({ total_page: this.state.result[0]["total_count"] });
+                }
+            }.bind(this)).then(function () {
+                if (this.state.test_number == 0) {
+                    this.setState({ test_number: 1 });
+                    this.submitGit_Search();
+                } else {
+                    this.setState({ test_number: 0 });
+                }
+            }.bind(this));
+        }
+    }, {
+        key: 'submitGit_Search',
+        value: function submitGit_Search() {
+            this.setSearch({
+                currentPage: this.state.currentPage,
+                email: this.state.email,
+                division: this.state.input_division,
+                category: this.state.input_category,
+                sort: this.state.sort,
+                search_text: this.state.search_text,
+                search_select: this.state.search_select
+            });
+        }
+
+        //update
+
+    }, {
+        key: 'setUpdate',
+        value: function setUpdate(opts) {
+            var _this5 = this;
+
+            fetch('/update_feedback', {
+                method: 'POST',
+                headers: {
+                    "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+                },
+                body: "form=" + JSON.stringify(opts)
+            }).then(function (response) {
+                return response.json();
+            }).then(function (json) {
+                _this5.setState({ result: json.result });
+            }).then(function () {
+                if (this.state.result == "true") {
+                    this.submitGit_FeedbackList();
+                    this.setState({ returned: 3 });
+                } else {
+                    alert("업로드에 실패하였습니다.");
+                    return;
+                }
+            }.bind(this));
+        }
+    }, {
+        key: 'submitGit_Update',
+        value: function submitGit_Update() {
+            if (this.state.update_title == '' || this.state.update_contents == '') {
+                alert("빠짐없이 다 입력해주세요.");
+                return;
+            }
+
+            this.setUpdate({
+                id: this.state.id[this.state.division_number],
+                title: this.state.update_title,
+                division: this.state.update_division,
+                category: this.state.update_category,
+                contents: this.state.update_contents
+            });
+        }
     }, {
         key: 'render',
         value: function render() {
-            var _this4 = this;
+            var _this6 = this;
 
             //style
             var noneStyle = {
@@ -5711,7 +5890,7 @@ var Non_Member_feedback = function (_React$Component) {
             var renderPageNumbers = pageNumbers.map(function (number) {
                 return _react2.default.createElement(
                     'li',
-                    { key: number, id: number, onClick: _this4.handleClick.bind(_this4) },
+                    { key: number, id: number, onClick: _this6.handleClick.bind(_this6) },
                     number
                 );
             });
@@ -5724,29 +5903,29 @@ var Non_Member_feedback = function (_React$Component) {
             var impormation_feedback = impormation_number.map(function (number) {
                 return _react2.default.createElement(
                     'tr',
-                    { key: number, id: number, style: _this4.state.title[number] == null ? noneStyle : blockStyle },
+                    { key: number, id: number, style: _this6.state.title[number] == null ? noneStyle : blockStyle },
                     _react2.default.createElement(
                         'td',
-                        { id: number, onClick: _this4.division_numberChange.bind(_this4) },
-                        _this4.state.id[number]
+                        { id: number, onClick: _this6.division_numberChange.bind(_this6) },
+                        _this6.state.id[number]
                     ),
                     _react2.default.createElement(
                         'td',
-                        { id: number, onClick: _this4.division_numberChange.bind(_this4) },
-                        _this4.state.title[number]
+                        { id: number, onClick: _this6.division_numberChange.bind(_this6) },
+                        _this6.state.title[number]
                     ),
                     _react2.default.createElement(
                         'td',
-                        { id: number, onClick: _this4.division_numberChange.bind(_this4) },
-                        _this4.state.name[number],
+                        { id: number, onClick: _this6.division_numberChange.bind(_this6) },
+                        _this6.state.name[number],
                         ' (',
-                        _this4.state.email,
+                        _this6.state.email,
                         ')'
                     ),
                     _react2.default.createElement(
                         'td',
-                        { id: number, onClick: _this4.division_numberChange.bind(_this4) },
-                        _this4.state.timestamp[number]
+                        { id: number, onClick: _this6.division_numberChange.bind(_this6) },
+                        _this6.state.timestamp[number]
                     )
                 );
             });
@@ -5814,81 +5993,102 @@ var Non_Member_feedback = function (_React$Component) {
                 'div',
                 null,
                 _react2.default.createElement(
-                    'label',
-                    null,
-                    ' \uAD6C\uBD84 '
-                ),
-                _react2.default.createElement(
-                    'select',
-                    { onChange: this.input_divisionChange.bind(this) },
-                    _react2.default.createElement(
-                        'option',
-                        { value: '' },
-                        ' \uC804\uCCB4 '
-                    ),
-                    _react2.default.createElement(
-                        'option',
-                        { value: '\uCC28\uB7C9' },
-                        ' \uCC28\uB7C9 '
-                    ),
-                    _react2.default.createElement(
-                        'option',
-                        { value: '\uC0AC\uC774\uD2B8' },
-                        ' \uC0AC\uC774\uD2B8 '
-                    )
-                ),
-                _react2.default.createElement('br', null),
-                _react2.default.createElement(
-                    'label',
-                    null,
-                    ' \uCE74\uD14C\uACE0\uB9AC '
-                ),
-                _react2.default.createElement(
-                    'select',
-                    { onChange: this.input_categoryChange.bind(this) },
-                    _react2.default.createElement(
-                        'option',
-                        { value: '' },
-                        ' \uC804\uCCB4 '
-                    ),
-                    _react2.default.createElement(
-                        'option',
-                        { value: '\uCE6D\uCC2C' },
-                        ' \uCE6D\uCC2C '
-                    ),
-                    _react2.default.createElement(
-                        'option',
-                        { value: '\uBD88\uB9CC' },
-                        ' \uBD88\uB9CC '
-                    )
-                ),
-                _react2.default.createElement('br', null),
-                _react2.default.createElement(
-                    'label',
-                    null,
-                    ' \uC815\uB82C\uBC29\uBC95 '
-                ),
-                _react2.default.createElement(
-                    'select',
-                    { defaultValue: 1, onChange: this.sortChange.bind(this) },
-                    _react2.default.createElement(
-                        'option',
-                        { value: 1 },
-                        ' \uB4F1\uB85D\uB41C\uC9C0 \uC624\uB798\uB41C \uC21C '
-                    ),
-                    _react2.default.createElement(
-                        'option',
-                        { value: 2 },
-                        ' \uCD5C\uADFC \uB4F1\uB85D\uB41C \uC21C '
-                    )
-                ),
-                _react2.default.createElement('br', null),
-                _react2.default.createElement(
                     'table',
                     null,
                     _react2.default.createElement(
                         'tbody',
                         null,
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'th',
+                                null,
+                                '\uAD6C\uBD84'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement(
+                                    'select',
+                                    { onChange: this.input_divisionChange.bind(this) },
+                                    _react2.default.createElement(
+                                        'option',
+                                        { value: '' },
+                                        ' \uC804\uCCB4 '
+                                    ),
+                                    _react2.default.createElement(
+                                        'option',
+                                        { value: '\uCC28\uB7C9' },
+                                        ' \uCC28\uB7C9 '
+                                    ),
+                                    _react2.default.createElement(
+                                        'option',
+                                        { value: '\uC0AC\uC774\uD2B8' },
+                                        ' \uC0AC\uC774\uD2B8 '
+                                    )
+                                )
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'th',
+                                null,
+                                '\uCE74\uD14C\uACE0\uB9AC'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement(
+                                    'select',
+                                    { onChange: this.input_categoryChange.bind(this) },
+                                    _react2.default.createElement(
+                                        'option',
+                                        { value: '' },
+                                        ' \uC804\uCCB4 '
+                                    ),
+                                    _react2.default.createElement(
+                                        'option',
+                                        { value: '\uCE6D\uCC2C' },
+                                        ' \uCE6D\uCC2C '
+                                    ),
+                                    _react2.default.createElement(
+                                        'option',
+                                        { value: '\uBD88\uB9CC' },
+                                        ' \uBD88\uB9CC '
+                                    )
+                                )
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'th',
+                                null,
+                                '\uC815\uB82C\uBC29\uBC95'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement(
+                                    'select',
+                                    { defaultValue: 1, onChange: this.sortChange.bind(this) },
+                                    _react2.default.createElement(
+                                        'option',
+                                        { value: 1 },
+                                        ' \uB4F1\uB85D\uB41C\uC9C0 \uC624\uB798\uB41C \uC21C '
+                                    ),
+                                    _react2.default.createElement(
+                                        'option',
+                                        { value: 2 },
+                                        ' \uCD5C\uADFC \uB4F1\uB85D\uB41C \uC21C '
+                                    )
+                                )
+                            )
+                        ),
                         _react2.default.createElement(
                             'tr',
                             null,
@@ -5913,13 +6113,60 @@ var Non_Member_feedback = function (_React$Component) {
                                 '\uC62C\uB9B0 \uB0A0\uC9DC'
                             )
                         ),
-                        impormation_feedback
+                        impormation_feedback,
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'th',
+                                null,
+                                ' '
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement(
+                                    'ul',
+                                    { id: 'page-numbers' },
+                                    renderPageNumbers
+                                )
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'th',
+                                null,
+                                ' '
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                { colSpan: 3 },
+                                _react2.default.createElement(
+                                    'select',
+                                    { onChange: this.search_selectChange.bind(this) },
+                                    _react2.default.createElement(
+                                        'option',
+                                        { value: 1 },
+                                        ' \uAE00 \uC81C\uBAA9 '
+                                    ),
+                                    _react2.default.createElement(
+                                        'option',
+                                        { value: 2 },
+                                        ' \uAE00 \uB0B4\uC6A9 '
+                                    )
+                                ),
+                                '\xA0',
+                                _react2.default.createElement('input', { type: 'text', onChange: this.search_textChange.bind(this) }),
+                                _react2.default.createElement(
+                                    'button',
+                                    { onClick: this.click_search_button.bind(this) },
+                                    ' \uAC80\uC0C9 '
+                                )
+                            )
+                        )
                     )
-                ),
-                _react2.default.createElement(
-                    'ul',
-                    { id: 'page-numbers' },
-                    renderPageNumbers
                 )
             );
             var show_feedback_Form = _react2.default.createElement(
@@ -5935,7 +6182,7 @@ var Non_Member_feedback = function (_React$Component) {
                             'tr',
                             null,
                             _react2.default.createElement(
-                                'td',
+                                'th',
                                 null,
                                 '\uC81C\uBAA9'
                             ),
@@ -5949,7 +6196,7 @@ var Non_Member_feedback = function (_React$Component) {
                             'tr',
                             null,
                             _react2.default.createElement(
-                                'td',
+                                'th',
                                 null,
                                 '\uAD6C\uBD84'
                             ),
@@ -5963,7 +6210,7 @@ var Non_Member_feedback = function (_React$Component) {
                             'tr',
                             null,
                             _react2.default.createElement(
-                                'td',
+                                'th',
                                 null,
                                 '\uCE74\uD14C\uACE0\uB9AC'
                             ),
@@ -5977,7 +6224,7 @@ var Non_Member_feedback = function (_React$Component) {
                             'tr',
                             null,
                             _react2.default.createElement(
-                                'td',
+                                'th',
                                 null,
                                 '\uC62C\uB9B0 \uB0A0\uC9DC'
                             ),
@@ -5991,7 +6238,7 @@ var Non_Member_feedback = function (_React$Component) {
                             'tr',
                             null,
                             _react2.default.createElement(
-                                'td',
+                                'th',
                                 null,
                                 '\uB0B4\uC6A9'
                             ),
@@ -6004,6 +6251,7 @@ var Non_Member_feedback = function (_React$Component) {
                         _react2.default.createElement(
                             'tr',
                             null,
+                            _react2.default.createElement('th', null),
                             _react2.default.createElement(
                                 'td',
                                 null,
@@ -6011,6 +6259,138 @@ var Non_Member_feedback = function (_React$Component) {
                                     'button',
                                     { onClick: this.back_list.bind(this) },
                                     ' \uBAA9\uB85D '
+                                ),
+                                _react2.default.createElement(
+                                    'button',
+                                    { onClick: this.update_click.bind(this) },
+                                    ' \uC218\uC815 '
+                                )
+                            )
+                        )
+                    )
+                )
+            );
+            var update_feedback_Form = _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(
+                    'table',
+                    null,
+                    _react2.default.createElement(
+                        'tbody',
+                        null,
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'th',
+                                null,
+                                '\uC81C\uBAA9'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement('input', { type: 'text', onChange: this.update_titleChange.bind(this), defaultValue: this.state.update_title })
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'th',
+                                null,
+                                '\uAD6C\uBD84'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement(
+                                    'select',
+                                    { defaultValue: this.state.update_division, onChange: this.update_divisionChange.bind(this) },
+                                    _react2.default.createElement(
+                                        'option',
+                                        { value: '\uCC28\uB7C9' },
+                                        ' \uCC28\uB7C9 '
+                                    ),
+                                    _react2.default.createElement(
+                                        'option',
+                                        { value: '\uC0AC\uC774\uD2B8' },
+                                        ' \uC0AC\uC774\uD2B8 '
+                                    )
+                                )
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'th',
+                                null,
+                                '\uCE74\uD14C\uACE0\uB9AC'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement(
+                                    'select',
+                                    { defaultValue: this.state.update_category, onChange: this.update_categoryChange.bind(this) },
+                                    _react2.default.createElement(
+                                        'option',
+                                        { value: '\uCE6D\uCC2C' },
+                                        ' \uCE6D\uCC2C '
+                                    ),
+                                    _react2.default.createElement(
+                                        'option',
+                                        { value: '\uBD88\uB9CC' },
+                                        ' \uBD88\uB9CC '
+                                    )
+                                )
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'th',
+                                null,
+                                '\uC62C\uB9B0 \uB0A0\uC9DC'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                this.state.timestamp[this.state.division_number]
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'th',
+                                null,
+                                '\uB0B4\uC6A9'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement('textarea', { rows: 10, cols: 35, onChange: this.update_contentsChange.bind(this), defaultValue: this.state.update_contents })
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement('th', null),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement(
+                                    'button',
+                                    { onClick: this.submitGit_Update.bind(this) },
+                                    ' \uC218\uC815 '
+                                ),
+                                _react2.default.createElement(
+                                    'button',
+                                    { onClick: this.update_cancel_click.bind(this) },
+                                    ' \uCDE8\uC18C '
                                 )
                             )
                         )
@@ -6024,6 +6404,8 @@ var Non_Member_feedback = function (_React$Component) {
                 return show_feedback_list;
             } else if (this.state.returned == 3) {
                 return show_feedback_Form;
+            } else if (this.state.returned == 4) {
+                return update_feedback_Form;
             }
         }
     }]);
@@ -6286,7 +6668,6 @@ var Non_Member_ServiceCenter = function (_React$Component) {
             var writing_Form = _react2.default.createElement(
                 'div',
                 null,
-                '\uACE0\uAC1D \uC815\uBCF4',
                 _react2.default.createElement(
                     'table',
                     null,
@@ -6297,7 +6678,21 @@ var Non_Member_ServiceCenter = function (_React$Component) {
                             'tr',
                             null,
                             _react2.default.createElement(
+                                'th',
+                                null,
+                                ' \uACE0\uAC1D\uC815\uBCF4 '
+                            ),
+                            _react2.default.createElement(
                                 'td',
+                                null,
+                                ' '
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'th',
                                 null,
                                 '\uC774\uB984'
                             ),
@@ -6311,7 +6706,7 @@ var Non_Member_ServiceCenter = function (_React$Component) {
                             'tr',
                             null,
                             _react2.default.createElement(
-                                'td',
+                                'th',
                                 null,
                                 '\uC774\uBA54\uC77C'
                             ),
@@ -6330,7 +6725,7 @@ var Non_Member_ServiceCenter = function (_React$Component) {
                             'tr',
                             null,
                             _react2.default.createElement(
-                                'td',
+                                'th',
                                 null,
                                 '\uC778\uC99D\uBC88\uD638'
                             ),
@@ -6344,7 +6739,7 @@ var Non_Member_ServiceCenter = function (_React$Component) {
                             'tr',
                             null,
                             _react2.default.createElement(
-                                'td',
+                                'th',
                                 null,
                                 '\uC804\uD654\uBC88\uD638'
                             ),
@@ -6379,7 +6774,6 @@ var Non_Member_ServiceCenter = function (_React$Component) {
                     )
                 ),
                 _react2.default.createElement('br', null),
-                '\uC758\uACAC \uC791\uC131',
                 _react2.default.createElement(
                     'table',
                     null,
@@ -6390,7 +6784,21 @@ var Non_Member_ServiceCenter = function (_React$Component) {
                             'tr',
                             null,
                             _react2.default.createElement(
+                                'th',
+                                null,
+                                '\uC758\uACAC\uC791\uC131'
+                            ),
+                            _react2.default.createElement(
                                 'td',
+                                null,
+                                ' '
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'th',
                                 null,
                                 '\uAD6C\uBD84'
                             ),
@@ -6417,7 +6825,7 @@ var Non_Member_ServiceCenter = function (_React$Component) {
                             'tr',
                             null,
                             _react2.default.createElement(
-                                'td',
+                                'th',
                                 null,
                                 '\uCE74\uD14C\uACE0\uB9AC'
                             ),
@@ -6444,7 +6852,7 @@ var Non_Member_ServiceCenter = function (_React$Component) {
                             'tr',
                             null,
                             _react2.default.createElement(
-                                'td',
+                                'th',
                                 null,
                                 '\uC81C\uBAA9'
                             ),
@@ -6458,7 +6866,7 @@ var Non_Member_ServiceCenter = function (_React$Component) {
                             'tr',
                             null,
                             _react2.default.createElement(
-                                'td',
+                                'th',
                                 null,
                                 '\uB0B4\uC6A9'
                             ),
@@ -32107,7 +32515,7 @@ var Member_feedback = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, (Member_feedback.__proto__ || Object.getPrototypeOf(Member_feedback)).call(this, props));
 
         _this.state = {
-            returned: '',
+            returned: 1,
             currentPage: '',
             total_page: '',
             id: [],
@@ -32123,7 +32531,14 @@ var Member_feedback = function (_React$Component) {
             input_category: "",
             sort: '1',
             result: '',
-            test_number: 0
+            test_number: 0,
+            search_text: '',
+            search_select: '1',
+            searching: 0,
+            update_division: '',
+            update_category: '',
+            update_title: '',
+            update_contents: ''
         };
         return _this;
     }
@@ -32232,19 +32647,61 @@ var Member_feedback = function (_React$Component) {
         key: 'input_categoryChange',
         value: function input_categoryChange(e) {
             this.setState({ input_category: e.target.value });
-            this.submitGit_FeedbackList();
+            if (this.state.searching == 0) {
+                this.submitGit_FeedbackList();
+            } else {
+                this.submitGit_Search();
+            }
         }
     }, {
         key: 'input_divisionChange',
         value: function input_divisionChange(e) {
             this.setState({ input_division: e.target.value });
-            this.submitGit_FeedbackList();
+            if (this.state.searching == 0) {
+                this.submitGit_FeedbackList();
+            } else {
+                this.submitGit_Search();
+            }
         }
     }, {
         key: 'sortChange',
         value: function sortChange(e) {
             this.setState({ sort: e.target.value });
-            this.submitGit_FeedbackList();
+            if (this.state.searching == 0) {
+                this.submitGit_FeedbackList();
+            } else {
+                this.submitGit_Search();
+            }
+        }
+    }, {
+        key: 'search_selectChange',
+        value: function search_selectChange(e) {
+            this.setState({ search_select: e.target.value });
+        }
+    }, {
+        key: 'search_textChange',
+        value: function search_textChange(e) {
+            this.setState({ search_text: e.target.value });
+        }
+    }, {
+        key: 'update_divisionChange',
+        value: function update_divisionChange(e) {
+            this.setState({ update_division: e.target.value });
+        }
+    }, {
+        key: 'update_categoryChange',
+        value: function update_categoryChange(e) {
+            this.setState({ update_category: e.target.value });
+        }
+    }, {
+        key: 'update_titleChange',
+        value: function update_titleChange(e) {
+            this.setState({ update_title: e.target.value });
+        }
+    }, {
+        key: 'update_contentsChange',
+        value: function update_contentsChange(e) {
+            this.setState({ update_contents: e.target.value });
         }
 
         //page
@@ -32253,17 +32710,154 @@ var Member_feedback = function (_React$Component) {
         key: 'handleClick',
         value: function handleClick(e) {
             this.setState({ currentPage: e.target.id });
-            this.submitGit_FeedbackList();
+            if (this.state.searching == 0) {
+                this.submitGit_FeedbackList();
+            } else {
+                this.submitGit_Search();
+            }
         }
     }, {
         key: 'back_list',
         value: function back_list() {
-            this.setState({ returned: '' });
+            this.setState({ returned: 1 });
+        }
+
+        //search
+
+    }, {
+        key: 'click_search_button',
+        value: function click_search_button() {
+            this.setState({ currentPage: '' });
+
+            if (this.state.search_text != '') {
+                this.setState({ searching: 1 });
+                this.submitGit_Search();
+            } else {
+                this.setState({ searching: 0 });
+                this.submitGit_FeedbackList();
+            }
+        }
+    }, {
+        key: 'setSearch',
+        value: function setSearch(opts) {
+            var _this3 = this;
+
+            fetch('/search_member_feedback', {
+                method: 'POST',
+                headers: {
+                    "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+                },
+                body: "form=" + JSON.stringify(opts)
+            }).then(function (response) {
+                return response.json();
+            }).then(function (json) {
+                _this3.setState({ result: json.result });
+            }).then(function () {
+                this.setState({ id: [] });
+                this.setState({ name: [] });
+                this.setState({ phone: [] });
+                this.setState({ division: [] });
+                this.setState({ category: [] });
+                this.setState({ title: [] });
+                this.setState({ contents: [] });
+                this.setState({ timestamp: [] });
+
+                for (var count = 0; this.state.result[count] != null; count++) {
+                    this.setState({ id: this.state.id.concat(this.state.result[count]["id"]) });
+                    this.setState({ name: this.state.name.concat(this.state.result[count]["name"]) });
+                    this.setState({ phone: this.state.phone.concat(this.state.result[count]["phone"]) });
+                    this.setState({ division: this.state.division.concat(this.state.result[count]["division"]) });
+                    this.setState({ category: this.state.category.concat(this.state.result[count]["category"]) });
+                    this.setState({ title: this.state.title.concat(this.state.result[count]["title"]) });
+                    this.setState({ contents: this.state.contents.concat(this.state.result[count]["contents"]) });
+                    this.setState({ timestamp: this.state.timestamp.concat(this.state.result[count]["timestamp"]) });
+                    this.setState({ total_page: this.state.result[0]["total_count"] });
+                }
+            }.bind(this)).then(function () {
+                if (this.state.test_number == 0) {
+                    this.setState({ test_number: 1 });
+                    this.submitGit_Search();
+                } else {
+                    this.setState({ test_number: 0 });
+                }
+            }.bind(this));
+        }
+    }, {
+        key: 'submitGit_Search',
+        value: function submitGit_Search() {
+            this.setSearch({
+                currentPage: this.state.currentPage,
+                email: _reactCookies2.default.load('email'),
+                division: this.state.input_division,
+                category: this.state.input_category,
+                sort: this.state.sort,
+                search_text: this.state.search_text,
+                search_select: this.state.search_select
+            });
+        }
+
+        //update
+
+    }, {
+        key: 'update_click',
+        value: function update_click() {
+            this.setState({ returned: 3 });
+
+            this.setState({ update_division: this.state.division[this.state.division_number] });
+            this.setState({ update_category: this.state.category[this.state.division_number] });
+            this.setState({ update_title: this.state.title[this.state.division_number] });
+            this.setState({ update_contents: this.state.contents[this.state.division_number] });
+        }
+    }, {
+        key: 'submitGit_Update',
+        value: function submitGit_Update() {
+            if (this.state.update_title == '' || this.state.update_contents == '') {
+                alert("빠짐없이 다 입력해주세요.");
+                return;
+            }
+
+            this.setUpdate({
+                id: this.state.id[this.state.division_number],
+                title: this.state.update_title,
+                division: this.state.update_division,
+                category: this.state.update_category,
+                contents: this.state.update_contents
+            });
+        }
+    }, {
+        key: 'setUpdate',
+        value: function setUpdate(opts) {
+            var _this4 = this;
+
+            fetch('/update_feedback', {
+                method: 'POST',
+                headers: {
+                    "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+                },
+                body: "form=" + JSON.stringify(opts)
+            }).then(function (response) {
+                return response.json();
+            }).then(function (json) {
+                _this4.setState({ result: json.result });
+            }).then(function () {
+                if (this.state.result == "true") {
+                    this.submitGit_FeedbackList();
+                    this.setState({ returned: 2 });
+                } else {
+                    alert("업로드에 실패하였습니다.");
+                    return;
+                }
+            }.bind(this));
+        }
+    }, {
+        key: 'update_cancel_click',
+        value: function update_cancel_click() {
+            this.setState({ returned: 3 });
         }
     }, {
         key: 'render',
         value: function render() {
-            var _this3 = this;
+            var _this5 = this;
 
             //style
             var noneStyle = {
@@ -32279,7 +32873,7 @@ var Member_feedback = function (_React$Component) {
             var renderPageNumbers = pageNumbers.map(function (number) {
                 return _react2.default.createElement(
                     'li',
-                    { key: number, id: number, onClick: _this3.handleClick.bind(_this3) },
+                    { key: number, id: number, onClick: _this5.handleClick.bind(_this5) },
                     number
                 );
             });
@@ -32292,29 +32886,29 @@ var Member_feedback = function (_React$Component) {
             var impormation_feedback = impormation_number.map(function (number) {
                 return _react2.default.createElement(
                     'tr',
-                    { key: number, id: number, style: _this3.state.title[number] == null ? noneStyle : blockStyle },
+                    { key: number, id: number, style: _this5.state.title[number] == null ? noneStyle : blockStyle },
                     _react2.default.createElement(
                         'td',
-                        { id: number, onClick: _this3.division_numberChange.bind(_this3) },
-                        _this3.state.id[number]
+                        { id: number, onClick: _this5.division_numberChange.bind(_this5) },
+                        _this5.state.id[number]
                     ),
                     _react2.default.createElement(
                         'td',
-                        { id: number, onClick: _this3.division_numberChange.bind(_this3) },
-                        _this3.state.title[number]
+                        { id: number, onClick: _this5.division_numberChange.bind(_this5) },
+                        _this5.state.title[number]
                     ),
                     _react2.default.createElement(
                         'td',
-                        { id: number, onClick: _this3.division_numberChange.bind(_this3) },
-                        _this3.state.name[number],
+                        { id: number, onClick: _this5.division_numberChange.bind(_this5) },
+                        _this5.state.name[number],
                         ' (',
                         _reactCookies2.default.load('email'),
                         ')'
                     ),
                     _react2.default.createElement(
                         'td',
-                        { id: number, onClick: _this3.division_numberChange.bind(_this3) },
-                        _this3.state.timestamp[number]
+                        { id: number, onClick: _this5.division_numberChange.bind(_this5) },
+                        _this5.state.timestamp[number]
                     )
                 );
             });
@@ -32323,81 +32917,102 @@ var Member_feedback = function (_React$Component) {
                 'div',
                 null,
                 _react2.default.createElement(
-                    'label',
-                    null,
-                    ' \uAD6C\uBD84 '
-                ),
-                _react2.default.createElement(
-                    'select',
-                    { onChange: this.input_divisionChange.bind(this) },
-                    _react2.default.createElement(
-                        'option',
-                        { value: '' },
-                        ' \uC804\uCCB4 '
-                    ),
-                    _react2.default.createElement(
-                        'option',
-                        { value: '\uCC28\uB7C9' },
-                        ' \uCC28\uB7C9 '
-                    ),
-                    _react2.default.createElement(
-                        'option',
-                        { value: '\uC0AC\uC774\uD2B8' },
-                        ' \uC0AC\uC774\uD2B8 '
-                    )
-                ),
-                _react2.default.createElement('br', null),
-                _react2.default.createElement(
-                    'label',
-                    null,
-                    ' \uCE74\uD14C\uACE0\uB9AC '
-                ),
-                _react2.default.createElement(
-                    'select',
-                    { onChange: this.input_categoryChange.bind(this) },
-                    _react2.default.createElement(
-                        'option',
-                        { value: '' },
-                        ' \uC804\uCCB4 '
-                    ),
-                    _react2.default.createElement(
-                        'option',
-                        { value: '\uCE6D\uCC2C' },
-                        ' \uCE6D\uCC2C '
-                    ),
-                    _react2.default.createElement(
-                        'option',
-                        { value: '\uBD88\uB9CC' },
-                        ' \uBD88\uB9CC '
-                    )
-                ),
-                _react2.default.createElement('br', null),
-                _react2.default.createElement(
-                    'label',
-                    null,
-                    ' \uC815\uB82C\uBC29\uBC95 '
-                ),
-                _react2.default.createElement(
-                    'select',
-                    { defaultValue: 1, onChange: this.sortChange.bind(this) },
-                    _react2.default.createElement(
-                        'option',
-                        { value: 1 },
-                        ' \uB4F1\uB85D\uB41C\uC9C0 \uC624\uB798\uB41C \uC21C '
-                    ),
-                    _react2.default.createElement(
-                        'option',
-                        { value: 2 },
-                        ' \uCD5C\uADFC \uB4F1\uB85D\uB41C \uC21C '
-                    )
-                ),
-                _react2.default.createElement('br', null),
-                _react2.default.createElement(
                     'table',
                     null,
                     _react2.default.createElement(
                         'tbody',
                         null,
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'th',
+                                null,
+                                ' \uAD6C\uBD84 '
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement(
+                                    'select',
+                                    { onChange: this.input_divisionChange.bind(this) },
+                                    _react2.default.createElement(
+                                        'option',
+                                        { value: '' },
+                                        ' \uC804\uCCB4 '
+                                    ),
+                                    _react2.default.createElement(
+                                        'option',
+                                        { value: '\uCC28\uB7C9' },
+                                        ' \uCC28\uB7C9 '
+                                    ),
+                                    _react2.default.createElement(
+                                        'option',
+                                        { value: '\uC0AC\uC774\uD2B8' },
+                                        ' \uC0AC\uC774\uD2B8 '
+                                    )
+                                )
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'th',
+                                null,
+                                ' \uCE74\uD14C\uACE0\uB9AC '
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement(
+                                    'select',
+                                    { onChange: this.input_categoryChange.bind(this) },
+                                    _react2.default.createElement(
+                                        'option',
+                                        { value: '' },
+                                        ' \uC804\uCCB4 '
+                                    ),
+                                    _react2.default.createElement(
+                                        'option',
+                                        { value: '\uCE6D\uCC2C' },
+                                        ' \uCE6D\uCC2C '
+                                    ),
+                                    _react2.default.createElement(
+                                        'option',
+                                        { value: '\uBD88\uB9CC' },
+                                        ' \uBD88\uB9CC '
+                                    )
+                                )
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'th',
+                                null,
+                                ' \uC815\uB82C\uBC29\uBC95 '
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement(
+                                    'select',
+                                    { defaultValue: 1, onChange: this.sortChange.bind(this) },
+                                    _react2.default.createElement(
+                                        'option',
+                                        { value: 1 },
+                                        ' \uB4F1\uB85D\uB41C\uC9C0 \uC624\uB798\uB41C \uC21C '
+                                    ),
+                                    _react2.default.createElement(
+                                        'option',
+                                        { value: 2 },
+                                        ' \uCD5C\uADFC \uB4F1\uB85D\uB41C \uC21C '
+                                    )
+                                )
+                            )
+                        ),
                         _react2.default.createElement(
                             'tr',
                             null,
@@ -32422,13 +33037,56 @@ var Member_feedback = function (_React$Component) {
                                 '\uC62C\uB9B0 \uB0A0\uC9DC'
                             )
                         ),
-                        impormation_feedback
+                        impormation_feedback,
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement('th', null),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement(
+                                    'ul',
+                                    { id: 'page-numbers' },
+                                    renderPageNumbers
+                                )
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'th',
+                                null,
+                                ' '
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                { colSpan: 3 },
+                                _react2.default.createElement(
+                                    'select',
+                                    { onChange: this.search_selectChange.bind(this) },
+                                    _react2.default.createElement(
+                                        'option',
+                                        { value: 1 },
+                                        ' \uAE00 \uC81C\uBAA9 '
+                                    ),
+                                    _react2.default.createElement(
+                                        'option',
+                                        { value: 2 },
+                                        ' \uAE00 \uB0B4\uC6A9 '
+                                    )
+                                ),
+                                '\xA0',
+                                _react2.default.createElement('input', { type: 'text', onChange: this.search_textChange.bind(this) }),
+                                _react2.default.createElement(
+                                    'button',
+                                    { onClick: this.click_search_button.bind(this) },
+                                    ' \uAC80\uC0C9 '
+                                )
+                            )
+                        )
                     )
-                ),
-                _react2.default.createElement(
-                    'ul',
-                    { id: 'page-numbers' },
-                    renderPageNumbers
                 )
             );
 
@@ -32521,6 +33179,138 @@ var Member_feedback = function (_React$Component) {
                                     'button',
                                     { onClick: this.back_list.bind(this) },
                                     ' \uBAA9\uB85D '
+                                ),
+                                _react2.default.createElement(
+                                    'button',
+                                    { onClick: this.update_click.bind(this) },
+                                    ' \uC218\uC815 '
+                                )
+                            )
+                        )
+                    )
+                )
+            );
+            var update_feedback_Form = _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(
+                    'table',
+                    null,
+                    _react2.default.createElement(
+                        'tbody',
+                        null,
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'th',
+                                null,
+                                '\uC81C\uBAA9'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement('input', { type: 'text', onChange: this.update_titleChange.bind(this), defaultValue: this.state.update_title })
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'th',
+                                null,
+                                '\uAD6C\uBD84'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement(
+                                    'select',
+                                    { defaultValue: this.state.update_division, onChange: this.update_divisionChange.bind(this) },
+                                    _react2.default.createElement(
+                                        'option',
+                                        { value: '\uCC28\uB7C9' },
+                                        ' \uCC28\uB7C9 '
+                                    ),
+                                    _react2.default.createElement(
+                                        'option',
+                                        { value: '\uC0AC\uC774\uD2B8' },
+                                        ' \uC0AC\uC774\uD2B8 '
+                                    )
+                                )
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'th',
+                                null,
+                                '\uCE74\uD14C\uACE0\uB9AC'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement(
+                                    'select',
+                                    { defaultValue: this.state.update_category, onChange: this.update_categoryChange.bind(this) },
+                                    _react2.default.createElement(
+                                        'option',
+                                        { value: '\uCE6D\uCC2C' },
+                                        ' \uCE6D\uCC2C '
+                                    ),
+                                    _react2.default.createElement(
+                                        'option',
+                                        { value: '\uBD88\uB9CC' },
+                                        ' \uBD88\uB9CC '
+                                    )
+                                )
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'th',
+                                null,
+                                '\uC62C\uB9B0 \uB0A0\uC9DC'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                this.state.timestamp[this.state.division_number]
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'th',
+                                null,
+                                '\uB0B4\uC6A9'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement('textarea', { rows: 10, cols: 35, onChange: this.update_contentsChange.bind(this), defaultValue: this.state.update_contents })
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement('th', null),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement(
+                                    'button',
+                                    { onClick: this.submitGit_Update.bind(this) },
+                                    ' \uC218\uC815 '
+                                ),
+                                _react2.default.createElement(
+                                    'button',
+                                    { onClick: this.update_cancel_click.bind(this) },
+                                    ' \uCDE8\uC18C '
                                 )
                             )
                         )
@@ -32528,10 +33318,12 @@ var Member_feedback = function (_React$Component) {
                 )
             );
 
-            if (this.state.returned == 2) {
-                return show_feedback_Form;
-            } else {
+            if (this.state.returned == 1) {
                 return show_feedback_list;
+            } else if (this.state.returned == 2) {
+                return show_feedback_Form;
+            } else if (this.state.returned == 3) {
+                return update_feedback_Form;
             }
         }
     }]);
@@ -32768,7 +33560,10 @@ var Notice = function (_React$Component) {
             total_page: '',
             division_number: 0,
             result: '',
-            test_number: 0
+            test_number: 0,
+            search_select: '1',
+            search_text: '',
+            searching: 0
         };
         return _this;
     }
@@ -32782,7 +33577,21 @@ var Notice = function (_React$Component) {
         key: 'sortChange',
         value: function sortChange(e) {
             this.setState({ sort: e.target.value });
-            this.submitGit_NoticeList();
+            if (this.state.searching == 0) {
+                this.submitGit_NoticeList();
+            } else {
+                this.submitGit_Search();
+            }
+        }
+    }, {
+        key: 'search_selectChange',
+        value: function search_selectChange(e) {
+            this.setState({ search_select: e.target.value });
+        }
+    }, {
+        key: 'search_textChange',
+        value: function search_textChange(e) {
+            this.setState({ search_text: e.target.value });
         }
 
         // Notice_List
@@ -32839,7 +33648,11 @@ var Notice = function (_React$Component) {
         key: 'handleClick',
         value: function handleClick(e) {
             this.setState({ currentPage: e.target.id });
-            this.submitGit_NoticeList();
+            if (this.state.searching == 0) {
+                this.submitGit_NoticeList();
+            } else {
+                this.submitGit_Search();
+            }
         }
 
         //
@@ -32855,10 +33668,77 @@ var Notice = function (_React$Component) {
         value: function back_click() {
             this.setState({ returned: 1 });
         }
+
+        //search
+
+    }, {
+        key: 'click_search_button',
+        value: function click_search_button() {
+            this.setState({ currentPage: '' });
+
+            if (this.state.search_text != '') {
+                this.setState({ searching: 1 });
+                this.submitGit_Search();
+            } else {
+                this.setState({ searching: 0 });
+                if (this.state.searching == 0) {
+                    this.submitGit_NoticeList();
+                } else {
+                    this.submitGit_Search();
+                }
+            }
+        }
+    }, {
+        key: 'setSearch',
+        value: function setSearch(opts) {
+            var _this3 = this;
+
+            fetch('/search_notice', {
+                method: 'POST',
+                headers: {
+                    "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+                },
+                body: "form=" + JSON.stringify(opts)
+            }).then(function (response) {
+                return response.json();
+            }).then(function (json) {
+                _this3.setState({ result: json.result });
+            }).then(function () {
+                this.setState({ id: [] });
+                this.setState({ title: [] });
+                this.setState({ content: [] });
+                this.setState({ timestamp: [] });
+
+                for (var count = 0; this.state.result[count] != null; count++) {
+                    this.setState({ id: this.state.id.concat(this.state.result[count]["id"]) });
+                    this.setState({ title: this.state.title.concat(this.state.result[count]["title"]) });
+                    this.setState({ content: this.state.content.concat(this.state.result[count]["content"]) });
+                    this.setState({ timestamp: this.state.timestamp.concat(this.state.result[count]["timestamp"]) });
+                    this.setState({ total_page: this.state.result[0]["total_count"] });
+                }
+            }.bind(this)).then(function () {
+                if (this.state.test_number == 0) {
+                    this.setState({ test_number: 1 });
+                    this.submitGit_Search();
+                } else {
+                    this.setState({ test_number: 0 });
+                }
+            }.bind(this));
+        }
+    }, {
+        key: 'submitGit_Search',
+        value: function submitGit_Search() {
+            this.setSearch({
+                sort: this.state.sort,
+                currentPage: this.state.currentPage,
+                search_text: this.state.search_text,
+                search_select: this.state.search_select
+            });
+        }
     }, {
         key: 'render',
         value: function render() {
-            var _this3 = this;
+            var _this4 = this;
 
             // style
             var noneStyle = {
@@ -32874,7 +33754,7 @@ var Notice = function (_React$Component) {
             var renderPageNumbers = pageNumbers.map(function (number) {
                 return _react2.default.createElement(
                     'li',
-                    { key: number, id: number, onClick: _this3.handleClick.bind(_this3) },
+                    { key: number, id: number, onClick: _this4.handleClick.bind(_this4) },
                     number
                 );
             });
@@ -32887,21 +33767,21 @@ var Notice = function (_React$Component) {
             var notice_list = notice_number.map(function (number) {
                 return _react2.default.createElement(
                     'tr',
-                    { key: number, id: number, style: _this3.state.title[number] == null ? noneStyle : blockStyle },
+                    { key: number, id: number, style: _this4.state.title[number] == null ? noneStyle : blockStyle },
                     _react2.default.createElement(
                         'td',
-                        { id: number, onClick: _this3.division_numberChange.bind(_this3) },
-                        _this3.state.id[number]
+                        { id: number, onClick: _this4.division_numberChange.bind(_this4) },
+                        _this4.state.id[number]
                     ),
                     _react2.default.createElement(
                         'td',
-                        { id: number, onClick: _this3.division_numberChange.bind(_this3) },
-                        _this3.state.title[number]
+                        { id: number, onClick: _this4.division_numberChange.bind(_this4) },
+                        _this4.state.title[number]
                     ),
                     _react2.default.createElement(
                         'td',
-                        { id: number, onClick: _this3.division_numberChange.bind(_this3) },
-                        _this3.state.timestamp[number]
+                        { id: number, onClick: _this4.division_numberChange.bind(_this4) },
+                        _this4.state.timestamp[number]
                     )
                 );
             });
@@ -32956,13 +33836,56 @@ var Notice = function (_React$Component) {
                                 '\uC62C\uB9B0 \uB0A0\uC9DC'
                             )
                         ),
-                        notice_list
+                        notice_list,
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement('th', null),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement(
+                                    'ul',
+                                    { id: 'page-numbers' },
+                                    renderPageNumbers
+                                )
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'th',
+                                null,
+                                ' '
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                { colSpan: 3 },
+                                _react2.default.createElement(
+                                    'select',
+                                    { onChange: this.search_selectChange.bind(this) },
+                                    _react2.default.createElement(
+                                        'option',
+                                        { value: 1 },
+                                        ' \uAE00 \uC81C\uBAA9 '
+                                    ),
+                                    _react2.default.createElement(
+                                        'option',
+                                        { value: 2 },
+                                        ' \uAE00 \uB0B4\uC6A9 '
+                                    )
+                                ),
+                                '\xA0',
+                                _react2.default.createElement('input', { type: 'text', onChange: this.search_textChange.bind(this) }),
+                                _react2.default.createElement(
+                                    'button',
+                                    { onClick: this.click_search_button.bind(this) },
+                                    ' \uAC80\uC0C9 '
+                                )
+                            )
+                        )
                     )
-                ),
-                _react2.default.createElement(
-                    'ul',
-                    { id: 'page-numbers' },
-                    renderPageNumbers
                 )
             );
             var show_notice = _react2.default.createElement(

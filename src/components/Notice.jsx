@@ -20,6 +20,9 @@ class Notice extends React.Component {
             division_number: 0,
             result: '',
             test_number: 0,
+            search_select: '1',
+            search_text: '',
+            searching: 0,
         }
     }
 
@@ -29,7 +32,17 @@ class Notice extends React.Component {
 
     sortChange(e){
         this.setState({sort:e.target.value});
-        this.submitGit_NoticeList();
+        if(this.state.searching == 0){
+            this.submitGit_NoticeList();
+        } else {
+            this.submitGit_Search();
+        }
+    }
+    search_selectChange(e){
+        this.setState({search_select:e.target.value});
+    }
+    search_textChange(e){
+        this.setState({search_text:e.target.value});
     }
 
     // Notice_List
@@ -76,7 +89,11 @@ class Notice extends React.Component {
     //page
     handleClick(e){
         this.setState({currentPage: e.target.id});
-        this.submitGit_NoticeList();
+        if(this.state.searching == 0){
+            this.submitGit_NoticeList();
+        } else {
+            this.submitGit_Search();
+        }
     }
 
     //
@@ -88,6 +105,63 @@ class Notice extends React.Component {
         this.setState({returned:1});
     }
 
+    //search
+    click_search_button(){
+        this.setState({currentPage: ''});
+
+        if(this.state.search_text != ''){
+            this.setState({searching: 1});
+            this.submitGit_Search();
+        } else {
+            this.setState({searching: 0});
+            if(this.state.searching == 0){
+                this.submitGit_NoticeList();
+            } else {
+                this.submitGit_Search();
+            }
+        }
+    }
+    setSearch(opts){
+        fetch('/search_notice', {
+            method: 'POST',
+            headers: {
+                "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+            },
+            body: "form="+JSON.stringify(opts)
+        })
+        .then((response) => { return response.json(); })
+        .then((json) => { this.setState({result:json.result}); })
+        .then(function(){
+            this.setState({id:[]});
+            this.setState({title:[]});
+            this.setState({content:[]});
+            this.setState({timestamp:[]});
+
+            for(var count=0; this.state.result[count] != null; count++){
+                this.setState({id:this.state.id.concat(this.state.result[count]["id"])});
+                this.setState({title:this.state.title.concat(this.state.result[count]["title"])});
+                this.setState({content:this.state.content.concat(this.state.result[count]["content"])});
+                this.setState({timestamp:this.state.timestamp.concat(this.state.result[count]["timestamp"])});
+                this.setState({total_page:this.state.result[0]["total_count"]});
+            }
+        }.bind(this))
+        .then(function(){
+            if(this.state.test_number == 0){
+                this.setState({test_number:1});
+                this.submitGit_Search();
+            }else{
+                this.setState({test_number:0});
+            }
+        }.bind(this))
+    }
+    submitGit_Search(){
+        this.setSearch({
+            sort: this.state.sort,
+            currentPage: this.state.currentPage,
+            search_text: this.state.search_text,
+            search_select: this.state.search_select
+        })
+    }
 
     render(){
         // style
@@ -154,11 +228,29 @@ class Notice extends React.Component {
                             </td>
                         </tr>
                         {notice_list}
+                        <tr>
+                            <th></th>
+                            <td>
+                                <ul id="page-numbers">
+                                    {renderPageNumbers}
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th> </th>
+                            <td colSpan={3}>
+                                <select onChange={this.search_selectChange.bind(this)}>
+                                    <option value={1}> 글 제목 </option>
+                                    <option value={2}> 글 내용 </option>
+                                </select>
+                                &nbsp;
+                                <input type="text" onChange={this.search_textChange.bind(this)} />
+                                <button onClick={this.click_search_button.bind(this)}> 검색 </button>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
-                <ul id="page-numbers">
-                    {renderPageNumbers}
-                </ul>
+               
             </div>
         )
         let show_notice = (
