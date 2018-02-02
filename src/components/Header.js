@@ -32,7 +32,14 @@ class Header extends React.Component {
             <div>
                 <div className="menu">
                     <Link to="/"><div className="logo"> 로고 </div></Link>
-                    <Link to="/reservation_member"><div className="menu-item"> 예약 및 이용 내역 </div> </Link>
+                    <div className="dropdown-menu-item">
+                        예약 및 이용내역
+                        <div className="dropdown-content">
+                            <Link to="/reservation_member" className="link_content"><div> 총 이용 내역 </div></Link>
+                            <Link to="/refundable_reservation" className="link_content"><div> 환불 가능 예약 내역 </div></Link>
+                        </div>
+                    </div>
+                    {/* <Link to="/reservation_member"><div className="menu-item"> 예약 및 이용 내역 </div> </Link> */}
                     <div className="menu-item" onClick={this.log_out.bind(this)}> 로그아웃 </div>
                     <Link to="/search_rent"><div className="menu-item"> 렌터카 예약 </div></Link>
                     <div className="dropdown-menu-item"> 
@@ -69,12 +76,18 @@ class Header extends React.Component {
             <div>
                 <div className="menu">
                     <Link to="/"><div className="logo">로고</div></Link>
-                    <div className="menu-item"> 신규차량등록 </div>
-                    <div className="menu-item"> 차량 정보 관리 </div>
+                    <div className="dropdown-menu-item">
+                        차량 관리
+                        <div className="dropdown-content">
+                            <Link to="/feedback_list" className="link_content"><div> 신규차량등록 </div></Link>
+                            <Link to="/vehicle_impormation" className="link_content"><div> 차량 정보 관리 </div></Link>
+                        </div>
+                    </div>
+                    <Link to="/total_reservation"> <div className="menu-item"> 예약 관리 </div> </Link>
                     <div className="dropdown-menu-item"> 
                         고객 센터 관리 
                         <div className="dropdown-content">
-                            <div> 고객 의견 관리 </div>
+                            <Link to="/feedback_list" className="link_content"><div> 고객 의견 관리 </div></Link>
                             <Link to="/upload_notice" className="link_content"><div> 공지사항 등록 </div></Link>
                             <Link to="/update_notice" className="link_content"><div> 공지사항 목록 </div></Link>
                         </div>

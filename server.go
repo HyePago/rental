@@ -116,6 +116,26 @@ type Feedback struct {
 	timestamp string
 }
 
+type Total_reservation struct {
+	name string
+	email string
+	username string
+	number string
+	image string
+	car_number string
+	car_name string
+	color string
+	cost string
+	rental_date string
+	return_date string
+	rental_point string
+	return_point string
+	babyseat string
+	navigation_kor string
+	navigation_eng string
+	damage_indemnity string
+}
+
 	func FloatToString(input_num float64) string {
 		// to convert a float number to a string
 		return strconv.FormatFloat(input_num, 'f', 6, 64)
@@ -144,6 +164,29 @@ type Feedback struct {
 
 	log.Println("sent, visit http://foobarbazz.mailinator.com")
  }
+ func send_reservation(email string, body string){
+	from := "hyepago@gmail.com"
+	pass := "9017thdud"
+	to := email
+
+	msg := "From: " + from + "\n" +
+	   "To: " + to + "\n" + 
+	   "Subject: 예약번호입니다.\n\n" +
+	   body
+
+
+   err := smtp.SendMail("smtp.gmail.com:587",
+	   smtp.PlainAuth("", from, pass, "smtp.gmail.com"),
+	   from, []string{to}, []byte(msg))
+
+
+   if err != nil {
+	   log.Printf("smtp err : %s", err)
+	   return
+   }
+
+   log.Println("sent, visit http://foobarbazz.mailinator.com")
+}
 
 func randInt(min int, max int) int {
 	rand.Seed(time.Now().UTC().UnixNano())
@@ -260,7 +303,6 @@ func main() {
 
 	router.POST("/id_overlap", func(c *gin.Context) {
 		username := c.PostForm("username")
-		log.Println("LOG: id_overlap | "+username)
 		err := db.QueryRow("SELECT id FROM users where username = ?", username).Scan(&username)
 
 		switch{
@@ -869,8 +911,8 @@ func main() {
 		//reservation_number := floattostr(raw["reservation_number"].(float64))
 		reservation_number := strconv.Itoa(int(raw["reservation_number"].(float64)))
 
-		msg := "인증번호 : " + reservation_number
-		send(email, msg)
+		msg := "예약번호 : " + reservation_number
+		send_reservation(email, msg)
 
 		c.JSON(200, gin.H {
 			"result": "true",
@@ -1260,18 +1302,11 @@ func main() {
 
 		var carprice_id string
 
-		log.Println("raw = ", raw)
-		log.Println("distance = ", distance)
-		log.Println("few = ", few)
-		log.Println("LOG:: Before update car | id = ",id)
-
 		_, err := db.Exec("UPDATE car SET car_number=?, color=?, type=?, fuel=?, few=?, distance=?, area=?, point=?, ider_repair=?, name=? where id=?", car_number, color, car_type, fuel, few, distance, area, point, ider_repair, car_name, id)
 		if err != nil {
 			log.Fatal(err)
 			return;
 		}
-
-		log.Println("LOG:: After update car")
 
 		err = db.QueryRow("SELECT carprice_id FROM car WHERE id = ?", id).Scan(&carprice_id)
 		switch{
@@ -1281,8 +1316,6 @@ func main() {
 		case err != nil:
 			log.Fatal(err)
 		}
-
-		log.Println("LOG:: After select carpriceid = ", carprice_id)
 
 		_, err = db.Exec("UPDATE car_price SET six_hour=?, ten_hour=?, twelve=?, two_days=?, four_days=?, six_days=?, more=? WHERE id = ?", six_hour, ten_hour, twelve_hour, two_days, four_days, six_days, more, carprice_id)
 
@@ -1497,6 +1530,8 @@ func main() {
 		var raw map[string]interface{}
 		json.Unmarshal([]byte(form), &raw)
 
+		log.Println("LOG:: raw => ", raw)
+
 		currentPage := raw["currentPage"]
 		division := raw["division"]
 		category := raw["category"]
@@ -1511,29 +1546,29 @@ func main() {
 
 		rows, err := db.Query("SELECT id FROM feedback")
 
-		if division=="" && category=="" {
+		if division == "" && category=="" {
 			if sort == "1" {
 				rows, err = db.Query("SELECT id FROM feedback ORDER BY timestamp")
-			}else {
+			} else {
 				rows, err = db.Query("SELECT id FROM feedback ORDER BY timestamp DESC")
 			}
 		} else if division=="" && category!="" {
 			if sort == "1" {
 				rows, err = db.Query("SELECT id FROM feedback WHERE category=? ORDER BY timestamp", category)
-			}else {
+			}else{
 				rows, err = db.Query("SELECT id FROM feedback WHERE category=? ORDER BY timestamp DESC", category)
 			}
 		} else if division!="" && category=="" {
-			if sort == "1" {
+			if sort == "1"{
 				rows, err = db.Query("SELECT id FROM feedback WHERE divison=? ORDER BY timestamp", division)
 			} else {
 				rows, err = db.Query("SELECT id FROM feedback WHERE divison=? ORDER BY timestamp DESC", division)
 			}
 		} else if division!="" && category!="" {
-			if sort == "1" {
-				rows, err = db.Query("SELECT id FROM feedback WHERE divison=? && category=? ORDER BY timestamp", category, division)
+			if sort == "1"{
+				rows, err = db.Query("SELECT id FROM feedback WHERE divison=? && category=? ORDER BY timestamp", division, category)
 			} else {
-				rows, err = db.Query("SELECT id FROM feedback WHERE divison=? && category=? ORDER BY timestamp DESC", category, division)
+				rows, err = db.Query("SELECT id FROM feedback WHERE divison=? && category=? ORDER BY timestamp DESC", division, category)
 			}
 		}
 
@@ -2173,8 +2208,6 @@ func main() {
 	
 		for rows.Next() {
 			err := rows.Scan(&id)
-
-			log.Println("LOG:: id = ", id)
 	
 			if err != nil {
 				log.Fatal(err)
@@ -2354,7 +2387,649 @@ func main() {
 		c.JSON(200, gin.H{
 			"result": "true",
 		})
+	})
 
+	router.POST("/search_feedback_list", func(c *gin.Context){
+		form := c.PostForm("form")
+
+		var raw map[string]interface{}
+		json.Unmarshal([]byte(form), &raw)
+
+		currentPage := raw["currentPage"]
+		division := raw["division"]
+		category := raw["category"]
+		sort := raw["sort"]
+		search_text := raw["search_text"]
+		search_select := raw["search_select"]
+
+		var search_text_string string
+
+		type_search_text := reflect.TypeOf(search_text)
+
+		if type_search_text.Kind() == reflect.String {
+			search_text_string = search_text.(string)
+		} else {
+			search_text_string = FloatToString(search_text.(float64))
+		}
+
+		var like_text = "%" + search_text_string + "%"
+
+		count := 0
+		index := 0
+
+		var result map[int]map[string]string = map[int]map[string]string{}
+		var id string
+		var feedback Feedback
+
+		rows, err := db.Query("SELECT id FROM feedback")
+
+		if division == "" && category=="" {
+			if sort == "1" {
+				rows, err = db.Query("SELECT id FROM feedback ORDER BY timestamp")
+			} else {
+				rows, err = db.Query("SELECT id FROM feedback ORDER BY timestamp DESC")
+			}
+		} else if division=="" && category!="" {
+			if sort == "1" {
+				rows, err = db.Query("SELECT id FROM feedback WHERE category=? ORDER BY timestamp", category)
+			}else{
+				rows, err = db.Query("SELECT id FROM feedback WHERE category=? ORDER BY timestamp DESC", category)
+			}
+		} else if division!="" && category=="" {
+			if sort == "1"{
+				rows, err = db.Query("SELECT id FROM feedback WHERE divison=? ORDER BY timestamp", division)
+			} else {
+				rows, err = db.Query("SELECT id FROM feedback WHERE divison=? ORDER BY timestamp DESC", division)
+			}
+		} else if division!="" && category!="" {
+			if sort == "1"{
+				rows, err = db.Query("SELECT id FROM feedback WHERE divison=? && category=? ORDER BY timestamp", division, category)
+			} else {
+				rows, err = db.Query("SELECT id FROM feedback WHERE divison=? && category=? ORDER BY timestamp DESC", division, category)
+			}
+		}
+
+		if err != nil {
+			log.Fatal(err)
+		}
+		defer rows.Close()
+
+		for rows.Next() {
+			err := rows.Scan(&id)
+
+			if err != nil {
+				log.Fatal(err)
+				return;
+			}
+
+			startPage := 0
+
+			result[index] = map[string]string{}
+
+			if currentPage == "" {
+				startPage = 0
+			} else {
+				startPage, err = strconv.Atoi(currentPage.(string))
+			}
+
+			if count < (startPage - 1) * 5{
+				count++
+				continue
+			}
+
+			switch{
+			case search_select == "1":
+				err = db.QueryRow("SELECT name, email, phone, divison, category, title, contents, timestamp FROM feedback WHERE id = ? && title LIKE ?", id, like_text).Scan(&feedback.name, &feedback.email, &feedback.phone, &feedback.division, &feedback.category, &feedback.title, &feedback.contents, &feedback.timestamp)				
+			case search_select == "2":
+				err = db.QueryRow("SELECT name, email, phone, divison, category, title, contents, timestamp FROM feedback WHERE id = ? && contents LIKE ?", id, like_text).Scan(&feedback.name, &feedback.email, &feedback.phone, &feedback.division, &feedback.category, &feedback.title, &feedback.contents, &feedback.timestamp)				
+			}
+
+
+			switch {
+			case err == sql.ErrNoRows:
+				log.Println("Not Found Rows")
+				continue
+			case err != nil:
+				log.Fatal(err)
+				return
+			}
+
+			result[index]["id"] = id
+			result[index]["name"] = feedback.name
+			result[index]["phone"] = feedback.phone
+			result[index]["division"] = feedback.division
+			result[index]["category"] = feedback.category
+			result[index]["title"] = feedback.title
+			result[index]["contents"] = feedback.contents
+			result[index]["timestamp"] = feedback.timestamp
+
+			count++
+			index++
+
+			result[0]["total_count"] = strconv.Itoa(count)
+		}
+
+		c.JSON(200, gin.H{
+			"result": result,
+		})
+	})
+
+	router.POST("/refundable_reservation", func(c *gin.Context) {
+		form := c.PostForm("form")
+
+		var raw map[string]interface{}
+		json.Unmarshal([]byte(form), &raw)
+
+		email := raw["email"].(string)
+		currentPage := raw["currentPage"]
+
+		count := 0
+		index := 0
+		now := time.Now().String()
+
+		var result map[int]map[string]string = map[int]map[string]string{}
+		var car_number string
+		var reservation_number string
+		var reservation Reservation_History
+
+		rows, err := db.Query("SELECT car_number, number FROM  reservation WHERE email = ? && rental_date > ? ORDER BY id DESC", email, now)
+
+		if err != nil {
+			log.Fatal(err)
+		}
+		defer rows.Close()
+
+		for rows.Next(){
+			err := rows.Scan(&car_number, &reservation_number)
+
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			result[index] = map[string]string{}
+
+			currentPage_number, err := strconv.Atoi(currentPage.(string))
+
+			if count < (currentPage_number -1) * 5 {
+				count++;
+				continue;
+			}	
+
+			err = db.QueryRow("SELECT image, car_number, name, type, fuel, color, distance, few FROM car WHERE car_number = ?", car_number).Scan(&reservation.image, &reservation.car_number, &reservation.car_name, &reservation.car_type, &reservation.fuel, &reservation.color, &reservation.distance, &reservation.few)
+
+			switch{
+			case err == sql.ErrNoRows:
+				continue
+			case err != nil:
+				log.Fatal(err)
+				return
+			}
+
+			err = db.QueryRow("SELECT changed_filename FROM image where id = ?", reservation.image).Scan(&reservation.image)
+
+			result[index]["image"] = reservation.image
+			result[index]["car_number"] = reservation.car_number
+			result[index]["car_name"] = reservation.car_name
+			result[index]["car_type"] = reservation.car_type
+			result[index]["fuel"] = reservation.fuel
+			result[index]["color"] = reservation.color
+			result[index]["distance"] = reservation.distance
+			result[index]["few"] = reservation.few
+			result[index]["reservation_number"] = reservation_number
+
+			count++
+			index++
+	
+			result[0]["total_page"] = strconv.Itoa(count)
+		}
+
+		c.JSON(200, gin.H { 
+			"result": result,
+		})
+	})
+
+	router.POST("/search_refundable_reservation", func(c *gin.Context){
+		form := c.PostForm("form")
+
+		var raw map[string]interface{}
+		json.Unmarshal([]byte(form), &raw)
+
+		email := raw["email"].(string)
+		currentPage := raw["currentPage"]
+		search_select := raw["search_select"]
+		search_text := raw["search_text"]
+
+		var search_text_string string
+
+		log.Println("search_text type of = ", reflect.TypeOf(search_text))
+
+		type_search_text := reflect.TypeOf(search_text)
+
+		if type_search_text.Kind() == reflect.String {
+			search_text_string = search_text.(string)
+		} else {
+			search_text_string = FloatToString(search_text.(float64))
+		}
+
+		var like_text = "%" + search_text_string + "%"
+
+		count :=0
+		index := 0
+		now := time.Now().String()
+
+		var result map[int]map[string]string = map[int]map[string]string{}
+		var car_number string
+		var reservation_number string
+		var reservation Reservation_History
+
+		rows, err := db.Query("SELECT car_number, number FROM reservation WHERE email = ? && rental_date > ? && number LIKE ? ORDER BY id DESC", email, now, like_text)
+
+		switch{
+		case search_select == "1":
+			rows, err = db.Query("SELECT car_number, number FROM reservation WHERE email = ? && rental_date > ? && number LIKE ? ORDER BY id DESC", email, now, like_text)
+		case search_select == "2":
+			rows, err = db.Query("SELECT car_number, number FROM reservation WHERE email = ? && rental_date > ? && car_number LIKE ? ORDER BY id DESC", email, now, like_text)
+		}
+
+		
+		if err != nil {
+			log.Fatal(err)
+		}
+		defer rows.Close()
+
+		for rows.Next(){
+			err := rows.Scan(&car_number, &reservation_number)
+
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			result[index] = map[string]string{}
+
+			currentPage_number, err := strconv.Atoi(currentPage.(string))
+
+			if count < (currentPage_number -1) * 5 {
+				count++;
+				continue;
+			}	
+
+			err = db.QueryRow("SELECT image, car_number, name, type, fuel, color, distance, few FROM car WHERE car_number = ?", car_number).Scan(&reservation.image, &reservation.car_number, &reservation.car_name, &reservation.car_type, &reservation.fuel, &reservation.color, &reservation.distance, &reservation.few)
+
+			switch{
+			case err == sql.ErrNoRows:
+				continue
+			case err != nil:
+				log.Fatal(err)
+				return
+			}
+
+			err = db.QueryRow("SELECT changed_filename FROM image where id = ?", reservation.image).Scan(&reservation.image)
+
+			result[index]["image"] = reservation.image
+			result[index]["car_number"] = reservation.car_number
+			result[index]["car_name"] = reservation.car_name
+			result[index]["car_type"] = reservation.car_type
+			result[index]["fuel"] = reservation.fuel
+			result[index]["color"] = reservation.color
+			result[index]["distance"] = reservation.distance
+			result[index]["few"] = reservation.few
+			result[index]["reservation_number"] = reservation_number
+
+			count++
+			index++
+	
+			result[0]["total_page"] = strconv.Itoa(count)
+		}
+
+		c.JSON(200, gin.H { 
+			"result": result,
+		})
+	})
+
+	router.POST("/search_reservation_history", func(c *gin.Context){
+		form := c.PostForm("form")
+
+		var raw map[string]interface{}
+		json.Unmarshal([]byte(form), &raw)
+
+		email := raw["email"].(string)
+		currentPage := raw["currentPage"]
+		search_select := raw["search_select"]
+		search_text := raw["search_text"]
+
+		var search_text_string string
+
+		log.Println("search_text type of = ", reflect.TypeOf(search_text))
+
+		type_search_text := reflect.TypeOf(search_text)
+
+		if type_search_text.Kind() == reflect.String {
+			search_text_string = search_text.(string)
+		} else {
+			search_text_string = FloatToString(search_text.(float64))
+		}
+
+		var like_text = "%" + search_text_string + "%"
+
+		count :=0
+		index := 0
+		now := time.Now().String()
+
+		var result map[int]map[string]string = map[int]map[string]string{}
+		var car_number string
+		var rental_date string
+		var reservation_number string
+		var reservation Reservation_History
+
+		rows, err := db.Query("SELECT car_number, rental_date, number FROM reservation where email = ? && number LIKE ? ORDER BY id DESC", email, like_text)
+
+		switch{
+		case search_select == "1":
+			rows, err = db.Query("SELECT car_number, rental_date, number FROM reservation where email = ? && number LIKE ? ORDER BY id DESC", email, like_text)
+		case search_select == "2":
+			rows, err = db.Query("SELECT car_number, rental_date, number FROM reservation where email = ? && car_number LIKE ? ORDER BY id DESC", email, like_text)
+		}
+
+		if err != nil {
+			log.Fatal(err)
+		}
+		defer rows.Close()
+	
+		for rows.Next(){
+			err := rows.Scan(&car_number, &rental_date, &reservation_number)
+	
+			if err != nil{
+				log.Fatal(err)
+			}
+	
+			result[index] = map[string]string{}
+	
+			if err != nil {
+				log.Fatal(err)
+			}
+	
+			currentPage_number, err := strconv.Atoi(currentPage.(string))
+	
+			if count < (currentPage_number -1) * 5 {
+				count++;
+				continue;
+			}
+	
+			err = db.QueryRow("SELECT image, car_number, name, type, fuel, color, distance, few FROM car WHERE car_number = ?", car_number).Scan(&reservation.image, &reservation.car_number, &reservation.car_name, &reservation.car_type, &reservation.fuel, &reservation.color, &reservation.distance, &reservation.few)
+		
+			switch{
+			case err == sql.ErrNoRows:
+				log.Println("LOG:: No Rows")
+				continue;
+			case err != nil:
+				log.Println(err)
+			}
+	
+			err = db.QueryRow("SELECT changed_filename FROM image where id = ?", reservation.image).Scan(&reservation.image)
+	
+			result[index]["image"] = reservation.image
+			result[index]["car_number"] = reservation.car_number
+			result[index]["car_name"] = reservation.car_name
+			result[index]["car_type"] = reservation.car_type
+			result[index]["fuel"] = reservation.fuel
+			result[index]["color"] = reservation.color
+			result[index]["distance"] = reservation.distance
+			result[index]["few"] = reservation.few
+			result[index]["reservation_number"] = reservation_number
+	
+			if rental_date <= now {
+				result[index]["refundable"] = "false"
+			} else {
+				result[index]["refundable"] = "true"
+			}
+	
+			count++
+			index++
+	
+			result[0]["total_page"] = strconv.Itoa(count)
+		}
+	
+		c.JSON(200, gin.H{
+			"result": result,
+		})
+	})
+
+	router.POST("/total_reservation_list", func(c *gin.Context){
+		form := c.PostForm("form")
+
+		var raw map[string]interface{}
+		json.Unmarshal([]byte(form), &raw)
+
+		currentPage := raw["currentPage"]
+
+		count := 0
+		index := 0
+
+		var result map[int]map[string]string = map[int]map[string]string{}
+		var reservation Total_reservation
+
+		rows,  err := db.Query("SELECT email, car_number, cost, number, rental_date, return_date, rental_point, return_point, seat, navigation_korean, navigation_english, damage_indemnity FROM reservation ORDER BY id DESC")
+
+		if err != nil {
+			log.Fatal(err)
+		}
+		defer rows.Close()
+
+		for rows.Next(){
+			err := rows.Scan(&reservation.email, &reservation.car_number, &reservation.cost, &reservation.number, &reservation.rental_date, &reservation.return_date, &reservation.rental_point, &reservation.return_point, &reservation.babyseat, &reservation.navigation_kor, &reservation.navigation_eng, &reservation.damage_indemnity)
+
+			if err != nil{
+				log.Fatal(err)
+				return
+			}
+
+			if index < 5 {
+
+				result[index] = map[string]string{}
+
+				if err != nil {
+					log.Fatal(err)
+				}
+
+				currentPage_number, err := strconv.Atoi(currentPage.(string))
+
+				if count < (currentPage_number - 1) * 5 {
+					count++
+					continue
+				}
+
+				err = db.QueryRow("SELECT image, name, color FROM car WHERE car_number = ?", reservation.car_number).Scan(&reservation.image, &reservation.car_name, &reservation.color)
+
+				switch{
+				case err == sql.ErrNoRows:
+					continue
+				case err != nil:
+					log.Fatal(err)
+					return
+				}
+
+				err = db.QueryRow("SELECT name, username FROM users WHERE email = ?", reservation.email).Scan(&reservation.name, &reservation.username)
+
+				switch{
+				case err == sql.ErrNoRows:
+					continue
+				case err != nil:
+					log.Fatal(err)
+					return
+				}
+
+				err = db.QueryRow("SELECT changed_filename FROM image WHERE id = ?", reservation.image).Scan(&reservation.image)
+
+				switch{
+				case err == sql.ErrNoRows:
+					continue
+				case err != nil:
+					log.Fatal(err)
+					return
+				}
+
+				result[index]["name"] = reservation.name
+				result[index]["email"] = reservation.email
+				result[index]["username"] = reservation.username
+				result[index]["number"] = reservation.number
+				result[index]["image"] = reservation.image
+				result[index]["car_number"] = reservation.car_number
+				result[index]["car_name"] = reservation.car_name
+				result[index]["color"] = reservation.color
+				result[index]["cost"] = reservation.cost
+				result[index]["rental_date"] = reservation.rental_date
+				result[index]["return_date"] = reservation.return_date
+				result[index]["rental_point"] = reservation.rental_point
+				result[index]["return_point"] = reservation.return_point
+				result[index]["babyseat"] = reservation.babyseat
+				result[index]["navigation_kor"] = reservation.navigation_kor
+				result[index]["navigation_eng"] = reservation.navigation_eng
+				result[index]["damage_indemnity"] = reservation.damage_indemnity
+
+				index++
+			}
+			count++
+			result[0]["total_page"] = strconv.Itoa(count)
+		}
+
+		c.JSON(200, gin.H{
+			"result": result,
+		})
+	})
+
+	router.POST("/search_total_reservation_list", func(c *gin.Context){
+		form := c.PostForm("form")
+
+		var raw map[string]interface{}
+		json.Unmarshal([]byte(form), &raw)
+
+		currentPage := raw["currentPage"]
+		search_select := raw["search_select"]
+		search_text := raw["search_text"]
+
+		log.Println("raw = > ", raw)
+
+		var search_text_string string
+
+		log.Println("search_text type of = ", reflect.TypeOf(search_text))
+
+		type_search_text := reflect.TypeOf(search_text)
+
+		if type_search_text.Kind() == reflect.String {
+			search_text_string = search_text.(string)
+		} else {
+			search_text_string = FloatToString(search_text.(float64))
+		}
+
+		var like_text = "%" + search_text_string + "%"
+
+		count := 0
+		index := 0
+
+		var result map[int]map[string]string = map[int]map[string]string{}
+		var reservation Total_reservation
+
+		rows,  err := db.Query("SELECT email, car_number, cost, number, rental_date, return_date, rental_point, return_point, seat, navigation_korean, navigation_english, damage_indemnity FROM reservation ORDER BY id DESC")
+
+		switch{
+		case search_select == "1":
+			rows, err = db.Query("SELECT email, car_number, cost, number, rental_date, return_date, rental_point, return_point, seat, navigation_korean, navigation_english, damage_indemnity FROM reservation WHERE number LIKE ? ORDER BY id DESC", like_text)
+		case search_select == "2":
+			rows, err = db.Query("SELECT email, car_number, cost, number, rental_date, return_date, rental_point, return_point, seat, navigation_korean, navigation_english, damage_indemnity FROM reservation WHERE car_number LIKE ? ORDER BY id DESC", like_text)			
+		}
+
+		if err != nil {
+			log.Fatal(err)
+		}
+		defer rows.Close()
+
+		for rows.Next(){
+			err := rows.Scan(&reservation.email, &reservation.car_number, &reservation.cost, &reservation.number, &reservation.rental_date, &reservation.return_date, &reservation.rental_point, &reservation.return_point, &reservation.babyseat, &reservation.navigation_kor, &reservation.navigation_eng, &reservation.damage_indemnity)
+
+			if err != nil{
+				log.Fatal(err)
+				return
+			}
+
+			result[index] = map[string]string{}
+
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			result[index] = map[string]string{}
+
+			currentPage_number, err := strconv.Atoi(currentPage.(string))
+
+			if count < (currentPage_number - 1) * 5 {
+				count++
+				continue
+			}
+
+			err = db.QueryRow("SELECT image, name, color FROM car WHERE car_number = ?", reservation.car_number).Scan(&reservation.image, &reservation.car_name, &reservation.color)
+
+			switch{
+			case err == sql.ErrNoRows:
+				continue
+			case err != nil:
+				log.Fatal(err)
+				return
+			}
+
+			err = db.QueryRow("SELECT name, username FROM users WHERE email = ?", reservation.email).Scan(&reservation.name, &reservation.username)
+
+			switch{
+			case search_select == "3":
+				err = db.QueryRow("SELECT name, username FROM users WHERE email = ? && name LIKE ?", reservation.email, like_text).Scan(&reservation.name, &reservation.username)
+			case search_select == "4":
+				err = db.QueryRow("SELECT name, username FROM users WHERE email = ? && email LIKE ?", reservation.email, like_text).Scan(&reservation.name, &reservation.username)
+			}
+
+			switch{
+			case err == sql.ErrNoRows:
+				continue
+			case err != nil:
+				log.Fatal(err)
+				return
+			}
+
+			err = db.QueryRow("SELECT changed_filename FROM image WHERE id = ?", reservation.image).Scan(&reservation.image)
+
+			switch{
+			case err == sql.ErrNoRows:
+				continue
+			case err != nil:
+				log.Fatal(err)
+				return
+			}
+
+			result[index]["name"] = reservation.name
+			result[index]["email"] = reservation.email
+			result[index]["username"] = reservation.username
+			result[index]["number"] = reservation.number
+			result[index]["image"] = reservation.image
+			result[index]["car_number"] = reservation.car_number
+			result[index]["car_name"] = reservation.car_name
+			result[index]["color"] = reservation.color
+			result[index]["cost"] = reservation.cost
+			result[index]["rental_date"] = reservation.rental_date
+			result[index]["return_date"] = reservation.return_date
+			result[index]["rental_point"] = reservation.rental_point
+			result[index]["return_point"] = reservation.return_point
+			result[index]["babyseat"] = reservation.babyseat
+			result[index]["navigation_kor"] = reservation.navigation_kor
+			result[index]["navigation_eng"] = reservation.navigation_eng
+			result[index]["damage_indemnity"] = reservation.damage_indemnity
+
+			count++
+			index++
+
+			result[0]["total_page"] = strconv.Itoa(count)
+		}
+
+		c.JSON(200, gin.H{
+			"result": result,
+		})
 	})
 
 	m.HandleMessage(func(s *melody.Session, message []byte) {

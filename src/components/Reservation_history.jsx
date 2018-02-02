@@ -28,7 +28,10 @@ class Reservation_history extends React.Component{
             rental_point: '',
             return_point: '',
             rental_date: '',
-            return_date: ''
+            return_date: '',
+            search_select: '1',
+            search_text: '',
+            searching: 0,
         }
 
         this.handleClick = this.handleClick.bind(this);
@@ -43,7 +46,11 @@ class Reservation_history extends React.Component{
     handleClick(event){
         this.setState({currentPage:event.target.id});
 
-        this.submitGit();
+        if(this.state.searching == 0) {
+            this.submitGit();
+        } else {
+            this.submitGit_Search();
+        }
     }
 
     list_reservation(opts){
@@ -159,6 +166,78 @@ class Reservation_history extends React.Component{
         }
     }
 
+    // search
+    search_selectChange(e){
+        this.setState({search_select:e.target.value});
+    }
+    search_textChange(e){
+        this.setState({search_text:e.target.value});
+    }
+    click_search_button(){
+        this.setState({currentPage:''});
+
+        if(this.state.search_text != ""){
+            this.setState({searching: 1});
+            this.submitGit_Search();
+        } else {
+            this.setState({searching: 0});
+            this.submitGit();
+        }
+    }
+    submitGit_Search(){
+        this.setSearch({
+            email: cookie.load('email'),
+            currentPage: this.state.currentPage,
+            search_select: this.state.search_select,
+            search_text: this.state.search_text,
+        })
+    }
+    setSearch(opts){
+        fetch('/search_reservation_history', {
+            method: 'POST',
+            headers: {
+                "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+            },
+            body: "form="+JSON.stringify(opts)
+        })
+        .then((response) => { return response.json(); })
+        .then((json) => { this.setState({result:json.result}); })
+        .then(function(){
+            this.setState({image:[]});
+            this.setState({car_number:[]});
+            this.setState({car_name:[]});
+            this.setState({fuel:[]});
+            this.setState({color:[]})
+            this.setState({distance:[]});
+            this.setState({few:[]});
+            this.setState({refundable:[]});
+            this.setState({reservaion_number:[]});
+
+            for(var count = 0; this.state.result[count] != null; count++){
+                this.setState({image:this.state.image.concat(this.state.result[count]["image"])});
+                this.setState({car_number:this.state.car_number.concat(this.state.result[count]["car_number"])});
+                this.setState({car_name:this.state.car_name.concat(this.state.result[count]["car_name"])});
+                this.setState({fuel:this.state.fuel.concat(this.state.result[count]["fuel"])});
+                this.setState({color:this.state.color.concat(this.state.result[count]["color"])});
+                this.setState({distance:this.state.distance.concat(this.state.result[count]["distance"])});
+                this.setState({few:this.state.few.concat(this.state.result[count]["few"])});
+                this.setState({refundable:this.state.refundable.concat(this.state.result[count]["refundable"])});
+                this.setState({reservaion_number:this.state.reservaion_number.concat(this.state.result[count]["reservation_number"])});
+            }
+            this.setState({count:count});
+            this.setState({total_page:this.state.result[0]["total_page"]});
+        }.bind(this))
+        .then(function(){
+            if(this.state.test_number==0){
+                this.setState({test_number:1});
+                this.submitGit_Search();
+            }
+            else{
+                this.setState({test_number:0});
+            }
+        }.bind(this))
+    }
+
     render(){
         const pageNumbers = [];
         for (let i = 1; i <= (Math.floor((this.state.total_page-1) / 5))+1; i++){
@@ -185,6 +264,9 @@ class Reservation_history extends React.Component{
                 <table className="out_table">
                     <tbody>
                         <tr style={this.state.image[0]==null?noneStyle:blockStyle}>
+                            <td width="150">
+                                예약번호
+                            </td>
                             <td widrth="230">
                                 이미지
                             </td>
@@ -212,6 +294,9 @@ class Reservation_history extends React.Component{
                         </tr>
                         <tr style={this.state.image[0]==null?noneStyle:blockStyle}>
                             <td>
+                                {this.state.reservaion_number[0]}
+                            </td>
+                            <td>
                                 <img src={this.state.image[0]} width="230" height="130"/>
                             </td>
                             <td>
@@ -237,6 +322,9 @@ class Reservation_history extends React.Component{
                             </td>
                         </tr>
                         <tr style={this.state.image[1]==null?noneStyle:blockStyle}>
+                            <td>
+                                {this.state.reservaion_number[1]}
+                            </td>
                             <td>
                                 <img src={this.state.image[1]} width="230" height="130"/>
                             </td>
@@ -264,6 +352,9 @@ class Reservation_history extends React.Component{
                         </tr>
                         <tr style={this.state.image[2]==null?noneStyle:blockStyle}>
                             <td>
+                                {this.state.reservaion_number[2]}
+                            </td>
+                            <td>
                                 <img src={this.state.image[2]} width="230" height="130"/>
                             </td>
                             <td>
@@ -290,6 +381,9 @@ class Reservation_history extends React.Component{
                         </tr>
                         <tr style={this.state.image[3]==null?noneStyle:blockStyle}>
                             <td>
+                                {this.state.reservaion_number[3]}
+                            </td>
+                            <td>
                                 <img src={this.state.image[3]} width="230" height="130"/>
                             </td>
                             <td>
@@ -315,6 +409,9 @@ class Reservation_history extends React.Component{
                             </td>
                         </tr>
                         <tr style={this.state.image[4]==null?noneStyle:blockStyle}>
+                            <td>
+                                {this.state.reservaion_number[4]}
+                            </td>
                             <td>
                                 <img src={this.state.image[4]} width="230" height="130"/>
                             </td>
@@ -348,6 +445,17 @@ class Reservation_history extends React.Component{
                                 <ul id="page-numbers">
                                     {renderPageNUmbers}
                                 </ul>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td /><td /><td />
+                            <td colSpan={5}>
+                                <select onChange={this.search_selectChange.bind(this)}>
+                                    <option value={1}> 예약 번호 </option>
+                                    <option value={2}> 차량 번호 </option>
+                                </select>
+                                <input type="text" onChange={this.search_textChange.bind(this)} />
+                                <button onClick={this.click_search_button.bind(this)}> 검색 </button>
                             </td>
                         </tr>
                     </tbody>
@@ -452,3 +560,4 @@ class Reservation_history extends React.Component{
 }
 
 export default Reservation_history;
+ 

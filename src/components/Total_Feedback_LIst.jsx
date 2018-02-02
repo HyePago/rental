@@ -25,6 +25,9 @@ class Total_Feedback_List extends React.Component {
             sort:'1',
             result:'',
             test_number:0,
+            search_text: '',
+            search_select: '1',
+            searching: 0,
         }
     }
 
@@ -86,26 +89,112 @@ class Total_Feedback_List extends React.Component {
     //page 
     handleClick(e){
         this.setState({currentPage: e.target.id});
-        this.submitGit_FeedbackList();
+        if(this.state.searching == 0){
+            this.submitGit_FeedbackList();
+        } else {
+            this.submitGit_Search();
+        }
     }
 
     input_categoryChange(e){
         this.setState({input_category:e.target.value});
-        this.submitGit_FeedbackList();
+        if(this.state.searching == 0){
+            this.submitGit_FeedbackList();
+        } else {
+            this.submitGit_Search();
+        }
     }
     input_divisionChange(e){
         this.setState({input_division:e.target.value});
-        this.submitGit_FeedbackList();
+        if(this.state.searching == 0){
+            this.submitGit_FeedbackList();
+        } else {
+            this.submitGit_Search();
+        }
     }
     sortChange(e){
         this.setState({sort:e.target.value});
-        this.submitGit_FeedbackList();
+        if(this.state.searching == 0){
+            this.submitGit_FeedbackList();
+        } else {
+            this.submitGit_Search();
+        }
     }
     division_numberChange(e){
         this.setState({division_number:e.target.id});
         this.setState({returned:2});
     }
+    search_selectChange(e){
+        this.setState({search_select:e.target.value})
+    }
+    search_textChange(e){
+        this.setState({search_text:e.target.value});
+    }
+    click_search_button(){
+        this.setState({currentPage:''});
 
+        if(this.state.search_text != ''){
+            this.setState({searching: 1});
+            this.submitGit_Search();
+        } else {
+            this.setState({searching: 0});
+            this.submitGit_FeedbackList();
+        }
+    }
+
+    //search
+    setSearch(opts){
+        fetch('/search_feedback_list', {
+            method: 'POST',
+            headers: {
+                "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+            },
+            body: "form="+JSON.stringify(opts)
+        })
+        .then((response) => { return response.json(); })
+        .then((json) => { this.setState({result:json.result}); })
+        .then(function(){
+            this.setState({id:[]});
+            this.setState({name:[]});
+            this.setState({email:[]});
+            this.setState({division:[]});
+            this.setState({category:[]});
+            this.setState({title:[]});
+            this.setState({contents:[]});
+            this.setState({timestamp:[]});        
+
+            for(var count=0; this.state.result[count]!=null; count++){
+                this.setState({id:this.state.id.concat(this.state.result[count]["id"])});
+                this.setState({name:this.state.name.concat(this.state.result[count]["name"])});
+                this.setState({email:this.state.email.concat(this.state.result[count]["email"])});
+                this.setState({division:this.state.division.concat(this.state.result[count]["division"])});
+                this.setState({category:this.state.category.concat(this.state.result[count]["category"])});
+                this.setState({title:this.state.title.concat(this.state.result[count]["title"])});
+                this.setState({contents:this.state.contents.concat(this.state.result[count]["contents"])});
+                this.setState({timestamp:this.state.timestamp.concat(this.state.result[count]["timestamp"])});
+                this.setState({total_page:this.state.result[0]["total_count"]});   
+            }
+        }.bind(this))
+        .then(function(){
+            if(this.state.test_number == 0){
+                this.setState({test_number:1});
+                this.submitGit_Search();
+            }else{
+                this.setState({test_number:0});
+            }
+        }.bind(this))
+    }
+    submitGit_Search(){
+        this.setSearch({
+            currentPage: this.state.currentPage,
+            division: this.state.input_division,
+            category: this.state.input_category,
+            sort: this.state.sort,
+            search_text: this.state.search_text,
+            search_select: this.state.search_select
+        })
+    }
+    
     backlist(){
         this.setState({returned:1});
     }
@@ -159,16 +248,6 @@ class Total_Feedback_List extends React.Component {
         let show_feedback_list = (
             <div>
                 <div>
-                    <div className="logo">
-                        렌터카
-                    </div>
-                    <div className="menu">
-                        <div className="menu-item"> 홈 </div>                                    
-                        <div className="menu-item"> 신규 차량 등록 </div>
-                        <div className="menu-item"> 차량 정보 관리 </div>
-                        <div className="menu-item"> 고객 정보 관리 </div>
-                    </div>
-                    <br />
                     <label> 구분 </label>
                     <select onChange={this.input_divisionChange.bind(this)}>
                         <option value=""> 전체 </option>
@@ -204,11 +283,27 @@ class Total_Feedback_List extends React.Component {
                                 </td>
                             </tr>
                             {impormation_feedback}
+                            <tr>
+                                <th> </th>
+                                <td> 
+                                    <ul id="page-numbers">
+                                        {renderPageNumbers}
+                                    </ul>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colSpan={4}>   
+                                    <select onChange={this.search_selectChange.bind(this)}>
+                                        <option value={1}> 글 제목 </option>
+                                        <option value={2}> 글 내용 </option>
+                                    </select>
+                                    &nbsp;
+                                    <input type="text" onChange={this.search_textChange.bind(this)} />
+                                    <button onClick={this.click_search_button.bind(this)}> 검색 </button>  
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
-                    <ul id="page-numbers">
-                        {renderPageNumbers}
-                    </ul>
                 </div>
             </div>
         )

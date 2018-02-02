@@ -500,16 +500,6 @@ class VehicleInformation extends React.Component {
 
         let car_impormation_Form = (
             <div>
-                <div className="logo">
-                    렌터카
-                </div>
-                <div className="menu">
-                    <div className="menu-item" onClick={this.click_home.bind(this)}> 홈 </div>                                    
-                    <div className="menu-item" onClick={this.insert_car_Change.bind(this)}> 신규 차량 등록 </div>
-                    <div className="menu-item" onClick={this.back_click.bind(this)}> 차량 정보 관리 </div>
-                    <div className="menu-item" onClick={this.mamber_impormation_Change.bind(this)}> 고객 정보 관리 </div>
-                </div>
-                <br />
                 <input type="radio" name="radio" value="0" onChange={this.input_car_typeChange.bind(this)} checked={(this.state.input_car_type=='' || this.state.input_car_type=='0')?true:false}/>
                 전체
                 <input type="radio" name="radio" value="1" onChange={this.input_car_typeChange.bind(this)}/>
@@ -585,15 +575,6 @@ class VehicleInformation extends React.Component {
         )
         let update_car = (
             <div>
-                <div className="logo">
-                    렌터카
-                </div>
-                <div className="menu">
-                    <div className="menu-item" onClick={this.click_home.bind(this)}> 홈 </div>                                    
-                    <div className="menu-item" onClick={this.insert_car_Change.bind(this)}> 신규 차량 등록 </div>
-                    <div className="menu-item"> 차량 정보 관리 </div>
-                    <div className="menu-item" onClick={this.mamber_impormation_Change.bind(this)}> 고객 정보 관리 </div>
-                </div>
                 <table>
                     <tbody>
                         <tr>

@@ -1,8 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom'
 
-import Admin from './Admin.jsx'
-
 import './Header.css'
 
 class InsertionCar extends React.Component {
@@ -33,15 +31,6 @@ class InsertionCar extends React.Component {
         };
     }
 
-    home_impormation_Change(){
-        this.setState({returned:'home'});
-    }
-    car_impormation_Change(){
-        this.setState({returned:'car_impormation'});
-    }
-    mamber_impormation_Change(){
-        this.setState({returned:'member_impormation'});
-    }
     fileChange(e){
         var formData  = new FormData();
         var data = e.currentTarget.files;
@@ -176,7 +165,6 @@ class InsertionCar extends React.Component {
                 alert("이미 있는 자동차 번호입니다. 다시 한 번 확인해주세요.");
             }
 
-            this.home_impormation_Change();
         }.bind(this))
     }
 
@@ -207,17 +195,6 @@ class InsertionCar extends React.Component {
     render(){
         let inser_car_Form = (
             <div>
-                <div>
-                    <div className="logo">
-                        렌터카
-                    </div>
-                    <div className="menu">
-                        <div className="menu-item" onClick={this.home_impormation_Change.bind(this)}> 홈 </div>                                    
-                        <div className="menu-item"> 신규 차량 등록 </div>
-                        <div className="menu-item" onClick={this.car_impormation_Change.bind(this)}> 차량 정보 관리 </div>
-                        <div className="menu-item" onClick={this.mamber_impormation_Change.bind(this)}> 고객 정보 관리 </div>
-                    </div>
-                </div>
                 <table>
                     <tbody>
                         <tr>
@@ -386,18 +363,7 @@ class InsertionCar extends React.Component {
             </div>
         )
 
-        let home_Form = (
-            <div>
-                <Admin />
-            </div>
-        )
-
-        if(this.state.returned == 'home'){
-            return home_Form;
-        }
-        else{
-            return inser_car_Form
-        }
+        return inser_car_Form
     }
 }
 

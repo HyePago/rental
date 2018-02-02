@@ -93,6 +93,16 @@ class Login extends React.Component {
         })
     }
 
+    //log_out
+    log_out(){
+        cookie.remove('name', {path:'/'});
+        cookie.remove('username', {path:'/'});
+        cookie.remove('reserves', {path:'/'});
+        cookie.remove('email', {path:'/'});
+
+        document.location.href = "/";
+    }
+
     idChange(e){
         this.setState({id:e.target.value});
     }
@@ -121,6 +131,9 @@ class Login extends React.Component {
                 </div>
                 <div className="main_impormation">
                     현재 적립금 : <b> {cookie.load('reserves')} </b>
+                </div>
+                <div onClick={this.log_out.bind(this)}>
+                    로그아웃
                 </div>
             </div>
         )
