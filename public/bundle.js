@@ -36722,7 +36722,13 @@ var Total_Feedback_List = function (_React$Component) {
             test_number: 0,
             search_text: '',
             search_select: '1',
-            searching: 0
+            searching: 0,
+            admin: [],
+            comment: [],
+            comment_timestamp: '',
+            comment_currentPage: '',
+            comment_total_page: '',
+            input_comment: ''
         };
         return _this;
     }
@@ -36731,6 +36737,11 @@ var Total_Feedback_List = function (_React$Component) {
         key: 'componentDidMount',
         value: function componentDidMount() {
             this.submitGit_FeedbackList();
+        }
+    }, {
+        key: 'input_commentChange',
+        value: function input_commentChange(e) {
+            this.setState({ input_comment: e.target.value });
         }
 
         //list
@@ -36804,6 +36815,12 @@ var Total_Feedback_List = function (_React$Component) {
             }
         }
     }, {
+        key: 'comment_handleClick',
+        value: function comment_handleClick(e) {
+            this.setState({ comment_currentPage: e.target.id });
+            this.submitGit_Contents();
+        }
+    }, {
         key: 'input_categoryChange',
         value: function input_categoryChange(e) {
             this.setState({ input_category: e.target.value });
@@ -36838,6 +36855,7 @@ var Total_Feedback_List = function (_React$Component) {
         value: function division_numberChange(e) {
             this.setState({ division_number: e.target.id });
             this.setState({ returned: 2 });
+            this.submitGit_Contents();
         }
     }, {
         key: 'search_selectChange',
@@ -36922,15 +36940,98 @@ var Total_Feedback_List = function (_React$Component) {
                 search_select: this.state.search_select
             });
         }
+
+        //contetns
+
+    }, {
+        key: 'submitGit_Contents',
+        value: function submitGit_Contents() {
+            this.setContents({
+                id: this.state.id[this.state.division_number],
+                currentPage: this.state.comment_currentPage
+            });
+        }
+    }, {
+        key: 'setContents',
+        value: function setContents(opts) {
+            var _this4 = this;
+
+            fetch('/feedback_list_comments', {
+                method: 'POST',
+                headers: {
+                    "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+                },
+                body: "form=" + JSON.stringify(opts)
+            }).then(function (response) {
+                return response.json();
+            }).then(function (json) {
+                _this4.setState({ result: json.result });
+            }).then(function () {
+                this.setState({ comment: [] });
+                this.setState({ admin: [] });
+                this.setState({ comment_timestamp: [] });
+
+                for (var count = 0; this.state.result[count] != null; count++) {
+                    this.setState({ comment: this.state.comment.concat(this.state.result[count]["comment"]) });
+                    this.setState({ comment_timestamp: this.state.comment_timestamp.concat(this.state.result[count]["timestamp"]) });
+                    this.setState({ comment_total_page: this.state.result[0]["total_count"] });
+
+                    if (this.state.result[count]["admin"] == 1) {
+                        this.setState({ admin: this.state.admin.concat("관리자") });
+                    } else {
+                        this.setState({ admin: this.state.admin.concat("글쓴이") });
+                    }
+
+                    console.log("admin = ", this.state.admin);
+                }
+            }.bind(this)).then(function () {
+                if (this.state.test_number == 0) {
+                    this.setState({ test_number: 1 });
+                    this.submitGit_Contents();
+                } else {
+                    this.setState({ test_number: 0 });
+                }
+            }.bind(this));
+        }
     }, {
         key: 'backlist',
         value: function backlist() {
             this.setState({ returned: 1 });
         }
+
+        //inser_comment
+
+    }, {
+        key: 'submitGit_Insert_Comment',
+        value: function submitGit_Insert_Comment() {
+            this.setInsertComment({
+                id: this.state.id[this.state.division_number],
+                comment: this.state.input_comment
+            });
+        }
+    }, {
+        key: 'setInsertComment',
+        value: function setInsertComment(opts) {
+            var _this5 = this;
+
+            fetch('/admin_input_comment', {
+                method: 'POST',
+                headers: {
+                    "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+                },
+                body: "form=" + JSON.stringify(opts)
+            }).then(function (response) {
+                return response.json();
+            }).then(function (json) {
+                _this5.setState({ result: json.result });
+            }).then(function () {
+                this.submitGit_Contents();
+            }.bind(this));
+        }
     }, {
         key: 'render',
         value: function render() {
-            var _this4 = this;
+            var _this6 = this;
 
             //style
             var noneStyle = {
@@ -36947,40 +37048,78 @@ var Total_Feedback_List = function (_React$Component) {
             var renderPageNumbers = pageNumbers.map(function (number) {
                 return _react2.default.createElement(
                     'li',
-                    { key: number, id: number, onClick: _this4.handleClick.bind(_this4) },
+                    { key: number, id: number, onClick: _this6.handleClick.bind(_this6) },
+                    number
+                );
+            });
+
+            //content_page
+            var content_pageNumbers = [];
+
+            for (var _i = 1; _i <= Math.floor((this.state.comment_total_page - 1) / 5) + 1; _i++) {
+                content_pageNumbers.push(_i);
+            }
+
+            var comment_renderPageNumbers = content_pageNumbers.map(function (number) {
+                return _react2.default.createElement(
+                    'li',
+                    { key: number, id: number, onClick: _this6.comment_handleClick.bind(_this6) },
                     number
                 );
             });
 
             //list
             var impormation_number = [];
-            for (var _i = 0; _i < 5; _i++) {
-                impormation_number.push(_i);
+            for (var _i2 = 0; _i2 < 5; _i2++) {
+                impormation_number.push(_i2);
             }
 
             var impormation_feedback = impormation_number.map(function (number) {
                 return _react2.default.createElement(
                     'tr',
-                    { key: number, id: number, style: _this4.state.title[number] == null ? noneStyle : blockStyle, onClick: _this4.division_numberChange.bind(_this4) },
+                    { key: number, id: number, style: _this6.state.title[number] == null ? noneStyle : blockStyle, onClick: _this6.division_numberChange.bind(_this6) },
                     _react2.default.createElement(
                         'td',
-                        { id: number, onClick: _this4.division_numberChange.bind(_this4) },
-                        _this4.state.id[number]
+                        { id: number, onClick: _this6.division_numberChange.bind(_this6) },
+                        _this6.state.id[number]
                     ),
                     _react2.default.createElement(
                         'td',
-                        { id: number, onClick: _this4.division_numberChange.bind(_this4) },
-                        _this4.state.title[number]
+                        { id: number, onClick: _this6.division_numberChange.bind(_this6) },
+                        _this6.state.title[number]
                     ),
                     _react2.default.createElement(
                         'td',
-                        { id: number, onClick: _this4.division_numberChange.bind(_this4) },
-                        _this4.state.name[number]
+                        { id: number, onClick: _this6.division_numberChange.bind(_this6) },
+                        _this6.state.name[number]
                     ),
                     _react2.default.createElement(
                         'td',
-                        { id: number, onClick: _this4.division_numberChange.bind(_this4) },
-                        _this4.state.timestamp[number]
+                        { id: number, onClick: _this6.division_numberChange.bind(_this6) },
+                        _this6.state.timestamp[number]
+                    )
+                );
+            });
+
+            //comment_list
+            var comment_impormation_number = [];
+            for (var _i3 = 0; _i3 < 5; _i3++) {
+                comment_impormation_number.push(_i3);
+            }
+
+            var comment_feedback = comment_impormation_number.map(function (number) {
+                return _react2.default.createElement(
+                    'tr',
+                    { key: number, id: number },
+                    _react2.default.createElement(
+                        'th',
+                        { id: number },
+                        _this6.state.admin[number]
+                    ),
+                    _react2.default.createElement(
+                        'td',
+                        null,
+                        _this6.state.comment[number]
                     )
                 );
             });
@@ -37138,35 +37277,6 @@ var Total_Feedback_List = function (_React$Component) {
                 'div',
                 null,
                 _react2.default.createElement(
-                    'div',
-                    { className: 'logo' },
-                    '\uB80C\uD130\uCE74'
-                ),
-                _react2.default.createElement(
-                    'div',
-                    { className: 'menu' },
-                    _react2.default.createElement(
-                        'div',
-                        { className: 'menu-item' },
-                        ' \uD648 '
-                    ),
-                    _react2.default.createElement(
-                        'div',
-                        { className: 'menu-item' },
-                        ' \uC2E0\uADDC \uCC28\uB7C9 \uB4F1\uB85D '
-                    ),
-                    _react2.default.createElement(
-                        'div',
-                        { className: 'menu-item' },
-                        ' \uCC28\uB7C9 \uC815\uBCF4 \uAD00\uB9AC '
-                    ),
-                    _react2.default.createElement(
-                        'div',
-                        { className: 'menu-item' },
-                        ' \uACE0\uAC1D \uC815\uBCF4 \uAD00\uB9AC '
-                    )
-                ),
-                _react2.default.createElement(
                     'table',
                     null,
                     _react2.default.createElement(
@@ -37252,6 +37362,61 @@ var Total_Feedback_List = function (_React$Component) {
                                     'button',
                                     { onClick: this.backlist.bind(this) },
                                     ' \uBAA9\uB85D '
+                                )
+                            )
+                        )
+                    )
+                ),
+                _react2.default.createElement(
+                    'table',
+                    null,
+                    _react2.default.createElement(
+                        'tbody',
+                        null,
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'th',
+                                null,
+                                '\uAE00\uC4F4\uC774'
+                            ),
+                            _react2.default.createElement(
+                                'th',
+                                null,
+                                '\uB313\uAE00'
+                            )
+                        ),
+                        comment_feedback,
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'th',
+                                null,
+                                '\uB313\uAE00'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement('textarea', { cols: '20', rows: '4', onChange: this.input_commentChange.bind(this) }),
+                                _react2.default.createElement(
+                                    'button',
+                                    { onClick: this.submitGit_Insert_Comment.bind(this) },
+                                    ' \uB4F1\uB85D '
+                                )
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement(
+                                    'ul',
+                                    { id: 'page-numbers' },
+                                    comment_renderPageNumbers
                                 )
                             )
                         )

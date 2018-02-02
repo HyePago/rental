@@ -28,11 +28,21 @@ class Total_Feedback_List extends React.Component {
             search_text: '',
             search_select: '1',
             searching: 0,
+            admin: [],
+            comment: [],
+            comment_timestamp: '',
+            comment_currentPage: '',
+            comment_total_page: '',
+            input_comment: '',
         }
     }
 
     componentDidMount(){
         this.submitGit_FeedbackList();
+    }
+
+    input_commentChange(e){
+        this.setState({input_comment:e.target.value});
     }
 
     //list
@@ -95,6 +105,10 @@ class Total_Feedback_List extends React.Component {
             this.submitGit_Search();
         }
     }
+    comment_handleClick(e){
+        this.setState({comment_currentPage: e.target.id});
+        this.submitGit_Contents();
+    }
 
     input_categoryChange(e){
         this.setState({input_category:e.target.value});
@@ -123,6 +137,7 @@ class Total_Feedback_List extends React.Component {
     division_numberChange(e){
         this.setState({division_number:e.target.id});
         this.setState({returned:2});
+        this.submitGit_Contents();
     }
     search_selectChange(e){
         this.setState({search_select:e.target.value})
@@ -195,8 +210,76 @@ class Total_Feedback_List extends React.Component {
         })
     }
     
+    //contetns
+    submitGit_Contents(){
+        this.setContents({
+            id: this.state.id[this.state.division_number],
+            currentPage: this.state.comment_currentPage,
+        })
+    }
+    setContents(opts){
+        fetch('/feedback_list_comments', {
+            method: 'POST',
+            headers: {
+                "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+            },
+            body: "form="+JSON.stringify(opts)
+        })
+        .then((response) => { return response.json(); })
+        .then((json) => { this.setState({result:json.result}); })
+        .then(function(){
+            this.setState({comment:[]});
+            this.setState({admin:[]});        
+            this.setState({comment_timestamp:[]});   
+
+            for(var count=0; this.state.result[count]!=null; count++){
+                this.setState({comment:this.state.comment.concat(this.state.result[count]["comment"])});
+                this.setState({comment_timestamp:this.state.comment_timestamp.concat(this.state.result[count]["timestamp"])});
+                this.setState({comment_total_page:this.state.result[0]["total_count"]});   
+            
+                if(this.state.result[count]["admin"] == 1){
+                    this.setState({admin:this.state.admin.concat("관리자")});
+                } else {
+                    this.setState({admin:this.state.admin.concat("글쓴이")});
+                }
+
+                console.log("admin = ", this.state.admin);
+            }
+        }.bind(this))
+        .then(function(){
+            if(this.state.test_number == 0){
+                this.setState({test_number:1});
+                this.submitGit_Contents();
+            }else{
+                this.setState({test_number:0});
+            }
+        }.bind(this))
+    }
+
     backlist(){
         this.setState({returned:1});
+    }
+    
+    //inser_comment
+    submitGit_Insert_Comment(){
+        this.setInsertComment({
+            id: this.state.id[this.state.division_number],
+            comment: this.state.input_comment,
+        })
+    }
+    setInsertComment(opts){
+        fetch('/admin_input_comment', {
+            method: 'POST',
+            headers: {
+                "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+            },
+            body: "form="+JSON.stringify(opts)
+        })
+        .then((response) => { return response.json(); })
+        .then((json) => { this.setState({result:json.result}); })
+        .then(function(){
+            this.submitGit_Contents();
+        }.bind(this))
     }
 
     render(){
@@ -220,6 +303,22 @@ class Total_Feedback_List extends React.Component {
             )
         })
 
+        //content_page
+        const content_pageNumbers = [];
+        
+        for(let i = 1; i <= (Math.floor((this.state.comment_total_page - 1) / 5)) + 1; i++){
+            content_pageNumbers.push(i)
+        }
+        
+        const comment_renderPageNumbers = content_pageNumbers.map(number => {
+            return(
+                <li key={number} id={number} onClick={this.comment_handleClick.bind(this)}>
+                    {number}
+                </li>
+            )
+        })
+
+
         //list
         const impormation_number = [];
         for(let i = 0; i < 5; i++){
@@ -240,6 +339,25 @@ class Total_Feedback_List extends React.Component {
                     </td>
                     <td id={number} onClick={this.division_numberChange.bind(this)}>
                         {this.state.timestamp[number]}
+                    </td>
+                </tr>
+            )
+        })
+
+        //comment_list
+        const comment_impormation_number = [];
+        for(let i = 0; i < 5; i++){
+            comment_impormation_number.push(i);
+        }
+
+        const comment_feedback = comment_impormation_number.map(number => {
+            return(
+                <tr key={number} id={number}>
+                    <th id={number}>
+                        {this.state.admin[number]}
+                    </th>
+                    <td>
+                        {this.state.comment[number]}
                     </td>
                 </tr>
             )
@@ -310,15 +428,6 @@ class Total_Feedback_List extends React.Component {
 
         let feedback_Form = (
             <div>
-                <div className="logo">
-                    렌터카
-                </div>
-                    <div className="menu">
-                    <div className="menu-item"> 홈 </div>                                    
-                    <div className="menu-item"> 신규 차량 등록 </div>
-                    <div className="menu-item"> 차량 정보 관리 </div>
-                    <div className="menu-item"> 고객 정보 관리 </div>
-                </div>
                 <table>
                     <tbody>
                         <tr>
@@ -364,6 +473,35 @@ class Total_Feedback_List extends React.Component {
                         <tr>
                             <td>
                                 <button onClick={this.backlist.bind(this)}> 목록 </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table>
+                    <tbody>
+                        <tr>
+                            <th>
+                                글쓴이
+                            </th>
+                            <th>
+                                댓글
+                            </th>
+                        </tr>
+                        {comment_feedback}
+                        <tr>
+                            <th>
+                                댓글
+                            </th>
+                            <td>
+                                <textarea cols="20" rows="4" onChange={this.input_commentChange.bind(this)} />
+                                <button onClick={this.submitGit_Insert_Comment.bind(this)}> 등록 </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <ul id="page-numbers">
+                                    {comment_renderPageNumbers}
+                                </ul>
                             </td>
                         </tr>
                     </tbody>

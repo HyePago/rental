@@ -3032,6 +3032,107 @@ func main() {
 		})
 	})
 
+	router.POST("/feedback_list_comments", func(c *gin.Context){
+		form := c.PostForm("form")
+
+		var raw map[string]interface{}
+		json.Unmarshal([]byte(form), &raw)
+
+		currentPage := raw["currentPage"]
+		id := raw["id"]
+
+		log.Println("raw => ", raw)
+
+		count := 0
+		index := 0
+
+		var id2 string
+
+		var admin string
+		var contents string
+		var timestamp string
+
+		var result map[int]map[string]string = map[int]map[string]string{}
+
+		rows, err := db.Query("SELECT id FROM feedback_comment WHERE feedback_id = ? ORDER BY timestamp DESC", id)
+
+		if err != nil{
+			log.Fatal(err)
+			return
+		}
+		defer rows.Close()
+
+		for rows.Next(){
+			err := rows.Scan(&id2)
+
+			if err != nil {
+				log.Fatal(err)
+				return
+			}
+
+			startPage := 0
+
+			result[index] = map[string]string{}
+
+			if currentPage == "" {
+				startPage = 0
+			} else {
+				startPage, err = strconv.Atoi(currentPage.(string))
+			}
+
+			if count < (startPage - 1) * 5{
+				count++
+				continue
+			}
+
+			err = db.QueryRow("SELECT admin, contents, timestamp FROM feedback_comment WHERE id = ?", id2).Scan(&admin, &contents, &timestamp)
+
+			switch{
+			case err == sql.ErrNoRows:
+				continue
+			case err != nil:
+				log.Fatal(err)
+				return
+			}
+
+			result[index]["admin"] = admin
+			result[index]["comment"] = contents
+			result[index]["timestamp"] = timestamp
+
+			count++
+			index++
+
+			result[0]["total_count"] = strconv.Itoa(count)
+		}
+
+		c.JSON(200, gin.H{
+			"result": result,
+		})
+	})
+
+	router.POST("/admin_input_comment", func(c *gin.Context){
+		form := c.PostForm("form")
+
+		var raw map[string]interface{}
+		json.Unmarshal([]byte(form), &raw)
+
+		id := raw["id"]
+		comment := raw["comment"]
+
+		_, err := db.Exec("INSERT INTO feedback_comment (admin, feedback_id, contents) VALUES (?, ?, ?)", 1, id, comment)
+
+		if err != nil {
+			log.Fatal(err)
+			return
+		}
+
+		c.JSON(200, gin.H{
+			"result": "true",
+		})
+	})
+
+
+
 	m.HandleMessage(func(s *melody.Session, message []byte) {
 		
 	})
